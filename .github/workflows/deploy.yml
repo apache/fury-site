@@ -1,0 +1,32 @@
+name: fury site deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      # build
+      - name: Build Project
+        run: |
+          npm install
+          npm run build
+
+      # save to deploy branch
+      - name: Deploy to Github
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: deploy 
+          folder: dist
