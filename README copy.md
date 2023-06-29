@@ -1,6 +1,6 @@
 # home
 
-The static pages for https://github.com/alipay/fury.
+A static site base on [dumi](https://d.umijs.org).
 
 ## Development
 
