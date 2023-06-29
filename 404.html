@@ -7,5 +7,12 @@
 <body>
 <div id="root"></div>
 <script src="./umi.511fad28.js"></script>
+<script>
+    if (window.location.hostname === 'alipay.github.io' ) {
+      window.publicPath = '/fury-sites/';
+    } else {
+      window.publicPath = '/';
+    }
+    </script>
 
 </body></html>
