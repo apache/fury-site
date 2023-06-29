@@ -5,5 +5,5 @@ export default defineConfig({
     name: 'home',
   },
   runtimePublicPath: {},
-  publicPath: './'
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
 });
