@@ -6,7 +6,7 @@ export default defineConfig({
   },
   runtimePublicPath: {},
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-  scripts: [
+  headScripts: [
     `
     if (window.location.hostname === 'alipay.github.io' ) {
       window.publicPath = '/fury-sites/';
