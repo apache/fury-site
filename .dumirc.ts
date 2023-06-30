@@ -2,17 +2,16 @@ import { defineConfig } from 'dumi';
 
 export default defineConfig({
   themeConfig: {
-    name: 'home',
+    name: '',
+    footer: false,
+    socialLinks: {
+      github: 'https://github.com/alipay/fury',
+    },
   },
+  favicons: [
+    '/favicon.ico'
+  ],
+  logo: "/logo.png",
   runtimePublicPath: {},
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-  headScripts: [
-    `
-    if (window.location.hostname === 'alipay.github.io' ) {
-      window.publicPath = '/fury-sites/';
-    } else {
-      window.publicPath = '/';
-    }
-    `
-  ]
 });

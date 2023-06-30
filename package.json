@@ -2,6 +2,7 @@
   "name": "home",
   "version": "0.0.1",
   "description": "A static site for fury",
+  "repository": "git@github.com:fury-project/fury-sites.git",
   "license": "MIT",
   "scripts": {
     "build": "dumi build",
