@@ -9,13 +9,16 @@ hero:
     - text: 加入我们
       link: /team
 features:
-  - title: 性能
-    emoji: 💎
-    description: todo
-  - title: 易用
-    emoji: 🌈
-    description: todo
-  - title: '!'
+  - title: 极致性能
     emoji: 🚀
-    description: Put ! description here
+    link: /doc
+    description: 20~100X 性能提升
+  - title: 多语言支持
+    emoji: 🧑‍💻
+    link: /doc
+    description: Java & Python & Golang & JavaScript & C++
+  - title: 开箱即用
+    emoji: 📦
+    link: /doc
+    description: 超强易用性，代码即Schema
 ---
