@@ -26,5 +26,3 @@ Fury 是一个基于 JIT 的高性能多语言原生序列化框架，专注于�
 ### Python
 
 ### JavaScript
-
-## Benchmark
