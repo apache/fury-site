@@ -1,6 +1,7 @@
 ---
 title: 开始
-order: 1
+nav:
+  order: 1
 ---
 
 ## 简介
@@ -18,10 +19,39 @@ Fury 是一个基于 JIT 的高性能多语言原生序列化框架，专注于�
   - 支持共享引用和循环引用的 Golang 序列化框架；
   - 支持对象自动序列化的 Golang 序列化框架；
 
-## 安装
+## 开始
 
 ### Java
 
 ### Python
 
 ### JavaScript
+
+#### 安装
+
+```shell
+npm install @furyjs/fury
+```
+
+#### Marshal & UnMarshal
+
+```typescript
+import Fury, { TypeDescription, InternalSerializerType } from '@furyjs/fury';
+
+const description: TypeDescription = {
+  type: InternalSerializerType.FURY_TYPE_TAG,
+  asObject: {
+    props: {
+      foo: {
+        type: InternalSerializerType.STRING as const,
+      },
+    },
+    tag: 'example.foo',
+  },
+};
+const fury = new Fury();
+const serializer = fury.registerSerializerByDescription(description);
+const input = fury.marshal({ foo: 'hello fury' }, serializer);
+const result = fury.unmarshal(new Uint8Array(input));
+console.log(result);
+```
