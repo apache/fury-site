@@ -1,28 +1,54 @@
 ---
-title: 开始
+title: Start
 nav:
   order: 1
 ---
 
-## 简介
+## Guide
 
-Fury 是一个基于 JIT 的高性能多语言原生序列化框架，专注于提供极致的序列化性能和易用性：
+Fury is a JIT-based high-performance multi-language native serialization framework, focusing on providing the ultimate serialization performance and ease of use:
 
-- 支持主流编程语言如 Java/Python/C++/Golang，其它语言可轻易扩展；
-- 多语言/跨语言自动序列化任意对象图，无需创建 IDL 文件、手动编译 schema 生成代码以及将对象转换为中间格式；
-- 多语言/跨语言自动序列化共享引用和循环引用，用户只需要关心对象，不需要关心数据重复或者递归错误；
-- 基于 JIT 动态编译技术在运行时自动生成整阶段序列化代码，增加方法内联、代码缓存和死代码消除，减少虚方法调用/条件分支/Hash 查找/元数据写入等，提供相比其它序列化框架 20~500 倍以上的性能；
-- Zero-Copy 序列化支持，支持 Out of band 序列化协议，支持堆外内存读写；
-- 提供缓存友好的二进制随机访问行存格式，支持跳过序列化和部分序列化，并能和列存自动互转;
-- 了跨语言能力，Fury 还具备以下能力：
-  - Drop-in 替代 JDK/Kryo/Hessian 的 Java 序列化框架，提供相比 Kryo 20 倍以上的性能，相比 Hessian100 倍以上的性能，相比 JDK 自带序列化 200 倍以上的性能，可以大幅提升高性能场景对象传输和持久化效率；
-  - 支持共享引用和循环引用的 Golang 序列化框架；
-  - 支持对象自动序列化的 Golang 序列化框架；
+- Support mainstream programming languages such as Java/Python/C++/Golang, other languages can be easily extended;
+- Multi-language/cross-language automatic serialization of arbitrary object graphs without creating IDL files, manually compiling schemas to generate code, and converting objects to intermediate formats;
+- Multi-language/cross-language automatic serialization of shared references and circular references, users only need to care about objects, not data duplication or recursion errors;
+- Based on JIT dynamic compilation technology, the whole stage serialization code is automatically generated at runtime, method inlining, code caching and dead code elimination are added, virtual method calls/conditional branches/Hash lookup/metadata writing are reduced, and compared with other 20~500 times the performance of the serialization framework;
+- Zero-Copy serialization support, support for Out of band serialization protocol, and support for reading and writing of off-heap memory;
+- Provides a cache-friendly binary random access row storage format, supports skip serialization and partial serialization, and can automatically switch between column storage and storage;
+- Drop-in replaces the Java serialization framework of JDK/Kryo/Hessian, providing more than 20 times the performance of Kryo, more than 100 times the performance of Hessian, and more than 200 times the performance of JDK's own serialization, which can be greatly improved High-performance scene object transmission and persistence efficiency;
 
-## 安装
+## Usage
 
 ### Java
 
 ### Python
 
 ### JavaScript
+
+#### Install
+
+```shell
+npm install @furyjs/fury
+```
+
+#### Marshal & UnMarshal
+
+```typescript
+import Fury, { TypeDescription, InternalSerializerType } from '@furyjs/fury';
+
+const description: TypeDescription = {
+  type: InternalSerializerType.FURY_TYPE_TAG,
+  asObject: {
+    props: {
+      foo: {
+        type: InternalSerializerType.STRING as const,
+      },
+    },
+    tag: 'example.foo',
+  },
+};
+const fury = new Fury();
+const serializer = fury.registerSerializerByDescription(description);
+const input = fury.marshal({ foo: 'hello fury' }, serializer);
+const result = fury.unmarshal(new Uint8Array(input));
+console.log(result);
+```

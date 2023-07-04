@@ -12,8 +12,8 @@ export default defineConfig({
     '/favicon.ico'
   ],
   locales: [
-    { id: 'zh-CN', name: '中文' },
     { id: 'en-US', name: 'EN' },
+    { id: 'zh-CN', name: '中文' },
   ],
   logo: "/logo.png",
   runtimePublicPath: {},

@@ -5,9 +5,9 @@ hero:
   description: A JIT-based high-performance multi-language native serialization framework that provides ultimate performance and ease of use
   actions:
     - text: Start
-      link: /en-US/start
+      link: /start
     - text: Join Us
-      link: /en-US/team
+      link: /team
 features:
   - title: High-performance
     emoji: 🚀
