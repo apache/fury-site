@@ -10,7 +10,30 @@ Fury is a blazing fast multi-language serialization framework powered by jit(jus
 
 ## Quickstart
 
-Here we give a quick start about how to use fury, see [User Guide](/doc#installation) for more details about java serialization, zero-copy and row format.
+Here we give a quick start about how to use fury, see [User Guide](/doc##quickstart) for more details about java serialization, zero-copy and row format.
+
+## Benchmarks
+
+Different serialization frameworks are suitable for different scenarios, and benchmark results here are for reference only.
+
+If you need to benchmark for your specific scenario, make sure all serialization frameworks are appropriately configured for that scenario.
+
+Dynamic serialization frameworks supports polymorphism and reference, which has more cost compared
+to static serialization frameworks, unless it uses the jit techniques as fury did.
+Since fury will generate code at runtime, please warm up before collecting benchmark statistics.
+
+### Java Serialization
+
+<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_compatible_STRUCT_to_directBuffer_time.png">
+<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_compatible_MEDIA_CONTENT_to_array_time.png">
+<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_MEDIA_CONTENT_to_array_time.png">
+<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_SAMPLE_to_array_time.png">
+<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_compatible_STRUCT_from_directBuffer_time.png">
+<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_compatible_MEDIA_CONTENT_from_array_time.png">
+<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_MEDIA_CONTENT_from_array_time.png">
+<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_SAMPLE_from_array_time.png">
+
+See [benchmarks](https://github.com/alipay/fury/tree/main/docs/benchmarks) for more benchmarks about type forward/backward compatibility, off-heap support, zero-copy serialization.
 
 ## Features
 
@@ -49,29 +72,6 @@ multiple binary protocols for those requirements:
 
 New protocols can be added easily based on fury existing buffer, encoding, meta, codegen and other capabilities. All of those share same codebase, and the optimization for one protocol
 can be reused by another protocol.
-
-## Benchmarks
-
-Different serialization frameworks are suitable for different scenarios, and benchmark results here are for reference only.
-
-If you need to benchmark for your specific scenario, make sure all serialization frameworks are appropriately configured for that scenario.
-
-Dynamic serialization frameworks supports polymorphism and reference, which has more cost compared
-to static serialization frameworks, unless it uses the jit techniques as fury did.
-Since fury will generate code at runtime, please warm up before collecting benchmark statistics.
-
-### Java Serialization
-
-<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_compatible_STRUCT_to_directBuffer_time.png">
-<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_compatible_MEDIA_CONTENT_to_array_time.png">
-<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_MEDIA_CONTENT_to_array_time.png">
-<img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_SAMPLE_to_array_time.png">
-<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_compatible_STRUCT_from_directBuffer_time.png">
-<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_compatible_MEDIA_CONTENT_from_array_time.png">
-<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_MEDIA_CONTENT_from_array_time.png">
-<img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_SAMPLE_from_array_time.png">
-
-See [benchmarks](https://github.com/alipay/fury/tree/main/docs/benchmarks) for more benchmarks about type forward/backward compatibility, off-heap support, zero-copy serialization.
 
 ## Compatibility
 
