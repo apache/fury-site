@@ -13,7 +13,6 @@ export default defineConfig({
   ],
   locales: [
     { id: 'en-US', name: 'EN' },
-    { id: 'zh-CN', name: '中文' },
   ],
   logo: "/logo.png",
   runtimePublicPath: {},

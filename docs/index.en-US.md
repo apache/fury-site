@@ -2,7 +2,7 @@
 title: Home - Fury-serialization
 hero:
   title: Fury
-  description: A JIT-based high-performance multi-language native serialization framework that provides ultimate performance and ease of use
+  description: Blazing Fast Binary Serialization
   actions:
     - text: Start
       link: /start
@@ -11,14 +11,14 @@ hero:
 features:
   - title: High-performance
     emoji: 🚀
-    link: /doc
-    description: 20~100X imporve
-  - title: Multi-language
+    link: /start#benchmarks
+    description: 20-200x speed up
+  - title: Multi-languages
     emoji: 🧑‍💻
-    link: /doc
-    description: Java & Python & Golang & JavaScript & C++
+    link: /doc#installation
+    description: Java/Python/C++/Golang/Javascript
   - title: Ease of use
     emoji: 📦
-    link: /doc
-    description: Code as schema
+    link: /start#features
+    description: No DSL, intuitive to use
 ---
