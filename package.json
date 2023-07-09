@@ -5,7 +5,7 @@
   "repository": "git@github.com:fury-project/fury-sites.git",
   "license": "MIT",
   "scripts": {
-    "build": "dumi build",
+    "build": "npm run build -w dumi-theme && dumi build",
     "dev": "dumi dev",
     "prepare": "husky install && dumi setup",
     "start": "npm run dev"
@@ -20,6 +20,11 @@
       "prettier --write --no-error-on-unmatched-pattern"
     ]
   },
+  "dependencies": {
+    "antd-style": "^3.4.1",
+    "dumi-theme-fury": "^0.0.1",
+    "rc-footer": "^0.6.8"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
@@ -28,5 +33,8 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1"
   },
-  "authors": []
+  "authors": [],
+  "workspaces": [
+    "dumi-theme"
+  ]
 }
