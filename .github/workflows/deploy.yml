@@ -3,7 +3,7 @@ name: fury site deploy
 on:
   push:
     branches:
-      - main
+      - init
 
 jobs:
   build-and-deploy:
