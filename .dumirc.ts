@@ -23,7 +23,7 @@ export default defineConfig({
     showSpecTab: true,                                                // 是否在 demo 页展示API文档
     es5: false,
     logo: {
-      link: '/logo.png',
+      link: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*V_oxQYSTdLQAAAAAAAAAAAAADpJ-AQ/original',
     } as any,
     /**
      *  tips: 文档列表类型的路由导航(nav) 请以 docs/* 格式命名
@@ -111,7 +111,7 @@ export default defineConfig({
     },
     features: [
       {
-        icon: '/performance.svg',
+        icon: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*TIgXS5t2NOAAAAAAAAAAAAAADpJ-AQ/original',
         title: {
           en: 'High performance',
         },
@@ -120,7 +120,7 @@ export default defineConfig({
         },
       },
       {
-        icon: '/happy.svg',
+        icon: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*8GF5QJxZ3UoAAAAAAAAAAAAADpJ-AQ/original',
         title: {
           en: 'Ease to use',
         },
@@ -129,7 +129,7 @@ export default defineConfig({
         },
       },
       {
-        icon: '/multi.svg',
+        icon: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*MDCKSLfeVPkAAAAAAAAAAAAADpJ-AQ/original',
         title: {
           en: 'Multi-languages',
         },
@@ -141,18 +141,18 @@ export default defineConfig({
     /** 首页案例 */
     cases: [
       {
-        logo: '/rocket.svg',
+        logo: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*lUa0RqV3srIAAAAAAAAAAAAADpJ-AQ/original',
         title: {
           en: 'Extremely fast deserialization',
         },
         description: {
-          en: 'Base on efficient JIT inlining, in struct deserialization scenarios, fury can achieve a 165x speed up compared to traditional serialization frameworks'
+          en: 'Base on efficient JIT, struct deserialization can get 170x speed up compared other serialization frameworks'
         },
         image: '/benchmarks/deserialization/bench_deserialize_STRUCT_from_directBuffer_tps.png',
         link: '/introduction/benchmark#java-deserialization',
       },
       {
-        logo: '/rocket.svg',
+        logo: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*lUa0RqV3srIAAAAAAAAAAAAADpJ-AQ/original',
         title: {
           en: 'Extremely fast serialization',
         },
