@@ -8,6 +8,7 @@ export default defineConfig({
     { name: 'keywords', content: 'fury' },
     { name: 'description', content: 'fury site' },
   ],
+  logo: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*V_oxQYSTdLQAAAAAAAAAAAAADpJ-AQ/original',
   themeConfig: {
     title: '',
     description: 'Blazing Fast Binary Serialization',
@@ -90,7 +91,7 @@ export default defineConfig({
         zh: '',
         en: 'Fury is a blazing fast multi-language serialization framework powered by jit(just-in-time compilation) and zero-copy.',
       },
-      image: '/right.gif',
+      image: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*260MT5EkywEAAAAAAAAAAAAADpJ-AQ/original',
       buttons: [
         {
           text: {

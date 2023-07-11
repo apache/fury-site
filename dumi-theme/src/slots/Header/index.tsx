@@ -333,7 +333,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
-            <a href={siteUrl[lang] ? siteUrl[lang]: siteUrl}><img style={{ transform: 'scale(2.5) translateY(-1px) translateX(3px)'}} src="/logo.png" /></a>
+            <a href={siteUrl[lang] ? siteUrl[lang]: siteUrl}><img style={{ transform: 'scale(2.5) translateY(-1px) translateX(3px)'}} src="https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*V_oxQYSTdLQAAAAAAAAAAAAADpJ-AQ/original" /></a>
           </h1>
           {subTitle && (
             <>
