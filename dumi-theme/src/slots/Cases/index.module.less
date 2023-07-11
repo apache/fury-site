@@ -12,6 +12,25 @@
     .container1440;
   }
 
+
+
+  .controlButton {
+    width: 25px;
+    height: 25px;
+    transition: all 0.3s;
+
+    .controlButtonIcon {
+      width: 100%;
+      color: #a3b1bf;
+      font-size: 25px;
+      transition: all 0.3s;
+
+      &:hover {
+        color: @primary-color;
+      }
+    }
+  }
+
   .appWrapper {
     margin-left: 5%;
     margin-bottom: 5%;
@@ -62,45 +81,15 @@
         }
       }
 
-      .buttons {
-        cursor: pointer;
-        position: absolute;
-        display: flex;
-        bottom: 30%;
-        height: 100px;
 
-        .controlButton {
-          width: 47px;
-          height: 47px;
-          line-height: 47px;
-          border: 1px solid #a3b1bf;
-          transition: all 0.3s;
+      .nextButton {
+        width: 47px;
+        margin-left: -1px;
+        background-image: url('https://gw.alipayobjects.com/zos/basement_prod/27ce6e21-bbb6-4490-8326-43483ac39e0b.svg');
+        background-size: 100% 100%;
 
-          &:hover {
-            border: 1px solid #ced4d9;
-            fill: #000000;
-          }
-
-          &:hover :only-child {
-            color: #ced4d9;
-          }
-
-          .controlButtonIcon {
-            width: 100%;
-            color: #a3b1bf;
-            transition: all 0.3s;
-          }
-        }
-
-        .nextButton {
-          width: 47px;
-          margin-left: -1px;
-          background-image: url('https://gw.alipayobjects.com/zos/basement_prod/27ce6e21-bbb6-4490-8326-43483ac39e0b.svg');
-          background-size: 100% 100%;
-
-          &:hover {
-            background-image: url('https://gw.alipayobjects.com/zos/basement_prod/4d1f0d0a-4e56-4f21-a9aa-06b2f8c3e18e.svg');
-          }
+        &:hover {
+          background-image: url('https://gw.alipayobjects.com/zos/basement_prod/4d1f0d0a-4e56-4f21-a9aa-06b2f8c3e18e.svg');
         }
       }
     }

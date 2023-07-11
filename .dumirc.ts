@@ -116,7 +116,7 @@ export default defineConfig({
           en: 'High performance',
         },
         description: {
-          en: 'Compared to other serial number methods in different scenarios, there is a 20~200 times speed up',
+          en: 'Compared to other serial number methods in different scenarios, there is a 20~170 times speed up',
         },
       },
       {
@@ -143,35 +143,24 @@ export default defineConfig({
       {
         logo: '/rocket.svg',
         title: {
-          en: 'very high deserialization performance',
+          en: 'Extremely fast deserialization',
         },
         description: {
           en: 'Base on efficient JIT inlining, in struct deserialization scenarios, fury can achieve a 165x speed up compared to traditional serialization frameworks'
         },
-        image: '/benchmarks/deserialization/bench_deserialize_STRUCT_from_directBuffer_time.png',
+        image: '/benchmarks/deserialization/bench_deserialize_STRUCT_from_directBuffer_tps.png',
         link: '/guide/benchmark#java-deserialization',
       },
       {
         logo: '/rocket.svg',
         title: {
-          en: 'very high serialization performance',
+          en: 'Extremely fast serialization',
         },
         description: {
           en: 'In deserialization scenarios, Fury can achieve a 70x speed up compared to traditional serialization frameworks. If you use Java clusters on a large scale, this will save a lot of computing resources'
         },
-        image: '/benchmarks/serialization/bench_serialize_STRUCT2_to_directBuffer_time.png',
+        image: '/benchmarks/serialization/bench_serialize_STRUCT2_to_directBuffer_tps.png',
         link: '/guide/benchmark#java-serialization',
-      },
-      {
-        logo: '/rocket.svg',
-        title: {
-          en: 'high performance on Node.js',
-        },
-        description: {
-          en: 'Code that extremely friendly to V8 improves performance by 15 times compared to JSON.parse and JSON.stringify'
-        },
-        image: '/benchmarks/javascript/complex_object.jpg',
-        link: '/guide/benchmark#javascript',
       },
     ],
     /** 首页合作公司 */
