@@ -162,6 +162,17 @@ export default defineConfig({
         image: '/benchmarks/serialization/bench_serialize_STRUCT2_to_directBuffer_time.png',
         link: '/guide/benchmark#java-serialization',
       },
+      {
+        logo: '/rocket.svg',
+        title: {
+          en: 'high performance on Node.js',
+        },
+        description: {
+          en: 'Code that extremely friendly to V8 improves performance by 15 times compared to JSON.parse and JSON.stringify'
+        },
+        image: '/benchmarks/javascript/complex_object.jpg',
+        link: '/guide/benchmark#javascript',
+      },
     ],
     /** 首页合作公司 */
     companies: [

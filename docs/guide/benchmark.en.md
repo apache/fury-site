@@ -3,7 +3,6 @@ title: Benchmark
 order: 1
 ---
 
-
 Different serialization frameworks are suitable for different scenarios, and benchmark results here are for reference only.
 
 If you need to benchmark for your specific scenario, make sure all serialization frameworks are appropriately configured for that scenario.
@@ -19,8 +18,8 @@ Since fury will generate code at runtime, please warm up before collecting bench
 <img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_MEDIA_CONTENT_to_array_time.png">
 <img width="33%" alt="" src="/benchmarks/serialization/bench_serialize_SAMPLE_to_array_time.png">
 
-
 ### Java Deserialization
+
 <img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_compatible_STRUCT_from_directBuffer_time.png">
 <img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_compatible_MEDIA_CONTENT_from_array_time.png">
 <img width="33%" alt="" src="/benchmarks/deserialization/bench_deserialize_MEDIA_CONTENT_from_array_time.png">
@@ -28,3 +27,10 @@ Since fury will generate code at runtime, please warm up before collecting bench
 
 See [benchmarks](https://github.com/alipay/fury/tree/main/docs/benchmarks) for more benchmarks about type forward/backward compatibility, off-heap support, zero-copy serialization.
 
+### JavaScript
+
+<img width="33%" alt="" src="/benchmarks/javascript/complex_object.jpg">
+
+The data used for this bar graph includes a complex object that has many kinds of field types, and the size of the JSON data is 13KB.
+
+See [benchmarks](https://github.com/alipay/fury/blob/main/javascript/benchmark/index.js) for the benchmark code.
