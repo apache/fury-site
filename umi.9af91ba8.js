@@ -269,28 +269,20 @@ func main() {
 	}
 	fmt.Println(newValue)
 }
-`,paraId:2,tocIndex:2},{value:`import Fury, { TypeDescription, InternalSerializerType } from '@furyjs/fury';
+`,paraId:2,tocIndex:2},{value:`import Fury, { Type } from '@furyjs/fury';
 
 // Experimental feature, installation success cannot be guaranteed at this moment
 // If you are unable to install the module, replace it with \`const hps = null;\`
 import hps from '@furyjs/hps';
 
 // Now we describe data structures using JSON, but in the future, we will use more ways.
-const description: TypeDescription = {
-  type: InternalSerializerType.FURY_TYPE_TAG,
-  asObject: {
-    props: {
-      foo: {
-        type: InternalSerializerType.STRING as const,
-      },
-    },
-    tag: 'example.foo',
-  },
-};
+const description = Type.object('example.foo', {
+  foo: Type.string()
+})
 const fury = new Fury({ hps });
-const serializer = fury.registerSerializerByDescription(description);
-const input = fury.marshal({ foo: 'hello fury' }, serializer);
-const result = fury.unmarshal(input);
+const { serialize, deserialize } = fury.registerSerializer(description);
+const input = serialize({ foo: 'hello fury' });
+const result = deserialize(input);
 console.log(result);
 `,paraId:3,tocIndex:3}],_={},P={title:"Cross-language object graph serialization",toc:"menu",filename:"docs/doc/crosslang.md",order:0,description:"Common types can be serialized automatically: primitive numeric types, string, binary, array, list, map and so on."},F=[{id:"serialize-built-in-types",depth:3,title:"Serialize built-in types"},{id:"java",depth:4,title:"Java"},{id:"python",depth:4,title:"Python"},{id:"golang",depth:4,title:"GoLang"},{id:"javascript",depth:4,title:"Javascript"},{id:"serialize-custom-types",depth:3,title:"Serialize custom types"},{id:"java-1",depth:3,title:"Java"},{id:"python-1",depth:4,title:"Python"},{id:"golang-1",depth:4,title:"Golang"},{id:"javascript-1",depth:4,title:"Javascript"},{id:"serialize-shared-reference-and-circular-reference",depth:3,title:"Serialize Shared Reference and Circular Reference"},{id:"java-2",depth:4,title:"Java"},{id:"python-2",depth:4,title:"Python"},{id:"golang-2",depth:4,title:"Golang"},{id:"javascript-2",depth:4,title:"Javascript"},{id:"zero-copy-serialization",depth:3,title:"Zero-Copy Serialization"},{id:"java-3",depth:4,title:"Java"},{id:"python-3",depth:4,title:"Python"},{id:"golang-3",depth:4,title:"Golang"},{id:"javascript-3",depth:4,title:"Javascript"}],G=[{value:"Common types can be serialized automatically: primitive numeric types, string, binary, array, list, map and so on.",paraId:0,tocIndex:0},{value:`import io.fury.*;
 
@@ -360,15 +352,15 @@ func main() {
 	}
 	fmt.Println(newValue)
 }
-`,paraId:3,tocIndex:3},{value:`import Fury, { TypeDescription, InternalSerializerType } from '@furyjs/fury';
+`,paraId:3,tocIndex:3},{value:`import Fury from '@furyjs/fury';
 
 // Experimental feature, installation success cannot be guaranteed at this moment
 // If you are unable to install the module, replace it with \`const hps = null;\`
 import hps from '@furyjs/hps';
 
 const fury = new Fury({ hps });
-const input = fury.marshal("hello fury");
-const result = fury.unmarshal(input);
+const input = fury.serialize("hello fury");
+const result = fury.deserialize(input);
 console.log(result);
 `,paraId:4,tocIndex:4},{value:"Serializing user-defined types needs registering the custom type using the register API to establish the mapping relationship between the type in different languages.",paraId:5,tocIndex:5},{value:`public class Example2 {
   public static class SomeClass1 {
@@ -533,28 +525,20 @@ func main() {
 	}
 	fmt.Println(newValue)
 }
-`,paraId:8,tocIndex:8},{value:`import Fury, { TypeDescription, InternalSerializerType } from '@furyjs/fury';
+`,paraId:8,tocIndex:8},{value:`import Fury, { Type, InternalSerializerType } from '@furyjs/fury';
 
 // Experimental feature, installation success cannot be guaranteed at this moment
 // If you are unable to install the module, replace it with \`const hps = null;\`
 import hps from '@furyjs/hps';
 
 // Now we describe data structures using JSON, but in the future, we will use more ways.
-const description: TypeDescription = {
-  type: InternalSerializerType.FURY_TYPE_TAG,
-  asObject: {
-    props: {
-      foo: {
-        type: InternalSerializerType.STRING as const,
-      },
-    },
-    tag: 'example.foo',
-  },
-};
+const description = Type.object('example.foo', {
+  foo: Type.string(),
+});
 const fury = new Fury({ hps });
-const serializer = fury.registerSerializerByDescription(description);
-const input = fury.marshal({ foo: 'hello fury' }, serializer);
-const result = fury.unmarshal(input);
+const { serialize, deserialize } = fury.registerSerializer(description);
+const input = serialize({ foo: 'hello fury' });
+const result = deserialize(input);
 console.log(result);
 `,paraId:9,tocIndex:9},{value:"Shared reference and circular reference can be serialized automatically, no duplicate data or recursion error.",paraId:10,tocIndex:10},{value:`import com.google.common.collect.ImmutableMap;
 import io.fury.*;
@@ -631,38 +615,25 @@ func main() {
 	}
 	fmt.Println(newValue)
 }
-`,paraId:13,tocIndex:13},{value:`import Fury, { TypeDescription, InternalSerializerType } from '@furyjs/fury';
+`,paraId:13,tocIndex:13},{value:`import Fury, { Type } from '@furyjs/fury';
 // Experimental feature, installation success cannot be guaranteed at this moment
 // If you are unable to install the module, replace it with \`const hps = null;\`
 import hps from '@furyjs/hps';
 
-const description: TypeDescription = {
-  type: InternalSerializerType.FURY_TYPE_TAG,
-  asObject: {
-    props: {
-      foo: {
-        type: InternalSerializerType.STRING as const,
-      },
-      bar: {
-        type:  InternalSerializerType.FURY_TYPE_TAG,
-        asObject: {
-          tag: 'example.foo'
-        }
-      }
-    },
-    tag: 'example.foo',
-  },
-};
+const description = Type.object('example.foo', {
+  foo: Type.string(),
+  bar: Type.object('example.foo')
+})
+
 const fury = new Fury({ hps });
-const serializer = fury.registerSerializerByDescription(description);
+const {serialize, deserialize} = fury.registerSerializer(description);
 const data: any = {
   foo: 'hello fury',
 }
 data.bar = data;
-const input = fury.marshal(data, serializer);
-const result = fury.unmarshal(input);
+const input = serialize(data);
+const result = deserialize(input);
 console.log(result.bar.foo === result.foo);
-
 `,paraId:14,tocIndex:14},{value:`import io.fury.*;
 import io.fury.serializers.BufferObject;
 import io.fury.memory.MemoryBuffer;
