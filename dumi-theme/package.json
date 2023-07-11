@@ -1,0 +1,109 @@
+{
+  "name": "dumi-theme-fury",
+  "version": "0.0.1",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "dev": "father dev",
+    "dev:example-site": "cd example && npm run start",
+    "build": "father build",
+    "prepare": "father link-dev-theme",
+    "lint": "npm run lint:es && npm run lint:css",
+    "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
+    "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "prepublishOnly": "npm run build"
+  },
+  "authors": [
+    "dumi"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{md,json}": [
+      "prettier --write --no-error-on-unmatched-pattern"
+    ],
+    "*.{css,less}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@babel/plugin-syntax-unicode-sets-regex": "^7.18.6",
+    "@babel/standalone": "^7.19.5",
+    "@docsearch/css": "^3.3.0",
+    "@docsearch/react": "^3.3.0",
+    "@monaco-editor/react": "^4.4.6",
+    "@stackblitz/sdk": "^1.8.0",
+    "antd": "^4.23.5",
+    "classnames": "^2.3.2",
+    "codesandbox": "^2.2.3",
+    "d3-dsv": "^3.0.1",
+    "docsearch.js": "^2.6.3",
+    "front-matter": "^4.0.2",
+    "fs-extra": "^10.1.0",
+    "glob": "^8.0.3",
+    "hast": "^1.0.0",
+    "indent-string": "^5.0.0",
+    "insert-css": "^2.0.0",
+    "lodash-es": "^4.17.21",
+    "monaco-editor": "^0.25.0",
+    "parse-github-url": "^1.0.2",
+    "rc-drawer": "^4.0.0",
+    "rc-footer": "^0.6.6",
+    "react-error-boundary": "^3.1.4",
+    "react-github-button": "^0.1.11",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.4.2",
+    "react-slick": "^0.29.0",
+    "react-split-pane": "^0.1.92",
+    "react-use": "^17.4.0",
+    "semver": "^7.3.8",
+    "size-sensor": "^1.0.1",
+    "slick-carousel": "^1.8.1",
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.2",
+    "uri-parse": "^1.0.0",
+    "video-react": "^0.16.0",
+    "prettier": "^2.7.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "@types/classnames": "^2.3.1",
+    "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^8.0.0",
+    "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.11.3",
+    "@types/react": "^18.0.21",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-slick": "^0.23.10",
+    "@umijs/lint": "^4.0.0",
+    "dumi": "^2.0.0",
+    "eslint": "^8.23.0",
+    "father": "^4.1.0",
+    "father-plugin-dumi-theme": "^1.0.0-beta.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier-plugin-organize-imports": "^3.0.0",
+    "prettier-plugin-packagejson": "^2.2.18",
+    "stylelint": "^14.9.1"
+  }
+}
