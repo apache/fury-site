@@ -38,10 +38,10 @@ export default defineConfig({
         order: 2,
       },
       {
-        slug: 'docs/guide/guide',
+        slug: 'docs/introduction/introduction',
         title: {
           zh: '',
-          en: 'Guide',
+          en: 'Introduction',
         },
         order: 3,
       },
@@ -64,7 +64,7 @@ export default defineConfig({
         order: 1,
       },
       {
-        slug: 'guide/',
+        slug: 'introduction/',
         title: {
           zh: '',
           en: '',
@@ -116,7 +116,7 @@ export default defineConfig({
           en: 'High performance',
         },
         description: {
-          en: 'Compared to other serial number methods in different scenarios, there is a 20~170 times speed up',
+          en: 'Compared to other serialization frameworks, there is a 20~170x speed up',
         },
       },
       {
@@ -149,7 +149,7 @@ export default defineConfig({
           en: 'Base on efficient JIT inlining, in struct deserialization scenarios, fury can achieve a 165x speed up compared to traditional serialization frameworks'
         },
         image: '/benchmarks/deserialization/bench_deserialize_STRUCT_from_directBuffer_tps.png',
-        link: '/guide/benchmark#java-deserialization',
+        link: '/introduction/benchmark#java-deserialization',
       },
       {
         logo: '/rocket.svg',
@@ -160,7 +160,7 @@ export default defineConfig({
           en: 'In deserialization scenarios, Fury can achieve a 70x speed up compared to traditional serialization frameworks. If you use Java clusters on a large scale, this will save a lot of computing resources'
         },
         image: '/benchmarks/serialization/bench_serialize_STRUCT2_to_directBuffer_tps.png',
-        link: '/guide/benchmark#java-serialization',
+        link: '/introduction/benchmark#java-serialization',
       },
     ],
     /** 首页合作公司 */

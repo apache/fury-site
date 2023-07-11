@@ -107,7 +107,7 @@ export const Cases: React.FC<CasesProps> = ({
     speed: 500,
     cssEase: 'linear',
     arrows: true,
-    autoplay: false,
+    autoplay: true,
     autoplaySpeed: 2000,
     fade: true,
     prevArrow: (
