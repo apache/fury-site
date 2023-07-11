@@ -3,7 +3,7 @@ name: fury site deploy
 on:
   push:
     branches:
-      - init
+      - master
 
 jobs:
   build-and-deploy:
@@ -21,7 +21,6 @@ jobs:
       # build
       - name: Build Project
         run: |
-          curl -# -O  https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*V_oxQYSTdLQAAAAAAAAAAAAADpJ-AQ/original
           npm install
           npm run build
 
