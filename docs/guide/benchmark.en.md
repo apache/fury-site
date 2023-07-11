@@ -31,6 +31,6 @@ See [benchmarks](https://github.com/alipay/fury/tree/main/docs/benchmarks) for m
 
 <img width="33%" alt="" src="/benchmarks/javascript/complex_object.jpg">
 
-The data used for this bar graph includes a complex object that has many kinds of field types, and the size of the JSON data is 13KB.
+The data used for this bar graph includes a complex object that has many kinds of field types, and the size of the JSON data is 3KB.
 
 See [benchmarks](https://github.com/alipay/fury/blob/main/javascript/benchmark/index.js) for the benchmark code.
