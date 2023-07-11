@@ -275,6 +275,7 @@ func main() {
 // If you are unable to install the module, replace it with \`const hps = null;\`
 import hps from '@furyjs/hps';
 
+// Now we describe data structures using JSON, but in the future, we will use more ways.
 const description: TypeDescription = {
   type: InternalSerializerType.FURY_TYPE_TAG,
   asObject: {
