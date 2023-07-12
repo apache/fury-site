@@ -91,7 +91,7 @@ export default defineConfig({
         zh: '',
         en: 'Fury is a blazing fast multi-language serialization framework powered by jit(just-in-time compilation) and zero-copy.',
       },
-      image: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*260MT5EkywEAAAAAAAAAAAAADpJ-AQ/original',
+      image: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*7P08RJm4noUAAAAAAAAAAAAADpJ-AQ/original',
       buttons: [
         {
           text: {
