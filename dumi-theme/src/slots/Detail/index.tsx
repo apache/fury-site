@@ -55,7 +55,7 @@ export const Detail: React.FC<DetailProps> = ({
         "zh": "",
         "en": "at GitHub"
       },
-      "date": "2023.07.12",
+      "date": "2023.07.15",
       "link": "https://github.com/alipay/fury"
     },
   ]);
