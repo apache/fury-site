@@ -149,7 +149,7 @@ export default defineConfig({
         description: {
           en: 'Base on efficient JIT, struct deserialization can get 170x speed up compared other serialization frameworks'
         },
-        image: '/benchmarks/deserialization/bench_deserialize_STRUCT_from_directBuffer_tps.png',
+        image: '/case2.png',
         link: '/introduction/benchmark#java-deserialization',
       },
       {
@@ -158,9 +158,9 @@ export default defineConfig({
           en: 'Extremely fast serialization',
         },
         description: {
-          en: 'In deserialization scenarios, Fury can achieve a 70x speed up compared to traditional serialization frameworks. If you use Java clusters on a large scale, this will save a lot of computing resources'
+          en: 'In deserialization scenarios, Fury can achieve a 100x speed up compared to traditional serialization frameworks. If you use Java clusters on a large scale, this will save a lot of computing resources'
         },
-        image: '/benchmarks/serialization/bench_serialize_STRUCT2_to_directBuffer_tps.png',
+        image: '/case1.png',
         link: '/introduction/benchmark#java-serialization',
       },
     ],
