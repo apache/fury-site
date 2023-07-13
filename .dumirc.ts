@@ -54,6 +54,14 @@ export default defineConfig({
         },
         order: 4,
       },
+      {
+        slug: 'docs/blog',
+        title: {
+          zh: '',
+          en: 'Blog',
+        },
+        order: 5,
+      },
     ],
     docs: [
       {
@@ -74,6 +82,14 @@ export default defineConfig({
       },
       {
         slug: 'doc/',
+        title: {
+          zh: '',
+          en: '',
+        },
+        order: 1,
+      },
+      {
+        slug: 'blog/',
         title: {
           zh: '',
           en: '',
