@@ -98,14 +98,17 @@ func main() {
 ```typescript
 import Fury, { Type } from '@furyjs/fury';
 
-// Experimental feature, installation success cannot be guaranteed at this moment
-// If you are unable to install the module, replace it with `const hps = null;`
+/**
+ * @furyjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
+ * Experimental feature, installation success cannot be guaranteed at this moment
+ * If you are unable to install the module, replace it with `const hps = null;`
+ **/
 import hps from '@furyjs/hps';
 
 // Now we describe data structures using JSON, but in the future, we will use more ways.
 const description = Type.object('example.foo', {
-  foo: Type.string()
-})
+  foo: Type.string(),
+});
 const fury = new Fury({ hps });
 const { serialize, deserialize } = fury.registerSerializer(description);
 const input = serialize({ foo: 'hello fury' });
