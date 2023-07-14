@@ -95,12 +95,15 @@ func main() {
 ```javascript
 import Fury from '@furyjs/fury';
 
-// Experimental feature, installation success cannot be guaranteed at this moment
-// If you are unable to install the module, replace it with `const hps = null;`
+/**
+ * @furyjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
+ * Experimental feature, installation success cannot be guaranteed at this moment
+ * If you are unable to install the module, replace it with `const hps = null;`
+ **/
 import hps from '@furyjs/hps';
 
 const fury = new Fury({ hps });
-const input = fury.serialize("hello fury");
+const input = fury.serialize('hello fury');
 const result = fury.deserialize(input);
 console.log(result);
 ```
@@ -292,8 +295,11 @@ func main() {
 ```javascript
 import Fury, { Type, InternalSerializerType } from '@furyjs/fury';
 
-// Experimental feature, installation success cannot be guaranteed at this moment
-// If you are unable to install the module, replace it with `const hps = null;`
+/**
+ * @furyjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
+ * Experimental feature, installation success cannot be guaranteed at this moment
+ * If you are unable to install the module, replace it with `const hps = null;`
+ **/
 import hps from '@furyjs/hps';
 
 // Now we describe data structures using JSON, but in the future, we will use more ways.
@@ -405,20 +411,23 @@ func main() {
 
 ```javascript
 import Fury, { Type } from '@furyjs/fury';
-// Experimental feature, installation success cannot be guaranteed at this moment
-// If you are unable to install the module, replace it with `const hps = null;`
+/**
+ * @furyjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
+ * Experimental feature, installation success cannot be guaranteed at this moment
+ * If you are unable to install the module, replace it with `const hps = null;`
+ **/
 import hps from '@furyjs/hps';
 
 const description = Type.object('example.foo', {
   foo: Type.string(),
-  bar: Type.object('example.foo')
-})
+  bar: Type.object('example.foo'),
+});
 
 const fury = new Fury({ hps });
-const {serialize, deserialize} = fury.registerSerializer(description);
+const { serialize, deserialize } = fury.registerSerializer(description);
 const data: any = {
   foo: 'hello fury',
-}
+};
 data.bar = data;
 const input = serialize(data);
 const result = deserialize(input);
