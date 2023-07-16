@@ -47,10 +47,10 @@ export default defineConfig({
         order: 3,
       },
       {
-        slug: 'docs/doc/crosslang',
+        slug: 'docs/guide',
         title: {
           zh: '',
-          en: 'Doc',
+          en: 'Guide',
         },
         order: 4,
       },
@@ -81,7 +81,7 @@ export default defineConfig({
         order: 1,
       },
       {
-        slug: 'doc/',
+        slug: 'guide/',
         title: {
           zh: '',
           en: '',
