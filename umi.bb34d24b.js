@@ -630,7 +630,7 @@ return arrowWriter.finishAsRecordBatch();
 `,paraId:9,tocIndex:3}],j={},P={title:"Install",toc:"menu",filename:"docs/start/install.en.md",order:0,description:"Nightly snapshot:"},F=[{id:"java",depth:3,title:"Java"},{id:"python",depth:3,title:"Python"},{id:"golang",depth:3,title:"Golang"},{id:"javascript",depth:3,title:"JavaScript"}],G=[{value:"Nightly snapshot:",paraId:0,tocIndex:0},{value:`<repositories>
   <repository>
     <id>sonatype</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
     <releases>
       <enabled>false</enabled>
     </releases>
