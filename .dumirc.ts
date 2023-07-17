@@ -139,7 +139,7 @@ export default defineConfig({
       {
         icon: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*8GF5QJxZ3UoAAAAAAAAAAAAADpJ-AQ/original',
         title: {
-          en: 'Ease to use',
+          en: 'Easy to use',
         },
         description: {
           en: 'No need for DSL, with your intuition, you can use Fury effectively',
