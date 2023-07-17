@@ -1,3 +1,8 @@
+---
+title: Java Object Graph Guide
+order: 0
+---
+
 ## Java object graph serialization
 When only java object serialization needed, this mode will have better performance compared to cross-language object graph serialization.
 
