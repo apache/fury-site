@@ -385,9 +385,9 @@ func main() {
 	fmt.Println(newList)
 }
 `,paraId:32,tocIndex:4},{value:"JavaScript",paraId:33,tocIndex:4},{value:`// Coming soon
-`,paraId:34,tocIndex:4}],v={},f={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/java_object_graph_guide.md",order:0,description:"When only java object serialization needed, this mode will have better performance compared to cross-language object graph serialization."},m=[{id:"java-object-graph-serialization",depth:2,title:"Java object graph serialization"},{id:"quick-start",depth:3,title:"Quick Start"},{id:"advanced-fury-creation",depth:3,title:"Advanced Fury Creation"},{id:"security--class-registration",depth:3,title:"Security & Class Registration"},{id:"serializer-registration",depth:3,title:"Serializer Registration"},{id:"zero-copy-serialization",depth:3,title:"Zero-Copy Serialization"},{id:"meta-sharing",depth:3,title:"Meta Sharing"},{id:"deserialize-un-exited-classes",depth:3,title:"Deserialize un-exited classes."}],h=[{value:"When only java object serialization needed, this mode will have better performance compared to cross-language object graph serialization.",paraId:0,tocIndex:0},{value:`import io.fury.Fury;
-import java.util.List;
+`,paraId:34,tocIndex:4}],v={},f={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/java_object_graph_guide.md",order:0,description:"When only java object serialization needed, this mode will have better performance compared to cross-language object graph serialization."},m=[{id:"java-object-graph-serialization",depth:2,title:"Java object graph serialization"},{id:"quick-start",depth:3,title:"Quick Start"},{id:"advanced-fury-creation",depth:3,title:"Advanced Fury Creation"},{id:"security--class-registration",depth:3,title:"Security & Class Registration"},{id:"serializer-registration",depth:3,title:"Serializer Registration"},{id:"zero-copy-serialization",depth:3,title:"Zero-Copy Serialization"},{id:"meta-sharing",depth:3,title:"Meta Sharing"},{id:"deserialize-un-exited-classes",depth:3,title:"Deserialize un-exited classes."}],h=[{value:"When only java object serialization needed, this mode will have better performance compared to cross-language object graph serialization.",paraId:0,tocIndex:0},{value:`import java.util.List;
 import java.util.Arrays;
+import io.fury.*;
 
 public class Example {
   public static void main(String[] args) {
@@ -418,9 +418,9 @@ public class Example {
       System.out.println(fury.deserialize(bytes));
     }
     {
-      ThreadSafeFury fury = new ThreadSafeFury(() -> {
+      ThreadSafeFury fury = new ThreadLocalFury((classLoader) -> {
         Fury f = Fury.builder().withLanguage(Language.JAVA)
-          .withRefTracking(true).build();
+          .withRefTracking(true).withClassLoader(classLoader).build();
         f.register(SomeClass.class);
         return f;
       });
