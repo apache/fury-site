@@ -23,8 +23,7 @@ import java.util.*;
 
 public class Example1 {
   public static void main(String[] args) {
-    Fury fury = Fury.builder().withLanguage(Language.XLANG)
-      .withRefTracking(false).build();
+    Fury fury = Fury.builder().withLanguage(Language.XLANG).build();
     List<Object> list = Arrays.asList(true, false, "str", -1.1, 1, new int[100], new double[20]);
     byte[] bytes = fury.serialize(list);
     // bytes can be data serialized by other languages.
@@ -41,7 +40,7 @@ public class Example1 {
 `,paraId:2,tocIndex:1},{value:"Python",paraId:3,tocIndex:1},{value:`import pyfury
 import numpy as np
 
-fury = pyfury.Fury(ref_tracking=False)
+fury = pyfury.Fury()
 object_list = [True, False, "str", -1.1, 1,
                np.full(100, 0, dtype=np.int32), np.full(20, 0.0, dtype=np.double)]
 data = fury.serialize(object_list)
@@ -59,7 +58,7 @@ import "fmt"
 
 func main() {
 	list := []interface{}{true, false, "str", -1.1, 1, make([]int32, 10), make([]float64, 20)}
-	fury := furygo.NewFury(false)
+	fury := furygo.NewFury()
 	bytes, err := fury.Marshal(list)
 	if err != nil {
 		panic(err)
@@ -129,7 +128,7 @@ func main() {
 
   // mvn exec:java -Dexec.mainClass="io.fury.examples.Example2"
   public static void main(String[] args) {
-    Fury fury = Fury.builder().withLanguage(Language.XLANG).withRefTracking(false).build();
+    Fury fury = Fury.builder().withLanguage(Language.XLANG).build();
     fury.register(SomeClass1.class, "example.SomeClass1");
     fury.register(SomeClass2.class, "example.SomeClass2");
     byte[] bytes = fury.serialize(createObject());
@@ -170,7 +169,7 @@ class SomeClass2:
 
 
 if __name__ == "__main__":
-    f = pyfury.Fury(ref_tracking=False)
+    f = pyfury.Fury()
     f.register_class(SomeClass1, "example.SomeClass1")
     f.register_class(SomeClass2, "example.SomeClass2")
     obj1 = SomeClass1(f1=True, f2={-1: 2})
@@ -216,7 +215,7 @@ func main() {
 		F1 interface{}
 		F2 map[int8]int32
 	}
-	fury := furygo.NewFury(false)
+	fury := furygo.NewFury()
 	if err := fury.RegisterTagType("example.SomeClass1", SomeClass1{}); err != nil {
 		panic(err)
 	}
@@ -366,7 +365,7 @@ import furygo "github.com/alipay/fury/fury/go/fury"
 import "fmt"
 
 func main() {
-	fury := furygo.NewFury(true)
+	fury := furygo.NewFury()
 	list := []interface{}{"str", make([]byte, 1000)}
 	buf := fury.NewByteBuffer(nil)
 	var bufferObjects []fury.BufferObject
@@ -396,7 +395,6 @@ public class Example {
     // multiple serializations of different objects.
     {
       Fury fury = Fury.builder().withLanguage(Language.JAVA)
-        .withRefTracking(true)
         // Allow to deserialize objects unknown types,
         // more flexible but less secure.
         // .withSecureMode(false)
@@ -412,7 +410,6 @@ public class Example {
         // Allow to deserialize objects unknown types,
         // more flexible but less secure.
         // .withSecureMode(false)
-        .withRefTracking(true)
         .buildThreadSafeFury();
       byte[] bytes = fury.serialize(object);
       System.out.println(fury.deserialize(bytes));
@@ -420,7 +417,7 @@ public class Example {
     {
       ThreadSafeFury fury = new ThreadLocalFury(classLoader -> {
         Fury f = Fury.builder().withLanguage(Language.JAVA)
-          .withRefTracking(true).withClassLoader(classLoader).build();
+          .withClassLoader(classLoader).build();
         f.register(SomeClass.class);
         return f;
       });
@@ -433,7 +430,7 @@ public class Example {
   .withLanguage(Language.JAVA)
   // enable referecne tracking for shared/circular reference.
   // Disable it will have better performance if no duplciate reference.
-  .withRefTracking(true)
+  .withRefTracking(false)
   // compress int/long for smaller size
   // .withNumberCompressed(true)
   .withCompatibleMode(CompatibleMode.SCHEMA_CONSISTENT)
@@ -449,7 +446,7 @@ System.out.println(fury.deserialize(bytes));
   .withLanguage(Language.JAVA)
   // enable referecne tracking for shared/circular reference.
   // Disable it will have better performance if no duplciate reference.
-  .withRefTracking(true)
+  .withRefTracking(false)
   // compress int/long for smaller size
   // .withNumberCompressed(true)
   .withCompatibleMode(CompatibleMode.SCHEMA_CONSISTENT)
@@ -484,7 +481,7 @@ public class ZeroCopyExample {
 }
 `,paraId:13,tocIndex:6},{value:"Fury supports share type metadata (class name, field name, final field type information, etc.) between multiple serializations in a context (ex. TCP connection), and this information will be sent to the peer during the first serialization in the context. Based on this metadata, the peer can rebuild the same deserializer, which avoids transmitting metadata for subsequent serializations and reduces network traffic pressure and supports type forward/backward compatibility automatically.",paraId:14,tocIndex:7},{value:`// Fury.builder()
 //   .withLanguage(Language.JAVA)
-//   .withReferenceTracking(true)
+//   .withRefTracking(false)
 //   // share meta across serialization.
 //   .withMetaContextShareEnabled(true)
 // Not thread-safe fury.
