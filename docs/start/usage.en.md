@@ -2,7 +2,32 @@
 title: Usage
 order: 1
 ---
+## Java Serialization
+```java
+import java.util.List;
+import java.util.Arrays;
+import io.fury.*;
 
+public class Example {
+  public static void main(String[] args) {
+    SomeClass object = new SomeClass();
+    // Note that Fury instances should be reused between 
+    // multiple serializations of different objects.
+    Fury fury = Fury.builder().withLanguage(Language.JAVA)
+      // Allow to deserialize objects unknown types,
+      // more flexible but less secure.
+      // .withSecureMode(false)
+      .build();
+    // Registering types can reduce class name serialization overhead, but not mandatory.
+    // If secure mode enabled, all custom types must be registered.
+    fury.register(SomeClass.class);
+    byte[] bytes = fury.serialize(object);
+    System.out.println(fury.deserialize(bytes));
+  }
+}
+```
+
+## CrossLanguage Serialization
 ### Java
 
 ```java

@@ -11,7 +11,7 @@ Nightly snapshot:
 <repositories>
   <repository>
     <id>sonatype</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
     <releases>
       <enabled>false</enabled>
     </releases>
@@ -33,7 +33,20 @@ Nightly snapshot:
 </dependency> -->
 ```
 
-Release version: coming soon.
+Release version:
+```xml
+<dependency>
+  <groupId>org.furyio</groupId>
+  <artifactId>fury-core</artifactId>
+  <version>0.1.0-alpha.2</version>
+</dependency>
+<!-- row/arrow format support -->
+<!-- <dependency>
+  <groupId>org.furyio</groupId>
+  <artifactId>fury-format</artifactId>
+  <version>0.1.0-alpha.2</version>
+</dependency> -->
+```
 
 ### Python
 
