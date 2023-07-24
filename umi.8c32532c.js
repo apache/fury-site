@@ -24,7 +24,7 @@ import java.util.*;
 public class Example1 {
   public static void main(String[] args) {
     Fury fury = Fury.builder().withLanguage(Language.XLANG).build();
-    List<Object> list = Arrays.asList(true, false, "str", -1.1, 1, new int[100], new double[20]);
+    List<Object> list = ofArrayList(true, false, "str", -1.1, 1, new int[100], new double[20]);
     byte[] bytes = fury.serialize(list);
     // bytes can be data serialized by other languages.
     fury.deserialize(bytes);
@@ -85,7 +85,10 @@ func main() {
 	fmt.Println(newValue)
 }
 `,paraId:6,tocIndex:1},{value:"JavaScript",paraId:7,tocIndex:1},{value:`// Coming soon
-`,paraId:8,tocIndex:1},{value:"Serializing user-defined types needs registering the custom type using the register API to establish the mapping relationship between the type in different languages.",paraId:9,tocIndex:2},{value:"Java",paraId:10,tocIndex:2},{value:`public class Example2 {
+`,paraId:8,tocIndex:1},{value:"Serializing user-defined types needs registering the custom type using the register API to establish the mapping relationship between the type in different languages.",paraId:9,tocIndex:2},{value:"Java",paraId:10,tocIndex:2},{value:`import io.fury.*;
+import java.util.*;
+
+public class Example2 {
   public static class SomeClass1 {
     Object f1;
     Map<Byte, Integer> f2;
@@ -109,12 +112,12 @@ func main() {
   public static Object createObject() {
     SomeClass1 obj1 = new SomeClass1();
     obj1.f1 = true;
-    obj1.f2 = ImmutableMap.of((byte) -1, 2);
+    obj1.f2 = ofHashMap((byte) -1, 2);
     SomeClass2 obj = new SomeClass2();
     obj.f1 = obj1;
     obj.f2 = "abc";
-    obj.f3 = Arrays.asList("abc", "abc");
-    obj.f4 = ImmutableMap.of((byte) 1, 2);
+    obj.f3 = ofArrayList("abc", "abc");
+    obj.f4 = ofHashMap((byte) 1, 2);
     obj.f5 = Byte.MAX_VALUE;
     obj.f6 = Short.MAX_VALUE;
     obj.f7 = Integer.MAX_VALUE;
@@ -122,7 +125,7 @@ func main() {
     obj.f9 = 1.0f / 2;
     obj.f10 = 1 / 3.0;
     obj.f11 = new short[]{(short) 1, (short) 2};
-    obj.f12 = ImmutableList.of((short) -1, (short) 4);
+    obj.f12 = ofArrayList((short) -1, (short) 4);
     return obj;
   }
 
@@ -134,7 +137,6 @@ func main() {
     byte[] bytes = fury.serialize(createObject());
     // bytes can be data serialized by other languages.
     System.out.println(fury.deserialize(bytes));
-    ;
   }
 }
 `,paraId:11,tocIndex:2},{value:"Python",paraId:12,tocIndex:2},{value:`from dataclasses import dataclass
@@ -251,10 +253,8 @@ func main() {
 	fmt.Println(newValue)
 }
 `,paraId:15,tocIndex:2},{value:"JavaScript",paraId:16,tocIndex:2},{value:`// Coming soon
-`,paraId:17,tocIndex:2},{value:"Shared reference and circular reference can be serialized automatically, no duplicate data or recursion error.",paraId:18,tocIndex:3},{value:"Java",paraId:19,tocIndex:3},{value:`import com.google.common.collect.ImmutableMap;
-import io.fury.*;
-
-import java.util.Map;
+`,paraId:17,tocIndex:2},{value:"Shared reference and circular reference can be serialized automatically, no duplicate data or recursion error.",paraId:18,tocIndex:3},{value:"Java",paraId:19,tocIndex:3},{value:`import io.fury.*;
+import java.util.*;
 
 public class ReferenceExample {
   public static class SomeClass {
@@ -266,7 +266,7 @@ public class ReferenceExample {
   public static Object createObject() {
     SomeClass obj = new SomeClass();
     obj.f1 = obj;
-    obj.f2 = ImmutableMap.of("k1", "v1", "k2", "v2");
+    obj.f2 = ofHashMap("k1", "v1", "k2", "v2");
     obj.f3 = obj.f2;
     return obj;
   }
@@ -279,7 +279,6 @@ public class ReferenceExample {
     byte[] bytes = fury.serialize(createObject());
     // bytes can be data serialized by other languages.
     System.out.println(fury.deserialize(bytes));
-    ;
   }
 }
 `,paraId:20,tocIndex:3},{value:"Python",paraId:21,tocIndex:3},{value:`from typing import Dict
@@ -338,7 +337,7 @@ public class ZeroCopyExample {
   // mvn exec:java -Dexec.mainClass="io.ray.fury.examples.ZeroCopyExample"
   public static void main(String[] args) {
     Fury fury = Fury.builder().withLanguage(Language.XLANG).build();
-    List<Object> list = Arrays.asList("str", new byte[1000], new int[100], new double[100]);
+    List<Object> list = ofArrayList("str", new byte[1000], new int[100], new double[100]);
     Collection<BufferObject> bufferObjects = new ArrayList<>();
     byte[] bytes = fury.serialize(list, e -> !bufferObjects.add(e));
     // bytes can be data serialized by other languages.
