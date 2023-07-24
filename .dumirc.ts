@@ -151,7 +151,7 @@ export default defineConfig({
           en: 'Multi-languages',
         },
         description: {
-          en: 'Supports mainstream programming languages, including Java/Python/C++/Golang/Javascript, and more languages will be added in the future',
+          en: 'Supports mainstream programming languages, including Java/Python/C++/Golang/Javascript/Rust, and more languages will be added in the future',
         }
       },
     ],

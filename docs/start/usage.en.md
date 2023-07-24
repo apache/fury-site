@@ -2,7 +2,9 @@
 title: Usage
 order: 1
 ---
+
 ## Java Serialization
+
 ```java
 import java.util.List;
 import java.util.Arrays;
@@ -11,7 +13,7 @@ import io.fury.*;
 public class Example {
   public static void main(String[] args) {
     SomeClass object = new SomeClass();
-    // Note that Fury instances should be reused between 
+    // Note that Fury instances should be reused between
     // multiple serializations of different objects.
     Fury fury = Fury.builder().withLanguage(Language.JAVA)
       // Allow to deserialize objects unknown types,
@@ -28,6 +30,7 @@ public class Example {
 ```
 
 ## CrossLanguage Serialization
+
 ### Java
 
 ```java
@@ -139,4 +142,46 @@ const { serialize, deserialize } = fury.registerSerializer(description);
 const input = serialize({ foo: 'hello fury' });
 const result = deserialize(input);
 console.log(result);
+```
+
+### Rust
+
+```rust
+use fury::{from_buffer, to_buffer};
+use fury_derive::{Deserialize, FuryMeta, Serialize};
+
+#[derive(FuryMeta, Deserialize, Serialize, Debug, PartialEq)]
+#[tag("example.foo")]
+struct Animal {
+    name: String,
+    category: String,
+}
+
+#[derive(FuryMeta, Deserialize, Serialize, Debug, PartialEq)]
+#[tag("example.bar")]
+struct Person {
+    name: String,
+    age: u32,
+    pets: Vec<Animal>,
+}
+
+fn main() {
+    let penson = Person {
+        name: "hello".to_string(),
+        age: 12,
+        pets: vec![
+            Animal {
+                name: "world1".to_string(),
+                category: "cat".to_string(),
+            },
+            Animal {
+                name: "world2".to_string(),
+                category: "dog".to_string(),
+            },
+        ],
+    };
+    let bin = to_buffer(&penson);
+    let obj: Person = from_buffer(&bin).expect("should success");
+    assert_eq!(obj, penson);
+}
 ```

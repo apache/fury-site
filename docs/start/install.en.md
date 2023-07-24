@@ -34,6 +34,7 @@ Nightly snapshot:
 ```
 
 Release version:
+
 ```xml
 <dependency>
   <groupId>org.furyio</groupId>
@@ -66,4 +67,16 @@ Coming soon.
 
 ```bash
 npm install @furyjs/fury
+```
+
+### Rust
+
+```bash
+# Cargo.toml
+
+[dependencies]
+fury = { git= "https://github.com/alipay/fury.git", branch = "main" }
+fury_derive = { git= "https://github.com/alipay/fury.git", branch = "main" }
+lazy_static = { version = "1.4.0" }
+
 ```

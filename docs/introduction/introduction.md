@@ -4,6 +4,7 @@ order: 0
 ---
 
 Fury is a blazing fast multi-language serialization framework powered by jit(just-in-time compilation) and zero-copy.
+
 ## Protocols
 
 Different scenarios have different serialization requirements. Fury designed and implemented
@@ -48,7 +49,7 @@ If your environment is **secure**, you can disable the secure mode for more dyna
 ## RoadMap
 
 - Meta compression, auto meta sharing and cross-language schema compatibility.
-- AOT Framework for c++/golang/rust to generate code statically.
+- AOT Framework for c++/golang to generate code statically.
 - C++/Rust object graph serialization support
 - Golang/Rust/NodeJS row format support
 - ProtoBuffer compatibility support
