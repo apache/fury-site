@@ -1,9 +1,5 @@
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  VerticalAlignTopOutlined,
-} from '@ant-design/icons';
-import { Affix, BackTop, Layout, Menu } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Affix, Layout, Menu } from 'antd';
 import { useFullSidebarData, useLocale, useRouteMeta, useSiteData } from 'dumi';
 import Drawer from 'rc-drawer';
 import React, { useEffect, useState } from 'react';
@@ -189,7 +185,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     getPreAndNext();
   }, [defaultSelectedKey]);
 
-
   function getPreAndNext() {
     const menuNodes = document.querySelectorAll('aside .ant-menu-item');
     const currentMenuNode = document.querySelector(
@@ -242,6 +237,15 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     />
   );
 
+  if (window.location.pathname.startsWith('/blog')) {
+    return (
+      <Layout.Content className={styles.content}>
+        <div className={styles.main} style={{ maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto', marginTop: '50px'}}>
+          <div className={styles.markdown}>{children}</div>
+        </div>
+      </Layout.Content>
+    );
+  }
   return (
     <>
       <Layout style={{ background: '#fff' }} hasSider className={styles.layout}>
