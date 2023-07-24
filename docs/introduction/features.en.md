@@ -3,8 +3,7 @@ title: Features
 order: 2
 ---
 
-
-- Multiple languages: Java/Python/C++/Golang/Javascript.
+- Multiple languages: Java/Python/C++/Golang/Javascript/Rust.
 - Zero-copy: cross-language out-of-band serialization inspired
   by [pickle5](https://peps.python.org/pep-0574/) and off-heap read/write.
 - High performance: A highly-extensible JIT framework to generate serializer code at runtime in an async multi-thread way to speed serialization, providing 20-170x speed up by:
