@@ -1,10 +1,9 @@
 # Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy
 
-Auther: [chaokunyang](https://github.com/chaokunyang)
+Author: [chaokunyang](https://github.com/chaokunyang)
 
-> Fury is a multi-language serialization framework powered by JIT dynamic compilation and zero copy. It supports
-> Java/Python/Golang/JavaScript/Rust/C++, provide automatic multi-language objects serialization features, and 170x
-> speedup compared to JDK serialization.
+> Fury is a blazing fast **multi-language serialization** framework powered by **jit(just-in-time compilation) and zero-copy**, providing up to 170x performance and ultimate ease of use.
+
 
 The GitHub address of fury repository is: https://github.com/alipay/fury
 
@@ -12,8 +11,8 @@ The GitHub address of fury repository is: https://github.com/alipay/fury
 
 # Background
 
-Serialization is basic components of system communication, and is widly used in big data, AI framework, cloud native and
-other distributed systems. When the object needs cto being transfered between processes/languages/nodes, or needs
+Serialization is basic components of system communication, and is widely used in big data, AI framework, cloud native and
+other distributed systems. When the object needs to be transferred between processes/languages/nodes, or needs
 persistence, state read/write, copy, they all need serialization. Its performance and ease-of-use affect runtime and
 development efficiency.
 
@@ -26,7 +25,7 @@ low latency, and large-scale data transmission scenarios.
 Therefore, we developed a new multi-language serialization framework [Fury](https://github.com/alipay/fury), which is
 now open-sourced on [Github](https://github.com/alipay/fury). Through highly optimized serialization primitives,
 combined with JIT dynamic compilation and Zero-Copy technologies, Fury meets the requirements of performance,
-functionality, and ease-of-use simultaneously, achives automatic cross-language serialization of any object and provides
+functionality, and ease-of-use simultaneously, archives automatic cross-language serialization of any object and provides
 ultimate performance.
 
 <p>
@@ -48,8 +47,8 @@ fast speed and usability:
 - Multi protocols Support: providing flexibility and ease-of-use of dynamic serialization, as well as the cross-language
   capability of static serialization.
   - Java Serialization:
-    - Drop-in replace `JDK/Kryo/Hessian`, no need to modify user code, but proviing 170x speed up as most, which can
-      improve efficiency of rpc, data transfer and object persistence extensively.
+    - Drop-in replaces `JDK/Kryo/Hessian`, no need to modify user code, but providing 170x speed up at most, which can
+      improve efficiency of rpc, data transfer and object persistence significantly.
     - 100% JDK compatible, support JDK custom serialization
       methods `writeObject/readObject/writeReplace/readResolve/readObjectNoData` natively.
   - Cross-language object graph:
@@ -64,7 +63,7 @@ fast speed and usability:
 
 # Core Serialization Capabilities
 
-Although different scenarios require different serialization framework, the underlying operations of serialization are
+Although different scenarios require different serialization frameworks, the underlying operations of serialization are
 similar. Therefore, Fury defines and implements a set of basic serialization capabilities, which can quickly build
 different multi-language serialization protocols and optimize them for high performance through compilation acceleration
 and other optimization techniques. At the same time, performance optimization for a protocol on the basic capabilities
@@ -83,15 +82,14 @@ Common serialization operations contains:
 - array copy&compression
 - meta encoding&compression&cache
 
-Fury make many optimizations in every languages, combined with SIMD and advanced language features, we make basic
-operations extremely fast for different protocols to use.
+Fury made many optimizations in every language, combined with SIMD and advanced language features, we made basic operations extremely fast for different protocols to use.
 
 ## Zero-Copy Serialization
 
-In large-scale data transmission scenarios, an object graph often has multiple binary buffer. During serialization, the
+In large-scale data transmission scenarios, an object graph often has multiple binary buffers. During serialization, the
 serialization framework writes the data into an intermediate buffer and introduces multiple time-consuming memory
 copies. Fury implemented a Out-Of-Band serialization protocol inspired by pickle5, ray and arrow, which can directly
-capture all binary buffer in an object graph to avoid intermediate copies of these buffers, thus avoid the memory copy
+capture all binary buffers in an object graph to avoid intermediate copies of these buffers, thus avoiding the memory copy
 overhead during serialization.
 
 The following figure shows the general serialization process of Zero-Copy when Fury turns off reference support.
@@ -125,9 +123,7 @@ small methods recursively, thus ensuring that all code can be compiled and inlin
 
 <img alt="fury java codegen" src="/fury_java_codegen.png">
 
-Fury also supports asynchronous multi-thread dynamic compilation, submit the code generation tasks of different
-serializers to a thread pool for execution, and use interpretation mode to ensure that no serialization burrs occur. You
-do not need to warm up all types of serialization in advance.
+Fury also supports asynchronous multithreaded dynamic compilation by submitting the code generation tasks of different serializers to a thread pool, and using interpretation mode until JIT finishes to ensure that no serialization burrs occur. Users don’t need to warm up serialization of objects in advance.
 
 In Python and JavaScript scenarios, similar code generation methods are used. This method has a low development
 threshold and is easier to troubleshoot problems.
@@ -140,18 +136,16 @@ generation framework and serializer construction logic for every language.
 ## Static code generation
 
 Although JIT compilation can greatly improve serialization efficiency and generate better serialization code according
-to the statistical distribution of data at runtime, languages such as C ++/Rust do not support reflection, no virtual
+to the statistical distribution of data at runtime, languages such as C ++ do not support reflection, no virtual
 machines, and no low-level API for memory models. Therefore, we cannot dynamically compile serialization code for such
 languages through JIT.
 
 In this scenario, Fury is implementing an AOT static code generation framework. During compilation, the serialized code
 is generated in advance according to the object schema, and then objects can be serialized automatically using the
-generated serializer. For Rust, Rust macro will be used in the future to generates code for better usability.
+generated serializer. For Rust, Rust macro is used to generate code statically.
 
 ## Cache optimization
-
-When serializing custom type, fury will reorder fields to ensure that fields of the same interface type are serialized
-in order. This can promote cache hit probability, and also promoted CPU instruction cache.
+When serializing a custom type, fury will reorder fields to ensure that fields of the same interface type are serialized in order. This can promote cache hit probability, and also promote CPU instruction cache.
 
 The basic type fields are written in descending order by byte size. In this way, if the initial addresses are aligned,
 subsequent read and write operations will occur at the position where the memory addresses are aligned, making CPU
@@ -187,7 +181,7 @@ capabilities:
   problems in these scenarios.
 - Type compatibility: When the deserialization and serialization Class Schema are inconsistent, it can still be
   deserialized correctly. It supports independent application upgrade and deployment, add or delete fields
-  independently. We made much optimization, the type compatible mode has no performance loss compared type consistent
+  independently. We made much optimization, the type compatible mode has no performance loss compared to type consistent
   mode.
 - Metadata sharing : under a certain context (TCP connection) share metadata among multiple serializations (Class name,
   field name, Final field type information, etc.), this information will be sent to the peer during the first
@@ -205,12 +199,12 @@ limitations:
 - They require pre-defined IDLs and generate code statically ahead, lacking sufficient dynamics and flexibility;
 - The generated classes don't conform to object-oriented design and it's impossible to add behavior to classes, which
   make them unsuitable for use as domain objects in cross-language application development.
-- They don't support polymorphism serialization. Object-oriented programming uses interface to invoke subclass methods,
+- They don't support polymorphism serialization. Object-oriented programming uses interfaces to invoke subclass methods,
   but this pattern isn't supported well in those frameworks. Although Flatbuffers offers `Union`, and Protobuf
   provides `OneOf/Any` features, these features require check object type during serialization and deserialization,
   which isn't polymorphic.
 - They don't support circular references and shared references. For such cases, users need to define a set of IDLs for
-  domain objects and implementing reference resolution by themselves, as well as writing code to convert between domain
+  domain objects and implement reference resolution by themselves, as well as writing code to convert between domain
   objects and protocol objects in each language. If the object graph depth is deep, more code needs to be written.
 
 Considering the above limitations, Fury implemented a cross-language object graph serialization protocol that:
@@ -221,7 +215,7 @@ Considering the above limitations, Fury implemented a cross-language object grap
 - Automatically serializes shared and circular references across multiple languages.
 - Supports object type polymorphism, consistent with the object-oriented programming paradigm, and multiple subtypes can
   be automatically deserialized without manual intervention.
-- Additionally, Out of band zero-copy is also supported in this protocol.
+- Out-of-band zero-copy is also supported in this protocol.
 
 Example of Automatic Cross-Language Serialization:
 <img alt="xlang serialization example" src="/xlang_serialization_example.png">
@@ -239,7 +233,7 @@ naturally stored in row structures, and row format is also used in columnar comp
 updates, Hash/Join/Aggregation operations.
 
 However, there is no standardized implementation for row format. Computing engines such as Spark/Flink/Doris/Velox all
-defined their row format, which doesn't support cross-language and can only be used internally bny themselves. Although
+defined their row format, which doesn't support cross-language and can only be used internally by themselves. Although
 Flatbuffers supports on-demand deserialization, it requires static compilation of Schema IDL and management of offset,
 which cannot meet the dynamics and ease-of-use requirements of complex scenarios.
 
@@ -280,17 +274,13 @@ between serialization and deserialization. For fairness, Fury disabled the zero-
 - AOT Framework for c++/golang/rust to generate code statically.
 - C++/Rust object graph serialization support
 - Golang/Rust/NodeJS row format support
-- ProtoBuffer compatibility support
+- ProtoBuf compatibility support
 - Protocols for features and knowledge graph serialization
 - Continuously improve our serialization infrastructure for any new protocols
 
 # Join US
 
-We are committed to building Fury into an open and neutral community project that pursue perfection and innovation,
-subsequent development and discussion will be in an open source and transparent manner in the community. Any form of
-participation are welcome, including but not limited to question, code contributions, technical discussions, etc. We are
-looking forward to receiving your ideas and feedback, participating in the construction of the project together, pushing
-the project forward and creating the more advanced serialization framework.
+We are committed to building Fury into an open and neutral community project that pursues passion and innovation, subsequent development and discussion will be in an open source and transparent manner in the community. Any form of participation is welcome, including but not limited to questions, code contributions, technical discussions, etc. We are looking forward to receiving your ideas and feedback, participating in the construction of the project together, pushing the project forward and creating the more advanced serialization framework.
 
 The GitHub address of the fury repository is:
 https://github.com/alipay/fury
@@ -306,4 +296,4 @@ You are also welcome to join the following official communication group to commu
 | [GitHub Issues](https://github.com/alipay/fury/issues)                                              | For reporting bugs and filing feature requests.                              | < 1 days                |
 | [Slack](https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)    | For collaborating with other Fury users and latest announcements about Fury. | < 2 days                |
 | [StackOverflow](https://stackoverflow.com/questions/tagged/fury)                                    | For asking questions about how to use Fury.                                  | < 2 days                |
-| [Twitter](https://twitter.com/fury_community) [Youtube](https://www.youtube.com/@FurySerialization) | Follow us for latest announcements about Fury.                               | < 2 days                |
+| [Twitter](https://twitter.com/fury_community) [Youtube](https://www.youtube.com/@FurySerialization) | Follow us for the latest announcements about Fury.                           | < 2 days                |
