@@ -43,7 +43,7 @@ export default () => {
     .filter(nav => nav.slug && nav.slug.startsWith('docs/'))
     .map(nav => nav.slug && nav.slug.split('/').find(item => item !== 'docs'));
 
-  if (docsRoutes.some(route => p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`))) {
+    if (docsRoutes.some(route => p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`))) {
     return <Manual>{outlet}</Manual>
   }
 

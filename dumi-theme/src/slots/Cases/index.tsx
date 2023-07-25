@@ -46,9 +46,9 @@ export const Cases: React.FC<CasesProps> = ({
       const linkDiv = (
         <div
           className={styles.detailWrapper}
-          style={{ display: app.link ? 'block' : 'none' }}
+          style={{ display: app.link[lang] ? 'block' : 'none' }}
         >
-          {app.link && app.link.startsWith('http') ? (
+          {app.link[lang] && app.link[lang].startsWith('http') ? (
             <a
               className={styles.detail}
               href={app.link}

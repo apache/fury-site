@@ -86,7 +86,10 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
    *  /api/xxx -->  /api
    *  /en/api  -->  /en/api
    */
-  const baseRoute = getBaseRoute();
+  let baseRoute =  getBaseRoute();
+  if (currentLocale === 'zh') {
+    baseRoute = '/zh' + baseRoute;
+  }
   // 获取最终的 MenuData
   const renderSidebar = getMenuData(sidebar, docs, baseRoute, []);
 

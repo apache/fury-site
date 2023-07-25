@@ -33,6 +33,7 @@ export type HeaderProps = {
   subTitleHref?: string;
   /** 文档和演示的菜单数据 */
   navs?: INav[];
+  navsCn?: INav[];
   /** 是否显示搜索框 */
   showSearch?: boolean;
   /** 是否显示 Github 图标 */
@@ -93,6 +94,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   subTitleHref,
   pathPrefix = '',
   navs = [],
+  navsCn = [],
   showSearch = true,
   showGithubCorner = true,
   showLanguageSwitcher = true,
@@ -193,7 +195,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
         size(navs) ?
-        <Navs navs={navs} path={window.location.pathname} /> : null
+        <Navs navs={ locale.id === 'en' ? navs : navsCn } path={window.location.pathname} /> : null
       }
 
       {
@@ -362,7 +364,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const {
     title, siteUrl, githubUrl, subTitleHref, internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, defaultLanguage,
-    version, versions, ecosystems, navs, docsearchOptions
+    version, versions, ecosystems, navs, docsearchOptions, navsCn,
   } = themeConfig;
   const searchOptions = {
     docsearchOptions
@@ -382,7 +384,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     siteUrl,
     internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, defaultLanguage,
-    version, versions, ecosystems, navs, searchOptions,
+    version, versions, ecosystems, navs, searchOptions, navsCn,
     isHomePage,
     transparent: isHomePage,
   }

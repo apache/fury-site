@@ -47,26 +47,26 @@ Fury是一个基于**JIT动态编译**和**零拷贝**的**高性能多语言序
 
 标题包含"compatible"的图表表示支持类型前后兼容。 标题不包含"compatible"的图表表示类型需要强一致，序列化和反序列化端的class的Schema必须保持一致。
 
-`Struct`是一个有 [100 基本类型的字段的类](https://github.com/alipay/fury/tree/main/docs/benchmarks#Struct), `MediaContent`是来自 [jvm-serializers](https://github.com/eishay/jvm-serializers/blob/master/tpc/src/data/media/MediaContent.java)
+`Struct`是一个有 [100 基本类型的字段的类](https://github.com/alipay/fury/tree/main/benchmarks#Struct), `MediaContent`是来自 [jvm-serializers](https://github.com/eishay/jvm-serializers/blob/master/tpc/src/data/media/MediaContent.java)
 的类, `Sample`
 是来自 [kryo benchmark](https://github.com/EsotericSoftware/kryo/blob/master/benchmarks/src/main/java/com/esotericsoftware/kryo/benchmarks/data/Sample.java)
 的类.
 
 <p align="center">
-<img width="24%" alt="" src="docs/benchmarks/compatible/bench_serialize_compatible_STRUCT_to_directBuffer_tps.png">
-<img width="24%" alt="" src="docs/benchmarks/compatible/bench_serialize_compatible_MEDIA_CONTENT_to_array_tps.png">
-<img width="24%" alt="" src="docs/benchmarks/serialization/bench_serialize_MEDIA_CONTENT_to_array_tps.png">
-<img width="24%" alt="" src="docs/benchmarks/serialization/bench_serialize_SAMPLE_to_array_tps.png">
+<img width="24%" alt="" src="/benchmarks/compatible/bench_serialize_compatible_STRUCT_to_directBuffer_tps.png">
+<img width="24%" alt="" src="/benchmarks/compatible/bench_serialize_compatible_MEDIA_CONTENT_to_array_tps.png">
+<img width="24%" alt="" src="/benchmarks/serialization/bench_serialize_MEDIA_CONTENT_to_array_tps.png">
+<img width="24%" alt="" src="/benchmarks/serialization/bench_serialize_SAMPLE_to_array_tps.png">
 </p>
 
 <p align="center">
-<img width="24%" alt="" src="docs/benchmarks/compatible/bench_deserialize_compatible_STRUCT_from_directBuffer_tps.png">
-<img width="24%" alt="" src="docs/benchmarks/compatible/bench_deserialize_compatible_MEDIA_CONTENT_from_array_tps.png">
-<img width="24%" alt="" src="docs/benchmarks/deserialization/bench_deserialize_MEDIA_CONTENT_from_array_tps.png">
-<img width="24%" alt="" src="docs/benchmarks/deserialization/bench_deserialize_SAMPLE_from_array_tps.png">
+<img width="24%" alt="" src="/benchmarks/compatible/bench_deserialize_compatible_STRUCT_from_directBuffer_tps.png">
+<img width="24%" alt="" src="/benchmarks/compatible/bench_deserialize_compatible_MEDIA_CONTENT_from_array_tps.png">
+<img width="24%" alt="" src="/benchmarks/deserialization/bench_deserialize_MEDIA_CONTENT_from_array_tps.png">
+<img width="24%" alt="" src="/benchmarks/deserialization/bench_deserialize_SAMPLE_from_array_tps.png">
 </p>
 
-可以访问 [benchmarks](https://github.com/alipay/fury/tree/main/docs/benchmarks) 查看基准测试环境、代码以及零拷贝和堆外序列化等场景测试结果。
+可以访问 [benchmarks](https://github.com/alipay/fury/tree/main/benchmarks) 查看基准测试环境、代码以及零拷贝和堆外序列化等场景测试结果。
 
 ## 兼容性
 
@@ -114,4 +114,4 @@ Fury提供了一个安全模式并默认开启，该模式只允许反序列化�
 | [Slack](https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)                                                          | 与其它用户交流，了解Fury最新动态                                                                                                                                                                                        | < 2 天                   |
 | [StackOverflow](https://stackoverflow.com/questions/tagged/fury)                                                                                          | 提问如何使用Fury                                                                                                                                                                                                | < 2 天                   |
 | [知乎](https://www.zhihu.com/column/c_1638859452651765760)  [推特](https://twitter.com/fury_community)  [Youtube](https://www.youtube.com/@FurySerialization) | 关注我们，了解Fury最新动态.                                                                                                                                                                                          | < 2 天                   |
-| 微信公众号 / 钉钉群                                                                                                                                               | <div style="text-align:center;"><img src="docs/images/fury_wechat_12.jpg" alt="WeChat Official Account " width="20%"/> <img src="docs/images/fury_dingtalk.png" alt="Dingding Group" width="20%"/> </div> | < 2 天                   |
+| 微信公众号 / 钉钉群                                                                                                                                               | <div style="text-align:center;"><img src="/wechat.jpg" alt="WeChat Official Account " width="20%"/> <img src="/dingtalk.png" alt="dingding Group" width="20%"/> </div> | < 2 天                   |
