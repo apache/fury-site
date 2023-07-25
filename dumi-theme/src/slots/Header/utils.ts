@@ -22,7 +22,7 @@ export function getLangUrl(url: string, lang: string): string {
     uri.path = uri.path.slice(3);
   }
 
-  uri.path = lang === 'en' ? `en/${uri.path}` : uri.path;
+  uri.path = lang === 'zh' ? `zh/` : '';
 
   return uri.toURI();
 }

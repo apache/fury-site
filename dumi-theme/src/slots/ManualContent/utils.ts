@@ -1,7 +1,6 @@
 export function getOpenKeys() {
   const pathname = window.location.pathname
     .replace('/docs/', '/')
-    .replace('/zh/', '/');
   const pathArr = pathname.split('/');
   const openKeys = [];
   for (let i = pathArr.length; i > 0; i--) {
@@ -13,14 +12,10 @@ export function getOpenKeys() {
 
 export function getBaseRoute() {
   let matchRoute = window.location.pathname;
-  // 兼容 zh
-  matchRoute = matchRoute.replace('/zh/', '/');
   // 兼容带有docs的route
-  matchRoute = matchRoute.replace('/docs', '');
+  matchRoute = matchRoute.replace('/docs', '').replace('/zh/', '/').replace('/en/', '/');
   // 查找 baseRoute
-  const reg = window.location.pathname.startsWith('/en')
-    ? /(\/[A-z]*\/?\/[A-z]*)\/?/
-    : /(\/[A-z]*)\/?/;
+  const reg =  /(\/[A-z]*)\/?/
   const mainRoute = matchRoute.match(reg);
   return mainRoute![1];
 }
@@ -56,8 +51,8 @@ export function getNavigateUrl(
   siderbarMenu: any[],
 ) {
   // 兜底 如果 nav 指定有误则自动重定向到 indexDocRoute
-  if (pathname.includes('/docs/') || pathname.includes('/zh/')) {
-    return pathname.replace('/docs/', '/').replace('/zh/', '/');
+  if (pathname.includes('/docs/')) {
+    return pathname.replace('/docs/', '/');
   }
   if (
     siderbarMenu.every((item) => {

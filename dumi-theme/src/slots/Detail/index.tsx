@@ -48,11 +48,11 @@ export const Detail: React.FC<DetailProps> = ({
   const [remoteNews] = useState<NewsProps[]>([
     {
       "type": {
-        "zh": "",
+        "zh": "开源",
         "en": "Open Source"
       },
       "title": {
-        "zh": "",
+        "zh": "GitHub",
         "en": "at GitHub"
       },
       "date": "2023.07.15",

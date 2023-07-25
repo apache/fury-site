@@ -45,7 +45,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         if (nav.slug) {
           href = nav.slug.startsWith('http')
             ? nav.slug
-            : `/${nav.slug}`;
+            : ( locale.id === 'zh' ? `/zh/${nav.slug.replace('docs/', '')}` : `/${nav.slug.replace('docs/', '')}` );
           // 去除 docs  防止二次点击相同 nav 跳转出现04
           className = cx('header-menu-item-active', {
             [styles.activeItem]: getNavCategory(path) === getNavCategory(href)
