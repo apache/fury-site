@@ -14,8 +14,8 @@ export default defineConfig({
     description: 'Blazing Fast Binary Serialization',
     defaultLanguage: 'en',
     siteUrl: {
-      en: 'https://www.furyio.org',
-      zh: 'https://www.furyio.org/zh'
+      en: '/',
+      zh: '/zh'
     },
     showSearch: true,                                                   // 是否显示搜索框
     showGithubCorner: true,                                             // 是否显示头部的 GitHub icon
