@@ -159,7 +159,7 @@ export default defineConfig({
         },
         description: {
           en: 'Compared to other serialization frameworks, there is a 20~170x speed up',
-          zh: '和其他序列号框架相比，实现了20~170倍加速'
+          zh: '和其他序列化框架相比，实现了20~170倍加速'
         },
       },
       {
@@ -210,8 +210,8 @@ export default defineConfig({
           zh: '超强序列化性能'
         },
         description: {
-          en: 'In deserialization scenarios, Fury can achieve a 100x speed up compared to traditional serialization frameworks. If you use Java clusters on a large scale, this will save a lot of computing resources',
-          zh: '在反序列化场景中，相比传统序列号框架Fury能最多提升100倍速度，如果你使用Java集群，可以节省很多计算资源'
+          en: 'In serialization scenarios, Fury can achieve a 100x speed up compared to traditional serialization frameworks. If you use Java clusters on a large scale, this will save a lot of computing resources',
+          zh: '在序列化场景中，相比传统序列化框架Fury能最多提升100倍速度，如果你使用Java集群，可以节省很多计算资源'
         },
         image: '/case1.png',
         link: {
