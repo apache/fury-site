@@ -266,7 +266,7 @@ between serialization and deserialization. For fairness, Fury disabled the zero-
 
 <p>
 <img width="44%" alt="bench_serialize_compatible_MEDIA_CONTENT_to_array_tps" src="/benchmarks/serialization/bench_serialize_compatible_MEDIA_CONTENT_to_array_tps.png">
-<img width="44%" alt="bench_deserialize_compatible_MEDIA_CONTENT_from_array_tps" src="/benchmarks/serialization/bench_deserialize_compatible_MEDIA_CONTENT_from_array_tps.png">
+<img width="44%" alt="bench_deserialize_compatible_MEDIA_CONTENT_from_array_tps" src="/benchmarks/deserialization/bench_deserialize_compatible_MEDIA_CONTENT_from_array_tps.png">
 </p>
 
 <p>
