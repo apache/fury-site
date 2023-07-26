@@ -42,9 +42,9 @@ Static serialization such as row format are secure by nature. But dynamic object
 
 For example, the deserialization may invoke `init` constructor or `equals`/`hashCode` method, if the method body contains malicious code, the system will be at risks.
 
-Fury provides a secure mode option and enabled by default for this protocol, which allows deserializing trusted registered types or built-in types only for security.
+Fury provides a class registration mode option and enabled by default for this protocol, which allows deserializing trusted registered types or built-in types only for security.
 
-If your environment is **secure**, you can disable the secure mode for more dynamics, then the user types are not needed be registered ahead, and can be serialized automatically.
+Fury provides a class registration option and enabled by default for such protocols, which allows only deserializing trusted registered types or built-in types. **Do not disable class registration or class registration checks unless you can ensure your environment is indeed secure**. We are not responsible for security if you disabled the class registration option.
 
 ## RoadMap
 
