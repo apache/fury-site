@@ -3,10 +3,11 @@
 Author: [chaokunyang](https://github.com/chaokunyang)
 
 > Fury is a blazing fast **multi-language serialization** framework powered by **jit(just-in-time compilation) and
-zero-copy**, providing up to 170x performance and ultimate ease of use.
+zero-copy**, providing up to **170x performance** and ultimate **ease of use**.
 
 
 The GitHub address of fury repository is: https://github.com/alipay/fury
+
 
 <img alt="fury banner" src="/fury_banner.png">
 
@@ -21,14 +22,14 @@ The performance and ease-of-use of serialization affects **runtime and developme
 Static serialization frameworks
 like [protobuf](https://github.com/protocolbuffers/protobuf)/[flatbuffers](https://github.com/google/flatbuffers) 
 can't be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly,
-because they **don't support shared reference and polymorphism, and also need to generate code ahead**.
+because they **don't support shared reference and polymorphism**, and also need to **generate code ahead**.
 Dynamic serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics,
 but **don't support cross-language** and suffer significant **performance issues**, 
-which is **unsuitable for high throughput, low latency, and large-scale data transfer** scenarios.
+which is unsuitable for high throughput, low latency, and large-scale data transfer scenarios.
 
 Therefore, we developed a new multi-language serialization framework **[Fury](https://github.com/alipay/fury)**, which is
 now open-sourced on https://github.com/alipay/fury. Through **highly optimized serialization primitives, JIT dynamic ompilation and Zero-Copy** technologies, 
-Fury is both fast and easy to use. It can **cross-language serialize any object automatically and provides ultimate performance** at the same time.
+Fury is both fast and easy to use. It can **cross-language serialize any object automatically** and provides **ultimate performance** at the same time.
 
 <p>
 <img width=44% alt="serialization" src="/case1.png">
@@ -68,7 +69,7 @@ fast speed and ease of use:
 
 Although different scenarios require different serialization protocols, the underlying operations of serialization are
 similar.
-Therefore, Fury defines and implements a set of basic serialization capabilities,
+Therefore, Fury defines and implements **a set of basic serialization capabilities**,
 which can be used for quickly building new multi-language serialization protocols
 and get speedup by jit acceleration and other optimizations.
 At the same time, performance optimization for a protocol on the primitives can also benefit all other protocols.
@@ -92,9 +93,9 @@ Fury use SIMD and other advanced language features to make basic operations extr
 
 Large-scale data transfer often has multiple binary buffers in an object graph. Some serialization frameworks
 will write the binaries into an intermediate buffer and introduce multiple time-consuming memory
-copies. Fury implemented an out-of-band serialization protocol inspired by [pickle5](https://peps.python.org/pep-0574/),
+copies. Fury implemented an **out-of-band serialization protocol** inspired by [pickle5](https://peps.python.org/pep-0574/),
 ray and arrow, which can
-capture all binary buffers in an object graph to avoid intermediate copies of these buffers.
+**capture all binary buffers** in an object graph to avoid intermediate copies of these buffers.
 The following figure shows the serialization process of zero-copy:
 
 <img alt="fury zero copy" src="/fury_zero_copy.jpeg">

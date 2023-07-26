@@ -3,10 +3,11 @@
 Author: [chaokunyang](https://github.com/chaokunyang)
 
 > Fury is a blazing fast **multi-language serialization** framework powered by **jit(just-in-time compilation) and
-zero-copy**, providing up to 170x performance and ultimate ease of use.
+zero-copy**, providing up to **170x performance** and ultimate **ease of use**.
 
 
 The GitHub address of fury repository is: https://github.com/alipay/fury
+
 
 <img alt="fury banner" src="/fury_banner.png">
 
@@ -68,7 +69,7 @@ fast speed and ease of use:
 
 Although different scenarios require different serialization protocols, the underlying operations of serialization are
 similar.
-Therefore, Fury defines and implements a set of basic serialization capabilities,
+Therefore, Fury defines and implements **a set of basic serialization capabilities**,
 which can be used for quickly building new multi-language serialization protocols
 and get speedup by jit acceleration and other optimizations.
 At the same time, performance optimization for a protocol on the primitives can also benefit all other protocols.
@@ -92,9 +93,9 @@ Fury use SIMD and other advanced language features to make basic operations extr
 
 Large-scale data transfer often has multiple binary buffers in an object graph. Some serialization frameworks
 will write the binaries into an intermediate buffer and introduce multiple time-consuming memory
-copies. Fury implemented an out-of-band serialization protocol inspired by [pickle5](https://peps.python.org/pep-0574/),
+copies. Fury implemented an **out-of-band serialization protocol** inspired by [pickle5](https://peps.python.org/pep-0574/),
 ray and arrow, which can
-capture all binary buffers in an object graph to avoid intermediate copies of these buffers.
+**capture all binary buffers** in an object graph to avoid intermediate copies of these buffers.
 The following figure shows the serialization process of zero-copy:
 
 <img alt="fury zero copy" src="/fury_zero_copy.jpeg">
