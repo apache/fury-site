@@ -132,12 +132,12 @@ small methods recursively**, thus ensuring that all code can be compiled and inl
 
 <img alt="fury java codegen" src="/fury_java_codegen.png">
 
-Fury also supports asynchronous multithreaded compilation by running the codegen tasks in a thread pool, and
-using interpretation mode until JIT finishes to ensure no serialization burrs. Users can skip warm up serialization of
-objects.
+Fury also supports **asynchronous multithreaded compilation** by running the codegen tasks in a thread pool, 
+and using interpretation mode until JIT finishes to ensure no serialization burrs. 
+Users can skip warm up serialization of objects.
 
-Python and JavaScript codegen are similar. Generating source code is easier for development and troubleshooting
-problems.
+Python and JavaScript codegen are similar. Generating source code is easier for development 
+and troubleshooting problems.
 
 Since serialization will manipulate objects extensively in each programming language, and the language
 does not expose the low-level API of the memory model, native methods call has a large cost too,
@@ -151,7 +151,7 @@ the statistical distribution of data at runtime, languages like `C++` do not sup
 have no virtual machines, and no low-level API for memory models.
 We cannot generate serialization code dynamically for such languages through JIT.
 
-In such scenarios, Fury is implementing an AOT codegen framework, which generates the serialized code statically
+In such scenarios, Fury is implementing an **AOT codegen framework**, which generates the serialized code statically
 according to the object schema, and objects can be serialized automatically using the
 generated serializer. For Rust, Rust macro is used to generate code statically.
 
@@ -160,7 +160,7 @@ generated serializer. For Rust, Rust macro is used to generate code statically.
 When serializing a custom type, fury will **reorder fields** to ensure that fields of the same type are serialized in
 order. This can hit more data cache and CPU instruction cache.
 
-The basic type fields are written in descending order by byte size. In this way, if the initial addresses are aligned,
+The basic type fields are written **in descending order by byte size**. In this way, if the initial addresses are aligned,
 subsequent read and write operations will occur at the position where the memory addresses are aligned, making CPU
 execution more efficient.
 
@@ -247,15 +247,15 @@ Data in online and streaming computing are naturally stored row by row,
 and row is also used in columnar computing engines when involving data updates, Hash/Join/Aggregation operations.
 
 However, there is no standardized implementation for row format.
-Computing engines such as Spark/Flink/Doris/Velox all defined their row format,
-which doesn't support cross-language and can only be used internally by themselves.
-Although Flatbuffers supports lazy deserialization, it requires static compilation of schema IDL
-and management of offset, which cannot meet the dynamics and ease-of-use requirements of complex scenarios.
+**Computing engines such as Spark/Flink/Doris/Velox all defined their row format,
+which doesn't support cross-language and can only be used internally by themselves**.
+Flatbuffers does support **lazy deserialization**, but it requires static compilation of schema IDL
+and management of offset, which is impossible for complex scenarios.
 
-Therefore, Fury implemented a binary row format inspired
+Therefore, Fury implemented a **binary row format** inspired
 by [Spark Tungsten](https://databricks.com/blog/2015/04/28/project-tungsten-bringing-spark-closer-to-bare-metal.html)
 and [Apache Arrow format](https://arrow.apache.org/docs/format/Columnar.html), which
-allows random access and partial deserialization. Currently, Java/Python/C++ versions have been implemented,
+allows **random access and partial deserialization**. Currently, Java/Python/C++ versions have been implemented,
 allowing direct reading and writing on binary data to avoid all serialization overhead.
 
 <img alt="xlang serialization example" src="/row_format.png">
