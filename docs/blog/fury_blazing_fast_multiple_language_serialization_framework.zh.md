@@ -14,24 +14,22 @@ The GitHub address of fury repository is: https://github.com/alipay/fury
 
 Serialization is a basic component of system communication, and widely used in big data, AI framework, cloud native and
 other distributed systems.
-Data transfer between processes/languages/nodes, or object persistence, state read/write and
-copy all need serialization.
+**Data transfer between processes/languages/nodes, or object persistence, state read/write and
+copy** all need serialization.
 The performance and ease-of-use of serialization affects runtime and development efficiency of the system.
 
 Static serialization frameworks
-like [protobuf](https://github.com/protocolbuffers/protobuf)/[flatbuffers](https://github.com/google/flatbuffers) cannot
-be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly
-because
-they don't support **shared reference and polymorphism**, and also need to generate code ahead.
+like [protobuf](https://github.com/protocolbuffers/protobuf)/[flatbuffers](https://github.com/google/flatbuffers) 
+can't be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly,
+because they don't support **shared reference and polymorphism**, and also need to generate code ahead.
 Dynamic serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics,
-but
-don't support cross-language and suffer significant performance issues, which is unsuitable for high throughput,
-low latency, and large-scale data transfer scenarios.
+but **don't support cross-language** and suffer significant **performance issues**, 
+which is unsuitable for **high throughput, low latency, and large-scale data transfer** scenarios.
 
-Therefore, we developed a new multi-language serialization framework [Fury](https://github.com/alipay/fury), which is
-now open-sourced on https://github.com/alipay/fury. Through highly optimized serialization primitives, JIT dynamic
-compilation and Zero-Copy technologies, Fury is both fast and easy to use. It can cross-language serialize any object
-automatically and provides ultimate performance too.
+Therefore, we developed a new multi-language serialization framework **[Fury](https://github.com/alipay/fury)**, which is
+now open-sourced on https://github.com/alipay/fury. Through **highly optimized serialization primitives, JIT dynamic ompilation and Zero-Copy** technologies, 
+Fury is both fast and easy to use. It can cross-language serialize any object
+automatically and provides ultimate performance at the same time.
 
 <p>
 <img width=44% alt="serialization" src="/case1.png">
@@ -113,7 +111,7 @@ You can also add the new zero copy type based on the Fury interface.
 ## JIT dynamic compilation acceleration
 
 Custom type objects usually contain lots of type information, Fury used this information to generate
-efficient serialization code at runtime, which can move lots of runtime operations into the dynamic compilation
+efficient serialization code at runtime, which can push lots of runtime operations into the dynamic compilation
 stage. By inlining more methods, better code cache, reducing virtual method calls, conditional branches, hash lookup,
 metadata writes, and memory reads/writes, the serialization performance is greatly accelerated.
 
