@@ -16,15 +16,15 @@ Serialization is a basic component of system communication, and widely used in b
 other distributed systems.
 **Data transfer between processes/languages/nodes, or object persistence, state read/write and
 copy** all need serialization.
-The performance and ease-of-use of serialization affects runtime and development efficiency of the system.
+The performance and ease-of-use of serialization affects **runtime and development efficiency** of the system.
 
 Static serialization frameworks
 like [protobuf](https://github.com/protocolbuffers/protobuf)/[flatbuffers](https://github.com/google/flatbuffers) 
 can't be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly,
-because they don't support **shared reference and polymorphism**, and also need to generate code ahead.
+because they **don't support shared reference and polymorphism, and also need to generate code ahead**.
 Dynamic serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics,
 but **don't support cross-language** and suffer significant **performance issues**, 
-which is unsuitable for **high throughput, low latency, and large-scale data transfer** scenarios.
+which is **unsuitable for high throughput, low latency, and large-scale data transfer** scenarios.
 
 Therefore, we developed a new multi-language serialization framework **[Fury](https://github.com/alipay/fury)**, which is
 now open-sourced on https://github.com/alipay/fury. Through **highly optimized serialization primitives, JIT dynamic ompilation and Zero-Copy** technologies, 
@@ -42,7 +42,7 @@ Fury is a multi-language serialization framework powered by JIT dynamic compilat
 fast speed and ease of use:
 
 - **Multiple languages**: Java/Python/C++/Golang/JavaScript/Rust, other languages can be added easily.
-- Highly optimized **serialization primitives**.
+- **Highly optimized serialization primitives**.
 - **Zero-Copy**: support [out-of-band](https://peps.python.org/pep-0574/) serialization and off-heap read/write.
 - **High performance**: Use JIT(just-in-time) to generate serialization code at runtime in an async multithreaded way,
   which can optimize methods inlining, code cache, dead code elimination, hash lookup, meta writing and memory
