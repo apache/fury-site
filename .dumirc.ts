@@ -83,6 +83,22 @@ export default defineConfig({
         },
         order: 3,
       },
+      {
+        slug: 'docs/guide',
+        title: {
+          zh: 'Guide',
+          en: 'Guide',
+        },
+        order: 4,
+      },
+      {
+        slug: 'docs/blog',
+        title: {
+          zh: '博客',
+          en: 'Blog',
+        },
+        order: 5,
+      },
     ],
     docs: [
       {
