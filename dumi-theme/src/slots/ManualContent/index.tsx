@@ -240,7 +240,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     />
   );
 
-  if (window.location.pathname.startsWith('/blog')) {
+  if (window.location.pathname.startsWith('/blog') || window.location.pathname.startsWith('/zh/blog')) {
     return (
       <Layout.Content className={styles.content}>
         <div className={styles.main} style={{ maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto', marginTop: '50px'}}>
