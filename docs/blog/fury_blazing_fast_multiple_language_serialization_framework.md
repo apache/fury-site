@@ -254,10 +254,10 @@ Therefore, Fury implemented a **binary row format** inspired
 by [Spark Tungsten](https://databricks.com/blog/2015/04/28/project-tungsten-bringing-spark-closer-to-bare-metal.html)
 and [Apache Arrow format](https://arrow.apache.org/docs/format/Columnar.html), which
 allows **random access and partial deserialization**. Currently, Java/Python/C++ versions have been implemented,
-allowing direct reading and writing on binary data to avoid all serialization overhead.
+allowing direct reading and writing on binary data to avoid all serialization overhead, and can convert to arrow format automatically.
 
 <img alt="xlang serialization example" src="/row_format.png">
-This format is densely stored, byte aligned and cache-friendly, which enables faster read and write operations. By avoiding deserialization, it reduces Java GC pressure and Python overhead. Based on Python's dynamics, Fury's data structure implements special methods such as `getattr_/getitem/slice/etc.`, ensuring behavior consistency with Python dataclass/list/object, and users have no perception of this.
+This format is densely stored, byte aligned and cache-friendly, which enables faster read and write operations. By avoiding deserialization, it reduces Java GC pressure and Python overhead. Based on Python's dynamics, Fury's data structure implements special methods such as `getattr_/getitem/slice/etc.`, ensuring behavior consistency with Python dataclass/list/object, users have no perception of this.
 
 # Performance Comparison
 
