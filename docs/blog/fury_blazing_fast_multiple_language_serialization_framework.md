@@ -21,14 +21,14 @@ The performance and ease-of-use of serialization affects **runtime and developme
 Static serialization frameworks
 like [protobuf](https://github.com/protocolbuffers/protobuf)/[flatbuffers](https://github.com/google/flatbuffers) 
 can't be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly,
-because they **don't support shared reference and polymorphism, and also need to generate code ahead**.
+because they **don't support shared reference and polymorphism**, and also need to **generate code ahead**.
 Dynamic serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics,
 but **don't support cross-language** and suffer significant **performance issues**, 
-which is **unsuitable for high throughput, low latency, and large-scale data transfer** scenarios.
+which is unsuitable for high throughput, low latency, and large-scale data transfer scenarios.
 
 Therefore, we developed a new multi-language serialization framework **[Fury](https://github.com/alipay/fury)**, which is
 now open-sourced on https://github.com/alipay/fury. Through **highly optimized serialization primitives, JIT dynamic ompilation and Zero-Copy** technologies, 
-Fury is both fast and easy to use. It can **cross-language serialize any object automatically and provides ultimate performance** at the same time.
+Fury is both fast and easy to use. It can **cross-language serialize any object automatically** and provides **ultimate performance** at the same time.
 
 <p>
 <img width=44% alt="serialization" src="/case1.png">
