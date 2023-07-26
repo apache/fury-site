@@ -28,7 +28,7 @@ but **don't support cross-language** and suffer significant **performance issues
 which is unsuitable for high throughput, low latency, and large-scale data transfer scenarios.
 
 Therefore, we developed a new multi-language serialization framework **[Fury](https://github.com/alipay/fury)**, which is
-now open-sourced on https://github.com/alipay/fury. Through **highly optimized serialization primitives, JIT dynamic ompilation and Zero-Copy** technologies, 
+now open-sourced on https://github.com/alipay/fury. Through **highly optimized serialization primitives, JIT dynamic compilation and Zero-Copy** technologies, 
 Fury is both fast and easy to use. It can **cross-language serialize any object automatically** and provides **ultimate performance** at the same time.
 
 <p>
