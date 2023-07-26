@@ -4,7 +4,7 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy</font>](/blog/blog1_fury_introduction)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy</font>](/blog/fury_blazing_fast_multiple_language_serialization_framework)
 
 <font color="#888888">*15 July 2023*</font>
 
