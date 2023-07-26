@@ -12,17 +12,19 @@ The GitHub address of fury repository is: https://github.com/alipay/fury
 
 # Background
 
-Serialization is basic components of system communication, and is widely used in big data, AI framework, cloud native
-and
-other distributed systems. Data transfer between processes/languages/nodes, or object persistence, state read/write and
-copy all need serialization. The performance and ease-of-use of serialization influence runtime and
-development efficiency.
+Serialization is a basic component of system communication, and widely used in big data, AI framework, cloud native and
+other distributed systems.
+Data transfer between processes/languages/nodes, or object persistence, state read/write and
+copy all need serialization.
+The performance and ease-of-use of serialization affects runtime and development efficiency of the system.
 
 Static serialization frameworks
 like [protobuf](https://github.com/protocolbuffers/protobuf)/[flatbuffers](https://github.com/google/flatbuffers) cannot
-be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly cause
-they don't support object shared reference and polymorphism, and also need to generate code ahead. Dynamic
-serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics, but
+be used for cross-language [application development](https://en.wikipedia.org/wiki/Domain-driven_design) directly
+because
+they don't support **shared reference and polymorphism**, and also need to generate code ahead.
+Dynamic serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics,
+but
 don't support cross-language and suffer significant performance issues, which is unsuitable for high throughput,
 low latency, and large-scale data transfer scenarios.
 
@@ -60,18 +62,19 @@ fast speed and ease of use:
     - Cross-language serialize shared/circular reference, no data duplication or recursion error.
     - Support object polymorphism, multiple children type objects can be serialized simultaneously.
   - **Row format**
-    - A cache-friendly binary random-access format, support skipping deserialization and lazy deserialization, efficient
+    - A cache-friendly binary random-access format, supports skipping deserialization and lazy deserialization,
+      efficient
       for high-performance computing and large-scale data transfer.
     - Support automatic conversion to apache arrow.
 
 # Core Serialization Capabilities
 
-Although different scenarios require different serialization frameworks, the underlying operations of serialization are
-similar. Therefore, Fury defines and implements a set of basic serialization capabilities, which can be used for quickly
-building
-new multi-language serialization protocols and get speedup by jit acceleration
-and other optimization techniques. At the same time, performance optimization for a protocol on the basic capabilities
-can also benefit all other protocols.
+Although different scenarios require different serialization protocols, the underlying operations of serialization are
+similar.
+Therefore, Fury defines and implements a set of basic serialization capabilities,
+which can be used for quickly building new multi-language serialization protocols
+and get speedup by jit acceleration and other optimizations.
+At the same time, performance optimization for a protocol on the primitives can also benefit all other protocols.
 
 ## Serialization Primitives
 
@@ -91,7 +94,7 @@ Fury use SIMD and other advanced language features to make basic operations extr
 ## Zero-Copy Serialization
 
 Large-scale data transfer often has multiple binary buffers in an object graph. Some serialization frameworks
-will write the binaries into an intermediate buffer and introduces multiple time-consuming memory
+will write the binaries into an intermediate buffer and introduce multiple time-consuming memory
 copies. Fury implemented an out-of-band serialization protocol inspired by [pickle5](https://peps.python.org/pep-0574/),
 ray and arrow, which can
 capture all binary buffers in an object graph to avoid intermediate copies of these buffers.
@@ -115,12 +118,14 @@ stage. By inlining more methods, better code cache, reducing virtual method call
 metadata writes, and memory reads/writes, the serialization performance is greatly accelerated.
 
 For Java, Fury implements a **runtime codegen framework** and defines
-an [operator expression IR](https://en.wikipedia.org/wiki/Intermediate_representation). Then fury can performs type
-inference based
-on the generic type information of the object at runtime to build an expression tree that describes the logic of
-serialized code. The codegen framework will generate efficient Java code from the expression tree, then pass
-to [Janino](https://github.com/janino-compiler/janino) to compile it into bytecode, and load it into the user's
-ClassLoader or the ClassLoader created by Fury, and finally compile it into efficient assembly code through Java JIT.
+an [operator expression IR](https://en.wikipedia.org/wiki/Intermediate_representation).
+Then fury can perform type inference based
+on the generic type information of the object at runtime to build an expression tree
+that describes the logic of serialized code.
+The codegen framework will generate efficient Java code from the expression tree, then pass
+to [Janino](https://github.com/janino-compiler/janino) to compile it into bytecode,
+and load it into the user's ClassLoader or the ClassLoader created by Fury,
+and finally compile it into efficient assembly code through Java JIT.
 
 Since JVM JIT skips Big method compilation and inlining, Fury also implements an optimizer to **split big methods into
 small methods recursively**, thus ensuring that all code can be compiled and inlined.
@@ -135,16 +140,16 @@ Python and JavaScript codegen are similar. Generating source code is easier for 
 problems.
 
 Since serialization will manipulate objects extensively in each programming language, and the language
-does not expose the low-level API of the memory model, native methods call has a large cost too, we cannot
-use [LLVM](https://www.llvm.org/) to build a unified serializer JIT framework. Instead, we implemented a codegen
-framework for every language separately.
+does not expose the low-level API of the memory model, native methods call has a large cost too,
+so we cannot use [LLVM](https://www.llvm.org/) to build a unified serializer JIT framework.
+Instead, we implemented a codegen framework for every language separately.
 
 ## Static code generation
 
 Although JIT compilation can greatly improve serialization efficiency and generate better serialization code based on
-the statistical distribution of data at runtime, languages like `C++` do not support reflection, has no virtual
-machines, and no low-level API for memory models. Wwe cannot generate serialization code dynamically for such
-languages through JIT.
+the statistical distribution of data at runtime, languages like `C++` do not support reflection,
+have no virtual machines, and no low-level API for memory models.
+We cannot generate serialization code dynamically for such languages through JIT.
 
 In such scenarios, Fury is implementing an AOT codegen framework, which generates the serialized code statically
 according to the object schema, and objects can be serialized automatically using the
@@ -188,7 +193,7 @@ and improves throughput significantly. Our implementation has the following high
 - **Type compatibility**: When the deserialization and serialization class schema are inconsistent, it can still
   deserialize correctly.
   It supports application upgrade and deployment, add/delete fields independently.
-  Fury type-compatible mode ar implemented that no performance loss compared to type-consistent mode.
+  Fury type-compatible mode is implemented with no performance loss compared to type-consistent mode.
 - **Metadata sharing** : share metadata(class name, field name&type, etc.) across multiple
   serializations under a context (TCP connection),
   meta will be sent to the peer only for the first
@@ -200,7 +205,7 @@ and improves throughput significantly. Our implementation has the following high
 ## Cross-language object graph serialization
 
 Fury cross-language object graph serialization is primarily used for scenarios that require
-higher dynamics and ease-of0use.
+higher dynamics and ease-of-use.
 Although frameworks like Protobuf/Flatbuffers support cross-language serialization, they still have limitations:
 
 - They require **pre-defined IDLs and generate code statically ahead**, lacking sufficient dynamics and flexibility;
@@ -237,7 +242,7 @@ field of an object, deserializing the entire data will result in unnecessary ove
 binary data structure for **direct reading and writing on binary data to avoid serialization**.
 
 [Apache Arrow](https://arrow.apache.org/) is a standardized columnar storage format that supports binary read and write.
-However, **columnar format are not suitable for all scenarios**.
+However, **columnar format is not suitable for all scenarios**.
 Data in online and streaming computing are naturally stored row by row,
 and row is also used in columnar computing engines when involving data updates, Hash/Join/Aggregation operations.
 
