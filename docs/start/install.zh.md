@@ -40,7 +40,7 @@ Nightly快照版本:
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.1.0-alpha.2</version>
+  <version>0.1.0-alpha.3</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
@@ -53,10 +53,9 @@ Nightly快照版本:
 ### Python
 
 ```bash
-# Python whl即将发布，目前需要源码安装
-git clone https://github.com/alipay/fury.git
-cd fury/python
-pip install -v -e .
+# Python正式版将在后续版本提供，
+# 目前需要通过`--pre`来安装预览版
+pip install pyfury --pre
 ```
 
 ### JavaScript

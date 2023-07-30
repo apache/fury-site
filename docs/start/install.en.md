@@ -45,18 +45,17 @@ Release version:
 <!-- <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.1.0-alpha.2</version>
+  <version>0.1.0-alpha.3</version>
 </dependency> -->
 ```
 
 ### Python
 
 ```bash
-# Python whl will be released soon.
-# Currently you need to install from the source.
-git clone https://github.com/alipay/fury.git
-cd fury/python
-pip install -v -e .
+# Python wheel will be released in the future.
+# Currently you need to specify `--pre` to install
+# the unstable version.
+pip install pyfury --pre
 ```
 
 ### Golang
