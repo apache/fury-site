@@ -153,7 +153,7 @@ export default defineConfig({
           },
           link: {
             en: `/start/install`,
-            zh: `zh/start/install`
+            zh: `/zh/start/install`
           },
           type: 'primary',
         },
