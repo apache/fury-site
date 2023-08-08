@@ -4,14 +4,7 @@ Author: [chaokunyang](https://github.com/chaokunyang)
 
 I'm excited to release Fury v0.1.0 . Fury 0.1.0 is our first release since we started the development in github in 2023.04.28, and open sourced in 2023.07.15. 
 
-In this release we have 5 new contributors: 
-- [@rainsonGain](https://github.com/rainsonGain) 
-- [@leeco-cloud](https://github.com/leeco-cloud) 
-- [@tisonkun](https://github.com/tisonkun) 
-- [@hieu-ht](https://github.com/hieu-ht) 
-- [@s31k31](https://github.com/s31k31) 
-
-Thanks for their contributions to fury, looking forward to further cooperation with them.
+In this release we closed 314 issues，412 PRs, and we have 5 new contributors. Thanks for their contributions to fury, looking forward to further cooperation with them.
 
 This release includes many features, see more details on https://github.com/alipay/fury/releases/tag/v0.1.0:
 - Production-ready java serialization: 
@@ -40,6 +33,15 @@ With this release, we take big strides towards our goal of making serialization 
 For details, please refer to the following commit messages.
 
 Note that javascript/rust support is still experimental, please let us know if you have any issues.
+
+## New Contributors
+* @wangweipeng2 made their first contribution in https://github.com/alipay/fury/pull/215
+* @rainsonGain made their first contribution in https://github.com/alipay/fury/pull/429
+* @leeco-cloud made their first contribution in https://github.com/alipay/fury/pull/436
+* @dependabot made their first contribution in https://github.com/alipay/fury/pull/590
+* @tisonkun made their first contribution in https://github.com/alipay/fury/pull/762
+* @hieu-ht made their first contribution in https://github.com/alipay/fury/pull/786
+* @s31k31 made their first contribution in https://github.com/alipay/fury/pull/782
 
 ## What's Changed
 * Create pull_request_template.md by @chaokunyang in https://github.com/alipay/fury/pull/2
@@ -450,14 +452,5 @@ Note that javascript/rust support is still experimental, please let us know if y
 * Update Java Deserialization Blacklist by @s31k31 in https://github.com/alipay/fury/pull/782
 * chore: apply license format by @tisonkun in https://github.com/alipay/fury/pull/783
 * [Java] use soft reference to avoid duplicate codegen by @chaokunyang in https://github.com/alipay/fury/pull/809
-
-## New Contributors
-* @wangweipeng2 made their first contribution in https://github.com/alipay/fury/pull/215
-* @rainsonGain made their first contribution in https://github.com/alipay/fury/pull/429
-* @leeco-cloud made their first contribution in https://github.com/alipay/fury/pull/436
-* @dependabot made their first contribution in https://github.com/alipay/fury/pull/590
-* @tisonkun made their first contribution in https://github.com/alipay/fury/pull/762
-* @hieu-ht made their first contribution in https://github.com/alipay/fury/pull/786
-* @s31k31 made their first contribution in https://github.com/alipay/fury/pull/782
 
 **Full Changelog**: https://github.com/alipay/fury/commits/v0.1.0
