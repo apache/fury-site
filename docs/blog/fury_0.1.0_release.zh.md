@@ -2,35 +2,36 @@
 
 Author: [chaokunyang](https://github.com/chaokunyang)
 
-I'm excited to release Fury v0.1.0 . Fury 0.1.0 is our first release since we started the development in github in 2023.04.28, and open sourced in 2023.07.15. 
+大家好，经过几个月的努力，Fury 0.1.0 版本正式对外发布。这是我们今年四月底正式在 GitHub 开发、7 月 15 号对外开源后发布的第一个版本。这一版本包含了大量特性，欢迎大家使用，希望能提供宝贵的反馈意见。
 
-This release includes many features, see more details on https://github.com/alipay/fury/releases/tag/v0.1.0:
-- Production-ready java serialization: 
-  - Highly optimized Java serialization primives
-  - Runtime codegen framework
-  - Interpreter mode java serialization
-  - JIT accelerated serializer for java serialization
-  - Support async and multi-thread JIT
-  - Support type forward-backward compatibility.
-  - Support meta sharing to send class meta only once.
-  - Support JDK custom serialization on fury natively. 
-  - Out-of-band zero-copy serialization for java
-- Cross language Serialization
-  - Support basic types cross-language between java/python/javascript/rust
-  - Support struct cross-language automatically, no need for IDL definition
-  - Supports shared and circular reference object serialization between java/python/javascript.
-  - Support object polymorphism between java/python/javascript.
-  - Out-of-band zero-copy serialization between java/python
-- Row format
-  - Support row format between java/python/c++.
-  - Support lazy/partial deserialization.
-  - Support convert to arrow format automatically.
+本次发布共处理314个issue，412个PR。新增5名贡献者[@rainsonGain](https://github.com/rainsonGain) [@leeco-cloud](https://github.com/leeco-cloud) [@tisonkun](https://github.com/tisonkun) [@hieu-ht](https://github.com/hieu-ht) [@s31k31](https://github.com/s31k31)，感谢他们对Fury的贡献，期待和他们更进一步的合作。
+
+本次发布核心特性如下，完整发布记录请参考👉 https://github.com/alipay/fury/releases/tag/v0.1.0 :
+- 生产环境可用的 Java 序列化：
+ - 实现了高度优化的 Java 序列化原语；
+ - 实现了 JIT 代码生成框架；
+ - 实现了解释模式 Java 序列化；
+ - 实现了 JIT 模式 Java 序列化；
+ - 支持异步多线程 JIT 编译；
+ - 支持 Java 序列化类型前后兼容；
+ - 实现了元数据共享模式，在同一个上下文的跨多次序列化之间可以只序列化一次元数据；
+ - 原生支持 JDK 自定义序列化方法，用户对象代码无需任何修改即可被 Fury 序列化：writeObject/readObject/writeReplace/readResolve/readObjectNoData；
+ - 支持基于 out-of-band 的零拷贝序列化。
+- 跨语言序列化
+ - 支持了基本类型跨 Java/Python/JavaScript/Rust 序列化；
+ - 支持了跨语言自动序列化自定义类型，不需要用户编写 IDL；
+ - 支持了跨 Java/Python/JavaScript 序列化共享引用和循环引用，没有递归错误和数据重复；
+ - 跨 Java/Python/JavaScript 序列化支持对象多态；
+ - 支持了 Java/Python 之间基于 out-of-band 的零拷贝序列化。
+- 高性能行存格式
+ - Fury Java/Python/C++ 支持了行存格式；
+ - 支持部分反序列化和跳过反序列化按需读取；
+ - 支持了 Java 对象自动跟行存互转；
+ - 支持了 Python 对象自动跟行存互转；
+ - Fury Java/Python/C++ 支持自动跟 arrow 列存互转。
 
 
-With this release, we take big strides towards our goal of making serialization fast, cross-language, unified and open.
-For details, please refer to the following commit messages.
-
-Note that javascript/rust support is still experimental, please let us know if you have any issues.
+注意：JavaScript/Rust 支持仍处于实验性阶段，非常欢迎来自大家的反馈。
 
 ## What's Changed
 * Create pull_request_template.md by @chaokunyang in https://github.com/alipay/fury/pull/2
