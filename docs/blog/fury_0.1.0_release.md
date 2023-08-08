@@ -4,7 +4,7 @@ Author: [chaokunyang](https://github.com/chaokunyang)
 
 I'm excited to release Fury v0.1.0 . Fury 0.1.0 is our first release since we started the development in github in 2023.04.28, and open sourced in 2023.07.15. 
 
-In this release we closed 314 issues，412 PRs, and we have 5 new contributors. Thanks for their contributions to fury, looking forward to further cooperation with them.
+In this release we closed 314 issues, 412 PRs, and we have 5 new contributors. Thanks for their contributions to fury, looking forward to further cooperation with them.
 
 This release includes many features, see more details on https://github.com/alipay/fury/releases/tag/v0.1.0:
 - Production-ready java serialization: 
