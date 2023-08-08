@@ -10,6 +10,7 @@ In this release we have 5 new contributors:
 - [@tisonkun](https://github.com/tisonkun) 
 - [@hieu-ht](https://github.com/hieu-ht) 
 - [@s31k31](https://github.com/s31k31) 
+
 Thanks for their contributions to fury, looking forward to further cooperation with them.
 
 This release includes many features, see more details on https://github.com/alipay/fury/releases/tag/v0.1.0:
