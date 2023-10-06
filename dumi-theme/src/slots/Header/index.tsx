@@ -351,7 +351,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           )}
           {
             showSearch &&
-            <Search {...searchOptions}  />
+            <Search />
           }
         </div>
         <nav className={styles.nav}>

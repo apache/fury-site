@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
-import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi'
+import { FormattedMessage, useLocale, useSiteData } from 'dumi'
+
 import classNames from 'classnames';
 import GitHubButton from 'react-github-button';
 import gh from 'parse-github-url';
@@ -11,6 +12,7 @@ import Notification, { NotificationProps } from './Notification';
 
 import 'video-react/dist/video-react.css';
 import styles from './index.module.less';
+import { Link } from 'react-router-dom';
 
 type BannerButtonShape = 'round' | 'square';
 

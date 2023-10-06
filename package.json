@@ -26,6 +26,9 @@
     "dumi": "^2.2.0",
     "prettier": "^2.7.1"
   },
+  "resolutions": {
+    "umi": "4.0.81"
+  },
   "authors": [],
   "workspaces": [
     "dumi-theme"

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useLocale, useSiteData, FormattedMessage } from 'dumi';
 import { Header } from '../../slots/Header';
-import { Detail } from 'dumi/theme/slots/Detail';
 import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';
 import { Footer } from '../../slots/Footer';
 import size from 'lodash-es/size';
+import { Detail } from '../../slots/Detail';
 
 /**
  * Index 路由下的入口

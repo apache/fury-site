@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Row, Col } from 'antd';
 import cx from 'classnames';
 import FeatureCard from './FeatureCard';
@@ -37,7 +37,7 @@ export const Features: React.FC<FeaturesProps> = ({
 
   // for small screen
   const getDots = () => {
-    const dots: Array<Record<string, any>> = [];
+    const dots: Array<ReactNode> = [];
     const { length } = features;
     const startTop = 45;
     const cardHeight = 350;

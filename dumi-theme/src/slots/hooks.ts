@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import get from 'lodash-es/get';
-import { NavigatorBannerProps } from './ManualContent/NavigatorBanner';
 import { useIntl, useLocale } from 'dumi';
 
 export const useScrollToTop = () => {
@@ -8,8 +7,8 @@ export const useScrollToTop = () => {
 }
 
 
-export const usePrevAndNext = (): NavigatorBannerProps['post'][] => {
-  const [prevAndNext, setPrevAndNext] = useState<NavigatorBannerProps['post'][]>([]);
+export const usePrevAndNext = (): any[] => {
+  const [prevAndNext, setPrevAndNext] = useState<any[]>([]);
   useEffect(() => {
     const menuNodes = document.querySelectorAll('aside .ant-menu-item a');
     const currentMenuNode = document.querySelector(

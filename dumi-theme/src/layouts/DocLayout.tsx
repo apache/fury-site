@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useOutlet, useLocation, useSiteData } from 'dumi';
+import { useSiteData } from 'dumi';
 import { Index } from './entry/Index';
 import { Manual } from './entry/Manual';
 // 用户手动添加自己的
 import '../slots/global';
 
 import '../slots/_.less';
+import { useLocation, useOutlet } from 'react-router-dom';
 
 /**
  * DocuLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
