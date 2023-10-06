@@ -1,7 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import { isEqual, size } from 'lodash-es';
-import { Link, useLocale } from 'dumi';
+import { useLocale } from 'dumi';
+import { Link } from 'react-router-dom';
 import { Dropdown, Menu } from 'antd';
 import { DownOutlined, LinkOutlined } from '@ant-design/icons';
 import { getNavCategory } from './utils';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'dumi'
 import styles from './Notification.module.less';
+import { Link } from 'react-router-dom';
 
 export interface NotificationProps {
   index?: number;

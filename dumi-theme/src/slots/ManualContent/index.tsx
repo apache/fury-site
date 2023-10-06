@@ -232,7 +232,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       selectedKeys={[defaultSelectedKey]}
       openKeys={defaultOpenKeys}
       mode="inline"
-      items={renderSidebar}
+      items={renderSidebar as any}
       inlineIndent={16}
       style={{ height: '100%' }}
       forceSubMenuRender

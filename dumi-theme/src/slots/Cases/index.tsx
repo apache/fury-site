@@ -1,6 +1,6 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import cx from 'classnames';
-import { FormattedMessage, Link, useLocale } from 'dumi';
+import { FormattedMessage, useLocale } from 'dumi';
 import React from 'react';
 import Slider from 'react-slick';
 
@@ -10,6 +10,7 @@ import { ic, icWithLocale } from '../hooks';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import styles from './index.module.less';
+import { Link } from 'react-router-dom';
 
 interface Case {
   logo?: string;
