@@ -24,13 +24,13 @@ Nightly快照版本:
 <dependency>
 <groupId>org.furyio</groupId>
 <artifactId>fury-core</artifactId>
-<version>0.2.0-SNAPSHOT</version>
+<version>0.3.0-SNAPSHOT</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
   </dependency> -->
 ```
 
@@ -40,13 +40,13 @@ Nightly快照版本:
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.1.2</version>
+  <version>0.2.0</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
   </dependency> -->
 ```
 
