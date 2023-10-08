@@ -1579,7 +1579,7 @@ for (int i = 0; i < 10; i++) {
   arrowWriter.write(encoder.toRow(beanA));
 }
 return arrowWriter.finishAsRecordBatch();
-`,paraId:9,tocIndex:3}],gr={},b={title:"Install",toc:"menu",filename:"docs/start/install.en.md",lastUpdated:1695804799e3,order:0,description:"Nightly snapshot:"},te=[{id:"java",depth:3,title:"Java"},{id:"python",depth:3,title:"Python"},{id:"golang",depth:3,title:"Golang"},{id:"javascript",depth:3,title:"JavaScript"},{id:"rust",depth:3,title:"Rust"}],xe=[{value:"Nightly snapshot:",paraId:0,tocIndex:0},{value:`<repositories>
+`,paraId:9,tocIndex:3}],gr={},b={title:"Install",toc:"menu",filename:"docs/start/install.en.md",lastUpdated:1696749142e3,order:0,description:"Nightly snapshot:"},te=[{id:"java",depth:3,title:"Java"},{id:"python",depth:3,title:"Python"},{id:"golang",depth:3,title:"Golang"},{id:"javascript",depth:3,title:"JavaScript"},{id:"rust",depth:3,title:"Rust"}],xe=[{value:"Nightly snapshot:",paraId:0,tocIndex:0},{value:`<repositories>
   <repository>
     <id>sonatype</id>
     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
@@ -1594,24 +1594,24 @@ return arrowWriter.finishAsRecordBatch();
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.3.0-SNAPSHOT</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.3.0-SNAPSHOT</version>
 </dependency> -->
 `,paraId:1,tocIndex:0},{value:"Release version:",paraId:2,tocIndex:0},{value:`<dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.1.2</version>
+  <version>0.2.0</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.1.2</version>
+  <version>0.2.0</version>
 </dependency> -->
 `,paraId:3,tocIndex:0},{value:`# Python wheel will be released in the future.
 # Currently you need to specify \`--pre\` to install
@@ -1625,7 +1625,7 @@ fury = { git= "https://github.com/alipay/fury.git", branch = "main" }
 fury_derive = { git= "https://github.com/alipay/fury.git", branch = "main" }
 lazy_static = { version = "1.4.0" }
 
-`,paraId:7,tocIndex:4}],Oe={},He={title:"\u5B89\u88C5Fury",toc:"menu",filename:"docs/start/install.zh.md",lastUpdated:1695804799e3,order:0,description:"Nightly\u5FEB\u7167\u7248\u672C:"},Ue=[{id:"java",depth:3,title:"Java"},{id:"python",depth:3,title:"Python"},{id:"javascript",depth:3,title:"JavaScript"},{id:"golang",depth:3,title:"Golang"},{id:"javascript-1",depth:3,title:"JavaScript"},{id:"rust",depth:3,title:"Rust"}],Ee=[{value:"Nightly\u5FEB\u7167\u7248\u672C:",paraId:0,tocIndex:0},{value:`<repositories>
+`,paraId:7,tocIndex:4}],Oe={},He={title:"\u5B89\u88C5Fury",toc:"menu",filename:"docs/start/install.zh.md",lastUpdated:1696749142e3,order:0,description:"Nightly\u5FEB\u7167\u7248\u672C:"},Ue=[{id:"java",depth:3,title:"Java"},{id:"python",depth:3,title:"Python"},{id:"javascript",depth:3,title:"JavaScript"},{id:"golang",depth:3,title:"Golang"},{id:"javascript-1",depth:3,title:"JavaScript"},{id:"rust",depth:3,title:"Rust"}],Ee=[{value:"Nightly\u5FEB\u7167\u7248\u672C:",paraId:0,tocIndex:0},{value:`<repositories>
   <repository>
     <id>sonatype</id>
     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
@@ -1640,24 +1640,24 @@ lazy_static = { version = "1.4.0" }
 <dependency>
 <groupId>org.furyio</groupId>
 <artifactId>fury-core</artifactId>
-<version>0.2.0-SNAPSHOT</version>
+<version>0.3.0-SNAPSHOT</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
   </dependency> -->
 `,paraId:1,tocIndex:0},{value:"\u6B63\u5F0F\u7248\u672C:",paraId:2,tocIndex:0},{value:`<dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.1.2</version>
+  <version>0.2.0</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
   </dependency> -->
 `,paraId:3,tocIndex:0},{value:`# Python\u6B63\u5F0F\u7248\u5C06\u5728\u540E\u7EED\u7248\u672C\u63D0\u4F9B\uFF0C
 # \u76EE\u524D\u9700\u8981\u901A\u8FC7\`--pre\`\u6765\u5B89\u88C5\u9884\u89C8\u7248
