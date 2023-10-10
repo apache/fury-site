@@ -4,6 +4,13 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_0_release)
+
+<font color="#888888">*01 Sep 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+很高兴向大家宣布Fury 0.1.1的发布，`0.1.1`是我们的第二个发布版本. 该版本支持自定义序列化安全检查策略，提供了比类型注册检查更灵活的行为。同时跟Dubbo进行了集成，支持在Dubbo rpc框架当中使用fury：[fury integration](https://github.com/fury-project/dubbo-serialization-fury/releases/tag/v0.1.1). 除此之外一些小的优化和bugfix也包含在这个发布里面.
+</font>
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.0 正式发布</font>](/blog/fury_0_1_0_release)
 
 <font color="#888888">*31 July 2023*</font>
