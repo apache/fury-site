@@ -4,8 +4,15 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_2_release)
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_0_release)
+<font color="#888888">*27 Sep 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+I'm pleased to announce the 0.1.2 release of the Fury. Fury 0.1.2 is our thrid release which made some improvements on v0.1.0. This version skipped `toString` in annotation invocation handler `readObject`, and uses `cloudpickle` for local function serialization. 
+</font>
+
+
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_1_release)
 
 <font color="#888888">*01 Sep 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">

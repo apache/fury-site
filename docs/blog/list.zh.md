@@ -4,7 +4,15 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_0_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.2 Release</font>](/blog/fury_0_1_2_release)
+
+<font color="#888888">*27 Sep 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+很高兴向大家宣布Fury 0.1.2的发布，`0.1.2`是我们的第3个发布版本。该版本避免了JDK注解处理器反序列化方法`readObject`的调用`toString`的问题，同时使用`cloudpickle`进行局部函数序列化。
+</font>
+
+
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_1_release)
 
 <font color="#888888">*01 Sep 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
