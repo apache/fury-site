@@ -8,7 +8,7 @@ order: -1
 
 <font color="#888888">*09 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
-很高兴向大家宣布Fury 0.2.0的发布，`0.2.0`是一个非常重量级的版本，该版本性能提升一倍，序列化体积减少30%~50%，目前性能是Java序列化排行榜[JVM-Serializers](https://github.com/eishay/jvm-serializers/wiki)第一。同时我们全面支持了JDK17/21，支持了JDK17+ record JIT序列化，JDK9+ ImmutableList的JIT序列化, 具备极致的性能，并保持了JDK8~21跨版本之间的兼容性。同时该版本我们开源了Fury GoLang序列化框架，该框架是业界第一个支持循环引用和接口多态的golang序列化框架，欢迎使用。
+很高兴向大家宣布Fury 0.2.0的发布，`0.2.0`是一个非常重量级的版本，该版本性能提升一倍，序列化体积减少`30%~50%`，目前性能是Java序列化排行榜[JVM-Serializers](https://github.com/eishay/jvm-serializers/wiki)第一。同时我们全面支持了JDK17/21，支持了JDK17+ record JIT序列化，JDK9+ ImmutableList的JIT序列化, 具备极致的性能，并保持了JDK8~21跨版本之间的兼容性。同时该版本我们开源了Fury GoLang序列化框架，该框架是业界第一个支持循环引用和接口多态的golang序列化框架，欢迎使用。
 
 </font>
 
