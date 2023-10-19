@@ -2,7 +2,15 @@
 
 Author: [chaokunyang](https://github.com/chaokunyang)
 
-I'm pleased to announce the 0.2.1 release of the Fury. This version provides beter jdk17+ record support and bettern jit for private classes. Feel free to try it out and let me know if you have any issues.
+很高兴向大家发布FURY 0.2.1版本，本次发布提供了更加完善的JDK17+ record JIT支持，以及针对 private class 更好的JIT支持，欢迎使用
+
+## Highlight
+* [Go] Support tiny go compilation
+* [Java] Support private JDK17+ record class JIT serialization
+
+## Bug fix
+* Fix jit error for register private serializers
+* Upgrade janino version to fix package name conflict with classname 
 
 ## What's Changed
 * [Doc] Update JDK support doc  by @chaokunyang in https://github.com/alipay/fury/pull/992
