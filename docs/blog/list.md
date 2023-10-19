@@ -4,14 +4,14 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0.2.1_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0_2_1_release)
 
 <font color="#888888">*19 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
 I'm pleased to announce the 0.2.1 release of the Fury. This version provides beter jdk17+ record support and bettern jit for private classes.
 </font>
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Released</font>](/blog/fury_0.2.1_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Released</font>](/blog/fury_0_2_0_release)
 
 <font color="#888888">*09 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
