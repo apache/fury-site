@@ -4,11 +4,18 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Released</font>](/blog/fury_0_2_0_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0.2.1_release)
+
+<font color="#888888">*19 Oct 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+I'm pleased to announce the 0.2.1 release of the Fury. This version provides beter jdk17+ record support and bettern jit for private classes.
+</font>
+
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Released</font>](/blog/fury_0.2.1_release)
 
 <font color="#888888">*09 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
-I'm so excited to announce the 0.1.2 release of the Fury. This a very exciting version of fury. With this version, we have 1X speedup, `30%~50%` smaller serialized size. And now we are the fastest serialization framework in the [JVM-Serializers](https://github.com/eishay/jvm-serializers/wiki). At the same time, fury has fully support for JDK17/21, I supported JDK17+ record JIT serialization, JDK9+ ImmutableList JIT serialization. The serialization is blazing fast, please try it out. And we also open sourced Fury GO, the first golang serialization framework which supports circular reference and interface polymorphismm, feel free to try it out and let me know if you have any issues.
+I'm so excited to announce the 0.2.0 release of the Fury. This a very exciting version of fury. With this version, we have 1X speedup, `30%~50%` smaller serialized size. And now we are the fastest serialization framework in the [JVM-Serializers](https://github.com/eishay/jvm-serializers/wiki). At the same time, fury has fully support for JDK17/21, I supported JDK17+ record JIT serialization, JDK9+ ImmutableList JIT serialization. The serialization is blazing fast, please try it out. And we also open sourced Fury GO, the first golang serialization framework which supports circular reference and interface polymorphismm, feel free to try it out and let me know if you have any issues.
 </font>
 
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.2 Released</font>](/blog/fury_0_1_2_release)

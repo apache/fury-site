@@ -4,6 +4,13 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0_2_0_release)
+
+<font color="#888888">*19 Oct 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+很高兴向大家发布FURY 0.2.1版本，本次发布提供了更加完善的JDK17+ record JIT支持，以及针对 private class 更好的JIT支持
+</font>
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Release</font>](/blog/fury_0_2_0_release)
 
 <font color="#888888">*09 Oct 2023*</font>
