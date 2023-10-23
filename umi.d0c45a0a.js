@@ -1116,7 +1116,7 @@ func main() {
 	fmt.Println(newList)
 }
 `,paraId:32,tocIndex:4},{value:"JavaScript",paraId:33,tocIndex:4},{value:`// Coming soon
-`,paraId:34,tocIndex:4}],H={},G={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/java_object_graph_guide.md",lastUpdated:1696849863e3,order:0,description:`When only java object serialization needed, this mode will have better performance compared to cross-language object
+`,paraId:34,tocIndex:4}],H={},G={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/java_object_graph_guide.md",lastUpdated:1698066819e3,order:0,description:`When only java object serialization needed, this mode will have better performance compared to cross-language object
 graph serialization.`},Z=[{id:"java-object-graph-serialization",depth:1,title:"Java object graph serialization"},{id:"quick-start",depth:2,title:"Quick Start"},{id:"advanced-usage",depth:2,title:"Advanced Usage"},{id:"fury-creation",depth:3,title:"Fury creation"},{id:"smaller-size",depth:3,title:"Smaller size"},{id:"implement-a-customized-serializer",depth:3,title:"Implement a customized serializer"},{id:"security--class-registration",depth:3,title:"Security & Class Registration"},{id:"serializer-registration",depth:3,title:"Serializer Registration"},{id:"zero-copy-serialization",depth:3,title:"Zero-Copy Serialization"},{id:"meta-sharing",depth:3,title:"Meta Sharing"},{id:"deserialize-un-exited-classes",depth:3,title:"Deserialize un-exited classes."},{id:"migration",depth:2,title:"Migration"},{id:"jdk-migration",depth:3,title:"JDK migration"},{id:"upgrade-fury",depth:3,title:"Upgrade fury"},{id:"trouble-shooting",depth:2,title:"Trouble shooting"},{id:"class-inconsistency-and-class-version-check",depth:3,title:"Class inconsistency and class version check"},{id:"use-wrong-api-for-deserialization",depth:3,title:"Use wrong API for deserialization"}],re=[{value:`When only java object serialization needed, this mode will have better performance compared to cross-language object
 graph serialization.`,paraId:0,tocIndex:0},{value:"Note that fury creation is not cheap, the ",paraId:1,tocIndex:1},{value:"fury instances should be reused between serializations",paraId:1,tocIndex:1},{value:` instead of creating
 it everytime.
@@ -1186,8 +1186,8 @@ public class Example {
 }
 `,paraId:7,tocIndex:1},{value:"Single thread fury:",paraId:8,tocIndex:3},{value:`Fury fury=Fury.builder()
   .withLanguage(Language.JAVA)
-  // enable referecne tracking for shared/circular reference.
-  // Disable it will have better performance if no duplciate reference.
+  // enable reference tracking for shared/circular reference.
+  // Disable it will have better performance if no duplicate reference.
   .withRefTracking(false)
   .withCompatibleMode(CompatibleMode.SCHEMA_CONSISTENT)
   // enable type forward/backward compatibility
@@ -1200,8 +1200,8 @@ public class Example {
   System.out.println(fury.deserialize(bytes));
 `,paraId:9,tocIndex:3},{value:"Thread-safe fury:",paraId:10,tocIndex:3},{value:`ThreadSafeFury fury=Fury.builder()
   .withLanguage(Language.JAVA)
-  // enable referecne tracking for shared/circular reference.
-  // Disable it will have better performance if no duplciate reference.
+  // enable reference tracking for shared/circular reference.
+  // Disable it will have better performance if no duplicate reference.
   .withRefTracking(false)
   // compress int for smaller size
   // .withIntCompressed(true)
