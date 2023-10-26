@@ -1116,7 +1116,7 @@ func main() {
 	fmt.Println(newList)
 }
 `,paraId:32,tocIndex:4},{value:"JavaScript",paraId:33,tocIndex:4},{value:`// Coming soon
-`,paraId:34,tocIndex:4}],H={},G={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/java_object_graph_guide.md",lastUpdated:1698066819e3,order:0,description:`When only java object serialization needed, this mode will have better performance compared to cross-language object
+`,paraId:34,tocIndex:4}],H={},G={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/java_object_graph_guide.md",lastUpdated:1698284173e3,order:0,description:`When only java object serialization needed, this mode will have better performance compared to cross-language object
 graph serialization.`},Z=[{id:"java-object-graph-serialization",depth:1,title:"Java object graph serialization"},{id:"quick-start",depth:2,title:"Quick Start"},{id:"advanced-usage",depth:2,title:"Advanced Usage"},{id:"fury-creation",depth:3,title:"Fury creation"},{id:"smaller-size",depth:3,title:"Smaller size"},{id:"implement-a-customized-serializer",depth:3,title:"Implement a customized serializer"},{id:"security--class-registration",depth:3,title:"Security & Class Registration"},{id:"serializer-registration",depth:3,title:"Serializer Registration"},{id:"zero-copy-serialization",depth:3,title:"Zero-Copy Serialization"},{id:"meta-sharing",depth:3,title:"Meta Sharing"},{id:"deserialize-un-exited-classes",depth:3,title:"Deserialize un-exited classes."},{id:"migration",depth:2,title:"Migration"},{id:"jdk-migration",depth:3,title:"JDK migration"},{id:"upgrade-fury",depth:3,title:"Upgrade fury"},{id:"trouble-shooting",depth:2,title:"Trouble shooting"},{id:"class-inconsistency-and-class-version-check",depth:3,title:"Class inconsistency and class version check"},{id:"use-wrong-api-for-deserialization",depth:3,title:"Use wrong API for deserialization"}],re=[{value:`When only java object serialization needed, this mode will have better performance compared to cross-language object
 graph serialization.`,paraId:0,tocIndex:0},{value:"Note that fury creation is not cheap, the ",paraId:1,tocIndex:1},{value:"fury instances should be reused between serializations",paraId:1,tocIndex:1},{value:` instead of creating
 it everytime.
@@ -1134,7 +1134,7 @@ public class Example {
     Fury fury = Fury.builder().withLanguage(Language.JAVA)
       // Allow to deserialize objects unknown types, more flexible 
       // but may be insecure if the classes contains malicious code.
-      // .requireClassRegistration(false)
+      .requireClassRegistration(false)
       .build();
     // Registering types can reduce class name serialization overhead, but not mandatory.
     // If class registration enabled, all custom types must be registered.
@@ -1591,7 +1591,7 @@ for (int i = 0; i < 10; i++) {
   arrowWriter.write(encoder.toRow(beanA));
 }
 return arrowWriter.finishAsRecordBatch();
-`,paraId:9,tocIndex:3}],On={},Ir={title:"How to build to Fury",toc:"menu",filename:"docs/guide/DEVELOPMENT.md",lastUpdated:1697979073e3,description:"Github repo: https://github.com/alipay/fury"},Xr=[{id:"how-to-build-to-fury",depth:1,title:"How to build to Fury"},{id:"get-the-source-code",depth:2,title:"Get the source code"},{id:"building-fury-\uFE0F",depth:2,title:"Building Fury \u{1F3CB}\u{1F3FF}\u200D\u2640\uFE0F"},{id:"building-fury-java",depth:3,title:"Building Fury Java"},{id:"environment-requirements",depth:4,title:"Environment Requirements"},{id:"building-fury-python",depth:3,title:"Building Fury Python"},{id:"environment-requirements-1",depth:4,title:"Environment Requirements"},{id:"building-fury-c",depth:3,title:"Building Fury C++"},{id:"environment-requirements-2",depth:4,title:"Environment Requirements"},{id:"building-fury-golang",depth:3,title:"Building Fury GoLang"},{id:"environment-requirements-3",depth:4,title:"Environment Requirements"}],yr=[{value:"Github repo: ",paraId:0,tocIndex:1},{value:"https://github.com/alipay/fury",paraId:0,tocIndex:1},{value:`cd java
+`,paraId:9,tocIndex:3}],On={},Ir={title:"Java Object Graph Guide",toc:"menu",filename:"docs/guide/DEVELOPMENT.md",lastUpdated:1698284173e3,order:5,description:"Github repo: https://github.com/alipay/fury"},Xr=[{id:"how-to-build-to-fury",depth:1,title:"How to build to Fury"},{id:"get-the-source-code",depth:2,title:"Get the source code"},{id:"building-fury-\uFE0F",depth:2,title:"Building Fury \u{1F3CB}\u{1F3FF}\u200D\u2640\uFE0F"},{id:"building-fury-java",depth:3,title:"Building Fury Java"},{id:"environment-requirements",depth:4,title:"Environment Requirements"},{id:"building-fury-python",depth:3,title:"Building Fury Python"},{id:"environment-requirements-1",depth:4,title:"Environment Requirements"},{id:"building-fury-c",depth:3,title:"Building Fury C++"},{id:"environment-requirements-2",depth:4,title:"Environment Requirements"},{id:"building-fury-golang",depth:3,title:"Building Fury GoLang"},{id:"environment-requirements-3",depth:4,title:"Environment Requirements"}],yr=[{value:"Github repo: ",paraId:0,tocIndex:1},{value:"https://github.com/alipay/fury",paraId:0,tocIndex:1},{value:`cd java
 mvn clean compile -DskipTests
 `,paraId:1,tocIndex:3},{value:"java 1.8+",paraId:2,tocIndex:4},{value:"maven 3.6.3+",paraId:2,tocIndex:4},{value:`cd python
 pip install pyarrow==6.0.1 Cython wheel numpy pytest
