@@ -1,3 +1,7 @@
+---
+title: Java Object Graph Guide
+order: 5
+---
 # How to build to Fury
 
 ## Get the source code
