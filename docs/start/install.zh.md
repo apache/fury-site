@@ -24,13 +24,13 @@ Nightly快照版本:
 <dependency>
 <groupId>org.furyio</groupId>
 <artifactId>fury-core</artifactId>
-<version>0.3.0-SNAPSHOT</version>
+<version>0.4.0-SNAPSHOT</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
   </dependency> -->
 ```
 
@@ -40,14 +40,19 @@ Nightly快照版本:
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.2.1</version>
+  <version>0.3.0</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
   </dependency> -->
+```
+
+### Scala
+```sbt
+libraryDependencies += "org.furyio" % "fury-core" % "0.3.0"
 ```
 
 ### Python
@@ -65,8 +70,9 @@ npm install @furyjs/fury
 ```
 
 ### Golang
-
-即将发布
+```bash
+go get github.com/alipay/fury/go/fury
+```
 
 ### JavaScript
 
