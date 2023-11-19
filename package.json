@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A static site for fury",
   "repository": "git@github.com:fury-project/fury-sites.git",
-  "license": "MIT",
+  "license": "Apache",
   "scripts": {
     "build": "npm run build -w dumi-theme && dumi build",
     "dev": "dumi dev",

@@ -17,4 +17,4 @@ $ npm run build
 
 ## LICENSE
 
-MIT
+Apache
