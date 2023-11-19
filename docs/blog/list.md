@@ -4,6 +4,13 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/blog/fury_0_3_0_release)
+
+<font color="#888888">*4 Nov 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+I'm pleased to announce the 0.3.0 release of the Fury. With this release, fury supports all scala 2/3 objects serializaiton now, including: **case/pojo/object/option/tuple/collecton/enum and other types**. case/pojo/object are tightly integrated with fury JIT. Fury will generate highly-optimized serializer by generate serialize code at runtime to speed up serializaiton. The serialization for those objects will be extremely fast.
+</font>
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0_2_1_release)
 
 <font color="#888888">*19 Oct 2023*</font>

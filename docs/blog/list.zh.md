@@ -4,11 +4,18 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/blog/fury_0_3_0_release)
+
+<font color="#888888">*4 Nov 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+很高兴向大家发布Fury 0.3.0版本，该版本主要全面支持了任意 Scala2/3 对象序列化，基于 Fury 的序列化协议提供更小的序列化体积；通过 Fury 的 JIT 框架提供高性能。支持**case/pojo/object/option/tuple/collecton/enum and other types**等任意类型，欢迎使用。
+</font>
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0_2_1_release)
 
 <font color="#888888">*19 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
-很高兴向大家发布FURY 0.2.1版本，本次发布提供了更加完善的JDK17+ record JIT支持，以及针对 private class 更好的JIT支持
+很高兴向大家发布FURY 0.2.1版本，本次发布提供了更加完善的JDK17+ record JIT支持，以及针对 private class 更好的JIT支持。
 </font>
 
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Release</font>](/blog/fury_0_2_0_release)
