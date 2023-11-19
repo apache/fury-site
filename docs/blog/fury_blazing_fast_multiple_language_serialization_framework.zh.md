@@ -1,12 +1,11 @@
 # Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy
 
-Author: [chaokunyang](https://github.com/chaokunyang)
+作者: [chaokunyang](https://github.com/chaokunyang)
 
-> Fury is a blazing fast **multi-language serialization** framework powered by **jit(just-in-time compilation) and
-zero-copy**, providing up to **170x performance** and ultimate **ease of use**.
+> Fury是一个基于JIT动态编译和零拷贝的高性能的多语言序列化框架，提供相比于JDK最高170倍的性能和极致的易用性.
 
 
-The GitHub address of fury repository is: https://github.com/alipay/fury
+Github仓库地址: https://github.com/alipay/fury
 
 
 <img alt="fury banner" src="/fury_banner.png">

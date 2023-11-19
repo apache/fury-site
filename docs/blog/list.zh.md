@@ -4,21 +4,21 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/blog/fury_0_3_0_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/zh/blog/fury_0_3_0_release)
 
 <font color="#888888">*4 Nov 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
 很高兴向大家发布Fury 0.3.0版本，该版本主要全面支持了任意 Scala2/3 对象序列化，基于 Fury 的序列化协议提供更小的序列化体积；通过 Fury 的 JIT 框架提供高性能。支持**case/pojo/object/option/tuple/collecton/enum and other types**等任意类型，欢迎使用。
 </font>
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/blog/fury_0_2_1_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.1 Released</font>](/zh/blog/fury_0_2_1_release)
 
 <font color="#888888">*19 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
 很高兴向大家发布FURY 0.2.1版本，本次发布提供了更加完善的JDK17+ record JIT支持，以及针对 private class 更好的JIT支持。
 </font>
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Release</font>](/blog/fury_0_2_0_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.2.0 Release</font>](/zh/blog/fury_0_2_0_release)
 
 <font color="#888888">*09 Oct 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
@@ -26,7 +26,7 @@ order: -1
 
 </font>
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.2 Release</font>](/blog/fury_0_1_2_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.2 Release</font>](/zh/blog/fury_0_1_2_release)
 
 <font color="#888888">*27 Sep 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
@@ -34,21 +34,21 @@ order: -1
 </font>
 
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/blog/fury_0_1_1_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.1 Release</font>](/zh/blog/fury_0_1_1_release)
 
 <font color="#888888">*01 Sep 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
 很高兴向大家宣布Fury 0.1.1的发布，`0.1.1`是我们的第二个发布版本. 该版本支持自定义序列化安全检查策略，提供了比类型注册检查更灵活的行为。同时跟Dubbo进行了集成，支持在Dubbo rpc框架当中使用fury：[fury integration](https://github.com/fury-project/dubbo-serialization-fury/releases/tag/v0.1.1). 除此之外一些小的优化和bugfix也包含在这个发布里面.
 </font>
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.0 正式发布</font>](/blog/fury_0_1_0_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.1.0 正式发布</font>](/zh/blog/fury_0_1_0_release)
 
 <font color="#888888">*31 July 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
 大家好，经过几个月的努力，Fury 0.1.0 版本正式对外发布。这是我们今年四月底正式在 GitHub 开发、7 月 15 号对外开源后发布的第一个版本。这一版本包含了大量特性，欢迎大家使用，希望能提供宝贵的反馈意见。本次发布包含了大量重要特性：生产环境可用的 Java 序列化，支持Java/Python/JavaScript/Rust的跨语言序列化，多语言高性能行存。
 </font>
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury - 一个基于JIT和零拷贝的高性能多语言序列化框架</font>](/blog/fury_blazing_fast_multiple_language_serialization_framework)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury - 一个基于JIT和零拷贝的高性能多语言序列化框架</font>](/zh/blog/fury_blazing_fast_multiple_language_serialization_framework)
 
 <font color="#888888">*15 July 2023*</font>
 
