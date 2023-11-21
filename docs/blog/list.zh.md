@@ -5,7 +5,7 @@ order: -1
 ------
 
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/zh/blog/fury_0_3_1_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.1 Released</font>](/zh/blog/fury_0_3_1_release)
 
 <font color="#888888">*21 Nov 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
