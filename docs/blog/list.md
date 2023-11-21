@@ -4,6 +4,14 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/blog/fury_0_3_1_release)
+
+<font color="#888888">*21 Nov 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+I'm pleased to announce the 0.3.1 release of the Fury. With this release, fury supports python 3.11&3.12, droped python 3.6 support.
+Multiple scala serialization JIT optimization are included, and java serialization compatibility is improved too.
+</font>
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/blog/fury_0_3_0_release)
 
 <font color="#888888">*4 Nov 2023*</font>

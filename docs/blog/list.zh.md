@@ -4,6 +4,15 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/zh/blog/fury_0_3_1_release)
+
+<font color="#888888">*21 Nov 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+很高兴向大家发布Fury 0.3.1版本，本次发布支持了 Python 3.11 和 3.12，移除了对 Python 3.6的支持，同时包含了多项Scala JIT序列化以及Java序列化兼容性改进，欢迎使用！
+</font>
+
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/zh/blog/fury_0_3_0_release)
 
 <font color="#888888">*4 Nov 2023*</font>
