@@ -4,7 +4,7 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
-# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.0 Released</font>](/blog/fury_0_3_1_release)
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.1 Released</font>](/blog/fury_0_3_1_release)
 
 <font color="#888888">*21 Nov 2023*</font>
 <font face="Lato,Roboto,Arial,sans-serif">
