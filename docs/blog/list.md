@@ -4,6 +4,14 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.4.0 Released</font>](/blog/fury_0_4_0_release)
+
+<font color="#888888">*29 Nov 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+I'm pleased to announce the 0.4.0 release of the Fury. With this release, [GraalVM native image](https://www.graalvm.org/latest/reference-manual/native-image/) and C++ row format automatic encoder based on compile-time reflection are supported. Please try it out and share your feedbacks with us. 
+</font>
+
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.1 Released</font>](/blog/fury_0_3_1_release)
 
 <font color="#888888">*21 Nov 2023*</font>

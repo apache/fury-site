@@ -24,13 +24,13 @@ Nightly快照版本:
 <dependency>
 <groupId>org.furyio</groupId>
 <artifactId>fury-core</artifactId>
-<version>0.4.0-SNAPSHOT</version>
+<version>0.5.0-SNAPSHOT</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
   </dependency> -->
 ```
 
@@ -40,19 +40,19 @@ Nightly快照版本:
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.3.1</version>
+  <version>0.4.0</version>
 </dependency>
   <!-- row/arrow format support -->
   <!-- <dependency>
     <groupId>org.furyio</groupId>
     <artifactId>fury-format</artifactId>
-    <version>0.3.1</version>
+    <version>0.4.0</version>
   </dependency> -->
 ```
 
 ### Scala
 ```sbt
-libraryDependencies += "org.furyio" % "fury-core" % "0.3.1"
+libraryDependencies += "org.furyio" % "fury-core" % "0.4.0"
 ```
 
 ### Python
