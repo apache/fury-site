@@ -1,8 +1,15 @@
 ---
 order: -1
 ---
-# <font size="6">Project News and Blog</font>
+# <font size="6">项目新闻和博客</font>
 ------
+
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.4.0 Released</font>](/zh/blog/fury_0_4_0_release)
+
+<font color="#888888">*29 Nov 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+很高兴向大家发布Fury 0.4.0版本，本次发布重点支持了 Graalvm native image，基于编译时反射的C++ Row Format Encoder，Scala序列化兼容性改进，欢迎使用！
+</font>
 
 
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.3.1 Released</font>](/zh/blog/fury_0_3_1_release)

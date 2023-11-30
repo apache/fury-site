@@ -2,7 +2,7 @@
 
 Author: [chaokunyang](https://github.com/chaokunyang)
 
-I'm pleased to announce the 0.3.1 release of the Fury. With this release. With this release, fury supports python 3.11&3.12, droped python 3.6 support.
+I'm pleased to announce the 0.3.1 release of the Fury. With this release, fury supports python 3.11&3.12, droped python 3.6 support.
 Multiple scala serialization JIT optimization are included, and java serialization compatibility is improved too.
 
 ## Highlight
