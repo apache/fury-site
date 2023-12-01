@@ -7,13 +7,10 @@ import { useSiteData, useLocale, FormattedMessage } from 'dumi';
 import {
   GithubOutlined,
   MenuOutlined,
-  CaretDownFilled,
   DownOutlined,
-  WechatOutlined,
   LinkOutlined,
   CheckOutlined,
   CaretDownOutlined,
-  DingdingOutlined,
 } from '@ant-design/icons';
 import { Modal, Button, Popover, Menu, Dropdown, Select } from 'antd';
 import map from 'lodash-es/map';
