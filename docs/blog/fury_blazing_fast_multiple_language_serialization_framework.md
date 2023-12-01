@@ -307,12 +307,3 @@ https://github.com/alipay/fury
 Official website: https://furyio.org
 
 All issues, PR, and Discussion are welcome.
-
-You are also welcome to join the following groups to communicate with us.
-
-| Platform                                                                                            | Purpose                                                                      | Estimated Response Time |
-|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|-------------------------|
-| [GitHub Issues](https://github.com/alipay/fury/issues)                                              | For reporting bugs and filing feature requests.                              | < 1 days                |
-| [Slack](https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)    | For collaborating with other Fury users and latest announcements about Fury. | < 2 days                |
-| [StackOverflow](https://stackoverflow.com/questions/tagged/fury)                                    | For asking questions about how to use Fury.                                  | < 2 days                |
-| [Twitter](https://twitter.com/fury_community) [Youtube](https://www.youtube.com/@FurySerialization) | Follow us for the latest announcements about Fury.                           | < 2 days                |
