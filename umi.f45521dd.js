@@ -1909,7 +1909,7 @@ Fury serialization took mills: 1289
 JDK serialization took mills: 15069
 Compare speed: Fury is 12.11x speed of JDK
 Compare size: Fury is 0.48x size of JDK
-`,paraId:29,tocIndex:10}],Yn={},oe={title:"Development",toc:"menu",filename:"docs/guide/DEVELOPMENT.md",lastUpdated:1701237773e3,order:6,description:"Github repo: https://github.com/alipay/fury"},_e=[{id:"how-to-build-to-fury",depth:1,title:"How to build to Fury"},{id:"get-the-source-code",depth:2,title:"Get the source code"},{id:"building-fury-\uFE0F",depth:2,title:"Building Fury \u{1F3CB}\u{1F3FF}\u200D\u2640\uFE0F"},{id:"building-fury-java",depth:3,title:"Building Fury Java"},{id:"environment-requirements",depth:4,title:"Environment Requirements"},{id:"building-fury-python",depth:3,title:"Building Fury Python"},{id:"environment-requirements-1",depth:4,title:"Environment Requirements"},{id:"building-fury-c",depth:3,title:"Building Fury C++"},{id:"environment-requirements-2",depth:4,title:"Environment Requirements"},{id:"building-fury-golang",depth:3,title:"Building Fury GoLang"},{id:"environment-requirements-3",depth:4,title:"Environment Requirements"},{id:"building-fury-rust",depth:3,title:"Building Fury Rust"},{id:"environment-requirements-4",depth:4,title:"Environment Requirements"}],pe=[{value:"Github repo: ",paraId:0,tocIndex:1},{value:"https://github.com/alipay/fury",paraId:0,tocIndex:1},{value:`cd java
+`,paraId:29,tocIndex:10}],Yn={},oe={title:"Development",toc:"menu",filename:"docs/guide/DEVELOPMENT.md",lastUpdated:17017059e5,order:6,description:"Github repo: https://github.com/alipay/fury"},_e=[{id:"how-to-build-to-fury",depth:1,title:"How to build to Fury"},{id:"get-the-source-code",depth:2,title:"Get the source code"},{id:"building-fury-\uFE0F",depth:2,title:"Building Fury \u{1F3CB}\u{1F3FF}\u200D\u2640\uFE0F"},{id:"building-fury-java",depth:3,title:"Building Fury Java"},{id:"environment-requirements",depth:4,title:"Environment Requirements"},{id:"building-fury-python",depth:3,title:"Building Fury Python"},{id:"environment-requirements-1",depth:4,title:"Environment Requirements"},{id:"building-fury-c",depth:3,title:"Building Fury C++"},{id:"environment-requirements-2",depth:4,title:"Environment Requirements"},{id:"building-fury-golang",depth:3,title:"Building Fury GoLang"},{id:"environment-requirements-3",depth:4,title:"Environment Requirements"},{id:"building-fury-rust",depth:3,title:"Building Fury Rust"},{id:"environment-requirements-4",depth:4,title:"Environment Requirements"}],pe=[{value:"Github repo: ",paraId:0,tocIndex:1},{value:"https://github.com/alipay/fury",paraId:0,tocIndex:1},{value:`cd java
 mvn clean compile -DskipTests
 `,paraId:1,tocIndex:3},{value:"java 1.8+",paraId:2,tocIndex:4},{value:"maven 3.6.3+",paraId:2,tocIndex:4},{value:`cd python
 pip install pyarrow==14.0.0 Cython wheel numpy pytest
@@ -1917,7 +1917,7 @@ pip install -v -e .
 `,paraId:3,tocIndex:5},{value:"python3.6+",paraId:4,tocIndex:6},{value:"Build fury_util.so:",paraId:5,tocIndex:7},{value:`bazel build //src/fury/util:fury_util
 `,paraId:6,tocIndex:7},{value:"Build fury row format\uFF1A",paraId:7,tocIndex:7},{value:`pip install pyarrow==14.0.0
 bazel build //src/fury/row:fury_row_format
-`,paraId:8,tocIndex:7},{value:"cpp 11+",paraId:9,tocIndex:8},{value:"bazel 4.2",paraId:9,tocIndex:8},{value:`cd go/fury
+`,paraId:8,tocIndex:7},{value:"cpp 11+",paraId:9,tocIndex:8},{value:"bazel 6.3.2",paraId:9,tocIndex:8},{value:`cd go/fury
 # run test
 go test -v
 # run xlang test
