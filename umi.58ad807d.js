@@ -1970,7 +1970,7 @@ println(fury.deserialize(fury.serialize(ColorEnum.Green)))
 println(fury.deserialize(fury.serialize(opt)))
 val opt1: Option[Long] = None
 println(fury.deserialize(fury.serialize(opt1)))
-`,paraId:18,tocIndex:11},{value:"Scala ",paraId:19,tocIndex:12},{value:"pojo/bean/case/object",paraId:19,tocIndex:12},{value:" are supported by fury jit well, the performance is as good as fury java.",paraId:19,tocIndex:12},{value:"Scala collections and generics doesn't follow java collection framework, and is not fully integrated with Fury JIT in current release version. The performance won't be as good as fury collections serialization for java.",paraId:20,tocIndex:12},{value:"The execution for scala collections will invoke Java serialization API ",paraId:21,tocIndex:12},{value:"writeObject/readObject/writeReplace/readResolve/readObjectNoData/Externalizable",paraId:21,tocIndex:12},{value:" with fury ",paraId:21,tocIndex:12},{value:"ObjectStream",paraId:21,tocIndex:12},{value:" implementation. Although ",paraId:21,tocIndex:12},{value:"io.fury.serializer.ObjectStreamSerializer",paraId:21,tocIndex:12},{value:" is much faster than JDK ",paraId:21,tocIndex:12},{value:"ObjectOutputStream/ObjectInputStream",paraId:21,tocIndex:12},{value:", but it still doesn't know how use scala collection generics.",paraId:21,tocIndex:12},{value:"In future we plan to provide more optimization for scala types, see ",paraId:22,tocIndex:12},{value:"https://github.com/alipay/fury/issues/682",paraId:22,tocIndex:12},{value:", stay tuned!",paraId:22,tocIndex:12},{value:"Scala collections serialization is finished in ",paraId:23,tocIndex:12},{value:"https://github.com/alipay/fury/pull/1073",paraId:23,tocIndex:12},{value:", if you want better performance, please use fury snapshot version.",paraId:23,tocIndex:12}],Ye={},Rt={title:"Install",toc:"menu",filename:"docs/start/install.en.md",lastUpdated:1700579165e3,order:0,description:"Nightly snapshot:"},sa=[{id:"java",depth:3,title:"Java"},{id:"scala",depth:3,title:"Scala"},{id:"python",depth:3,title:"Python"},{id:"golang",depth:3,title:"Golang"},{id:"javascript",depth:3,title:"JavaScript"},{id:"rust",depth:3,title:"Rust"}],aa=[{value:"Nightly snapshot:",paraId:0,tocIndex:0},{value:`<repositories>
+`,paraId:18,tocIndex:11},{value:"Scala ",paraId:19,tocIndex:12},{value:"pojo/bean/case/object",paraId:19,tocIndex:12},{value:" are supported by fury jit well, the performance is as good as fury java.",paraId:19,tocIndex:12},{value:"Scala collections and generics doesn't follow java collection framework, and is not fully integrated with Fury JIT in current release version. The performance won't be as good as fury collections serialization for java.",paraId:20,tocIndex:12},{value:"The execution for scala collections will invoke Java serialization API ",paraId:21,tocIndex:12},{value:"writeObject/readObject/writeReplace/readResolve/readObjectNoData/Externalizable",paraId:21,tocIndex:12},{value:" with fury ",paraId:21,tocIndex:12},{value:"ObjectStream",paraId:21,tocIndex:12},{value:" implementation. Although ",paraId:21,tocIndex:12},{value:"io.fury.serializer.ObjectStreamSerializer",paraId:21,tocIndex:12},{value:" is much faster than JDK ",paraId:21,tocIndex:12},{value:"ObjectOutputStream/ObjectInputStream",paraId:21,tocIndex:12},{value:", but it still doesn't know how use scala collection generics.",paraId:21,tocIndex:12},{value:"In future we plan to provide more optimization for scala types, see ",paraId:22,tocIndex:12},{value:"https://github.com/alipay/fury/issues/682",paraId:22,tocIndex:12},{value:", stay tuned!",paraId:22,tocIndex:12},{value:"Scala collections serialization is finished in ",paraId:23,tocIndex:12},{value:"https://github.com/alipay/fury/pull/1073",paraId:23,tocIndex:12},{value:", if you want better performance, please use fury snapshot version.",paraId:23,tocIndex:12}],Ye={},Rt={title:"Install",toc:"menu",filename:"docs/start/install.en.md",lastUpdated:170179406e4,order:0,description:"Nightly snapshot:"},sa=[{id:"java",depth:3,title:"Java"},{id:"scala",depth:3,title:"Scala"},{id:"python",depth:3,title:"Python"},{id:"golang",depth:3,title:"Golang"},{id:"javascript",depth:3,title:"JavaScript"},{id:"rust",depth:3,title:"Rust"}],aa=[{value:"Nightly snapshot:",paraId:0,tocIndex:0},{value:`<repositories>
   <repository>
     <id>sonatype</id>
     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
@@ -1985,26 +1985,26 @@ println(fury.deserialize(fury.serialize(opt1)))
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.4.0-SNAPSHOT</version>
+  <version>0.5.0-SNAPSHOT</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.4.0-SNAPSHOT</version>
+  <version>0.5.0-SNAPSHOT</version>
 </dependency> -->
 `,paraId:1,tocIndex:0},{value:"Release version:",paraId:2,tocIndex:0},{value:`<dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.3.1</version>
+  <version>0.4.0</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.3.1</version>
+  <version>0.4.0</version>
 </dependency> -->
-`,paraId:3,tocIndex:0},{value:`libraryDependencies += "org.furyio" % "fury-core" % "0.3.1"
+`,paraId:3,tocIndex:0},{value:`libraryDependencies += "org.furyio" % "fury-core" % "0.4.0"
 `,paraId:4,tocIndex:1},{value:`# Python wheel will be released in the future.
 # Currently you need to specify \`--pre\` to install
 # the unstable version.
