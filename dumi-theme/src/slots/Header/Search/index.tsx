@@ -44,7 +44,7 @@ export const Search = () => {
           onFocus={() => setOpen(!!result?.length)}
           onChange={(e) => setKeywords(e.target.value)}
           placeholder={intl.formatMessage({
-            id: '搜索…',
+            id: 'Search...',
           })}
         />
       </label >
