@@ -1,5 +1,9 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Affix, Layout, Menu } from 'antd';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UpOutlined,
+} from '@ant-design/icons';
+import { Affix, Card, Dropdown, Layout, Menu, Space } from 'antd';
 import { useFullSidebarData, useLocale, useRouteMeta, useSiteData } from 'dumi';
 import Drawer from 'rc-drawer';
 import React, { useEffect, useState } from 'react';
@@ -14,6 +18,7 @@ import {
   getIndexRoute,
   getNavigateUrl,
   getOpenKeys,
+  getVersions,
 } from './utils';
 
 import 'rc-drawer/assets/index.css';
@@ -86,7 +91,8 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
    *  /api/xxx -->  /api
    *  /en/api  -->  /en/api
    */
-  let baseRoute =  getBaseRoute();
+  let [baseRoute, currentVersion] = getBaseRoute();
+  const versions = getVersions(docs);
   if (currentLocale === 'zh') {
     baseRoute = '/zh' + baseRoute;
   }
@@ -240,15 +246,67 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     />
   );
 
-  if (window.location.pathname.startsWith('/blog') || window.location.pathname.startsWith('/zh/blog')) {
+  if (
+    window.location.pathname.startsWith('/blog') ||
+    window.location.pathname.startsWith('/zh/blog')
+  ) {
     return (
       <Layout.Content className={styles.content}>
-        <div className={styles.main} style={{ maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto', marginTop: '50px'}}>
+        <div
+          className={styles.main}
+          style={{
+            maxWidth: 1000,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: '50px',
+          }}
+        >
           <div className={styles.markdown}>{children}</div>
         </div>
       </Layout.Content>
     );
   }
+
+  const versionSwitch = () => {
+    if (versions.length <= 1) {
+      return null;
+    }
+    return (
+      <Affix offsetBottom={0}>
+        <Card size='small' style={{display: 'flex', justifyContent: 'center'}}>
+          <Dropdown placement='top' menu={{ onClick: ({key}) => {
+              let pathArray = window.location.pathname.split('/').filter(Boolean);
+              let lang = '';
+              let scope = '';
+              let file = '';
+              let version = "";
+              if (key !== 'main') {
+                version = key;
+              }
+              if (pathArray[0] === 'zh') {
+                lang = 'zh';
+                pathArray = pathArray.slice(1, pathArray.length);
+              }
+              if (pathArray.length == 2) {
+                scope = pathArray[0];
+                file = pathArray[1];
+              } else {
+                scope = pathArray[0];
+                file = pathArray[2];
+              }
+              navigate([lang, scope, version, file].filter(Boolean).join('/'));
+              useScrollToTop();
+          }, items: versions.map((x) => ({ key: x, label: x })) }}>
+            <span>
+                version: {currentVersion}
+                <a><UpOutlined /></a>
+            </span>
+          </Dropdown>
+        </Card>
+      </Affix>
+    );
+  };
+
   return (
     <>
       <Layout style={{ background: '#fff' }} hasSider className={styles.layout}>
@@ -260,6 +318,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
           {is767Wide ? (
             <Layout.Sider width="auto" theme="light" className={styles.sider}>
               {menu}
+              {versionSwitch()}
             </Layout.Sider>
           ) : (
             <Drawer
@@ -275,6 +334,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
               width={280}
             >
               {menu}
+              {versionSwitch()}
             </Drawer>
           )}
         </Affix>

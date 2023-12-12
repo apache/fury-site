@@ -15,9 +15,25 @@ export function getBaseRoute() {
   // 兼容带有docs的route
   matchRoute = matchRoute.replace('/docs', '').replace('/zh/', '/').replace('/en/', '/');
   // 查找 baseRoute
-  const reg =  /(\/[A-z]*)\/?/
-  const mainRoute = matchRoute.match(reg);
-  return mainRoute![1];
+  const pathArray = matchRoute.split("/").filter(Boolean);
+  if (pathArray.length === 3) {
+    return [`/${pathArray[0]}/${pathArray[1]}`, pathArray[1]]
+  }
+  return [`/${pathArray[0]}`, "main"];
+}
+
+export function getVersions(docs) {
+  let matchRoute = window.location.pathname;
+  // 兼容带有docs的route
+  matchRoute = matchRoute.replace('/docs', '').replace('/zh/', '/').replace('/en/', '/');
+  // 查找 baseRoute
+  const pathArray = matchRoute.split("/").filter(Boolean);
+  const scope = pathArray[0];
+  const versions = docs
+    .filter(x => x.slug.startsWith(scope))
+    .map(x => x.slug.replace(`${scope}/`, ''))
+    .filter(Boolean);
+  return ["main", ...versions];
 }
 
 export function getIndexRoute(MenuData) {
