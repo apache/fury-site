@@ -4,6 +4,14 @@ order: -1
 # <font size="6">Project News and Blog</font>
 ------
 
+# [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.4.1 Released</font>](/blog/fury_0_4_0_release)
+
+<font color="#888888">*9 Dec 2023*</font>
+<font face="Lato,Roboto,Arial,sans-serif">
+I'm pleased to announce the 0.4.1 release of the Fury: https://github.com/alipay/fury/releases/tag/v0.4.1. With this release, Fury support rust row format now. C++ row format has been enhanced too, now iterable types can be encoded to fury row format. Please try it out and share your feedbacks with us. 
+</font>
+
+
 # [<font color="#d74633" face="Lato,Roboto,Arial,sans-serif">Fury 0.4.0 Released</font>](/blog/fury_0_4_0_release)
 
 <font color="#888888">*29 Nov 2023*</font>
