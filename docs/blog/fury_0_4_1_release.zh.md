@@ -5,10 +5,10 @@
 很高兴向大家发布Fury 0.4.1版本： https://github.com/alipay/fury/releases/tag/v0.4.1.，本次发布重点新增了 Fury 行存 Rust 支持，同时对Fury 行存 C++支持进行了完善，支持可迭代类型，欢迎使用！
 
 ## 重要改进
-* [Rust] Support row format
-* [C++] Support iterable types for RowEncoder 
+* [Rust] 支持行存 custom struct, string, and i8 types
+* [C++] RowEncoder支持可迭代类型
 * [JavaScript] Support partial record
-* [Java] Fix JIT error in corner case, now Fury can generate serializer for every class
+* [Java] 修复corner case JIT异常导致的序列化错误
 
 ## 变更记录
 * [Doc] Refine issue template by a yaml form by @chaokunyang in https://github.com/alipay/fury/pull/1185
