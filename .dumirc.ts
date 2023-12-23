@@ -11,7 +11,7 @@ export default defineConfig({
   logo: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*V_oxQYSTdLQAAAAAAAAAAAAADpJ-AQ/original',
   themeConfig: {
     title: '',
-    description: 'Blazing Fast Binary Serialization',
+    description: 'Blazing-fast Binary Serialization',
     defaultLanguage: 'en',
     siteUrl: {
       en: '/',
@@ -137,12 +137,12 @@ export default defineConfig({
     /** 首页技术栈介绍 */
     detail: {
       title: {
-        zh: 'Fury',
-        en: 'Fury',
+        zh: 'Apache Fury (incubating)',
+        en: 'Apache Fury (incubating)',
       },
       description: {
-        zh: 'Fury是一个基于JIT动态编译和零拷贝的高性能多语言序列化框架',
-        en: 'Fury is a blazing fast multi-language serialization framework powered by jit(just-in-time compilation) and zero-copy.',
+        zh: '一个基于即时编译和零拷贝的高性能跨语言序列化框架',
+        en: 'A blazing-fast cross-language serialization framework powered by just-in-time compilation and zero-copy',
       },
       image: 'https://mdn.alipayobjects.com/huamei_s7kka1/afts/img/A*7P08RJm4noUAAAAAAAAAAAAADpJ-AQ/original',
       buttons: [
@@ -185,7 +185,7 @@ export default defineConfig({
           zh: '使用便捷'
         },
         description: {
-          en: 'No need for DSL, with your intuition, you can use Fury effectively',
+          en: 'No need for DSL, you can use Fury effectively with your intuition',
           zh: '无需DSL，开箱即用'
         },
       },
@@ -196,8 +196,8 @@ export default defineConfig({
           zh: '多语言支持'
         },
         description: {
-          en: 'Supports mainstream programming languages, including Java/Python/C++/Golang/Javascript/Rust, and more languages will be added in the future',
-          zh: '支持主流编程语言，包括Java/Python/C++/Golang/Javascript/Rust等，更多语言将会在未来加入支持'
+          en: 'Supports popular programming languages such as Java, Python, C++, Golang, Javascript, Rust, and more will be added in the future',
+          zh: '支持主流编程语言，包括 Java/Python/C++/Golang/Javascript/Rust 等，更多语言将会在未来加入支持'
         }
       },
     ],

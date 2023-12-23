@@ -67,6 +67,26 @@ export const Footer: React.FC<FooterProps> = (props) => {
     return [col1, col2];
   };
 
+  const apacheFooter = <div>
+    <img
+      src="/apache-incubator.svg" 
+      alt="The Apache Software Foundation Incubator"
+      width="256"
+      style={{margin:10}}
+    ></img>
+    <p>
+      Apache Fury is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator.
+      Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, 
+      and decision making process have stabilized in a manner consistent with other successful ASF projects. 
+      While incubation status is not necessarily a reflection of the completeness or stability of the code, 
+      it does indicate that the project has yet to be fully endorsed by the ASF.
+    </p>
+    <p>
+      Copyright © {new Date().getFullYear()} The Apache Software Foundation, Licensed under the Apache License, Version 2.0.<br/>
+      Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
+    </p>
+  </div>
+
   return (
     <RCFooter
       maxColumnsPerRow={5}
@@ -75,6 +95,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
       className={classnames(styles.footer, className, {
         [styles.withMenu]: isDynamicFooter,
       })}
+      bottom={apacheFooter}
     />
   );
 };
