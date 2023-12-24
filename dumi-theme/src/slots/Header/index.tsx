@@ -387,7 +387,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, defaultLanguage,
     version, versions, ecosystems, navs, searchOptions, navsCn,
     isHomePage,
-    transparent: isHomePage,
+    transparent: false,
   }
 
   return <HeaderComponent { ...Object.assign({} , headerProps, props)} />;

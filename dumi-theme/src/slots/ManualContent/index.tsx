@@ -99,7 +99,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   // 获取最终的 MenuData
   const renderSidebar = getMenuData(sidebar, docs, baseRoute, []);
 
-  function getMenuData(
+function getMenuData(
     funllSidebarData: FullSidebarData,
     rootList: SidebarData,
     hrefId: string,
@@ -240,7 +240,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       mode="inline"
       items={renderSidebar as any}
       inlineIndent={16}
-      style={{ height: '100%' }}
+      style={{ height: '100%', fontSize: "17px" }}
       forceSubMenuRender
       triggerSubMenuAction="click"
     />
