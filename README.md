@@ -1,6 +1,6 @@
-# home
+# Apache Fury (incubating) Website
 
-The static pages for https://github.com/alipay/fury.
+The source repository of static website for Apache Fury (incubating).
 
 ## Development
 
@@ -17,4 +17,4 @@ $ npm run build
 
 ## LICENSE
 
-Apache
+Apache License 2.0
