@@ -1,4 +1,4 @@
-name: fury site deploy
+name: Deploy
 
 on:
   push:
@@ -7,9 +7,8 @@ on:
   pull_request:
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
