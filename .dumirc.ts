@@ -23,7 +23,7 @@ export default defineConfig({
     showLanguageSwitcher: true,                                         // 是否显示官网语言切换
     showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
     showAPIDoc: true,
-    githubUrl: 'https://github.com/alipay/fury',
+    githubUrl: 'https://github.com/apache/incubator-fury',
     showSpecTab: true,                                                // 是否在 demo 页展示API文档
     es5: false,
     logo: {
