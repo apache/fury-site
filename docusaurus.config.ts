@@ -13,11 +13,6 @@ const config: Config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Apache', // Usually your GitHub org/user name.
-  projectName: 'fury', // Usually your repo name.
-
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -96,33 +91,63 @@ const config: Config = {
           title: 'Community',
           items: [
             {
+              label: 'Mailing list',
+              href: 'https://lists.apache.org/list.html?dev@fury.apache.org',
+            },
+            {
+              label: 'Slack',
+              href: 'https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A',
+            },
+            {
               label: 'Twitter',
               href: 'https://twitter.com/fury_community',
             },
           ],
         },
         {
-          title: 'Help',
+          title: 'Docs',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: 'Install',
+              to: '/docs/start/install',
             },
             {
-              label: 'GitHub',
+              label: 'Usage',
+              to: '/docs/start/usage',
+            },
+            {
+              label: 'Benchmark',
+              to: '/docs/introduction/benchmark',
+            },
+          ],
+        },
+        {
+          title: 'Repositories',
+          items: [
+            {
+              label: 'Fury',
               href: 'https://github.com/apache/incubator-fury',
+            },
+            {
+              label: 'Website',
+              href: 'https://github.com/apache/incubator-fury-site',
             },
           ],
         },
       ],
       logo: {
-        width: 256,
+        width: 320,
         src: "/img/apache-incubator.svg",
+        href: "https://incubator.apache.org/",
+        alt: "Apache Incubator logo"
       },
-      copyright: `Apache Fury is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
-
-      Copyright © ${new Date().getFullYear()} The Apache Software Foundation, Licensed under the Apache License, Version 2.0.
-      Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.`,
+      copyright: `<div>
+      <p> Apache Fury is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF. </p>
+      <p>
+        Copyright © ${new Date().getFullYear()} The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>
+        Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
+      </p>
+      </div>`,
     },
     prism: {
       theme: prismThemes.github,
