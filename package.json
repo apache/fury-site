@@ -1,34 +1,48 @@
 {
   "name": "fury-site",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run build -w dumi-theme && dumi build",
-    "dev": "dumi dev",
-    "prepare": "dumi setup",
-    "start": "npm run dev"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc"
   },
   "dependencies": {
-    "antd-style": "^3.4.1",
-    "dumi-theme-fury": "^0.0.1",
-    "rc-footer": "^0.6.8"
+    "@docusaurus/core": "3.0.1",
+    "@docusaurus/preset-classic": "3.0.1",
+    "@mdx-js/react": "^3.0.0",
+    "clsx": "^2.0.0",
+    "docusaurus-lunr-search": "^3.3.1",
+    "prism-react-renderer": "^2.3.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
-    "dumi": "^2.2.0",
-    "prettier": "^2.7.1"
+    "@docusaurus/module-type-aliases": "3.0.1",
+    "@docusaurus/tsconfig": "3.0.1",
+    "@docusaurus/types": "3.0.1",
+    "typescript": "~5.2.2"
   },
-  "resolutions": {
-    "umi": "4.0.81"
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
   },
-  "authors": [],
-  "workspaces": [
-    "dumi-theme"
-  ]
+  "engines": {
+    "node": ">=18.0"
+  }
 }
