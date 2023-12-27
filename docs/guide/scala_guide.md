@@ -1,7 +1,6 @@
 ---
 title: Scala Serialization Guide
-sidebar_position: 4
-id: scala_guide
+order: 4
 ---
 
 # Scala serialization

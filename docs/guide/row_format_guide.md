@@ -1,7 +1,6 @@
 ---
 title: Row Format Guide
-sidebar_position: 1
-id: row_format_guide
+order: 1
 ---
 
 ## Row format protocol

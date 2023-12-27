@@ -1,7 +1,6 @@
 ---
 title: Development
-sidebar_position: 6
-id: development
+order: 6
 ---
 # How to build to Fury
 

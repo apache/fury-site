@@ -1,7 +1,6 @@
 ---
 title: Java Object Graph Guide
-sidebar_position: 0
-id: java_object_graph_guide
+order: 0
 ---
 
 # Java object graph serialization
