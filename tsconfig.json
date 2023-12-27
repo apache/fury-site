@@ -1,13 +1,7 @@
 {
+  // This file is not used in compilation. It is here just for a nice editor experience.
+  "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "jsx": "react",
-    "strict": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "@@/*": [".dumi/tmp/*"]
-    }
-  },
-  "include": [".dumi/**/*", ".dumirc.ts"]
+    "baseUrl": "."
+  }
 }

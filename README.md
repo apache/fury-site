@@ -1,20 +1,29 @@
 # Apache Fury (incubating) Website
-
 The source repository of static website for Apache Fury (incubating).
 
-## Development
 
-```bash
-# install dependencies
-$ npm install
+### Installation
 
-# start dev server
-$ npm start
-
-# build docs
-$ npm run build
 ```
+$ yarn
+```
+
+### Local Development
+
+```
+$ yarn start
+```
+
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```
+$ yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
 ## LICENSE
 
-Licensed under the [Apache License 2.0](LICENSE)
+Apache License 2.0
