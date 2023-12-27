@@ -13,11 +13,6 @@ const config: Config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'apache', // Usually your GitHub org/user name.
-  projectName: 'fury', // Usually your repo name.
-
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -118,11 +113,11 @@ const config: Config = {
             },
             {
               label: 'Usage',
-              href: '/docs/start/usage',
+              to: '/docs/start/usage',
             },
             {
               label: 'Benchmark',
-              href: '/docs/introduction/benchmark',
+              to: '/docs/introduction/benchmark',
             },
           ],
         },
@@ -131,7 +126,7 @@ const config: Config = {
           items: [
             {
               label: 'Fury',
-              to: 'https://github.com/apache/incubator-fury',
+              href: 'https://github.com/apache/incubator-fury',
             },
             {
               label: 'Website',
