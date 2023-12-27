@@ -1,6 +1,7 @@
 ---
 title: Xlang Object Graph Guide
-order: 2
+sidebar_position: 2
+id: xlang_object_graph_guide
 ---
 
 ## Cross-language object graph serialization

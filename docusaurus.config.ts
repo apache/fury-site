@@ -47,7 +47,7 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  plugins: [require.resolve('docusaurus-lunr-search')],
   themeConfig: {
     // Replace with your project's social card
     navbar: {

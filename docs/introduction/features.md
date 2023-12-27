@@ -1,6 +1,7 @@
 ---
+id: features
 title: Features
-order: 2
+sidebar_position: 3
 ---
 
 - Multiple languages: Java/Python/C++/Golang/Javascript/Rust.

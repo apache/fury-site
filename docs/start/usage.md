@@ -1,6 +1,7 @@
 ---
+id: usage
 title: Usage
-order: 1
+sidebar_position: 1
 ---
 
 ## Java Serialization
@@ -93,7 +94,7 @@ print(fury.deserialize(data))
 ```go
 package main
 
-import furygo "github.com/alipay/fury/fury/go/fury"
+import furygo "https://github.com/apache/incubator-fury/go/fury"
 import "fmt"
 
 func main() {

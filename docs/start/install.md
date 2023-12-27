@@ -1,6 +1,7 @@
 ---
+id: install
 title: Install
-order: 0
+sidebar_position: 0
 ---
 
 ### Java
@@ -65,7 +66,7 @@ pip install pyfury --pre
 ### Golang
 
 ```bash
-go get github.com/alipay/fury/go/fury
+go get https://github.com/apache/incubator-fury/go/fury
 ```
 
 ### JavaScript
@@ -80,8 +81,8 @@ npm install @furyjs/fury
 # Cargo.toml
 
 [dependencies]
-fury = { git= "https://github.com/alipay/fury.git", branch = "main" }
-fury_derive = { git= "https://github.com/alipay/fury.git", branch = "main" }
+fury = { git= "https://github.com/apache/incubator-fury.git", branch = "main" }
+fury_derive = { git= "https://github.com/apache/incubator-fury.git", branch = "main" }
 lazy_static = { version = "1.4.0" }
 
 ```

@@ -1,6 +1,7 @@
 ---
 title: GraalVM Guide
-order: 6
+sidebar_position: 6
+id: graalvm_guide
 ---
 
 # GraalVM Native Image
