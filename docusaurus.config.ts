@@ -78,9 +78,49 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
-          href: 'https://github.com/apache/incubator-fury',
-          label: 'GitHub',
+          type: 'dropdown',
+          label: 'ASF',
           position: 'right',
+          items: [
+            {
+              label: 'Foundation',
+              to: 'https://www.apache.org/'
+            },
+            {
+              label: 'License',
+              to: 'https://www.apache.org/licenses/'
+            },
+            {
+              label: 'Events',
+              to: 'https://www.apache.org/events/current-event.html'
+            },
+            {
+              label: 'Privacy',
+              to: 'https://privacy.apache.org/policies/privacy-policy-public.html'
+            },
+            {
+              label: 'Security',
+              to: 'https://www.apache.org/security/'
+            },
+            {
+              label: 'Sponsorship',
+              to: 'https://www.apache.org/foundation/sponsorship.html'
+            },
+            {
+              label: 'Thanks',
+              to: 'https://www.apache.org/foundation/thanks.html'
+            },
+            {
+              label: 'Code of Conduct',
+              to: 'https://www.apache.org/foundation/policies/conduct.html'
+            }
+          ]
+        },
+        {
+          href: 'https://github.com/apache/incubator-fury',
+          position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
