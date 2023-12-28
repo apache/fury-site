@@ -59,4 +59,4 @@ Fury provides a class registration option and enabled by default for such protoc
 
 ## How to Contribute
 
-Please read our [project development guide](https://github.com/apache/incubator-fury/blob/main/docs/development.md).
+Please read the [CONTRIBUTING](https://github.com/apache/incubator-fury/blob/main/CONTRIBUTING.md) guide for instructions on how to contribute.
