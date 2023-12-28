@@ -140,7 +140,7 @@ const config: Config = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/fury_community',
+              href: 'https://twitter.com/ApacheFury',
             },
           ],
         },
