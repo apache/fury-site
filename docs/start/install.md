@@ -11,8 +11,8 @@ Nightly snapshot:
 ```xml
 <repositories>
   <repository>
-    <id>sonatype</id>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    <id>apache</id>
+    <url>https://repository.apache.org/snapshots/</url>
     <releases>
       <enabled>false</enabled>
     </releases>
@@ -22,13 +22,13 @@ Nightly snapshot:
   </repository>
 </repositories>
 <dependency>
-  <groupId>org.furyio</groupId>
+  <groupId>org.apache.fury</groupId>
   <artifactId>fury-core</artifactId>
   <version>0.5.0-SNAPSHOT</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
-  <groupId>org.furyio</groupId>
+  <groupId>org.apache.fury</groupId>
   <artifactId>fury-format</artifactId>
   <version>0.5.0-SNAPSHOT</version>
 </dependency> -->
@@ -40,18 +40,20 @@ Release version:
 <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.furyio</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
 </dependency> -->
 ```
+Maven groupId will be changed to `org.apache.fury` when next version is released.
+
 ### Scala
 ```sbt
-libraryDependencies += "org.furyio" % "fury-core" % "0.4.0"
+libraryDependencies += "org.furyio" % "fury-core" % "0.4.1"
 ```
 
 ### Python
@@ -60,7 +62,7 @@ libraryDependencies += "org.furyio" % "fury-core" % "0.4.0"
 # Python wheel will be released in the future.
 # Currently you need to specify `--pre` to install
 # the unstable version.
-pip install pyfury --pre
+pip install pyfury
 ```
 
 ### Golang
