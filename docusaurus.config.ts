@@ -176,7 +176,7 @@ const config: Config = {
         },
       ],
       logo: {
-        width: 320,
+        width: 200,
         src: "/img/apache-incubator.svg",
         href: "https://incubator.apache.org/",
         alt: "Apache Incubator logo"
