@@ -68,7 +68,7 @@ pip install pyfury
 ### Golang
 
 ```bash
-go get https://github.com/apache/incubator-fury/go/fury
+go get github.com/apache/incubator-fury/go/fury
 ```
 
 ### JavaScript
