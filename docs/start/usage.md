@@ -157,7 +157,7 @@ struct Animal {
     category: String,
 }
 
-#[derive(FuryMeta, Deserialize, Serialize, Debug, PartialEq)]
+#[derive(Fury, Debug, PartialEq)]
 #[tag("example.bar")]
 struct Person {
     name: String,
