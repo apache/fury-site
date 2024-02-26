@@ -148,10 +148,9 @@ console.log(result);
 ### Rust
 
 ```rust
-use fury::{from_buffer, to_buffer};
-use fury_derive::{Deserialize, FuryMeta, Serialize};
+use fury::{from_buffer, to_buffer, Fury};
 
-#[derive(FuryMeta, Deserialize, Serialize, Debug, PartialEq)]
+#[derive(Fury, Debug, PartialEq)]
 #[tag("example.foo")]
 struct Animal {
     name: String,
