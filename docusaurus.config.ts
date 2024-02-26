@@ -44,7 +44,9 @@ const config: Config = {
   ],
   plugins: [require.resolve('docusaurus-lunr-search')],
   themeConfig: {
-    // Replace with your project's social card
+    metadata: [
+      {'http-equiv': 'Content-Security-Policy', content: "frame-src 'self' https://ghbtns.com"},
+    ],
     navbar: {
       title: '',
       logo: {
