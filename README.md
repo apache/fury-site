@@ -26,4 +26,4 @@ This command generates static content into the `build` directory and can be serv
 
 ## LICENSE
 
-Apache License 2.0
+[Apache License 2.0](./LICENSE).
