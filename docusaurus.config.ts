@@ -78,6 +78,12 @@ const config: Config = {
           position: 'right',
           label: 'Guide',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'specSidebar',
+          position: 'right',
+          label: 'Specification',
+        },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
           type: 'dropdown',
