@@ -80,7 +80,7 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
-          sidebarId: 'specSidebar',
+          sidebarId: 'specificationSidebar',
           position: 'right',
           label: 'Specification',
         },
