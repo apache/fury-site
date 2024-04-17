@@ -6,15 +6,16 @@ id: how_to_release
 
 This document mainly introduces how the release manager releases a new version of Apache Fury.
 
-# Introduction
+## Introduction
 
-Source Release is the msot important part which Apache values, pay more attention to license and signing issues.
-Publishing software is a serious thing and has legal consequences, please be careful. 
+Source Release is the msot important part which Apache values.
 
+Plese pay more attention to license and signing issues.
+Publishing software is a serious thing and has legal consequences. 
 
-# First-time as a release manager
+## First-time as a release manager
 
-## Environmental requirements
+### Environmental requirements
 This release process is operated in the Ubuntu OS, and the following tools are required:
 
 - JDK 1.8
@@ -25,17 +26,17 @@ This release process is operated in the Ubuntu OS, and the following tools are r
 - SVN (apache uses svn to host project releases)
 - Pay attention to setting environment variables: if you configure gpg keys under a different directory, please `export GNUPGHOME=$(xxx)`
 
-## Prepare GPG Key
+### Prepare GPG Key
 If you are the first time to become a release manager, you need to prepare a gpg key. 
 
 Following is a quick setup, you can refer [Apache openpgp doc](https://infra.apache.org/openpgp.html) for further details.
 
-### Install GPG
+#### Install GPG
 ```bash
 sudo apt install gnupg2
 ```
 
-### Generate GPG Key
+#### Generate GPG Key
 Please usee your apache name and email for generate key
 ```bash
 $ gpg --full-gen-key
@@ -100,7 +101,7 @@ uid           [ultimate] Chaokun <chaokunyang@apache.org>
 sub   rsa4096 2022-07-12 [E]
 ```
 
-### Upload your public key to public GPG keyserver
+#### Upload your public key to public GPG keyserver
 
 Firstly, list your key:
 ```bash
@@ -122,12 +123,12 @@ gpg --keyserver keys.openpgp.org --send-key <key-id> # e.g., 1E2CDAE4C08AD7D694D
 ```
 Among them, `keys.openpgp.org` is a randomly selected keyserver, you can use keyserver.ubuntu.com or any other full-featured keyserver.
 
-### Check whether the key is created successfully
+#### Check whether the key is created successfully
 Uploading takes about one minute; after that, you can check by your email at the corresponding keyserver.
 
 Uploading keys to the keyserver is mainly for joining a [Web of Trust](https://infra.apache.org/release-signing.html#web-of-trust).
 
-### Add your GPG public key to the project KEYS file
+#### Add your GPG public key to the project KEYS file
 
 The svn repository of the release branch is: https://dist.apache.org/repos/dist/release/incubator/fury
 
@@ -141,11 +142,11 @@ svn add .   # It is not needed if the KEYS document exists before.
 svn ci -m "add gpg key for YOUR_NAME" # Later on, if you are asked to enter a username and password, just use your apache username and password.
 ```
 
-### Upload the GPG public key to your GitHub account
+#### Upload the GPG public key to your GitHub account
 - Enter https://github.com/settings/keys to add your GPG key.
 - Please remember to bind the email address used in the GPG key to your GitHub account (https://github.com/settings/emails) if you find "unverified" after adding it.
 
-## Further reading
+### Further reading
 It's recommanded but not mandatory to read following documents before making a release to know more details about apache release:
 
 - Release policy: https://www.apache.org/legal/release-policy.html
@@ -156,7 +157,7 @@ It's recommanded but not mandatory to read following documents before making a r
 - Release downloadpages: https://infra.apache.org/release-download-pages.html
 - Publishing maven artifacts: https://infra.apache.org/publishing-maven-artifacts.html
 
-# Start discussion about the next release
+## Start discussion about the release
 Start a discussion about the next release via sending email to: dev@fury.apache.org:
 
 Title:
@@ -182,16 +183,16 @@ Thanks
 ${name}
 ```
 
-# Preparing for release
+## Preparing for release
 If the discussion goes positive, you will need to prepare the release artifiacts.
 
-## Github branch and tag 
+### Github branch and tag 
 - Create a new branch named `releases-0.5.0`
 - Bump version to `$version` by executing command `python ci/release.py -l all -version $version`
 - Make a git commit and push the branch to `git@github.com:apache/incubator-fury.git`
 - Create a new tag by `git tag v0.5.0-rc1`, then push it to `git@github.com:apache/incubator-fury.git`
 
-## Build and upload artifacts to SVN dist repo
+### Build and upload artifacts to SVN dist/dev repo
 First you need to build source release artifacts by `python ci/release.py build -v $version`.
 
 Then you need to upload it to svn dist repo. The dist repo of the dev branch is: https://dist.apache.org/repos/dist/dev/incubator/fury
@@ -220,10 +221,10 @@ svn commit -m "Prepare for fury ${version}-rc${rcnum}"
 
 Visit https://dist.apache.org/repos/dist/dev/incubator/fury/ to check the artifacts are uploaded correctly. 
 
-## What to do if something goes wrong
+### What to do if something goes wrong
 If some files are unexpected, you need to remove by `svn delete` and repeat the above upload process.
 
-# Voting
+## Voting
 
 As an incubating project, Fury requires votes from both the FUry Community and Incubator Community.
 
@@ -231,7 +232,7 @@ As an incubating project, Fury requires votes from both the FUry Community and I
 - release_candidate_version: the version for voting, like 0.5.0-rc1.
 - maven_artifact_number: the number for Maven staging artifacts, like 1001. Specifically, the maven_artifact_number can be found by searching "fury" on https://repository.apache.org/#stagingRepositories.
 
-## Fury Community Vote
+### Fury Community Vote
 
 Send an email to Fury Community: dev@fury.apache.org:
 
@@ -331,7 +332,7 @@ Thanks
 ${name}
 ```
 
-## Incubator Community Vote
+### Incubator Community Vote
 
 Send an email to: general@incubator.apache.org:
 
@@ -439,15 +440,15 @@ Thanks for reviewing and voting for our release candidate.
 We will proceed with publishing the approved artifacts and sending out the announcement soon.
 ```
 
-## What if vote fail
+### What if vote fail
 
 If the vote failed, click "Drop" to drop the staging Maven artifacts.
 
 
 
-# Official Release
+## Official Release
 
-## Publish artifacts to SVN Release branch
+### Publish artifacts to SVN Release branch
 - fury_version: the version for fury, like 0.5.0
 - release_candidate_version: the version for voting, like 0.5.0-rc1
 
@@ -455,17 +456,17 @@ If the vote failed, click "Drop" to drop the staging Maven artifacts.
 svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_candidate_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_candidate_version} -m "Release ${fury_version}"
 ```
 
-## Change Fury Website download link
+### Change Fury Website download link
 
 TODO
 
-## Release Maven artifacts
+### Release Maven artifacts
 - maven_artifact_number: the number for Maven staging artifacts, like 1001.
 - Open https://repository.apache.org/#stagingRepositories.
 - Find the artifact `orgapachefury-${maven_artifact_number}`, click "Release".
 
 
-## Send the announcement
+### Send the announcement
 
 Send the release announcement to dev@fury.apache.org and CC announce@apache.org.
 
