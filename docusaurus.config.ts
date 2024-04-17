@@ -84,6 +84,12 @@ const config: Config = {
           position: 'right',
           label: 'Specification',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'communitySidebar',
+          position: 'right',
+          label: 'Community',
+        },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
           type: 'dropdown',

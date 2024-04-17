@@ -462,7 +462,7 @@ TODO
 ## Release Maven artifacts
 - maven_artifact_number: the number for Maven staging artifacts, like 1001.
 - Open https://repository.apache.org/#stagingRepositories.
-- Find the artifact orgapachefury-${maven_artifact_number}, click "Release".
+- Find the artifact `orgapachefury-${maven_artifact_number}`, click "Release".
 
 
 ## Send the announcement
