@@ -8,9 +8,9 @@ This document mainly introduces how the release manager releases a new version o
 
 ## Introduction
 
-Source Release is the msot important part which Apache values.
+Source Release is the most important part which Apache values.
 
-Plese pay more attention to license and signing issues.
+Please pay more attention to license and signing issues.
 Publishing software is a serious thing and has legal consequences. 
 
 ## First-time as a release manager
@@ -27,9 +27,9 @@ This release process is operated in the Ubuntu OS, and the following tools are r
 - Pay attention to setting environment variables: if you configure gpg keys under a different directory, please `export GNUPGHOME=$(xxx)`
 
 ### Prepare GPG Key
-If you are the first time to become a release manager, you need to prepare a gpg key. 
+If you are the first to become a release manager, you need to prepare a gpg key. 
 
-Following is a quick setup, you can refer [Apache openpgp doc](https://infra.apache.org/openpgp.html) for further details.
+Following is a quick setup, you can refer to [Apache openpgp doc](https://infra.apache.org/openpgp.html) for further details.
 
 #### Install GPG
 ```bash
@@ -37,7 +37,7 @@ sudo apt install gnupg2
 ```
 
 #### Generate GPG Key
-Please usee your apache name and email for generate key
+Please use your apache name and email for generate key
 ```bash
 $ gpg --full-gen-key
 gpg (GnuPG) 2.2.20; Copyright (C) 2020 Free Software Foundation, Inc.
@@ -124,7 +124,7 @@ gpg --keyserver keys.openpgp.org --send-key <key-id> # e.g., 1E2CDAE4C08AD7D694D
 Among them, `keys.openpgp.org` is a randomly selected keyserver, you can use keyserver.ubuntu.com or any other full-featured keyserver.
 
 #### Check whether the key is created successfully
-Uploading takes about one minute; after that, you can check by your email at the corresponding keyserver.
+Uploading takes about one minute; after that, you can check by email at the corresponding keyserver.
 
 Uploading keys to the keyserver is mainly for joining a [Web of Trust](https://infra.apache.org/release-signing.html#web-of-trust).
 
@@ -147,14 +147,14 @@ svn ci -m "add gpg key for YOUR_NAME" # Later on, if you are asked to enter a us
 - Please remember to bind the email address used in the GPG key to your GitHub account (https://github.com/settings/emails) if you find "unverified" after adding it.
 
 ### Further reading
-It's recommanded but not mandatory to read following documents before making a release to know more details about apache release:
+It's recommended but not mandatory to read following documents before making a release to know more details about apache release:
 
 - Release policy: https://www.apache.org/legal/release-policy.html
 - Incubator release: http://incubator.apache.org/guides/releasemanagement.html
 - TLP release: https://infra.apache.org/release-distribution
 - Release sign: https://infra.apache.org/release-signing.html
 - Release publish: https://infra.apache.org/release-publishing.html
-- Release downloadpages: https://infra.apache.org/release-download-pages.html
+- Release download pages: https://infra.apache.org/release-download-pages.html
 - Publishing maven artifacts: https://infra.apache.org/publishing-maven-artifacts.html
 
 ## Start discussion about the release
@@ -379,7 +379,7 @@ https://repository.apache.org/content/repositories/orgapachefury-${maven_artifac
 
 Please download, verify, and test.
 
-The VOTE will pass after got 3 binding approve.
+The VOTE will pass after 3 binding approve.
 
 [ ] +1 approve
 [ ] +0 no opinion
