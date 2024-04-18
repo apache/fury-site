@@ -170,7 +170,7 @@ Content:
 ```
 Hello, Apache Fury(incubating) Community,
 
-This is a call for a discussion to release Apache Fury(incubating) version ${fury_version}.
+This is a call for a discussion to release Apache Fury(incubating) version ${release_version}.
 
 The change lists about this release:
 
@@ -206,17 +206,17 @@ Then, upload the artifacts:
 ```bash
 cd fury-dist-dev
 # create a directory named by version
-mkdir ${version}-rc${rcnum}
+mkdir ${release_version}-${rc_version}
 # copy source code and signature package to the versioned directory
-cp ${repo_dir}/dist/* ${version}-rc${rcnum}
+cp ${repo_dir}/dist/* ${release_version}-${rc_version}
 # check svn status
 svn status
 # add to svn
-svn add ${version}-rc${rcnum}
+svn add ${release_version}-${rc_version}
 # check svn status
 svn status
 # commit to SVN remote server
-svn commit -m "Prepare for fury ${version}-rc${rcnum}"
+svn commit -m "Prepare for fury ${release_version}-${rc_version}"
 ```
 
 Visit https://dist.apache.org/repos/dist/dev/incubator/fury/ to check the artifacts are uploaded correctly. 
@@ -239,7 +239,7 @@ Send an email to Fury Community: dev@fury.apache.org:
 Title:
 
 ```
-[VOTE] Release Apache Fury(incubating) ${release_candidate_version}
+[VOTE] Release Apache Fury(incubating) ${release_version}-${rc_version}
 ```
 
 Content:
@@ -307,7 +307,7 @@ After at least 3 +1 binding vote (from Fury Podling PMC member and committers) a
 Title:
 
 ```
-[RESULT][VOTE] Release Apache Fury(incubating) ${release_candidate_version}
+[RESULT][VOTE] Release Apache Fury(incubating) ${release_version}-${rc_version}
 ```
 
 Content:
@@ -315,7 +315,7 @@ Content:
 ```
 Hello, Apache Fury(incubating) Community,
 
-The vote to release Apache Fury(Incubating) ${release_candidate_version} has passed.
+The vote to release Apache Fury(Incubating) ${release_version}-${rc_version} has passed.
 
 The vote PASSED with 3 binding +1 and 0 -1 vote:
 
@@ -339,7 +339,7 @@ Send an email to: general@incubator.apache.org:
 Title:
 
 ```
-[VOTE] Release Apache Fury(incubating) ${release_candidate_version}
+[VOTE] Release Apache Fury(incubating) ${release_version}-${rc_version}
 ```
 
 Content:
@@ -444,16 +444,17 @@ We will proceed with publishing the approved artifacts and sending out the annou
 
 If the vote failed, click "Drop" to drop the staging Maven artifacts.
 
+Address the raised issues, then bump `rc_version` and file a new vote again.
 
 
 ## Official Release
 
 ### Publish artifacts to SVN Release branch
-- fury_version: the version for fury, like 0.5.0
+- release_version: the release version for fury, like 0.5.0
 - release_candidate_version: the version for voting, like 0.5.0-rc1
 
 ```bash
-svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_candidate_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_candidate_version} -m "Release ${fury_version}"
+svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version}-${rc_version} -m "Release fury ${release_version}"
 ```
 
 ### Change Fury Website download link
@@ -472,7 +473,7 @@ Send the release announcement to dev@fury.apache.org and CC announce@apache.org.
 
 Title:
 ```
-[ANNOUNCE] Release Apache Fury(incubating) ${fury_version}
+[ANNOUNCE] Release Apache Fury(incubating) ${release_version}
 ```
 
 Content:
@@ -480,18 +481,18 @@ Content:
 Hi all,
 
 The Apache Fury(incubating) community is pleased to announce
-that Apache Fury(incubating) ${fury_version} has been released!
+that Apache Fury(incubating) ${release_version} has been released!
 
 Apache Fury(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
-The notable changes since ${fury_version} include:
+The notable changes since ${release_version} include:
 1. xxxxx
 2. yyyyyy
 3. zzzzzz
 
 Please refer to the change log for the complete list of changes:
-https://github.com/apache/incubator-fury/releases/tag/v${fury_version}
+https://github.com/apache/incubator-fury/releases/tag/v${release_version}
 
 Apache Fury website: https://fury.apache.org/
 
