@@ -449,12 +449,12 @@ Address the raised issues, then bump `rc_version` and file a new vote again.
 
 ## Official Release
 
-### Publish artifacts to SVN Release branch
+### Publish artifacts to SVN Release Directory
 - release_version: the release version for fury, like 0.5.0
 - release_candidate_version: the version for voting, like 0.5.0-rc1
 
 ```bash
-svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version}-${rc_version} -m "Release fury ${release_version}"
+svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version} -m "Release fury ${release_version}"
 ```
 
 ### Change Fury Website download link
