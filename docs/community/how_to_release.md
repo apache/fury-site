@@ -239,7 +239,7 @@ Send an email to Fury Community: dev@fury.apache.org:
 Title:
 
 ```
-[VOTE] Release Apache Fury(incubating) ${release_version}-${rc_version}
+[VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
 Content:
@@ -307,7 +307,7 @@ After at least 3 +1 binding vote (from Fury Podling PMC member and committers) a
 Title:
 
 ```
-[RESULT][VOTE] Release Apache Fury(incubating) ${release_version}-${rc_version}
+[RESULT][VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
 Content:
@@ -315,7 +315,7 @@ Content:
 ```
 Hello, Apache Fury(incubating) Community,
 
-The vote to release Apache Fury(Incubating) ${release_version}-${rc_version} has passed.
+The vote to release Apache Fury(Incubating) v${release_version}-${rc_version} has passed.
 
 The vote PASSED with 3 binding +1 and 0 -1 vote:
 
@@ -339,43 +339,46 @@ Send an email to: general@incubator.apache.org:
 Title:
 
 ```
-[VOTE] Release Apache Fury(incubating) ${release_version}-${rc_version}
+[VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
 Content:
 
 ```
-Hello Incubator PMC,
+Hello everyone,
+
+This is a call for the vote to release Apache Fury(Incubating) v${release_version}-${rc_version}.
 
 The Apache Fury community has voted and approved the release of Apache
-Fury(incubating) ${release_candicate_version}. We now kindly request the IPMC members
+Fury(incubating) v${release_version}-${rc_version}. We now kindly request the IPMC members
 review and vote for this release.
 
 Apache Fury(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
 Fury community vote thread:
-
 ${community_vote_thread_url}
 
 Vote result thread:
-
 ${community_vote_result_thread_url}
 
 The release candidate:
-
-https://dist.apache.org/repos/dist/dev/incubator/fury/${release_candicate_version}/
+https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/
 
 This release has been signed with a PGP available here:
-
 https://downloads.apache.org/incubator/fury/KEYS
 
-Git branch for the release:
+Git tag for the release:
+https://github.com/apache/incubator-fury/releases/tag/v${release_version}-${rc_version}/
 
-https://github.com/apache/incubator-fury/tree/release-${release_candicate_version}
+Git commit for the release:
+https://github.com/apache/incubator-fury/commit/$xxx
 
 Maven staging repo:
 https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/
+
+How to Build and Test, please refer to:
+https://github.com/apache/incubator-fury/blob/main/docs/guide/DEVELOPMENT.md
 
 Please download, verify, and test.
 
@@ -396,12 +399,6 @@ Checklist for reference:
 [ ] All source files have ASF headers
 [ ] Can compile from source
 
-More detailed checklist please refer to:
-https://github.com/apache/incubator-fury/tree/main/ci/release.py
-
-To compile from source, please refer to:
-https://github.com/apache/incubator-fury/blob/main/CONTRIBUTING.md
-
 Thanks
 
 ${name}
@@ -412,7 +409,7 @@ After at least 72 hours with at least 3 +1 binding vote (from Incubator PMC memb
 Title:
 
 ```
-[RESULT][VOTE] Release Apache Fury(incubating) ${release_candicate_version}
+[RESULT][VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
 Content:
@@ -420,7 +417,7 @@ Content:
 ```
 Hi Incubator PMC,
 
-The vote to release Apache Fury(incubating) ${release_candicate_version} has passed with
+The vote to release Apache Fury(incubating) v${release_version}-${rc_version} has passed with
 4 +1 binding and 3 +1 non-binding votes, no +0 or -1 votes.
 
 Binding votes：
