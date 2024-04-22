@@ -27,12 +27,6 @@ Maven groupId will be changed to `org.apache.fury` when next version is released
 libraryDependencies += "org.furyio" % "fury-core" % "0.4.1"
 ```
 
-### Python
-
-```bash
-pip install pyfury
-```
-
 ### Golang
 
 ```bash
