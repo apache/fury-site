@@ -43,9 +43,7 @@ To verify the PGP signatures, you will need to download and import the
 [release KEYS](https://downloads.apache.org/incubator/fury/KEYS):
 
 ```bash
-curl https://downloads.apache.org/incubator/fury/KEYS >KEYS # Download KEYS
-gpg --import KEYS # Import KEYS to local
-# Then, trust the public key
+gpg --import KEYS
 ```
 
 Then you can verify signature:
