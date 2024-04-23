@@ -33,7 +33,6 @@ sha512sum --check apache-fury-incubating-0.5.0-src.tar.gz
 It should output something like:
 
 ```bash
-apache-fury-incubating-0.5.0-src.tar.gz
 apache-fury-incubating-0.5.0-src.tar.gz: OK
 ```
 
@@ -50,7 +49,7 @@ gpg --import KEYS
 
 Then you can verify signature:
 ```bash
-gpg --verify apache-fury-incubating-0.5.0-src.tar.gz.asc
+gpg --verify apache-fury-incubating-0.5.0-src.tar.gz.asc apache-fury-incubating-0.5.0-src.tar.gz
 ```
 
 If something like the following appears, it means the signature is correct:
