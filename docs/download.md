@@ -9,7 +9,7 @@ For binary install, please see Fury [install](/docs/start/install/) document.
 
 ## The latest release 
 
-Apache Fury hasn't make a release since joined Apache Incubator.
+Apache Fury (Incubating) hasn't made a release since joining the Apache Incubator.
 
 ## Verify a release
 
@@ -18,4 +18,4 @@ Please verify the release with corresponding hashes(sha512), signatures and [rel
 
 ## All archived releases
 
-Apache Fury hasn't make a release since joined Apache Incubator.
+Apache Fury (Incubating) hasn't made a release since joining the Apache Incubator.

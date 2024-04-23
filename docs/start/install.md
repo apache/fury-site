@@ -25,8 +25,8 @@ To add a dependency on Fury using Maven, use the following:
   <version>0.4.1</version>
 </dependency> -->
 ```
-Maven groupId will be changed to `org.apache.fury` when next version is released.
+Maven groupId will be changed to `org.apache.fury` when the next version is released.
 
 Note:
-> This is released before Fury joined Apache Incubator, Fury haven't make a release under ASF yet.
-> The maven groupId will be replaced to `org.apache.fury` when next version is released.
+> This was released before Fury joined the Apache Incubator, Fury hasn't made a release under ASF yet.
+> The maven groupId will be replaced to `org.apache.fury` when the next version is released.
