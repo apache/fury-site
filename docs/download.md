@@ -27,7 +27,7 @@ These files are named after the files they relate to but have `.sha512/.asc` ext
 To verify the SHA digests, you need the .tgz and its associated .tgz.sha512 file. An example command:
 
 ```bash
-for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
+sha512sum --check apache-fury-incubating-0.5.0-src.tar.gz
 ```
 
 It should output something like:
@@ -50,13 +50,12 @@ gpg --import KEYS # Import KEYS to local
 
 Then you can verify signature:
 ```bash
-for i in *.tar.gz; do echo $i; gpg --verify $i.asc $i; done
+gpg --verify apache-fury-incubating-0.5.0-src.tar.gz.asc
 ```
 
 If something like the following appears, it means the signature is correct:
 
 ```bash
-apache-fury-incubating-0.5.0-src.tar.gz
 gpg: Signature made Wed 17 Apr 2024 11:49:45 PM CST using RSA key ID 5E580BA4
 gpg: checking the trustdb
 gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
