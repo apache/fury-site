@@ -39,8 +39,10 @@ apache-fury-incubating-0.5.0-src.tar.gz: OK
 
 ### Verifying Signatures
 
-To verify the PGP signatures, you will need to download and import the 
-[release KEYS](https://downloads.apache.org/incubator/fury/KEYS):
+To verify the PGP signatures, you will need to download the 
+[release KEYS](https://downloads.apache.org/incubator/fury/KEYS) first.
+
+Then import the downloaded `KEYS`:
 
 ```bash
 gpg --import KEYS
