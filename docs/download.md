@@ -24,7 +24,7 @@ These files are named after the files they relate to but have `.sha512/.asc` ext
 
 ### Verifying Checksums
 
-To verify the SHA digests, you need the .tgz and its associated .tgz.sha512 file. An example command:
+To verify the SHA digests, you need the `.tgz` and its associated `.tgz.sha512` file. An example command:
 
 ```bash
 sha512sum --check apache-fury-incubating-0.5.0-src.tar.gz
