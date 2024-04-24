@@ -1,13 +1,13 @@
 ---
 slug: fury_blazing_fast_multiple_language_serialization_framework
-title: Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy
+title: Apache Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy
 authors: [chaokunyang]
 tags: [fury]
 ---
 
-Fury is a multi-language serialization framework powered by JIT dynamic compilation and zero copy. It supports Java/Python/Golang/JavaScript/Rust/C++, provide automatic multi-language objects serialization features, and 170x speedup compared to JDK serialization.
+Apache Fury(incubating) is a multi-language serialization framework powered by JIT dynamic compilation and zero copy. It supports Java/Python/Golang/JavaScript/Rust/C++, provide automatic multi-language objects serialization features, and 170x speedup compared to JDK serialization.
 <!--truncate-->
-# Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy
+# Apache Fury - A blazing fast multi-language serialization framework powered by jit and zero-copy
 
 Author: [chaokunyang](https://github.com/chaokunyang)
 
