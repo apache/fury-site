@@ -84,6 +84,13 @@ const config: Config = {
           position: 'right',
           label: 'Specification',
         },
+        {
+          type: 'doc',
+          docId: 'download',
+          position: 'right',
+          to: 'docs/download',
+          label: 'Download',
+        },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
           type: 'dropdown',

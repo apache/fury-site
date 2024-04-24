@@ -4,6 +4,11 @@ title: Install
 sidebar_position: 0
 ---
 
+The official Apache Fury releases are provided as source artifacts.
+
+For source download, please see Fury [download](/docs/download/) page.
+
+
 ### Java
 To add a dependency on Fury using Maven, use the following:
 
@@ -20,31 +25,8 @@ To add a dependency on Fury using Maven, use the following:
   <version>0.4.1</version>
 </dependency> -->
 ```
-Maven groupId will be changed to `org.apache.fury` when next version is released.
+Maven groupId will be changed to `org.apache.fury` when the next version is released.
 
-### Scala
-```sbt
-libraryDependencies += "org.furyio" % "fury-core" % "0.4.1"
-```
-
-### Golang
-
-```bash
-go get github.com/apache/incubator-fury/go/fury
-```
-
-### JavaScript
-
-```bash
-npm install @furyjs/fury
-```
-
-### Rust
-
-```bash
-# Cargo.toml
-
-[dependencies]
-fury = { git= "https://github.com/apache/incubator-fury.git", branch = "main" }
-lazy_static = { version = "1.4.0" }
-```
+Note:
+> This was released before Fury joined the Apache Incubator, Fury hasn't made a release under ASF yet.
+> The maven groupId will be replaced to `org.apache.fury` when the next version is released.
