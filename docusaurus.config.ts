@@ -85,10 +85,8 @@ const config: Config = {
           label: 'Specification',
         },
         {
-          type: 'doc',
-          docId: 'download',
           position: 'right',
-          to: 'docs/download',
+          to: 'download',
           label: 'Download',
         },
         {to: '/blog', label: 'Blog', position: 'right'},

@@ -3,13 +3,19 @@ id: download
 title: Apache Fury(incubating) Download
 ---
 
+# Download
+
 The official Apache Fury releases are provided as source artifacts.
 
 For binary install, please see Fury [install](/docs/start/install/) document.
 
 ## The latest release 
 
-The latest source release is [0.5.0](https://www.apache.org/dyn/closer.lua/incubator/fury/0.5.0/apache-fury-0.5.0-incubating-src.tar.gz?action=download) ([asc](https://downloads.apache.org/incubator/fury/0.5.0/apache-fury-0.5.0-incubating-src.tar.gz.asc), [sha512](https://downloads.apache.org/incubator/fury/0.5.0/apache-fury-0.5.0-incubating-src.tar.gz.sha512)).
+The latest source release is 0.5.0:
+
+| Version | Date | Source | Release Notes |
+|---------|------------|--------|---------------|
+| 0.5.0   |2024-05-03  | [apache-fury-0.5.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/fury/0.5.0/apache-fury-0.5.0-incubating-src.tar.gz?action=download) ([asc](https://downloads.apache.org/incubator/fury/0.5.0/apache-fury-0.5.0-incubating-src.tar.gz.asc), [sha512](https://downloads.apache.org/incubator/fury/0.5.0/apache-fury-0.5.0-incubating-src.tar.gz.sha512)) | [release notes](https://github.com/apache/incubator-fury/releases/tag/v0.5.0) |
 
 
 ## All archived releases
