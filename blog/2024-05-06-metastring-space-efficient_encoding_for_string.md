@@ -153,7 +153,7 @@ Here is the common encoding selection strategy:
 | UTF8                      | any utf-8 char                                           | use `UTF-8` encoding                                                                                                                                        |
 | Compression               | any utf-8 char                                           | lossless compression                                                                                                                                        |
 
-For package name, module name or namespace, `LOWER_SPECIAL` will be used mostly. `ALL_TO_LOWER_SPECIAL` can be used too since it can represent the same chars as `LOWER_SPECIAL` without using more bits, but also support string with uppercase chars.
+For package name, module name or namespace, `LOWER_SPECIAL` will be used mostly. `ALL_TO_LOWER_SPECIAL` can be used too, since it can represent the same chars as `LOWER_SPECIAL` without using more bits, but also support string with uppercase chars.
 
 For className, `FIRST_TO_LOWER_SPECIAL` will be used mostly. If there are multiple uppercase chars, then `ALL_TO_LOWER_SPECIAL` will be used instead.
 If a string contains digits, then `LOWER_UPPER_DIGIT_SPECIAL` will be used.
