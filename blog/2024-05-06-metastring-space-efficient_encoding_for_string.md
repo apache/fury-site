@@ -65,6 +65,39 @@ private byte[] encodeGeneric(char[] chars, int bitsPerChar) {
   }
   return bytes;
 }
+
+private int charToValueLowerSpecial(char c) {
+  if (c >= 'a' && c <= 'z') {
+    return c - 'a';
+  } else if (c == '.') {
+    return 26;
+  } else if (c == '_') {
+    return 27;
+  } else if (c == '$') {
+    return 28;
+  } else if (c == '|') {
+    return 29;
+  } else {
+    throw new IllegalArgumentException("Unsupported character for LOWER_SPECIAL encoding: " + c);
+  }
+}
+
+private int charToValueLowerUpperDigitSpecial(char c) {
+  if (c >= 'a' && c <= 'z') {
+    return c - 'a';
+  } else if (c >= 'A' && c <= 'Z') {
+    return 26 + (c - 'A');
+  } else if (c >= '0' && c <= '9') {
+    return 52 + (c - '0');
+  } else if (c == specialChar1) {
+    return 62;
+  } else if (c == specialChar2) {
+    return 63;
+  } else {
+    throw new IllegalArgumentException(
+        "Unsupported character for LOWER_UPPER_DIGIT_SPECIAL encoding: " + c);
+  }
+}
 ```
 
 Decoding code snippet in golang, see [`go/fury/meta/meta_string_decoder.go:70`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/go/fury/meta/meta_string_decoder.go#L70) for more details:
