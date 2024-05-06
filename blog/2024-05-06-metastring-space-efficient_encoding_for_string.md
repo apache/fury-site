@@ -10,13 +10,13 @@ tags: [fury]
 In rpc/serialization systems, we often need to send **`namespace/path/filename/fieldName/packageName/moduleName/className/enumValue`** between processes.
 
 Those strings are mostly ascii strings. In order to transfer between processes, we often encode such strings using utf-8 encodings. Such encoding
-will take one byte for every char, which seems already space efficient compared to utf-16.
+will take one byte for every char, which is not space efficient actually.
 
-But if we take a deeper look at into this, we will found that most chars are **lower chars plus `.`, `$` and `_`**, which can be expressed in a much 
+If we take a deeper look, we will found that most chars are **lower chars plus `.`, `$` and `_`**, which can be expressed in a much 
 smaller range **`0~32`**, and one byte can represent range `0~255`, the significant bits are wasted. And the cost is not ignorable, in a dynamic serialization
 framework, such meta will take considerable cost compared to real data.
 
-So we proposed a new string encoding algorithm which we called `meta string` encoding. It will encode most chars using less bits instead of `8` bits in utf-8 encoding.
+So we proposed a new string encoding algorithm which we called **meta string encoding**. It will encode most chars using less bits instead of `8` bits in utf-8 encoding.
 
 ## Meta String Introduction
 
