@@ -4,7 +4,7 @@
         <title>Apache Fury (incubating) Blog</title>
         <link>https://fury.apache.org/blog</link>
         <description>Apache Fury (incubating) Blog</description>
-        <lastBuildDate>Mon, 13 May 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 03 May 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[Fury v0.5.0 Released]]></title>
             <link>https://fury.apache.org/blog/fury_0_5_0_release</link>
             <guid>https://fury.apache.org/blog/fury_0_5_0_release</guid>
-            <pubDate>Mon, 13 May 2024 00:00:00 GMT</pubDate>
+            <pubDate>Fri, 03 May 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[We're excited to announce the release of Fury v0.5.0. This release incorporates a myriad of improvements, bug fixes, and new features across multiple languages including Java, Golang, Python and JavaScript. It further refines Fury's performance, compatibility, and developer experience.]]></description>
             <content:encoded><![CDATA[<p>We're excited to announce the release of Fury v0.5.0. This release incorporates a myriad of improvements, bug fixes, and new features across multiple languages including Java, Golang, Python and JavaScript. It further refines Fury's performance, compatibility, and developer experience.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-features">New Features<a href="https://fury.apache.org/blog/fury_0_5_0_release#new-features" class="hash-link" aria-label="Direct link to New Features" title="Direct link to New Features">​</a></h2>

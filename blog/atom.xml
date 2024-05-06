@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fury.apache.org/blog</id>
     <title>Apache Fury (incubating) Blog</title>
-    <updated>2024-05-13T00:00:00.000Z</updated>
+    <updated>2024-05-03T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fury.apache.org/blog"/>
     <subtitle>Apache Fury (incubating) Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Fury v0.5.0 Released]]></title>
         <id>https://fury.apache.org/blog/fury_0_5_0_release</id>
         <link href="https://fury.apache.org/blog/fury_0_5_0_release"/>
-        <updated>2024-05-13T00:00:00.000Z</updated>
+        <updated>2024-05-03T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[We're excited to announce the release of Fury v0.5.0. This release incorporates a myriad of improvements, bug fixes, and new features across multiple languages including Java, Golang, Python and JavaScript. It further refines Fury's performance, compatibility, and developer experience.]]></summary>
         <content type="html"><![CDATA[<p>We're excited to announce the release of Fury v0.5.0. This release incorporates a myriad of improvements, bug fixes, and new features across multiple languages including Java, Golang, Python and JavaScript. It further refines Fury's performance, compatibility, and developer experience.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-features">New Features<a href="https://fury.apache.org/blog/fury_0_5_0_release#new-features" class="hash-link" aria-label="Direct link to New Features" title="Direct link to New Features">​</a></h2>
