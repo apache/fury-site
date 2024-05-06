@@ -163,7 +163,7 @@ Finally, utf8 will be the fallback encoding if the string contains some chars no
 
 ## Encoding Flags and Data jointly
 
-- Depending on the case, one can choose encoding `flags + data` jointly, using 3 bits of first byte for flags and other bytes for data.
+- Depending on the case, one can choose encoding `flags + data` jointly, using 3 bits of first byte for flags and other bytes for data. This can be useful since there are some holes remaining in last byte, adding flags in data doesn't always increase serialized bytes size.
 - Or one can use a header to encode such flags with other meta such as encoded size, this is what Fury does in https://github.com/apache/incubator-fury/pull/1556 
 
 ## Benchmark
