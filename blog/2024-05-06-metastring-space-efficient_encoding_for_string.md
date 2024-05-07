@@ -7,16 +7,16 @@ tags: [fury]
 
 ## Background
 
-In rpc/serialization systems, we often need to send **`namespace/path/filename/fieldName/packageName/moduleName/className/enumValue`** between processes.
+In rpc/serialization systems, we often need to send **`namespace/path/filename/fieldName/packageName/moduleName/className/enumValue`** string between processes.
 
-Those strings are mostly ascii strings. In order to transfer between processes, we often encode such strings using utf-8 encodings. Such encoding
+Those strings are mostly ascii strings. In order to transfer between processes, we encode such strings using utf-8 encodings. Such encoding
 will take one byte for every char, which is not space efficient actually.
 
-If we take a deeper look, we will found that most chars are **lower chars plus `.`, `$` and `_`**, which can be expressed in a much 
-smaller range **`0~32`**, and one byte can represent range `0~255`, the significant bits are wasted. And the cost is not ignorable, in a dynamic serialization
+If we take a deeper look, we will found that most chars are **lowercase chars,  `.`, `$` and `_`**, which can be expressed in a much 
+smaller range **`0~32`**. But one byte can represent range `0~255`, the significant bits are wasted, and this cost is not ignorable. In a dynamic serialization
 framework, such meta will take considerable cost compared to real data.
 
-So we proposed a new string encoding algorithm which we called **meta string encoding**. It will encode most chars using less bits instead of `8` bits in utf-8 encoding.
+So we proposed a new string encoding algorithm which we called **meta string encoding** in Fury. It will encode most chars using `5` bits instead of `8` bits in utf-8 encoding, which can bring **37.5% space cost savings** compared to utf-8 encoding.
 
 ## Meta String Introduction
 
@@ -36,9 +36,10 @@ String binary encoding algorithm:
 | LOWER_SPECIAL             | `a-z._$\|`    | every char is written using 5 bits, `a-z`: `0b00000~0b11001`, `._$\|`: `0b11010~0b11101`, prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char)                                                        |
 | LOWER_UPPER_DIGIT_SPECIAL | `a-zA-Z0~9._` | every char is written using 6 bits, `a-z`: `0b00000~0b11001`, `A-Z`: `0b11010~0b110011`, `0~9`: `0b110100~0b111101`, `._`: `0b111110~0b111111`,  prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char) |
 | UTF-8                     | any chars     | UTF-8 encoding                                                                                                                                                                                                                                                                           |
-If we use `LOWER_SPECIAL/LOWER_UPPER_DIGIT_SPECIAL`, we must add a strip last char flag in encoded data. This is because every char will be encoded using `5/6` bits, and the last char may have `1~7` bits which are unused by encoding, such bits may cause an extra char read, which we must strip off.
 
-Encoding code snippet in java, see [`org.apache.fury.meta.MetaStringEncoder#encodeGeneric(char[], int)`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/java/fury-core/src/main/java/org/apache/fury/meta/MetaStringEncoder.java#L235) for more detailed:
+If we use `LOWER_SPECIAL/LOWER_UPPER_DIGIT_SPECIAL`, we must add a strip last char flag in encoded data. This is because every char will be encoded using `5/6` bits, and the last char may have `1~7` bits which are unused by encoding, such bits may cause an extra char to be read, which we must strip off.
+
+Here is encoding code snippet in java, see [`org.apache.fury.meta.MetaStringEncoder#encodeGeneric(char[], int)`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/java/fury-core/src/main/java/org/apache/fury/meta/MetaStringEncoder.java#L235) for more details:
 ```java
 private byte[] encodeGeneric(char[] chars, int bitsPerChar) {
   int totalBits = chars.length * bitsPerChar + 1;
@@ -100,7 +101,7 @@ private int charToValueLowerUpperDigitSpecial(char c) {
 }
 ```
 
-Decoding code snippet in golang, see [`go/fury/meta/meta_string_decoder.go:70`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/go/fury/meta/meta_string_decoder.go#L70) for more details:
+Here is decoding code snippet in golang, see [`go/fury/meta/meta_string_decoder.go:70`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/go/fury/meta/meta_string_decoder.go#L70) for more details:
 ```go
 func (d *Decoder) decodeGeneric(data []byte, algorithm Encoding) ([]byte, error) {
 	bitsPerChar := 5
@@ -139,8 +140,7 @@ func (d *Decoder) decodeGeneric(data []byte, algorithm Encoding) ([]byte, error)
 
 ## Select Best Encoding
 
-For most lower chars, meta string will use `5` bits to encode every char. For string containing upper chars, meta string will try to convert the string into a
-lower representation by inserting some markers, and compare used bytes with `6` bits encoding, then select the encoding which has smaller encoded size.
+For most lowercase characters, meta string will use `5` bits to encode every char. For string containing uppercase chars, meta string will try to convert the string into a lower case representation by inserting some markers, and compare used bytes with `6` bits encoding, then select the encoding which has smaller encoded size.
 
 Here is the common encoding selection strategy:
 
@@ -158,7 +158,7 @@ For package name, module name or namespace, `LOWER_SPECIAL` will be used mostly.
 For className, `FIRST_TO_LOWER_SPECIAL` will be used mostly. If there are multiple uppercase chars, then `ALL_TO_LOWER_SPECIAL` will be used instead.
 If a string contains digits, then `LOWER_UPPER_DIGIT_SPECIAL` will be used.
 
-Finally, utf8 will be the fallback encoding if the string contains some chars not in range `a-z0-9A-Z`.
+Finally, utf8 will be the fallback encoding if the string contains some chars which is not in range `a-z0-9A-Z`.
 
 
 ## Encoding Flags and Data jointly
