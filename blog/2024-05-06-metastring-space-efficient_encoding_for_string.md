@@ -14,7 +14,7 @@ will take one byte for every char, which is not space efficient actually.
 
 If we take a deeper look, we will found that most chars are **lowercase chars,  `.`, `$` and `_`**, which can be expressed in a much 
 smaller range **`0~32`**. But one byte can represent range `0~255`, the significant bits are wasted, and this cost is not ignorable. In a dynamic serialization
-framework, such meta will take considerable cost compared to real data.
+framework, such meta will take considerable cost compared to actual data.
 
 So we proposed a new string encoding algorithm which we called **meta string encoding** in Fury. It will encode most chars using `5` bits instead of `8` bits in utf-8 encoding, which can bring **37.5% space cost savings** compared to utf-8 encoding.
 
@@ -26,6 +26,7 @@ Such a string is enumerated and limited, so the encoding performance is not impo
 Meta string encoding uses `5/6` bits instead of `8` bits in utf-8 encoding for every chars. Since it uses less bits than utf8, it can bring 
 **37.5% space cost savings** compared to utf-8 and has a smaller encoded binary size, which uses less storage and makes the network transfer faster.
 
+More details about meta string spec can be found in [Fury xlang serialization specification](https://fury.apache.org/docs/specification/fury_xlang_serialization_spec/#meta-string).
 
 ## Encoding Algorithms
 
