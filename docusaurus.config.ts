@@ -85,6 +85,12 @@ const config: Config = {
           label: 'Specification',
         },
         {
+          type: 'docSidebar',
+          sidebarId: 'communitySidebar',
+          position: 'right',
+          label: 'Community',
+        },
+        {
           position: 'right',
           to: 'download',
           label: 'Download',

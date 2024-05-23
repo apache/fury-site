@@ -178,7 +178,7 @@ https://github.com/apache/incubator-fury/compare/v0.4.1...v0.5.0
 
 Please leave your comments here about this release plan. We will bump the version in repo and start the release process after the discussion.
 
-Thanks
+Thanks,
 
 ${name}
 ```
@@ -298,7 +298,7 @@ https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklis
 How to Build and Test, please refer to: https://github.com/apache/incubator-fury/blob/main/docs/guide/DEVELOPMENT.md
 
 
-Thanks!
+Thanks,
 Chaokun Yang
 ```
 
@@ -327,7 +327,7 @@ Binding votes:
 
 Vote thread: ${vote_thread_url}
 
-Thanks
+Thanks,
 
 ${name}
 ```
@@ -399,7 +399,7 @@ Checklist for reference:
 [ ] All source files have ASF headers
 [ ] Can compile from source
 
-Thanks
+Thanks,
 
 ${name}
 ```
@@ -499,7 +499,6 @@ Fury Resources:
 - Issue: https://github.com/apache/incubator-fury/issues
 - Mailing list: dev@fury.apache.org
 
-Thanks
-On behalf of Apache Fury community
+Thanks,
 ${name}
 ```
