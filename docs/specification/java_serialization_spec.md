@@ -112,9 +112,9 @@ For Schema consistent mode, class will be encoded as an enumerated string by ful
 the meta layout for schema evolution mode:
 
 ```
-|      8 bytes meta header      |   variable bytes   |  variable bytes   | variable bytes |
-+-------------------------------+--------------------+-------------------+----------------+
-| 7 bytes hash + 1 bytes header | current class meta | parent class meta |      ...       |
+|      8 bytes meta header      | meta size |   variable bytes   |  variable bytes   | variable bytes |
++-------------------------------+-----------|--------------------+-------------------+----------------+
+| 7 bytes hash + 1 bytes header | 1~2 bytes | current class meta | parent class meta |      ...       |
 ```
 
 Class meta are encoded from parent class to leaf class, only class with serializable fields will be encoded.
@@ -128,7 +128,13 @@ Meta header is a 64 bits number value encoded in little endian order.
   class doesn't have fields to serialize, or we're in a context which serialize fields of current class
   only( `ObjectStreamSerializer#SlotInfo` is an example), num classes will be 1.
 - 5rd bit is used to indicate whether this class needs schema evolution.
+- 6rd bit is used to indicate whether the size sum of all layers meta is less than 256.
 - Other 56 bits is used to store the unique hash of `flags + all layers class meta`.
+
+### Meta size
+
+- If the size sum of all layers meta is less than 256, then one byte is written next to indicate the length of meta.
+- Otherwise, write size as two bytes in little endian.
 
 ### Single layer class meta
 
@@ -150,53 +156,35 @@ Meta header is a 64 bits number value encoded in little endian order.
       fields info of those fields which aren't annotated by tag id for deserializing schema consistent fields, then use
       fields info in meta for deserializing compatible fields.
 - Package name encoding(omitted when class is registered):
-    - Header:
-        - If meta string encoding is `LOWER_SPECIAL` and the length of encoded string `<=` 128, then header will be
-          `7 bits size + flag(set)`.
-          Otherwise, header will be `4 bits unset + 3 bits encoding flags + flag(unset)`
-    - Package name:
-        - If bit flag is set, then package name will be encoded meta string binary.
-        - Otherwise, it will be `| unsigned varint length | encoded meta string binary |`
-- Class name encoding(omitted when class is registered)::
-    - header:
-        - If meta string encoding is in `LOWER_SPECIAL~LOWER_UPPER_DIGIT_SPECIAL (0~3)`, and the length of encoded
-          string `<=` 32， then the header will be `5 bits size + 2 bits encoding flags + flag(set)`.
-        - Otherwise, header will be `| unsigned varint length | encoded meta string binary |`
+    - encoding algorithm: `UTF8/ALL_TO_LOWER_SPECIAL/LOWER_UPPER_DIGIT_SPECIAL`
+    - Header: `6 bits size | 2 bits encoding flags`. The `6 bits size: 0~63`  will be used to indicate size `0~62`,
+      the value `63` the size need more byte to read, the encoding will encode `size - 62` as a varint next.
+- Class name encoding(omitted when class is registered):
+    - encoding algorithm: `UTF8/LOWER_UPPER_DIGIT_SPECIAL/FIRST_TO_LOWER_SPECIAL/ALL_TO_LOWER_SPECIAL`
+    - header: `6 bits size | 2 bits encoding flags`. The `6 bits size: 0~63`  will be used to indicate size `1~64`,
+      the value `63` the size need more byte to read, the encoding will encode `size - 63` as a varint next.
 - Field info:
     - header(8
-      bits): `reserved 1 bit + 3 bits field name encoding + polymorphism flag + nullability flag + ref tracking flag + tag id flag`.
+      bits): `3 bits size + 2 bits field name encoding + polymorphism flag + nullability flag + ref tracking flag`.
       Users can use annotation to provide those info.
-        - tag id: when set to 1, field name will be written by an unsigned varint tag id.
-        - ref tracking: when set to 0, ref tracking will be disabled for this field.
-        - nullability: when set to 0, this field won't be null.
+        - 2 bits field name encoding:
+            - encoding: `UTF8/ALL_TO_LOWER_SPECIAL/LOWER_UPPER_DIGIT_SPECIAL/TAG_ID`
+            - If tag id is used, i.e. field name is written by an unsigned varint tag id. 2 bits encoding will be `11`.
+        - size of field name:
+            - The `3 bits size: 0~7`  will be used to indicate length `1~7`, the value `6` the size read more bytes,
+              the encoding will encode `size - 7` as a varint next.
+            - If encoding is `TAG_ID`, then num_bytes of field name will be used to store tag id.
+        - ref tracking: when set to 1, ref tracking will be enabled for this field.
+        - nullability: when set to 1, this field can be null.
         - polymorphism: when set to 1, the actual type of field will be the declared field type even the type if
           not `final`.
-        - 3 bits field name encoding will be set to meta string encoding flags when tag id is not set.
     - type id:
         - For registered type-consistent classes, it will be the registered class id.
         - Otherwise it will be encoded as `OBJECT_ID` if it isn't `final` and `FINAL_OBJECT_ID` if it's `final`. The
-          meta
-          for such types is written separately instead of inlining here is to reduce meta space cost if object of this
-          type is serialized in current object graph multiple times, and the field value may be null too.
-    - Collection Type Info: collection type will have an extra byte for elements info.
-      Users can use annotation to provide those info.
-        - elements type same
-        - elements tracking ref
-        - elements nullability
-        - elements declared type
-    - Map Type Info: map type will have an extra byte for kv items info.
-      Users can use annotation to provide those info.
-        - keys type same
-        - keys tracking ref
-        - keys nullability
-        - keys declared type
-        - values type same
-        - values tracking ref
-        - values nullability
-        - values declared type
+          meta for such types is written separately instead of inlining here is to reduce meta space cost if object of
+          this type is serialized in current object graph multiple times, and the field value may be null too.
     - Field name: If type id is set, type id will be used instead. Otherwise meta string encoding length and data will
-      be
-      written instead.
+      be written instead.
 
 Field order are left as implementation details, which is not exposed to specification, the deserialization need to
 resort fields based on Fury field comparator. In this way, fury can compute statistics for field names or types and
@@ -223,11 +211,11 @@ Meta string is mainly used to encode meta strings such as class name and field n
 
 String binary encoding algorithm:
 
-| Algorithm                 | Pattern            | Description                                                                                                                                                                       |
-|---------------------------|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| LOWER_SPECIAL             | `a-z._$\|`         | every char is written using 5 bits, `a-z`: `0b00000~0b11001`, `._$\|`: `0b11010~0b11101`                                                                                          |
-| LOWER_UPPER_DIGIT_SPECIAL | `a-zA-Z0~9[c1,c2]` | every char is written using 6 bits, `a-z`: `0b00000~0b11001`, `A-Z`: `0b11010~0b110011`, `0~9`: `0b110100~0b111101`, `c1,c2`: `0b111110~0b111111`, `c1,c2` should be two of `._$` |
-| UTF-8                     | any chars          | UTF-8 encoding                                                                                                                                                                    |
+| Algorithm                 | Pattern       | Description                                                                                                                                                                                                                                                                              |
+|---------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| LOWER_SPECIAL             | `a-z._$\|`    | every char is written using 5 bits, `a-z`: `0b00000~0b11001`, `._$\|`: `0b11010~0b11101`, prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char)                                                        |
+| LOWER_UPPER_DIGIT_SPECIAL | `a-zA-Z0~9._` | every char is written using 6 bits, `a-z`: `0b00000~0b11001`, `A-Z`: `0b11010~0b110011`, `0~9`: `0b110100~0b111101`, `._`: `0b111110~0b111111`,  prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char) |
+| UTF-8                     | any chars     | UTF-8 encoding                                                                                                                                                                                                                                                                           |
 
 Encoding flags:
 
@@ -394,6 +382,9 @@ which will be encoded by elements header, each use one bit:
 By default, all bits are unset, which means all elements won't track ref, all elements are same type, not null and
 the actual element is the declared type in the custom class field.
 
+The implementation can generate different deserialization code based read header, and look up the generated code from a
+linear map/list.
+
 #### Elements data
 
 Based on the elements header, the serialization of elements data may skip `ref flag`/`null flag`/`element class info`.
@@ -469,8 +460,8 @@ format will be:
 |    KV header   |   N*2 objects   |
 ```
 
-`KV header` will be a header marked by `MapFieldInfo` in java. For languages such as golang, this can be computed in
-advance for non-interface types in most times.
+`KV header` will be a header marked by `MapFieldInfo` in java. The implementation can generate different deserialization
+code based read header, and look up the generated code from a linear map/list.
 
 ### Enum
 

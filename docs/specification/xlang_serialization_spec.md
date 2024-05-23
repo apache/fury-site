@@ -139,9 +139,9 @@ Fury will write the byte order for that object into the data instead of converti
 Fury header consists starts one byte:
 
 ```
-|    2 bytes   |     4 bits    | 1 bit | 1 bit | 1 bit  | 1 bit |          optional 4 bytes          |
-+--------------+---------------+-------+-------+--------+-------+------------------------------------+
-| magic number | reserved bits |  oob  | xlang | endian | null  | unsigned int for meta start offset |
+|    2 bytes   |     4 bits    | 1 bit | 1 bit | 1 bit  | 1 bit |   1 byte   |          optional 4 bytes          |
++--------------+---------------+-------+-------+--------+-------+------------+------------------------------------+
+| magic number | reserved bits |  oob  | xlang | endian | null  |  language  | unsigned int for meta start offset |
 ```
 
 - magic number: used to identify fury serialization protocol, current version use `0x62d4`.
@@ -149,6 +149,7 @@ Fury header consists starts one byte:
 - endian flag: 1 when data is encoded by little endian, 0 for big endian.
 - xlang flag: 1 when serialization uses xlang format, 0 when serialization uses Fury java format.
 - oob flag: 1 when passed `BufferCallback` is not null, 0 otherwise.
+- language: the language when serializing objects, such as JAVA, PYTHON, GO, etc. Fury can use this flag to determine whether spend more time on serialization to make the deserialization faster for dynamic languages.
 
 If meta share mode is enabled, an uncompressed unsigned int is appended to indicate the start offset of metadata.
 
@@ -288,39 +289,27 @@ Meta header is a 64 bits number value encoded in little endian order.
       fields, then use fields info in meta for deserializing compatible fields.
 - type id: the registered id for the current type, which will be written as an unsigned varint.
 - field info:
-    - Header(8 bits):
-        - Format:
-            - `reserved 1 bit + 3 bits field name encoding + polymorphism flag + nullability flag + ref tracking flag + tag id flag`.
-        - Users can use annotation to provide that info.
-            - tag id: when set to 1, the field name will be written by an unsigned varint tag id.
-            - ref tracking: when set to 0, ref tracking will be disabled for this field.
-            - nullability: when set to 0, this field won't be null.
-            - polymorphism: when set to 1, the actual type of field will be the declared field type even the type if
-              not `final`.
-            - 3 bits field name encoding will be set to meta string encoding flags when tag id is not set.
-    - Type id:
+    - header(8
+      bits): `3 bits size + 2 bits field name encoding + polymorphism flag + nullability flag + ref tracking flag`.
+      Users can use annotation to provide those info.
+        - 2 bits field name encoding:
+            - encoding: `UTF8/ALL_TO_LOWER_SPECIAL/LOWER_UPPER_DIGIT_SPECIAL/TAG_ID`
+            - If tag id is used, i.e. field name is written by an unsigned varint tag id. 2 bits encoding will be `11`.
+        - size of field name:
+            - The `3 bits size: 0~7`  will be used to indicate length `1~7`, the value `7` indicates to read more bytes,
+              the encoding will encode `size - 7` as a varint next.
+            - If encoding is `TAG_ID`, then num_bytes of field name will be used to store tag id.
+        - ref tracking: when set to 1, ref tracking will be enabled for this field.
+        - nullability: when set to 1, this field can be null.
+        - polymorphism: when set to 1, the actual type of field will be the declared field type even the type if
+          not `final`.
+    - field name: If tag id is set, tag id will be used instead. Otherwise meta string encoding `[length]` and data will
+      be written instead.
+    - type id:
         - For registered type-consistent classes, it will be the registered type id.
         - Otherwise it will be encoded as `OBJECT_ID` if it isn't `final` and `FINAL_OBJECT_ID` if it's `final`. The
           meta for such types is written separately instead of inlining here is to reduce meta space cost if object of
-          this type is serialized in the current object graph multiple times, and the field value may be null too.
-    - List Type Info: this type will have an extra byte for elements info.
-      Users can use annotation to provide that info.
-        - elements type same
-        - elements tracking ref
-        - elements nullability
-        - elements declared type
-    - Map Type Info: this type will have an extra byte for kv items info.
-      Users can use annotation to provide that info.
-        - keys type same
-        - keys tracking ref
-        - keys nullability
-        - keys declared type
-        - values type same
-        - values tracking ref
-        - values nullability
-        - values declared type
-    - Field name: If tag id is set, tag id will be used instead. Otherwise meta string encoding length and data will
-      be written instead.
+          this type is serialized in current object graph multiple times, and the field value may be null too.
 
 Field order are left as implementation details, which is not exposed to specification, the deserialization need to
 resort fields based on Fury field comparator. In this way, fury can compute statistics for field names or types and
@@ -338,11 +327,11 @@ Meta string is mainly used to encode meta strings such as field names.
 
 String binary encoding algorithm:
 
-| Algorithm                 | Pattern       | Description                                                                                                                                    |
-|---------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| LOWER_SPECIAL             | `a-z._$\|`    | every char is written using 5 bits, `a-z`: `0b00000~0b11001`, `._$\|`: `0b11010~0b11101`                                                       |
-| LOWER_UPPER_DIGIT_SPECIAL | `a-zA-Z0~9._` | every char is written using 6 bits, `a-z`: `0b00000~0b11001`, `A-Z`: `0b11010~0b110011`, `0~9`: `0b110100~0b111101`, `._`: `0b111110~0b111111` |
-| UTF-8                     | any chars     | UTF-8 encoding                                                                                                                                 |
+| Algorithm                 | Pattern       | Description                                                                                                                                                                                                                                                                              |
+|---------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| LOWER_SPECIAL             | `a-z._$\|`    | every char is written using 5 bits, `a-z`: `0b00000~0b11001`, `._$\|`: `0b11010~0b11101`, prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char)                                                        |
+| LOWER_UPPER_DIGIT_SPECIAL | `a-zA-Z0~9._` | every char is written using 6 bits, `a-z`: `0b00000~0b11001`, `A-Z`: `0b11010~0b110011`, `0~9`: `0b110100~0b111101`, `._`: `0b111110~0b111111`,  prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char) |
+| UTF-8                     | any chars     | UTF-8 encoding                                                                                                                                                                                                                                                                           |
 
 Encoding flags:
 
@@ -489,6 +478,9 @@ which will be encoded by elements header, each use one bit:
 By default, all bits are unset, which means all elements won't track ref, all elements are same type, not null and
 the actual element is the declared type in the custom type field.
 
+The implementation can generate different deserialization code based read header, and look up the generated code from
+a linear map/list.
+
 #### elements data
 
 Based on the elements header, the serialization of elements data may skip `ref flag`/`null flag`/`element type info`.
@@ -593,7 +585,8 @@ format will be:
 ```
 
 `KV header` will be a header marked by `MapFieldInfo` in java. For languages such as golang, this can be computed in
-advance for non-interface types most times.
+advance for non-interface types most times. The implementation can generate different deserialization code based read
+header, and look up the generated code from a linear map/list.
 
 #### Why serialize chunk by chunk?
 
