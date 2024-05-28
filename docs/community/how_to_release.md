@@ -456,7 +456,7 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-
 
 ### Change Fury Website download link
 
-TODO
+Submit a PR to https://github.com/apache/incubator-fury-site to update [Download page](https://fury.apache.org/download)
 
 ### Release Maven artifacts
 - maven_artifact_number: the number for Maven staging artifacts, like 1001.
