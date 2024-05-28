@@ -15,7 +15,7 @@ The latest source release is 0.5.1:
 
 | Version | Date | Source | Release Notes |
 |---------|------------|--------|---------------|
-| 0.5.1   |2024-05-03  | [apache-fury-0.5.1-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/fury/0.5.1/apache-fury-0.5.1-incubating-src.tar.gz?action=download) ([asc](https://downloads.apache.org/incubator/fury/0.5.1/apache-fury-0.5.1-incubating-src.tar.gz.asc), [sha512](https://downloads.apache.org/incubator/fury/0.5.1/apache-fury-0.5.1-incubating-src.tar.gz.sha512)) | [release notes](https://github.com/apache/incubator-fury/releases/tag/v0.5.1) |
+| 0.5.1   |2024-05-28  | [apache-fury-0.5.1-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/fury/0.5.1/apache-fury-0.5.1-incubating-src.tar.gz?action=download) ([asc](https://downloads.apache.org/incubator/fury/0.5.1/apache-fury-0.5.1-incubating-src.tar.gz.asc), [sha512](https://downloads.apache.org/incubator/fury/0.5.1/apache-fury-0.5.1-incubating-src.tar.gz.sha512)) | [release notes](https://github.com/apache/incubator-fury/releases/tag/v0.5.1) |
 
 
 ## All archived releases
