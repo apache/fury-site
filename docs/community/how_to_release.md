@@ -478,27 +478,31 @@ Content:
 Hi all,
 
 The Apache Fury(incubating) community is pleased to announce
-that Apache Fury(incubating) ${release_version} has been released!
+that Apache Fury(incubating) {release_version} has been released!
 
 Apache Fury(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
-The notable changes since ${release_version} include:
-1. xxxxx
-2. yyyyyy
-3. zzzzzz
-
-Please refer to the change log for the complete list of changes:
+The release notes are available here:
 https://github.com/apache/incubator-fury/releases/tag/v${release_version}
+
+For the complete list of changes:
+https://github.com/apache/incubator-fury/compare/v0.5.0...v${release_version}
 
 Apache Fury website: https://fury.apache.org/
 
 Download Links: https://fury.apache.org/download
 
 Fury Resources:
+- Fury github repo: https://github.com/apache/incubator-fury
 - Issue: https://github.com/apache/incubator-fury/issues
 - Mailing list: dev@fury.apache.org
 
-Thanks,
-${name}
+We are looking to grow our community and welcome new contributors. If
+you are interested in contributing to Fury, please contact us on the
+mailing list or on GitHub. We will be happy to help you get started.
+
+------------------
+Best Regards,
+${your_name}
 ```
