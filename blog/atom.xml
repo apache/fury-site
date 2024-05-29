@@ -2,11 +2,73 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fury.apache.org/blog</id>
     <title>Apache Fury (incubating) Blog</title>
-    <updated>2024-05-06T00:00:00.000Z</updated>
+    <updated>2024-05-28T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fury.apache.org/blog"/>
     <subtitle>Apache Fury (incubating) Blog</subtitle>
     <icon>https://fury.apache.org/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Fury 0.5.1 Released]]></title>
+        <id>https://fury.apache.org/blog/fury_0_5_1_release</id>
+        <link href="https://fury.apache.org/blog/fury_0_5_1_release"/>
+        <updated>2024-05-28T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Apache Fury team is pleased to announce the 0.5.1 release. This is a minor release that includes 36 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></summary>
+        <content type="html"><![CDATA[<p>The Apache Fury team is pleased to announce the 0.5.1 release. This is a minor release that includes <a href="https://github.com/apache/incubator-fury/compare/v0.5.0...v0.5.1" target="_blank" rel="noopener noreferrer">36 PR</a> from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="feature">Feature<a href="https://fury.apache.org/blog/fury_0_5_1_release#feature" class="hash-link" aria-label="Direct link to Feature" title="Direct link to Feature">​</a></h2>
+<ul>
+<li>feat(spec): remove list/map header from type meta spec by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1590" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1590</a></li>
+<li>perf(java): Reduce performance regression caused by deleteCharAt by @LiangliangSui in <a href="https://github.com/apache/incubator-fury/pull/1591" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1591</a></li>
+<li>feat(java): type meta encoding for java by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1556" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1556</a> and <a href="https://github.com/apache/incubator-fury/pull/1601" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1601</a></li>
+<li>feat(sepc): update type meta field info spec by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1603" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1603</a></li>
+<li>feat(javascript): add data to description util by @bytemain in <a href="https://github.com/apache/incubator-fury/pull/1609" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1609</a></li>
+<li>feat(java): Support CopyOnWriteArrayListSerializer by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1613" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1613</a></li>
+<li>feat(java): add blocked stream utils by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1617" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1617</a></li>
+<li>feat(go/java): Add ASCII check before meta string encoding by @jasonmokk in <a href="https://github.com/apache/incubator-fury/pull/1620" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1620</a></li>
+<li>feat(java): register old version guava collect by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1622" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1622</a></li>
+<li>feat(java): support deserialization ignoreEnumDeserializeError by @157152688 in <a href="https://github.com/apache/incubator-fury/pull/1623" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1623</a></li>
+<li>feat(java): add set serializer for concurrent set by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1616" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1616</a></li>
+<li>feat(java): add custom serializer register in case of special serializer ctr by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1625" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1625</a></li>
+<li>feat(java): remove soft/weak ref values from thread safe fury by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1639" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1639</a></li>
+<li>refactor(java): Remove Guava's Collection usages by @Munoon in <a href="https://github.com/apache/incubator-fury/pull/1611" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1611</a> and <a href="https://github.com/apache/incubator-fury/pull/1614" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1614</a></li>
+<li>refactor(java): replace Guava's string utility methods with own implementation by @Munoon in <a href="https://github.com/apache/incubator-fury/pull/1624" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1624</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_5_1_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>fix(java): compatible low version guava by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1593" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1593</a> and <a href="https://github.com/apache/incubator-fury/pull/1594" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1594</a></li>
+<li>fix(java): fix getClassDef thead safety by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1597" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1597</a></li>
+<li>fix(java): remove maven groupId change by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1602" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1602</a></li>
+<li>fix(java): make slf4j provided by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1605" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1605</a></li>
+<li>fix(java): clear serializer for collection/map by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1606" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1606</a></li>
+<li>fix(java): fix TypeRef getSubType by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1608" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1608</a></li>
+<li>fix(java): fix fastutil Object2ObjectOpenHashMap serialization by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1618" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1618</a></li>
+<li>fix(java): subclass without fields will encode superclass by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1626" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1626</a></li>
+<li>fix(java): fix wildcard capturer capture NullPointerException by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1637" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1637</a></li>
+<li>fix(java): fix abstract collection elems same type serialization by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1641" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1641</a></li>
+<li>fix(java): ThreadPoolFury#factoryCallback don't work when create new classLoaderFuryPooled by @MrChang0 in <a href="https://github.com/apache/incubator-fury/pull/1628" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1628</a></li>
+<li>fix(go/java): Enhance ASCII check in meta string encoding by @jasonmokk in <a href="https://github.com/apache/incubator-fury/pull/1631" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1631</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="misc">Misc<a href="https://fury.apache.org/blog/fury_0_5_1_release#misc" class="hash-link" aria-label="Direct link to Misc" title="Direct link to Misc">​</a></h2>
+<ul>
+<li>chore(java): move tests to meta/reflect pkg by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1592" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1592</a></li>
+<li>chore(java): make enum serializer as an upper level class by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1598" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1598</a></li>
+<li>chore: bump dev version to 0.6.0 by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1599" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1599</a></li>
+<li>chore: Fury header add language field by @LiangliangSui in <a href="https://github.com/apache/incubator-fury/pull/1612" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1612</a></li>
+<li>chore(java): rename deserializeUnexistentEnumValueAsNull to deserializeNonexistentAsNull by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1634" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1634</a></li>
+<li>chore(java): remove gpg pinentry-mode by @chaokunyang in <a href="https://github.com/apache/incubator-fury/pull/1636" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1636</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-contributors">New Contributors<a href="https://fury.apache.org/blog/fury_0_5_1_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors">​</a></h2>
+<ul>
+<li>@MrChang0 made their first contribution in <a href="https://github.com/apache/incubator-fury/pull/1594" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1594</a></li>
+<li>@jasonmokk made their first contribution in <a href="https://github.com/apache/incubator-fury/pull/1620" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1620</a></li>
+<li>@157152688 made their first contribution in <a href="https://github.com/apache/incubator-fury/pull/1623" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/pull/1623</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/incubator-fury/compare/v0.5.0...v0.5.1" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-fury/compare/v0.5.0...v0.5.1</a></p>]]></content>
+        <author>
+            <name>Shawn Yang</name>
+            <uri>https://github.com/chaokunyang</uri>
+        </author>
+        <category label="fury" term="fury"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Meta String: A 37.5% space efficient string encoding than UTF-8 in Fury serialization]]></title>
         <id>https://fury.apache.org/blog/fury_meta_string_37_5_percent_space_efficient_encoding_than_utf8</id>
