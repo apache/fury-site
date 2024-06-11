@@ -26,7 +26,7 @@ Since fury will generate code at runtime, please warm up before collecting bench
 <img width="33%" alt="" src="/img/benchmarks/deserialization/bench_deserialize_MEDIA_CONTENT_from_array_tps.png" />
 <img width="33%" alt="" src="/img/benchmarks/deserialization/bench_deserialize_SAMPLE_from_array_tps.png" />
 
-See [benchmarks](https://github.com/apache/incubator-fury/tree/main/docs/benchmarks) for more benchmarks about type forward/backward compatibility, off-heap support, zero-copy serialization.
+See [benchmarks](https://github.com/apache/fury/tree/main/docs/benchmarks) for more benchmarks about type forward/backward compatibility, off-heap support, zero-copy serialization.
 
 ### JavaScript
 
@@ -34,4 +34,4 @@ See [benchmarks](https://github.com/apache/incubator-fury/tree/main/docs/benchma
 
 The data used for this bar graph includes a complex object that has many kinds of field types, and the size of the JSON data is 3KB.
 
-See [benchmarks](https://github.com/apache/incubator-fury/blob/main/javascript/benchmark/index.js) for the benchmark code.
+See [benchmarks](https://github.com/apache/fury/blob/main/javascript/benchmark/index.js) for the benchmark code.
