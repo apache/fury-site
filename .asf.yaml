@@ -19,7 +19,7 @@ github:
   description: "Apache Fury Website"
   homepage: https://fury.apache.org/
   features:
-    issues: false
+    issues: true
     projects: false
     wiki: false
   labels:
