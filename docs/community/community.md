@@ -56,9 +56,12 @@ There are a couple of community rules:
 
 ## Issue tracker
 
-We use GitHub Issues to track all code related issues: https://github.com/apache/fury/issues
+We use GitHub Issues to track all issues: 
+- code related issues: https://github.com/apache/fury/issues
+- website related issues: https://github.com/apache/fury-site/issues
 
-You must have a [GitHub account](https://github.com/signup) in order to log cases and issues.
+You need to have a [GitHub account](https://github.com/signup) in order to create issues.
+If you don't have a [GitHub account](https://github.com/signup), you can post an email to dev@fury.apache.org.
 
 ### Bug reports
 
@@ -69,6 +72,12 @@ To report a bug:
 * Create a [bug report](https://github.com/apache/incubator-fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml) on issue tracker.
 * If possible, dive into the source code of fury, and submit a patch for the bug you reported, this helps ensure the bug
   will be fixed quickly.
+
+### Reporting a Vulnerability
+
+Apache Fury is a project of the [Apache Software Foundation](https://apache.org/) and follows the [ASF vulnerability handling process](https://apache.org/security/#vulnerability-handling).
+
+To report a new vulnerability you have discovered please follow the [ASF vulnerability reporting process](https://apache.org/security/#reporting-a-vulnerability), which explains how to send us details privately.
 
 ### Enhancement
 
