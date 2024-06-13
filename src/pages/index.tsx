@@ -19,7 +19,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="https://github.com/apache/fury">
+            to="https://github.com/apache/incubator-fury">
             GitHub
           </Link>
           <Link className="button button--secondary button--lg" to="/docs/start/install">

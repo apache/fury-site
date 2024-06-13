@@ -136,7 +136,7 @@ const config: Config = {
           ]
         },
         {
-          href: 'https://github.com/apache/fury',
+          href: 'https://github.com/apache/incubator-fury',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -185,11 +185,11 @@ const config: Config = {
           items: [
             {
               label: 'Fury',
-              href: 'https://github.com/apache/fury',
+              href: 'https://github.com/apache/incubator-fury',
             },
             {
               label: 'Website',
-              href: 'https://github.com/apache/fury-site',
+              href: 'https://github.com/apache/incubator-fury-site',
             },
           ],
         },

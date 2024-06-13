@@ -57,8 +57,8 @@ There are a couple of community rules:
 ## Issue tracker
 
 We use GitHub Issues to track all issues: 
-- code related issues: https://github.com/apache/fury/issues
-- website related issues: https://github.com/apache/fury-site/issues
+- code related issues: https://github.com/apache/incubator-fury/issues
+- website related issues: https://github.com/apache/incubator-fury-site/issues
 
 You need to have a [GitHub account](https://github.com/signup) in order to create issues.
 If you don't have a [GitHub account](https://github.com/signup), you can post an email to dev@fury.apache.org.
@@ -68,7 +68,7 @@ If you don't have a [GitHub account](https://github.com/signup), you can post an
 To report a bug:
 
 * Verify that the bug does in fact exist.
-* Search the [issue tracker](https://github.com/apache/fury/issues) to verify there is no existing issue reporting the bug you've found.
+* Search the [issue tracker](https://github.com/apache/incubator-fury/issues) to verify there is no existing issue reporting the bug you've found.
 * Create a [bug report](https://github.com/apache/incubator-fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml) on issue tracker.
 * If possible, dive into the source code of fury, and submit a patch for the bug you reported, this helps ensure the bug
   will be fixed quickly.
@@ -86,5 +86,5 @@ chance it will be incorporated into future releases.
 
 ## Source code
 
-* fury core repository: https://github.com/apache/fury
-* fury website repository: https://github.com/apache/fury-site
+* fury core repository: https://github.com/apache/incubator-fury
+* fury website repository: https://github.com/apache/incubator-fury-site
