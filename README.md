@@ -29,6 +29,10 @@ $ yarn build
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
+## How to Contribute
+
+Please read the [CONTRIBUTING](CONTRIBUTING.md) guide for instructions on how to contribute.
+
 ## LICENSE
 
 [Apache License 2.0](./LICENSE).
