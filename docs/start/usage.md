@@ -94,7 +94,7 @@ print(fury.deserialize(data))
 ```go
 package main
 
-import furygo "https://github.com/apache/fury/go/fury"
+import furygo "https://github.com/apache/incubator-fury/go/fury"
 import "fmt"
 
 func main() {

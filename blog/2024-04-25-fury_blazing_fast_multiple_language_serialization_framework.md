@@ -9,7 +9,7 @@ Apache Fury (incubating) is a multi-language serialization framework powered by 
 
 <!--truncate-->
 
-The GitHub address of fury repository is: https://github.com/apache/fury
+The GitHub address of fury repository is: https://github.com/apache/incubator-fury
 
 <img alt="fury banner" src="/img/fury_banner.png" />
 
@@ -21,7 +21,7 @@ Static serialization frameworks like [Protobuf](https://github.com/protocolbuffe
 
 Dynamic serialization frameworks such as JDK serialization, Kryo, Fst, Hessian, Pickle provide ease-of-use and dynamics, but **don't support cross-language** and suffer significant **performance issues**, which is unsuitable for high throughput, low latency, and large-scale data transfer scenarios.
 
-Therefore, we developed a new multi-language serialization framework **Apache Fury**, which is open-sourced on https://github.com/apache/fury. Through **highly optimized serialization primitives, JIT dynamic compilation and zero-copy** technologies, Fury is both fast and easy-to-use. It can **cross-language serialize any object automatically** and provides **ultimate performance** at the same time.
+Therefore, we developed a new multi-language serialization framework **Apache Fury**, which is open-sourced on https://github.com/apache/incubator-fury. Through **highly optimized serialization primitives, JIT dynamic compilation and zero-copy** technologies, Fury is both fast and easy-to-use. It can **cross-language serialize any object automatically** and provides **ultimate performance** at the same time.
 
 <p>
 <img width="44%" alt="serialization" src="/img/case1.png" />
@@ -212,7 +212,7 @@ For fairness, Fury disabled the zero-copy feature for all tests.
 
 We are committed to building Apache Fury into an open and neutral community project that pursues passion and innovation. The development and discussion are open-sourced and transparent in the community. Any form of participation is welcome, including but not limited to questions, code contributions, technical discussions, etc. We are looking forward to receiving your ideas and feedback, participating in the project together, pushing the project forward and creating a better serialization framework.
 
-The GitHub address of the fury repository is: https://github.com/apache/fury
+The GitHub address of the fury repository is: https://github.com/apache/incubator-fury
 
 Official website: https://fury.apache.org
 

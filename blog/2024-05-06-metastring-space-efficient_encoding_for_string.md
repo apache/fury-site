@@ -40,7 +40,7 @@ String binary encoding algorithm:
 
 If we use `LOWER_SPECIAL/LOWER_UPPER_DIGIT_SPECIAL`, we must add a strip last char flag in encoded data. This is because every char will be encoded using `5/6` bits, and the last char may have `1~7` bits which are unused by encoding, such bits may cause an extra char to be read, which we must strip off.
 
-Here is encoding code snippet in java, see [`org.apache.fury.meta.MetaStringEncoder#encodeGeneric(char[], int)`](https://github.com/apache/fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/java/fury-core/src/main/java/org/apache/fury/meta/MetaStringEncoder.java#L235) for more details:
+Here is encoding code snippet in java, see [`org.apache.fury.meta.MetaStringEncoder#encodeGeneric(char[], int)`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/java/fury-core/src/main/java/org/apache/fury/meta/MetaStringEncoder.java#L235) for more details:
 ```java
 private byte[] encodeGeneric(char[] chars, int bitsPerChar) {
   int totalBits = chars.length * bitsPerChar + 1;
@@ -102,7 +102,7 @@ private int charToValueLowerUpperDigitSpecial(char c) {
 }
 ```
 
-Here is decoding code snippet in golang, see [`go/fury/meta/meta_string_decoder.go:70`](https://github.com/apache/fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/go/fury/meta/meta_string_decoder.go#L70) for more details:
+Here is decoding code snippet in golang, see [`go/fury/meta/meta_string_decoder.go:70`](https://github.com/apache/incubator-fury/blob/93800888595065b2690fec093ab0cbfd6ac7dedc/go/fury/meta/meta_string_decoder.go#L70) for more details:
 ```go
 func (d *Decoder) decodeGeneric(data []byte, algorithm Encoding) ([]byte, error) {
 	bitsPerChar := 5
@@ -165,7 +165,7 @@ Finally, utf8 will be the fallback encoding if the string contains some chars wh
 ## Encoding Flags and Data jointly
 
 - Depending on the case, one can choose encoding `flags + data` jointly, using 3 bits of first byte for flags and other bytes for data. This can be useful since there are some holes remaining in last byte, adding flags in data doesn't always increase serialized bytes size.
-- Or one can use a header to encode such flags with other meta such as encoded size, this is what Fury does in https://github.com/apache/fury/pull/1556 
+- Or one can use a header to encode such flags with other meta such as encoded size, this is what Fury does in https://github.com/apache/incubator-fury/pull/1556 
 
 ## Benchmark
 utf8 encoding uses `30` bytes for string `org.apache.fury.benchmark.data`, fury meta string uses only `19` bytes.
