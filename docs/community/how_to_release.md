@@ -174,7 +174,7 @@ This is a call for a discussion to release Apache Fury(incubating) version ${rel
 
 The change lists about this release:
 
-https://github.com/apache/incubator-fury/compare/v0.4.1...v0.5.0
+https://github.com/apache/fury/compare/v0.4.1...v0.5.0
 
 Please leave your comments here about this release plan. We will bump the version in repo and start the release process after the discussion.
 
@@ -254,7 +254,7 @@ framework powered by JIT and zero-copy.
 
 The change lists about this release:
 
-https://github.com/apache/incubator-fury/compare/v0.4.1...v0.5.0-rc3
+https://github.com/apache/fury/compare/v0.4.1...v0.5.0-rc3
 
 The release candidates:
 https://dist.apache.org/repos/dist/dev/incubator/fury/0.5.0-rc3/
@@ -263,10 +263,10 @@ The maven staging for this release:
 https://repository.apache.org/content/repositories/orgapachefury-1003
 
 Git tag for the release:
-https://github.com/apache/incubator-fury/releases/tag/v0.5.0-rc3
+https://github.com/apache/fury/releases/tag/v0.5.0-rc3
 
 Git commit for the release: 
-https://github.com/apache/incubator-fury/commit/fae06330edd049bb960536e978a45b97bca66faf
+https://github.com/apache/fury/commit/fae06330edd049bb960536e978a45b97bca66faf
 
 The artifacts signed with PGP key [5E580BA4], corresponding to
 [chaokunyang@apache.org], that can be found in keys file:
@@ -295,7 +295,7 @@ To learn more about Fury, please see https://fury.apache.org/
 More detail checklist please refer:
 https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklist
 
-How to Build and Test, please refer to: https://github.com/apache/incubator-fury/blob/main/docs/guide/DEVELOPMENT.md
+How to Build and Test, please refer to: https://github.com/apache/fury/blob/main/docs/guide/DEVELOPMENT.md
 
 
 Thanks,
@@ -369,16 +369,16 @@ This release has been signed with a PGP available here:
 https://downloads.apache.org/incubator/fury/KEYS
 
 Git tag for the release:
-https://github.com/apache/incubator-fury/releases/tag/v${release_version}-${rc_version}/
+https://github.com/apache/fury/releases/tag/v${release_version}-${rc_version}/
 
 Git commit for the release:
-https://github.com/apache/incubator-fury/commit/$xxx
+https://github.com/apache/fury/commit/$xxx
 
 Maven staging repo:
 https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/
 
 How to Build and Test, please refer to:
-https://github.com/apache/incubator-fury/blob/main/docs/guide/DEVELOPMENT.md
+https://github.com/apache/fury/blob/main/docs/guide/DEVELOPMENT.md
 
 Please download, verify, and test.
 
@@ -456,7 +456,7 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-
 
 ### Change Fury Website download link
 
-Submit a PR to https://github.com/apache/incubator-fury-site to update [Download page](https://fury.apache.org/download)
+Submit a PR to https://github.com/apache/fury-site to update [Download page](https://fury.apache.org/download)
 
 ### Release Maven artifacts
 - maven_artifact_number: the number for Maven staging artifacts, like 1001.
@@ -484,18 +484,18 @@ Apache Fury(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
 The release notes are available here:
-https://github.com/apache/incubator-fury/releases/tag/v${release_version}
+https://github.com/apache/fury/releases/tag/v${release_version}
 
 For the complete list of changes:
-https://github.com/apache/incubator-fury/compare/v0.5.0...v${release_version}
+https://github.com/apache/fury/compare/v0.5.0...v${release_version}
 
 Apache Fury website: https://fury.apache.org/
 
 Download Links: https://fury.apache.org/download
 
 Fury Resources:
-- Fury github repo: https://github.com/apache/incubator-fury
-- Issue: https://github.com/apache/incubator-fury/issues
+- Fury github repo: https://github.com/apache/fury
+- Issue: https://github.com/apache/fury/issues
 - Mailing list: dev@fury.apache.org
 
 We are looking to grow our community and welcome new contributors. If
