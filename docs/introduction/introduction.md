@@ -29,7 +29,7 @@ can be reused by another protocol.
 
 Fury java object graph serialization support class schema forward/backward compatibility. The serialization peer and deserialization peer can add/delete fields independently.
 
-We plan to add support cross-language serialization after [meta compression](https://github.com/apache/incubator-fury/issues/203) are finished.
+We plan to add support cross-language serialization after [meta compression](https://github.com/apache/fury/issues/203) are finished.
 
 ### Binary Compatibility
 
@@ -59,4 +59,4 @@ Fury provides a class registration option and enabled by default for such protoc
 
 ## How to Contribute
 
-Please read the [CONTRIBUTING](https://github.com/apache/incubator-fury/blob/main/CONTRIBUTING.md) guide for instructions on how to contribute.
+Please read the [CONTRIBUTING](https://github.com/apache/fury/blob/main/CONTRIBUTING.md) guide for instructions on how to contribute.
