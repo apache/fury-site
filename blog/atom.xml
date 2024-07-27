@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fury.apache.org/blog</id>
     <title>Apache Fury (incubating) Blog</title>
-    <updated>2024-07-24T12:20:35.000Z</updated>
+    <updated>2024-07-27T10:29:38.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fury.apache.org/blog"/>
     <subtitle>Apache Fury (incubating) Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[Fury 0.6.0 Released]]></title>
         <id>https://fury.apache.org/blog/fury_0_6_0_release</id>
         <link href="https://fury.apache.org/blog/fury_0_6_0_release"/>
-        <updated>2024-07-24T12:20:35.000Z</updated>
+        <updated>2024-07-27T10:29:38.000Z</updated>
         <summary type="html"><![CDATA[The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes 35 PR from 12 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></summary>
         <content type="html"><![CDATA[<p>The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.5.1...v0.6.0" target="_blank" rel="noopener noreferrer">35 PR</a> from 12 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="high-light">High light<a href="https://fury.apache.org/blog/fury_0_6_0_release#high-light" class="hash-link" aria-label="Direct link to High light" title="Direct link to High light">​</a></h2>
