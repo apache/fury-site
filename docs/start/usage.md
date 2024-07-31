@@ -94,8 +94,10 @@ print(fury.deserialize(data))
 ```go
 package main
 
-import furygo "https://github.com/apache/fury/go/fury"
-import "fmt"
+import (
+	"fmt"
+	furygo "github.com/apache/fury/go/fury"
+)
 
 func main() {
 	type SomeClass struct {
