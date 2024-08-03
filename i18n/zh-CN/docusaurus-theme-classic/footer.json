@@ -1,0 +1,54 @@
+{
+  "link.title.Community": {
+    "message": "社区",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.Docs": {
+    "message": "文档",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Repositories": {
+    "message": "代码库",
+    "description": "The title of the footer links column with title=Repositories in the footer"
+  },
+  "link.item.label.Mailing list": {
+    "message": "邮件列表",
+    "description": "The label of footer link with label=Mailing list linking to https://lists.apache.org/list.html?dev@fury.apache.org"
+  },
+  "link.item.label.Slack": {
+    "message": "Slack",
+    "description": "The label of footer link with label=Slack linking to https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A"
+  },
+  "link.item.label.Twitter": {
+    "message": "Twitter",
+    "description": "The label of footer link with label=Twitter linking to https://twitter.com/ApacheFury"
+  },
+  "link.item.label.Install": {
+    "message": "安装",
+    "description": "The label of footer link with label=Install linking to /docs/start/install"
+  },
+  "link.item.label.Usage": {
+    "message": "使用",
+    "description": "The label of footer link with label=Usage linking to /docs/start/usage"
+  },
+  "link.item.label.Benchmark": {
+    "message": "基准测试",
+    "description": "The label of footer link with label=Benchmark linking to /docs/introduction/benchmark"
+  },
+  "link.item.label.Fury": {
+    "message": "Fury",
+    "description": "The label of footer link with label=Fury linking to https://github.com/apache/fury"
+  },
+  "link.item.label.Website": {
+    "message": "网站",
+    "description": "The label of footer link with label=Website linking to https://github.com/apache/fury-site"
+  },
+  "copyright": {
+    "message": "<div>\n      <p> Apache Fury 是 Apache 软件基金会（ASF）孵化过程中的一个项目，由 Apache Incubator 赞助。孵化是所有新接受项目所需的，直到进一步审查表明基础设施、通信和决策过程已经稳定到与其他成功的 ASF 项目一致的程度。虽然孵化状态不一定反映代码的完整性或稳定性，但它确实表明该项目尚未完全获得 ASF 的认可。 </p>\n      <p>\n        版权所有 © 2024 The Apache Software Foundation，许可证：Apache License, Version 2.0。 <br/>\n        Apache、Apache 项目的名称以及羽毛标志是 Apache 软件基金会在美国和/或其他国家的注册商标或商标。\n      </p>\n      </div>",
+    "description": "The footer copyright"
+  },
+  "logo.alt": {
+    "message": "Apache Incubator 标志",
+    "description": "The alt text of footer logo"
+  }
+}
