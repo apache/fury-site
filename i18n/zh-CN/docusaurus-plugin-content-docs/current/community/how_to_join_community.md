@@ -1,5 +1,5 @@
 ---
-title: How to join Fury 
+title: 如何加入Fury社区
 sidebar_position: 0
 id: how_to_join_community
 ---
