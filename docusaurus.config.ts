@@ -6,7 +6,7 @@ const config: Config = {
   title: 'Apache Fury (incubating)',
   tagline: 'A blazing-fast cross-language serialization framework powered by just-in-time compilation and zero-copy',
   favicon: 'img/favicon.ico',
-
+  
   // Set the production url of your site here
   url: 'https://fury.apache.org/',
   // Set the /<baseUrl>/ pathname under which your site is served
@@ -19,11 +19,15 @@ const config: Config = {
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
-  i18n: {
+   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'zh-Hans'],
+    localeConfigs: {
+      'zh-Hans': {
+        htmlLang: 'zh-Hans',
+      },
+    },
   },
-
   presets: [
     [
       'classic',
@@ -140,6 +144,10 @@ const config: Config = {
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
       ],
     },
