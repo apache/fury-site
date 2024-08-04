@@ -15,12 +15,12 @@ To add a dependency on Fury using Maven, use the following:
 <dependency>
   <groupId>org.apache.fury</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.6.0</version>
+  <version>0.7.0</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.apache.fury</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.6.0</version>
+  <version>0.7.0</version>
 </dependency> -->
 ```
