@@ -279,7 +279,7 @@
     "description": "The title displayed in the homepage hero section"
   },
   "homepage.hero.subtitle": {
-    "message": "一个通过即时编译和零拷贝技术提供极速跨语言序列化的框架",
+    "message": "Apache Fury（孵化中）一个基于动态代码生成和零拷贝技术的多语言序列化框架，实现了无需IDL编译的原生多语言编程范式，并提供最高170倍的性能和极致的易用性。大幅提升大规模数据传输、高并发RPC、分布式系统、云原生中间件等场景的性能，显著降低多语言系统的研发成本。",
     "description": "The subtitle displayed in the homepage hero section"
   },
   "homepage.githubButton": {
@@ -295,7 +295,7 @@
     "description": "The title for the high performance feature"
   },
   "feature.highPerformance.description": {
-    "message": "与其他序列化框架相比，速度提高了20~170倍。",
+    "message": "相比其他序列化框架，性能最高提升20~170倍",
     "description": "Description for the high performance feature"
   },
   "feature.easyToUse.title": {
@@ -303,7 +303,7 @@
     "description": "The title for the easy to use feature"
   },
   "feature.easyToUse.description": {
-    "message": "无需DSL，您可以凭直觉有效地使用Fury。",
+    "message": "无需编写IDL定义Schema，您可以使用Fury自动序列化自定义类型对象",
     "description": "Description for the easy to use feature"
   },
   "feature.multiLanguages.title": {
@@ -311,7 +311,7 @@
     "description": "The title for the multi-languages feature"
   },
   "feature.multiLanguages.description": {
-    "message": "支持Java、Python、C++、Golang、Javascript、Rust等流行的编程语言，未来将增加更多。",
+    "message": "支持Java、Scala、Python、C++、Golang、Javascript、Rust等编程语言",
     "description": "Description for the multi-languages feature"
   }
 }
