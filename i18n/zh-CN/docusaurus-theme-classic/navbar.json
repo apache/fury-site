@@ -27,6 +27,10 @@
     "message": "下载",
     "description": "Navbar item with label Download"
   },
+  "item.label.FAQ": {
+    "message": "FAQ",
+    "description": "Navbar item with label FAQ"
+  },
   "item.label.Blog": {
     "message": "博客",
     "description": "Navbar item with label Blog"
