@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -6,12 +7,27 @@ import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 import Translate, { translate } from "@docusaurus/Translate";
-import React from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
+
+  useEffect(() => {
+    AOS.init({
+      offset: 100,
+      duration: 700,
+      easing: "ease-out-quad",
+      once: true,
+    });
+    window.addEventListener("load", AOS.refresh);
+  }, []);
+
   return (
-    <header className={clsx("hero hero--primary", styles.heroBanner)}>
+    <header
+      className={clsx("hero hero--primary", styles.heroBanner)}
+      data-aos="fade-up"
+    >
       <div className="container">
         <Heading as="h1" className="hero__title">
           <Translate id="homepage.hero.title">{siteConfig.title}</Translate>
@@ -25,6 +41,8 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="https://github.com/apache/fury"
+            data-aos="fade-up"
+            data-aos-delay="200"
           >
             <Translate
               id="homepage.githubButton"
@@ -36,6 +54,8 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/start/install"
+            data-aos="fade-up"
+            data-aos-delay="400"
           >
             <Translate
               id="homepage.getStartedButton"
@@ -52,6 +72,17 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
+
+  useEffect(() => {
+    AOS.init({
+      offset: 100,
+      duration: 700,
+      easing: "ease-out-quad",
+      once: true,
+    });
+    window.addEventListener("load", AOS.refresh);
+  }, []);
+
   return (
     <>
       <Layout
@@ -64,7 +95,9 @@ export default function Home(): JSX.Element {
       >
         <HomepageHeader />
         <main>
-          <HomepageFeatures />
+          <div data-aos="fade-up" data-aos-delay="600">
+            <HomepageFeatures />
+          </div>
         </main>
       </Layout>
     </>
