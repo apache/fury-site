@@ -16,14 +16,19 @@ const config: Config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-CN".
    i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh-CN'],
+    defaultLocale: 'en-us',
+    locales: ['en-us', 'zh-cn'],
+    path: 'i18n',
     localeConfigs: {
-      'zh-CN': {
+      'en-us': {
+        path: "en-us",
+        label: 'English',
+        htmlLang: 'en-US',
+      },
+      'zh-cn': {
+        path: "zh-cn",
+        label: '简体中文',
         htmlLang: 'zh-CN',
       },
     },
@@ -34,11 +39,18 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          editUrl: ({locale, version, docPath }) => {
+            version = version === "current" ? "current" : "version-" + version
+            return `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-docs/${docPath}`;
+          },
         },
         blog: {
           blogSidebarCount: 'ALL',
           blogSidebarTitle: 'All our posts',
           showReadingTime: true,
+          editUrl: ({ blogPath, locale }) => {
+            return `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
+          },
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -46,7 +58,9 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  plugins: [require.resolve('docusaurus-lunr-search')],
+  plugins: [
+    require.resolve('docusaurus-lunr-search')
+  ],
   themeConfig: {
     metadata: [
       {'http-equiv': 'Content-Security-Policy', content: "frame-src 'self' https://ghbtns.com"},
