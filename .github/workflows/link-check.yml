@@ -15,28 +15,37 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-name: Deploy
+name: 🔗 Check broken link
 
 on:
+  repository_dispatch:
+  pull_request:
   push:
     branches:
       - main
-  pull_request:
-
+  workflow_dispatch:
+  schedule:
+    - cron: "00 5 * * *"
 jobs:
-  deploy:
+
+  linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - name: Link Checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v1.5.1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          node-version: 18.x
-      - run: npm install
-      - run: npm run build
-      - run: cp .asf.yaml build/.asf.yaml
-      - uses: peaceiris/actions-gh-pages@v3
-        if: github.event_name != 'pull_request'
+          args: --config ./.github/lychee.toml README.md
+          format: markdown
+          output: ./report/out.md
+
+      - name: Create Issue From File
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          publish_branch: deploy
+          title: 🔗 Report check link
+          content-filepath: ./report/out.md
+          labels: report, automated issue
