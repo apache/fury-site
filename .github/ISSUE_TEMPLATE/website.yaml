@@ -1,0 +1,35 @@
+name: 🖥 Website Issue
+description: File an issue to update the website
+title: "[Site]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to raise questions and update the Apache Fury official website!
+  - type: textarea
+    id: "current-state"
+    attributes:
+      label: Current State
+      description: Current state of the website with possible links and screenshots
+      placeholder: Some of the semantics in the page are unclear...
+      value: |
+        **Description of the current state**:
+
+        **Link to the wensite page, allow developers to better understand the problem**:
+
+        **Screenshots (if relevant)**:
+  - type: textarea
+    id: "desired-state"
+    attributes:
+      label: Desired State
+      description: How should the site look like instead?
+      placeholder: A more reasonable explanation for the relevant entries should be...
+      value: |
+        **Description of the change you are proposing**:
+  - type: dropdown
+    id: "is-working"
+    attributes:
+      label: Would you like to fix this issue?
+      description: You can choose to fix this issue yourself or let other contributors in the community fix it.
+      options:
+        ["Yes! Please assign to me!", "No. Please assign another contributor"]
