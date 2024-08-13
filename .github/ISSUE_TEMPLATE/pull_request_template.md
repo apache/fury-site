@@ -1,4 +1,6 @@
-### Fixes: #[Add issue number here]
+### Related issues
+
+Closes #[Add issue number here]
 
 ### Changes:
 
