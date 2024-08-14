@@ -1,0 +1,36 @@
+name: 📄 Documentation Issue
+description: File an issue/update related to documentation
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to point out documentation issues for Apache Fury!
+  - type: textarea
+    id: "current-state"
+    attributes:
+      label: Current State
+      description: Current state of the documentation page with possible links and screenshots
+      placeholder: The "What is Apache Fury" page does not fully explain...
+      value: |
+        **Description of the current issue**:
+
+        **Link to the page, allows developers to better identify problems**:
+
+        **Screenshots (if relevant)**:
+  - type: textarea
+    id: "desired-state"
+    attributes:
+      label: Desired State
+      description: How should the docs look like instead?
+      placeholder: The page should instead explain...
+      value: |
+        **Description of the change you are proposing**:
+  - type: dropdown
+    id: "is-working"
+    attributes:
+      label: Would you like to fix this issue?
+      description: You can choose to fix this documentation issue yourself or have another contributor in the community fix it.
+      options:
+        ["Yes! Please assign to me!", "No. Please assign another contributor"]
