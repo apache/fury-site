@@ -50,4 +50,3 @@ jobs:
           name: broken-links.json
           path: scripts/brokenLinks.json
           retention-days: 5
-          
