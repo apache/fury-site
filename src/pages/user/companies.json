@@ -1,0 +1,47 @@
+[
+  {
+    "name": "AntGroup",
+    "link": "https://www.antgroup.com/",
+    "imgUrl": "AntGroup.jpg"
+  },
+  {
+    "name": "Alibaba",
+    "link": "https://www.alibaba.com/",
+    "imgUrl": "Alibaba.jpg"
+  },
+  {
+    "name": "AliCloud",
+    "link": "https://www.aliyun.com/",
+    "imgUrl": "AliCloud.jpg"
+  },
+  {
+    "name": "安恒信息",
+    "link": "https://www.dbappsecurity.com.cn/product/cloud157.html?ad=360&plan=BLJ&keywordid2=237985647369",
+    "imgUrl": "anheng.jpg"
+  },
+   {
+    "name": "唯品会",
+    "link": "https://www.vip.com/nav/53174445.html",
+    "imgUrl": "vip.png"
+  },
+  {
+    "name": "途虎养车",
+    "link": "https://www.tuhu.cn/cn/home/default",
+    "imgUrl": "tuhu.jpg"
+  },
+  {
+    "name": "solon",
+    "link": "https://solon.noear.org/",
+    "imgUrl": "solon.png"
+  },
+   {
+    "name": "数元灵",
+    "link": "https://www.dmetasoul.com/docs/lakesoul/intro/",
+    "imgUrl": "LakeSoul.png"
+  },
+  {
+    "name": "libgdx",
+    "link": "https://libgdx.com/",
+    "imgUrl": "libgdx.svg"
+  }
+]
