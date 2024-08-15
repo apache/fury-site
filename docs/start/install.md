@@ -6,7 +6,7 @@ sidebar_position: 0
 
 The official Apache Fury releases are provided as source artifacts.
 
-For source download, please see Fury [download](/download/) page.
+For source download, please see Fury [download](https://github.com/apache/fury/releases) page.
 
 ### Java
 
