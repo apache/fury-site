@@ -26,18 +26,28 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "00 5 * * *"
-jobs:
 
+jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Link Checker
-        id: lychee
-        uses: lycheeverse/lychee-action@v1.5.1
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - uses: actions/checkout@v3.1.0
+      - uses: actions/setup-node@v3
         with:
-          args: --config ./.github/lychee.toml README.md
-          format: markdown
-          output: ./report/out.md
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: |
+          yarn install
+          - name: Check Links
+          run: |
+            yarn workspace scripts link-checker && git status
+
+      - name: Archive Broken Links List
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: broken-links.json
+          path: scripts/brokenLinks.json
+          retention-days: 5
+          
