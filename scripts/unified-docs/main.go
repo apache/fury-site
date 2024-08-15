@@ -51,36 +51,59 @@ func (task *FolderCompareTask) Execute() {
 
 const (
 	baseFolderConst = "../../i18n/"
-	SrcFolderConst  = baseFolderConst + "en-us"
-	DstFolderConst  = baseFolderConst + "zh-cn"
+	blogFolderConst = "docusaurus-plugin-content-blog/"
+	docsFolderConst = "docusaurus-plugin-content-docs/current/"
+	SrcFolderConst  = baseFolderConst + "en-us/"
+	DstFolderConst  = baseFolderConst + "zh-cn/"
 )
 
 func main() {
-	srcFolder := SrcFolderConst
+	srcFolders := []string{
+		SrcFolderConst + blogFolderConst,
+		SrcFolderConst + docsFolderConst,
+	}
 	dstFolder := DstFolderConst
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	// Create the destination folder if it doesn't exist
+	if _, err := os.Stat(dstFolder); os.IsNotExist(err) {
+		err = os.MkdirAll(dstFolder, 0755)
+		if err != nil {
+			fmt.Printf("Error creating destination folder %s: %v\n", dstFolder, err)
+			return
+		}
+	}
 
-		task := &FolderCompareTask{
-			SrcFolder: srcFolder,
-			DstFolder: dstFolder,
-			Stages: []FolderCompareStage{
-				{
-					Title: func() { fmt.Printf("Stage 1: Comparing folder %s\n", srcFolder) },
-					Task:  compareFolder,
-				},
-				{
-					Title: func() { fmt.Printf("Stage 2: Copying missing files from %s\n", srcFolder) },
-					Task:  copyFiles,
-				},
-			},
+	var wg sync.WaitGroup
+	for _, srcFolder := range srcFolders {
+
+		// Check if the source folder exists
+		if _, err := os.Stat(srcFolder); os.IsNotExist(err) {
+			fmt.Printf("Source folder %s does not exist, skipping. err: %v\n", srcFolder, err.Error())
+			continue
 		}
 
-		task.Execute()
-	}()
+		wg.Add(1)
+		go func(srcFolder string) {
+			defer wg.Done()
+
+			task := &FolderCompareTask{
+				SrcFolder: srcFolder,
+				DstFolder: dstFolder,
+				Stages: []FolderCompareStage{
+					{
+						Title: func() { fmt.Printf("Stage 1: Comparing folder %s\n", srcFolder) },
+						Task:  compareFolder,
+					},
+					{
+						Title: func() { fmt.Printf("Stage 2: Copying missing files from %s\n", srcFolder) },
+						Task:  copyFiles,
+					},
+				},
+			}
+
+			task.Execute()
+		}(srcFolder)
+	}
 
 	wg.Wait()
 }
@@ -123,7 +146,7 @@ func copyFiles(task *FolderCompareTask) {
 		} else if os.IsNotExist(err) {
 			// 文件不存在于目标文件夹,执行复制
 			fmt.Println("dfsafsd" + srcPath)
-			// err = copyFile(srcPath, dstPath)
+			err = copyFile(srcPath, dstPath)
 			if err != nil {
 				fmt.Printf("Error copying file %s: %v\n", info.Name(), err)
 			}
