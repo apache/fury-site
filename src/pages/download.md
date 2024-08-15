@@ -3,20 +3,17 @@ id: download
 title: Apache Fury(incubating) Download
 ---
 
-# Download
-
 The official Apache Fury releases are provided as source artifacts.
 
 For binary install, please see Fury [install](/docs/start/install/) document.
 
-## The latest release 
+## The latest release
 
 The latest source release is 0.7.0:
 
 | Version | Date | Source | Release Notes |
 |---------|------------|--------|---------------|
 | 0.7.0   |2024-08-04  | [apache-fury-0.7.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/fury/0.7.0/apache-fury-0.7.0-incubating-src.tar.gz?action=download) ([asc](https://downloads.apache.org/incubator/fury/0.7.0/apache-fury-0.7.0-incubating-src.tar.gz.asc), [sha512](https://downloads.apache.org/incubator/fury/0.7.0/apache-fury-0.7.0-incubating-src.tar.gz.sha512)) | [release notes](https://github.com/apache/fury/releases/tag/v0.7.0) |
-
 
 ## All archived releases
 
@@ -26,7 +23,7 @@ For older releases, please check the [archive](https://archive.apache.org/dist/i
 
 It's highly recommended to verify the files that you download.
 
-Fury provides SHA digest and PGP signature files for all the files that we host on the download site. 
+Fury provides SHA digest and PGP signature files for all the files that we host on the download site.
 These files are named after the files they relate to but have `.sha512/.asc` extensions.
 
 ### Verifying Checksums
@@ -45,7 +42,7 @@ apache-fury-incubating-0.7.0-src.tar.gz: OK
 
 ### Verifying Signatures
 
-To verify the PGP signatures, you will need to download the 
+To verify the PGP signatures, you will need to download the
 [release KEYS](https://downloads.apache.org/incubator/fury/KEYS) first.
 
 Then import the downloaded `KEYS`:
@@ -55,6 +52,7 @@ gpg --import KEYS
 ```
 
 Then you can verify signature:
+
 ```bash
 gpg --verify apache-fury-incubating-0.7.0-src.tar.gz.asc apache-fury-incubating-0.7.0-src.tar.gz
 ```
@@ -76,6 +74,7 @@ gpg --fingerprint 1E2CDAE4C08AD7D694D1CB139D7BE8E45E580BA4
 ```
 
 It should output something like:
+
 ```bash
 pub   rsa4096 2024-03-27 [SC]
       1E2C DAE4 C08A D7D6 94D1  CB13 9D7B E8E4 5E58 0BA4

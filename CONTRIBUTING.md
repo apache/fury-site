@@ -8,10 +8,9 @@ See [Good First Issues](https://github.com/apache/fury/contribute).
 
 Create an issue with [this form](https://github.com/apache/fury/issues/new/choose).
 
-# Fury Website
+## Fury Website
 
 Fury's website consists of static pages hosted at https://github.com/apache/fury-site.
-
 
 ## How to create an issue for Fury Website
 
