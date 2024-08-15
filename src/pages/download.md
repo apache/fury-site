@@ -5,7 +5,7 @@ title: Apache Fury(incubating) Download
 
 The official Apache Fury releases are provided as source artifacts.
 
-For binary install, please see Fury [install](/docs/start/install/) document.
+For binary install, please see Fury [install](../../docs/start/install.md/) document.
 
 ## The latest release
 
