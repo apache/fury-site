@@ -68,28 +68,19 @@ export default function UserPage() {
                     </a>
                   </div>
                 ))}
-              </div>
-              <div>
-                <div className="companies">
-                  <div data-aos="fade-up">
-                    <div className="company_name">No Logo Communities :</div>
+                {nologo_companies.map((company, i) => (
+                  <div
+                    key={i}
+                    data-aos="fade-up"
+                    data-aos-delay={i * 50}
+                    className="company-item"
+                  >
+                    <a className="company_name ">
+                      {" "}
+                      <div className="case_item case_hover">{company.name}</div>
+                    </a>
                   </div>
-                  {nologo_companies.map((company, i) => (
-                    <div
-                      key={i}
-                      data-aos="fade-up"
-                      data-aos-delay={i * 50}
-                      className="company-item"
-                    >
-                      <a className="company_name">
-                        {" "}
-                        <div className="case_item case_hover">
-                          · {company.name}
-                        </div>
-                      </a>
-                    </div>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>

@@ -71,6 +71,10 @@
   margin-top: 25px;
   color: rgba(21, 22, 34, 0.95);
 }
+.case_item {
+  font-weight: bold ;
+}
+
 
 /* mobile theme */
 @media screen and (max-width: 996px) {
