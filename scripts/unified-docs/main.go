@@ -199,23 +199,3 @@ func copyFile(src, dst string) error {
 
 	return nil
 }
-
-func zip(a, b []string) [][]string {
-
-	maxLen := len(a)
-	if len(b) > maxLen {
-		maxLen = len(b)
-	}
-
-	result := make([][]string, maxLen)
-	for i := range result {
-		result[i] = make([]string, 2)
-		if i < len(a) {
-			result[i][0] = a[i]
-		}
-		if i < len(b) {
-			result[i][1] = b[i]
-		}
-	}
-	return result
-}
