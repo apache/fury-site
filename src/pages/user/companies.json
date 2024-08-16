@@ -15,11 +15,16 @@
     "imgUrl": "AliCloud.jpg"
   },
   {
+    "name": "Redisson",
+    "link": "https://github.com/redisson/redisson",
+    "imgUrl": "redisson_h95.png"
+  },
+  {
     "name": "安恒信息",
     "link": "https://www.dbappsecurity.com.cn/product/cloud157.html?ad=360&plan=BLJ&keywordid2=237985647369",
     "imgUrl": "anheng.jpg"
   },
-   {
+  {
     "name": "唯品会",
     "link": "https://www.vip.com/nav/53174445.html",
     "imgUrl": "vip.png"
@@ -34,7 +39,7 @@
     "link": "https://solon.noear.org/",
     "imgUrl": "solon.png"
   },
-   {
+  {
     "name": "数元灵",
     "link": "https://www.dmetasoul.com/docs/lakesoul/intro/",
     "imgUrl": "LakeSoul.png"
