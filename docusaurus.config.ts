@@ -109,6 +109,11 @@ const config: Config = {
           label: 'Community',
         },
         {
+          to: '/user',
+          label: 'Users',
+          position: "right",
+        },
+        {
           position: 'right',
           to: 'download',
           label: 'Download',
