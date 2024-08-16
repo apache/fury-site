@@ -7,7 +7,9 @@ id: community
 
 Apache Fury is a volunteer project and it thrives on the contributions of its community.
 We invite you to participate as much or as little as you wish. Here are several ways to contribute:
+
 > todo: 中文测试
+
 - Use our project and share feedback.
 - Provide use-cases for the project.
 - Report bugs and contribute fixes.
