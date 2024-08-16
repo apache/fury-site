@@ -58,24 +58,37 @@ const (
 )
 
 func main() {
+
 	srcFolders := []string{
 		SrcFolderConst + blogFolderConst,
 		SrcFolderConst + docsFolderConst,
 	}
-	dstFolder := DstFolderConst
+	dstFolders := []string{
+		DstFolderConst + blogFolderConst,
+		DstFolderConst + docsFolderConst,
+	}
+
+	if currentDir, err := os.Getwd(); err != nil {
+		fmt.Println("current work dir:", currentDir)
+		return
+	}
 
 	// Create the destination folder if it doesn't exist
-	if _, err := os.Stat(dstFolder); os.IsNotExist(err) {
-		err = os.MkdirAll(dstFolder, 0755)
-		if err != nil {
-			fmt.Printf("Error creating destination folder %s: %v\n", dstFolder, err)
-			return
+	for _, dstFolder := range dstFolders {
+		if _, err := os.Stat(dstFolder); os.IsNotExist(err) {
+			err = os.MkdirAll(dstFolder, 0755)
+			if err != nil {
+				fmt.Printf("Error creating destination folder %s: %v\n", dstFolder, err)
+				return
+			}
+			fmt.Printf("destination folder check pass. %s\n", dstFolder)
 		}
 	}
 
 	var wg sync.WaitGroup
-	for _, srcFolder := range srcFolders {
 
+	for idx, srcFolder := range srcFolders {
+		dstFolder := dstFolders[idx]
 		// Check if the source folder exists
 		if _, err := os.Stat(srcFolder); os.IsNotExist(err) {
 			fmt.Printf("Source folder %s does not exist, skipping. err: %v\n", srcFolder, err.Error())
@@ -83,7 +96,7 @@ func main() {
 		}
 
 		wg.Add(1)
-		go func(srcFolder string) {
+		go func(srcFolder, dstFolder string) {
 			defer wg.Done()
 
 			task := &FolderCompareTask{
@@ -102,7 +115,7 @@ func main() {
 			}
 
 			task.Execute()
-		}(srcFolder)
+		}(srcFolder, dstFolder)
 	}
 
 	wg.Wait()
@@ -116,6 +129,8 @@ func compareFolder(task *FolderCompareTask) {
 		}
 
 		dstPath := filepath.Join(task.DstFolder, info.Name())
+		fmt.Println("srcPath:", srcPath)
+		fmt.Println("dstPath:", dstPath)
 		_, err = os.Stat(dstPath)
 		if os.IsNotExist(err) {
 			fmt.Printf("File to be copied: %s -> %s, err: %v\n", srcPath, dstPath, err.Error())
@@ -130,33 +145,37 @@ func compareFolder(task *FolderCompareTask) {
 }
 
 func copyFiles(task *FolderCompareTask) {
-	err := filepath.Walk(task.SrcFolder, func(srcPath string, info fs.FileInfo, err error) error {
+
+	err := filepath.Walk(task.SrcFolder, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if info.IsDir() {
+		// Calculate the relative path
+		relPath, err := filepath.Rel(task.SrcFolder, path)
+		if err != nil {
 			return err
 		}
 
-		dstPath := filepath.Join(task.DstFolder, info.Name())
-		_, err = os.Stat(dstPath)
-		if err == nil {
-			return err
-		} else if os.IsNotExist(err) {
-			// 文件不存在于目标文件夹,执行复制
-			fmt.Println("dfsafsd" + srcPath)
-			err = copyFile(srcPath, dstPath)
+		// Create destination path
+		dstPath := filepath.Join(task.DstFolder, relPath)
+
+		if info.IsDir() {
+			// Create directory
+			err = os.MkdirAll(dstPath, info.Mode())
 			if err != nil {
-				fmt.Printf("Error copying file %s: %v\n", info.Name(), err)
+				return err
 			}
 		} else {
-			fmt.Printf("Error checking file %s: %v\n", info.Name(), err)
+			// Copy file
+			return copyFile(path, dstPath)
 		}
-		return err
+
+		return nil
 	})
+
 	if err != nil {
-		fmt.Printf("Error walking source folder: %v\n", err)
+		fmt.Printf("Error copying files: %v\n", err)
 	}
 }
 
@@ -179,4 +198,24 @@ func copyFile(src, dst string) error {
 	}
 
 	return nil
+}
+
+func zip(a, b []string) [][]string {
+
+	maxLen := len(a)
+	if len(b) > maxLen {
+		maxLen = len(b)
+	}
+
+	result := make([][]string, maxLen)
+	for i := range result {
+		result[i] = make([]string, 2)
+		if i < len(a) {
+			result[i][0] = a[i]
+		}
+		if i < len(b) {
+			result[i][1] = b[i]
+		}
+	}
+	return result
 }
