@@ -202,7 +202,7 @@ For fairness, Fury disabled the zero-copy feature for all tests.
 
 - Meta compression, auto meta sharing and cross-language schema compatibility.
 - AOT Framework for C++ and Golang to generate code statically.
-- Object graph serialization support for C++ and Rust 
+- Object graph serialization support for C++ and Rust
 - Row format support for Golang, Rust, and NodeJS
 - Protobuf compatibility support
 - Protocols for features and knowledge graph serialization

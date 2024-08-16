@@ -1,10 +1,8 @@
 ---
-title: Development
+title: How to build Fury
 sidebar_position: 7
 id: development
 ---
-
-# How to build Fury
 
 Please checkout the source tree from https://github.com/apache/fury.
 
@@ -99,4 +97,3 @@ npm run test
 
 - node 14+
 - npm 8+
-

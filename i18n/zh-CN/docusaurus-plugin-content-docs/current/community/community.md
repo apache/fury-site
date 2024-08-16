@@ -8,8 +8,6 @@ id: community
 Apache Fury is a volunteer project and it thrives on the contributions of its community.
 We invite you to participate as much or as little as you wish. Here are several ways to contribute:
 
-> todo: 中文测试
-
 - Use our project and share feedback.
 - Provide use-cases for the project.
 - Report bugs and contribute fixes.
@@ -36,11 +34,11 @@ To post messages, subscribe first by:
 
 When discussing code snippets in emails, ensure:
 
-* You do not link to files in external services, as such files can change, get deleted or the link might break and thus
+- You do not link to files in external services, as such files can change, get deleted or the link might break and thus
   make an archived email thread useless.
-* You paste text instead of screenshots of text.
-* You keep formatting when pasting code in order to keep the code readable.
-* There are enough import statements to avoid ambiguities.
+- You paste text instead of screenshots of text.
+- You keep formatting when pasting code in order to keep the code readable.
+- There are enough import statements to avoid ambiguities.
 
 ## Slack
 
@@ -49,16 +47,17 @@ the [Apache Fury™ community on Slack](https://join.slack.com/t/fury-project/sh
 
 There are a couple of community rules:
 
-* Be respectful and nice.
-* All important decisions and conclusions must be reflected back to the mailing lists. "If it didn't happen on a mailing
+- Be respectful and nice.
+- All important decisions and conclusions must be reflected back to the mailing lists. "If it didn't happen on a mailing
   list, it didn't happen." - The [Apache Mottos](https://theapacheway.com/on-list/).
-* Use Slack threads to keep parallel conversations from overwhelming a channel.
-* Please do not direct message people for troubleshooting, issue assigning and PR review. These should be picked-up
+- Use Slack threads to keep parallel conversations from overwhelming a channel.
+- Please do not direct message people for troubleshooting, issue assigning and PR review. These should be picked-up
   voluntarily.
 
 ## Issue tracker
 
-We use GitHub Issues to track all issues: 
+We use GitHub Issues to track all issues:
+
 - code related issues: https://github.com/apache/fury/issues
 - website related issues: https://github.com/apache/fury-site/issues
 
@@ -69,10 +68,10 @@ If you don't have a [GitHub account](https://github.com/signup), you can post an
 
 To report a bug:
 
-* Verify that the bug does in fact exist.
-* Search the [issue tracker](https://github.com/apache/fury/issues) to verify there is no existing issue reporting the bug you've found.
-* Create a [bug report](https://github.com/apache/fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml) on issue tracker.
-* If possible, dive into the source code of fury, and submit a patch for the bug you reported, this helps ensure the bug
+- Verify that the bug does in fact exist.
+- Search the [issue tracker](https://github.com/apache/fury/issues) to verify there is no existing issue reporting the bug you've found.
+- Create a [bug report](https://github.com/apache/fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml) on issue tracker.
+- If possible, dive into the source code of fury, and submit a patch for the bug you reported, this helps ensure the bug
   will be fixed quickly.
 
 ### Reporting a Vulnerability
@@ -88,5 +87,5 @@ chance it will be incorporated into future releases.
 
 ## Source code
 
-* fury core repository: https://github.com/apache/fury
-* fury website repository: https://github.com/apache/fury-site
+- fury core repository: https://github.com/apache/fury
+- fury website repository: https://github.com/apache/fury-site

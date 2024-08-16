@@ -19,6 +19,7 @@ wget https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${
 ## Verify checksums and signatures
 
 First you need to install gpg:
+
 ```bash
 apt-get install gnupg
 # or
@@ -73,11 +74,13 @@ unless you restart the program.
 ```
 
 Next verify signature:
+
 ```bash
 for i in *.tar.gz; do echo $i; gpg --verify $i.asc $i; done
 ```
 
 If something like the following appears, it means the signature is correct:
+
 ```bash
 apache-fury-incubating-0.5.0-src.tar.gz
 gpg: Signature made Wed 17 Apr 2024 11:49:45 PM CST using RSA key ID 5E580BA4
@@ -88,11 +91,13 @@ gpg: Good signature from "chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org
 ```
 
 Then verify checksum:
+
 ```bash
 for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
 ```
 
 It should output something like:
+
 ```bash
 apache-fury-incubating-0.5.0-src.tar.gz
 apache-fury-incubating-0.5.0-src.tar.gz: OK
