@@ -105,4 +105,4 @@ While you contribute code to Fury, we encourage you to participate in other thin
 
 - Offer suggestions for the project's development, functional planning, etc.
 - Create articles, videos, and hold lectures to promote Fury.
-- Write promotion plans and execute them together with the team. 
+- Write promotion plans and execute them together with the team.
