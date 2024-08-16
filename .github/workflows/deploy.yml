@@ -42,6 +42,7 @@ jobs:
           go version
           cd scripts/unified-docs
           go run main.go
+          ls -l ../../i18n/zh-cn/
 
       - name: NPM Install & Build
         run: npm install && npm run build && cp .asf.yaml build/.asf.yaml
