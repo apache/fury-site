@@ -18,7 +18,7 @@ Fury 团队通常在 github 上进行开发和 issue 维护，请打开 [Github
 
 Git 是一种版本控制系统，用于跟踪和管理软件开发项目中的代码变更。它帮助开发者记录和管理代码的历史记录，方便团队协作、代码版本控制、合并代码等操作。通过 Git，您可以追踪每个文件的每个版本，并轻松地在不同版本之间进行切换和比较。Git 还提供了分支管理功能，使得可以同时进行多个并行开发任务。
 
-- 访问 Git 官方网站：[https://git-scm.com/](https://git-scm.com/)
+- 访问 Git 官方网站：[https://git-scm.com](https://git-scm.com)
 - 下载最新版本的 Git 安装程序。
 - 运行下载的安装程序，按照安装向导的提示进行安装。
 - 安装完成后，你可以通过命令行使用 `git version` 命令确认安装成功。
@@ -48,7 +48,7 @@ git remote add upstream https://github.com/apache/fury.git
 
 - 好了，现在可以开始贡献我们的代码了。fury 默认分支为 main  分支。无论是功能开发、bug 修复、文档编写，都请新建立一个分支，再合并到 main 分支上。使用以下代码创建分支：
 
-```
+```shell
 // 创建功能开发分支
 git checkout -b feat/xxxx
 
@@ -62,9 +62,9 @@ git checkout -b docs/add-java-demo
 假设我们创建了文档修改分支 `docs/add-java-demo`
 
 - 假设我们已经添加了一些代码，提交到代码库
-    
+
 - git add .
-    
+
 - git commit -a -m "docs: add java demo and related docs" 。
 
 ### Step4：合并修改
