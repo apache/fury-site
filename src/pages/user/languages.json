@@ -1,0 +1,14 @@
+{
+  "zh-CN": {
+      "common": {
+          "ourUsers": "我们的用户",
+          "tip":"诸多公司和组织将 Fury 用于研究、生产和商业产品中<br/> 如果您也在使用 ? <a href=\"https://github.com/apache/fury/issues/1766\" target=\"_blank\" rel=\"noopener\"><u>可以在这里添加</u></a>"
+      }
+  },
+  "en": {
+      "common": {
+          "ourUsers": "Our Users",
+          "tip":"Various companies and organizations use Fury for research, production and commercial products.<br/> Are you using this project ? <a href=\"https://github.com/apache/fury/issues/1766\" target=\"_blank\" rel=\"noopener\"><u>you can add your company</u></a>"
+      }
+  }
+}

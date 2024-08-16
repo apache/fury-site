@@ -33,6 +33,16 @@
   width: 80%;
 }
 
+.navbar__item {
+  font-size: 0.9rem; 
+  margin-right: -10px; 
+}
+
+.navbar__link {
+  font-size: 0.9rem; 
+}
+
+
 .header-github-link:hover {
   opacity: 0.6;
 }
