@@ -1,91 +1,85 @@
 ---
-title: Community
+title: 社区
 sidebar_position: 0
 id: community
 ---
 
+Apache Fury 是一个由社区驱动的开源项目，项目的蓬勃发展得益于社区贡献。
+我们邀请您根据自己的意愿尽可能多或尽可能少的参与项目。以下是几种贡献方式：
 
-Apache Fury is a volunteer project and it thrives on the contributions of its community.
-We invite you to participate as much or as little as you wish. Here are several ways to contribute:
+- 使用 Apache Fury 并分享使用体验和反馈问题；
+- 为项目提供最佳实践示例；
+- 报告错误并修复；
+- 贡献代码和参与文档建设。
 
-- Use our project and share feedback.
-- Provide use-cases for the project.
-- Report bugs and contribute fixes.
-- Contribute code and documentation improvements.
+## 邮件列表
 
-## Mailing list
-
-| Name                    | Desc                                        | Subscribe                                             | Unsubscribe                                               | Post                               | Archive                                                               |
+| 邮件列表                    | 描述                                        | 订阅                                             | 取消订阅                                               | 发送邮件                               | 活动                                                               |
 |-------------------------|---------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|------------------------------------|-----------------------------------------------------------------------|
-| dev@fury.apache.org     | Development related discussions             | [Subscribe](mailto:dev-subscribe@fury.apache.org)     | [Unsubscribe](mailto:dev-unsubscribe@fury.apache.org)     | [Post](mailto:dev@fury.apache.org) | [Archive](https://lists.apache.org/list.html?dev@fury.apache.org)     |
-| commits@fury.apache.org | All commits to our repositories             | [Subscribe](mailto:commits-subscribe@fury.apache.org) | [Unsubscribe](mailto:commits-unsubscribe@fury.apache.org) | Read only list                     | [Archive](https://lists.apache.org/list.html?commits@fury.apache.org) |
+| dev@fury.apache.org     | 开发相关讨论             | [订阅](mailto:dev-subscribe@fury.apache.org)     | [取消订阅](mailto:dev-unsubscribe@fury.apache.org)     | [发送邮件](mailto:dev@fury.apache.org) | [邮件列表活动](https://lists.apache.org/list.html?dev@fury.apache.org)     |
+| commits@fury.apache.org | 仓库的所有 commits            | [订阅](mailto:commits-subscribe@fury.apache.org) | [取消订阅](mailto:commits-unsubscribe@fury.apache.org) | 只读的邮件列表                     | [邮件列表活动](https://lists.apache.org/list.html?commits@fury.apache.org) |
 
-Please make sure subscribe to any list before attempting to post.
+在尝试发送邮件之前，请确保订阅上述的邮件列表。
 
-If you are not subscribed to the mailing list, your message will either be rejected or you won't receive the response.
+**如果您没有订阅邮件列表，您的邮件将被拒绝或不会收到回复。**
 
-### How to subscribe to a mailing list
+### 如何订阅邮件列表
 
-To post messages, subscribe first by:
+要发送邮件至邮件列表，请先通过以下方式订阅：
 
-1. Sending an email to listname-subscribe@fury.apache.org with `listname` replaced accordingly.
-2. Replying to the confirmation email you'll receive, keeping the subject line intact.
-3. You'll then get a welcome email, and the subscription succeeds.
+1. 发送电子邮件至 listname-subscribe@fury.apache.org，并相应替换 `listname`；
+2. 回复您将收到的确认电子邮件，保持邮件主题行完整；
+3. 然后您将收到一封欢迎的电子邮件，订阅成功。
 
-When discussing code snippets in emails, ensure:
+在讨论电子邮件中的代码片段时，请确保：
 
-- You do not link to files in external services, as such files can change, get deleted or the link might break and thus
-  make an archived email thread useless.
-- You paste text instead of screenshots of text.
-- You keep formatting when pasting code in order to keep the code readable.
-- There are enough import statements to avoid ambiguities.
+- 您不要链接到外部服务中的文件，因为此类文件可能会更改、被删除或链接可能会中断，从而使存档的电子邮件线程变得无用；
+- 您粘贴文本而不是文本屏幕截图；
+- 粘贴代码时保持格式，以保持代码可读；
+- 有足够的导入语句以避免产生代码歧义。
 
 ## Slack
 
-You can join
-the [Apache Fury™ community on Slack](https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A).
+您可以加入[Slack 上的 Apache Fury™ 社区](https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)。
 
-There are a couple of community rules:
+这里有一些社区规则：
 
-- Be respectful and nice.
-- All important decisions and conclusions must be reflected back to the mailing lists. "If it didn't happen on a mailing
-  list, it didn't happen." - The [Apache Mottos](https://theapacheway.com/on-list/).
-- Use Slack threads to keep parallel conversations from overwhelming a channel.
-- Please do not direct message people for troubleshooting, issue assigning and PR review. These should be picked-up
-  voluntarily.
+- 保持尊重和友善；
+- 所有重要的决定和结论都必须反映到邮件列表中。 “如果这没有在邮件列表中有相关的讨论记录，则代表它不生效” ；
+- [The Apache Way](https://theapacheway.com/on-list/)；
+- 使用 Slack 线程来防止并行对话淹没当前的对话频道；
+- 请不要直接向邮件列表发送 Bug fix、Issue 分配和 Code Review 消息。这些内容应该被社区贡献者自愿处理并分配。
 
-## Issue tracker
+## Issue 跟踪
 
-We use GitHub Issues to track all issues:
+我们使用 GitHub Issues 来跟踪所有 Issues：
 
-- code related issues: https://github.com/apache/fury/issues
-- website related issues: https://github.com/apache/fury-site/issues
+- 代码相关问题：https://github.com/apache/fury/issues
+- 网站相关问题：https://github.com/apache/fury-site/issues
 
-You need to have a [GitHub account](https://github.com/signup) in order to create issues.
-If you don't have a [GitHub account](https://github.com/signup), you can post an email to dev@fury.apache.org.
+您需要有一个 [GitHub 帐户](https://github.com/signup) 才能创建问题。
+如果您没有 [GitHub 帐户](https://github.com/signup)，您可以发送电子邮件至 dev@fury.apache.org。
 
-### Bug reports
+### 报告 Bug
 
-To report a bug:
+您在报告 Bug 之前，应该：
 
-- Verify that the bug does in fact exist.
-- Search the [issue tracker](https://github.com/apache/fury/issues) to verify there is no existing issue reporting the bug you've found.
-- Create a [bug report](https://github.com/apache/fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml) on issue tracker.
-- If possible, dive into the source code of fury, and submit a patch for the bug you reported, this helps ensure the bug
-  will be fixed quickly.
+- 验证该 Bug 确实存在；
+- 搜索 [Issue List](https://github.com/apache/fury/issues) 以确保不存在相关 Bug。
+- 在 Issue List 中创建 [bug 报告](https://github.com/apache/fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml)。
+- 如果可能的话，深入研究 Apache Fury 的源代码，并针对您报告的 Bug 提交补丁，这有助于快速修复 Bug。
 
-### Reporting a Vulnerability
+### 报告安全漏洞
 
-Apache Fury is a project of the [Apache Software Foundation](https://apache.org/) and follows the [ASF vulnerability handling process](https://apache.org/security/#vulnerability-handling).
+Apache Fury 是 [Apache 软件基金会](https://apache.org/) 的一个项目，遵循 [ASF 漏洞处理流程](https://apache.org/security/#vulnerability-handling)。
 
-To report a new vulnerability you have discovered please follow the [ASF vulnerability reporting process](https://apache.org/security/#reporting-a-vulnerability), which explains how to send us details privately.
+要报告您发现的新的安全漏洞，请遵循 [ASF 漏洞报告流程](https://apache.org/security/#reporting-a-vulnerability)，该流程解释了如何私下向社区维护者发送详细的漏洞信息。
 
-### Enhancement
+### New Feature
 
-Enhancements or new feature proposals are also welcome. The more concrete and rationale the proposal is, the greater the
-chance it will be incorporated into future releases.
+欢迎您增强功能或新功能建议。提案越具体、越合理，您在 Fury 社区的影响力就越大。它有可能在之后版本发布。
 
-## Source code
+### 项目源代码
 
-- fury core repository: https://github.com/apache/fury
-- fury website repository: https://github.com/apache/fury-site
+- Fury Core 存储库：https://github.com/apache/fury
+- Fury 网站存储库：https://github.com/apache/fury-site
