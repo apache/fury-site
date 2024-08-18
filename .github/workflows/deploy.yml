@@ -31,9 +31,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18.x
-      - run: npm install
-      - run: npm run build
-      - run: cp .asf.yaml build/.asf.yaml
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.8.x
+
+      - name: Unified Docs
+        run: |
+          python --version
+          cd scripts/unified-docs
+          python script.py
+          ls -lR ../../i18n/zh-cn/ ../../i18n/en-us/
+
+      - name: NPM Install & Build
+        run: |
+          npm install
+          npm run build
+          cp .asf.yaml build/.asf.yaml
+
       - uses: peaceiris/actions-gh-pages@v3
         if: github.event_name != 'pull_request'
         with:
