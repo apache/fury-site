@@ -4,8 +4,7 @@ sidebar_position: 6
 id: graalvm_guide
 ---
 
-## GraalVM Native Image
-
+# GraalVM Native Image
 GraalVM `native image` can compile java code into native code ahead to build faster, smaller, leaner applications.
 The native image doesn't have a JIT compiler to compile bytecode into machine code, and doesn't support
 reflection unless configure reflection file.
@@ -17,7 +16,6 @@ In order to use Fury on graalvm native image, you must create Fury as an **stati
  the enclosing class initialize time. Then configure `native-image.properties` under
 `resources/META-INF/native-image/$xxx/native-image.propertie` to tell graalvm to init the class at native image
 build time. For example, here we configure `org.apache.fury.graalvm.Example` class be init at build time:
-
 ```properties
 Args = --initialize-at-build-time=org.apache.fury.graalvm.Example
 ```
@@ -31,9 +29,7 @@ Note that Fury `asyncCompilationEnabled` option will be disabled automatically f
 native image doesn't support JIT at the image run time.
 
 ## Not thread-safe Fury
-
 Example:
-
 ```java
 import org.apache.fury.Fury;
 import org.apache.fury.util.Preconditions;
@@ -67,15 +63,12 @@ public class Example {
   }
 }
 ```
-
 Then add `org.apache.fury.graalvm.Example` build time init to `native-image.properties` configuration:
-
 ```properties
 Args = --initialize-at-build-time=org.apache.fury.graalvm.Example
 ```
 
 ## Thread-safe Fury
-
 ```java
 import org.apache.fury.Fury;
 import org.apache.fury.ThreadLocalFury;
@@ -116,40 +109,32 @@ public class ThreadSafeExample {
   }
 }
 ```
-
 Then add `org.apache.fury.graalvm.ThreadSafeExample` build time init to `native-image.properties` configuration:
-
 ```properties
 Args = --initialize-at-build-time=org.apache.fury.graalvm.ThreadSafeExample
 ```
 
 ## Framework Integration
-
 For framework developers, if you want to integrate fury for serialization, you can provided a configuration file to let
 the users to list all the classes they want to serialize, then you can load those classes and invoke
 `org.apache.fury.Fury.register(Class<?>, boolean)` to register those classes in your Fury integration class, and configure that
 class be initialized at graalvm native image build time.
 
 ## Benchmark
-
 Here we give two class benchmarks between Fury and Graalvm Serialization.
 
 When Fury compression is disabled:
-
 - Struct: Fury is `46x speed, 43% size` compared to JDK.
 - Pojo: Fury is `12x speed, 56% size` compared to JDK.
 
 When Fury compression is enabled:
-
 - Struct: Fury is `24x speed, 31% size` compared to JDK.
 - Pojo: Fury is `12x speed, 48% size` compared to JDK.
 
 See [[Benchmark.java](https://github.com/apache/fury/blob/main/integration_tests/graalvm_tests/src/main/java/org/apache/fury/graalvm/Benchmark.java)] for benchmark code.
 
 ### Struct Benchmark
-
 #### Class Fields
-
 ```java
 public class Struct implements Serializable {
   public int f1;
@@ -166,11 +151,8 @@ public class Struct implements Serializable {
   public double f12;
 }
 ```
-
 #### Benchmark Results
-
 No compression:
-
 ```
 Benchmark repeat number: 400000
 Object type: class org.apache.fury.graalvm.Struct
@@ -182,9 +164,7 @@ JDK serialization took mills: 2254
 Compare speed: Fury is 45.70x speed of JDK
 Compare size: Fury is 0.43x size of JDK
 ```
-
 Compress number:
-
 ```
 Benchmark repeat number: 400000
 Object type: class org.apache.fury.graalvm.Struct
@@ -198,9 +178,7 @@ Compare size: Fury is 0.31x size of JDK
 ```
 
 ### Pojo Benchmark
-
 #### Class Fields
-
 ```java
 public class Foo implements Serializable {
   int f1;
@@ -209,11 +187,8 @@ public class Foo implements Serializable {
   Map<String, Long> f4;
 }
 ```
-
 #### Benchmark Results
-
 No compression:
-
 ```
 Benchmark repeat number: 400000
 Object type: class org.apache.fury.graalvm.Foo
@@ -225,9 +200,7 @@ JDK serialization took mills: 16266
 Compare speed: Fury is 12.19x speed of JDK
 Compare size: Fury is 0.56x size of JDK
 ```
-
 Compress number:
-
 ```
 Benchmark repeat number: 400000
 Object type: class org.apache.fury.graalvm.Foo
