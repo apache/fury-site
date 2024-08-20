@@ -24,7 +24,7 @@ id: how_to_release
 - GnuPG 2.x
 - Git
 - SVN（Apache 基金会使用 svn 来托管项目发布）
-- **设置环境变量**：如果您在不同的目录下配置了 gpg 密钥，请执行 `export GNUPGHOME=$(xxx)` 设置为系统环境变量。
+- **设置环境变量**：如果您在不同的目录下配置了 gpg 密钥，请执行 `export GNUPGHOME=$(xxx)` 导出环境变量。
 
 ### 准备 GPG 密钥
 
