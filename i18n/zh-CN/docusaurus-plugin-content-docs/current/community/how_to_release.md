@@ -1,47 +1,46 @@
 ---
-title: How to release
+title: 如何发布
 sidebar_position: 0
 id: how_to_release
 ---
 
-This document mainly introduces how the release manager releases a new version of Apache Fury.
+本文主要介绍如何发布新版本的 Apache Fury。
 
-## Introduction
+## 介绍
 
-Source Release is the most important part which Apache values.
+源代码发布是 Apache 最重视以及最重要的部分。
 
-Please pay more attention to license and signing issues.
-Publishing software is a serious thing and has legal consequences.
+请注意许可证和发布的软件签名问题。发布软件是一件严肃的事情，并会产生相应的法律后果。
 
-## First-time as a release manager
+## release manager 第一次发布
 
-### Environmental requirements
+### 环境要求
 
-This release process is operated in the Ubuntu OS, and the following tools are required:
+此发布过程在 Ubuntu 系统中运行，需要以下几个环境依赖：
 
-- JDK 1.8
-- Apache Maven 3.x
+- JDK 1.8+
+- Apache Maven 3.x+
 - Python 3.8
 - GnuPG 2.x
 - Git
-- SVN (apache uses svn to host project releases)
-- Pay attention to setting environment variables: if you configure gpg keys under a different directory, please `export GNUPGHOME=$(xxx)`
+- SVN（Apache 基金会使用 svn 来托管项目发布）
+- **设置环境变量**：如果您在不同的目录下配置了 gpg 密钥，请执行 `export GNUPGHOME=$(xxx)` 导出环境变量。
 
-### Prepare GPG Key
+### 准备 GPG 密钥
 
-If you are the first to become a release manager, you need to prepare a gpg key.
+如果您是第一次作为软件发布者，您需要准备一个 GPG 密钥。
 
-Following is a quick setup, you can refer to [Apache openpgp doc](https://infra.apache.org/openpgp.html) for further details.
+您可以参考这里的[快速开始](https://infra.apache.org/openpgp.html)获取一个 GPG 密钥或者获取更多相关信息。
 
-#### Install GPG
+#### 安装 GPG
 
 ```bash
 sudo apt install gnupg2
 ```
 
-#### Generate GPG Key
+#### 生成 GPG 密钥
 
-Please use your apache name and email for generate key
+请使用您的 Apache 名字和电子邮件地址生成 GPG 密钥：
 
 ```bash
 $ gpg --full-gen-key
@@ -106,15 +105,15 @@ uid           [ultimate] Chaokun <chaokunyang@apache.org>
 sub   rsa4096 2022-07-12 [E]
 ```
 
-#### Upload your public key to public GPG keyserver
+#### 上传公钥至 GPG 密钥服务器
 
-Firstly, list your key:
+首先，列出您所创建的 GPG 密钥：
 
 ```bash
 gpg --list-keys
 ```
 
-The output is like:
+执行相关命令之后，您将看到如下输出：
 
 ```bash
 --------------------------------------------------
@@ -124,25 +123,25 @@ uid           [ultimate] chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org>
 sub   rsa4096 2024-03-27 [E]
 ```
 
-Then, send your key id to key server:
+然后，将您的密钥 ID 发送到密钥服务器：
 
 ```bash
 gpg --keyserver keys.openpgp.org --send-key <key-id> # e.g., 1E2CDAE4C08AD7D694D1CB139D7BE8E45E580BA4
 ```
 
-Among them, `keys.openpgp.org` is a randomly selected keyserver, you can use keyserver.ubuntu.com or any other full-featured keyserver.
+其中，`keys.openpgp.org` 是一个随机选择的密钥服务器，可以使用 keyserver.ubuntu.com 或任何其他功能完备的密钥服务器。
 
-#### Check whether the key is created successfully
+#### 检查密钥是否创建成功
 
-Uploading takes about one minute; after that, you can check by email at the corresponding keyserver.
+上传大约需要一分钟；之后，您可以通过电子邮件在相应的密钥服务器上检查。
 
-Uploading keys to the keyserver is mainly for joining a [Web of Trust](https://infra.apache.org/release-signing.html#web-of-trust).
+将密钥上传到密钥服务器的主要目的是为了加入一个可信的[信任网络](https://infra.apache.org/release-signing.html#web-of-trust)。
 
-#### Add your GPG public key to the project KEYS file
+#### 将 GPG 公钥添加到项目 KEYS 文件中
 
-The svn repository of the release branch is: https://dist.apache.org/repos/dist/release/incubator/fury
+发布分支的 svn 仓库是：https://dist.apache.org/repos/dist/release/incubator/fury
 
-Please add the public key to KEYS in the release branch:
+请在发布分支的 KEYS 中添加公钥：
 
 ```bash
 svn co https://dist.apache.org/repos/dist/release/incubator/fury fury-dist
@@ -153,34 +152,34 @@ svn add .   # It is not needed if the KEYS document exists before.
 svn ci -m "add gpg key for YOUR_NAME" # Later on, if you are asked to enter a username and password, just use your apache username and password.
 ```
 
-#### Upload the GPG public key to your GitHub account
+#### 将 GPG 公钥上传到您的 GitHub 帐户
 
-- Enter https://github.com/settings/keys to add your GPG key.
-- Please remember to bind the email address used in the GPG key to your GitHub account (https://github.com/settings/emails) if you find "unverified" after adding it.
+- 输入 `https://github.com/settings/keys` 以添加您的 GPG 密钥。
+- 如果添加后发现“未验证”字样，请将 GPG 密钥中使用的电子邮件地址绑定到您的 GitHub 帐户（https://github.com/settings/emails）。
 
-### Further reading
+### 延伸阅读
 
-It's recommended but not mandatory to read following documents before making a release to know more details about apache release:
+建议您在发布之前阅读以下文档，了解有关 Apache 基金会发布软件的更多详细信息，但这不是必须的：
 
-- Release policy: https://www.apache.org/legal/release-policy.html
-- Incubator release: http://incubator.apache.org/guides/releasemanagement.html
-- TLP release: https://infra.apache.org/release-distribution
-- Release sign: https://infra.apache.org/release-signing.html
-- Release publish: https://infra.apache.org/release-publishing.html
-- Release download pages: https://infra.apache.org/release-download-pages.html
-- Publishing maven artifacts: https://infra.apache.org/publishing-maven-artifacts.html
+- 发布政策：https://www.apache.org/legal/release-policy.html
+- 孵化器发布：http://incubator.apache.org/guides/releasemanagement.html
+- TLP 版本：https://infra.apache.org/release-distribution
+- 发布标志：https://infra.apache.org/release-signing.html
+- 发布发布：https://infra.apache.org/release-publishing.html
+- 发布下载页面：https://infra.apache.org/release-download-pages.html
+- 发布 maven artifacts：https://infra.apache.org/publishing-maven-artifacts.html
 
-## Start discussion about the release
+## 开始有关发布的讨论
 
-Start a discussion about the next release via sending email to: dev@fury.apache.org:
+通过发送电子邮件至以下地址发起有关下一个版本的讨论：dev@fury.apache.org：
 
-Title:
+标题：
 
 ```
 [DISCUSS] Release Apache Fury(incubating) ${release_version}
 ```
 
-Content:
+内容：
 
 ```
 Hello, Apache Fury(incubating) Community,
@@ -198,29 +197,29 @@ Thanks,
 ${name}
 ```
 
-## Preparing for release
+## 准备发布
 
-If the discussion goes positive, you will need to prepare the release artifiacts.
+如果讨论结果中没有出现反对声音，您需要做一些发布版本的准备工作。
 
-### Github branch and tag
+### Github 分支和标签
 
-- Create a new branch named `releases-0.5.0`
-- Bump version to `$version` by executing command `python ci/release.py -l all -version $version`
-- Make a git commit and push the branch to `git@github.com:apache/fury.git`
-- Create a new tag by `git tag v0.5.0-rc1`, then push it to `git@github.com:apache/fury.git`
+- 创建一个名为 `releases-0.5.0`
+- 通过执行命令将版本 `$version` 升级到 `python ci/release.py -l all -version $version`
+- 执行 git commit 并将分支推送到 `git@github.com:apache/fury.git`
+- 通过 `git tag v0.5.0-rc1` 创建一个新标签，然后将其推送到 `git@github.com:apache/fury.git`
 
-### Build and upload artifacts to SVN dist/dev repo
+### 构建 artifacts 并上传到 SVN dist/dev 仓库
 
-First you need to build source release artifacts by `python ci/release.py build -v $version`.
+首先，您需要通过 `python ci/release.py build -v $version` 构建预发布 artifacts。
 
-Then you need to upload it to svn dist repo. The dist repo of the dev branch is: https://dist.apache.org/repos/dist/dev/incubator/fury
+然后您需要把它上传到 svn dist repo。dev 分支的 dist 仓库地址是：https://dist.apache.org/repos/dist/dev/incubator/fury
 
 ```bash
 # As this step will copy all the versions, it will take some time. If the network is broken, please use svn cleanup to delete the lock before re-execute it.
 svn co https://dist.apache.org/repos/dist/dev/incubator/fury fury-dist-dev
 ```
 
-Then, upload the artifacts:
+然后，上传项目：
 
 ```bash
 cd fury-dist-dev
@@ -238,31 +237,31 @@ svn status
 svn commit -m "Prepare for fury ${release_version}-${rc_version}"
 ```
 
-Visit https://dist.apache.org/repos/dist/dev/incubator/fury/ to check the artifacts are uploaded correctly.
+访问 https://dist.apache.org/repos/dist/dev/incubator/fury/ 以检查 artifacts 是否正确上传。
 
-### What to do if something goes wrong
+### 如果出现问题该怎么办
 
-If some files are unexpected, you need to remove by `svn delete` and repeat the above upload process.
+如果某些文件是意外出现或者发生某些错误，则需要删除相关内容并执行 `svn delete`，然后重复上述上传过程。
 
-## Voting
+## 投票
 
-As an incubating project, Fury requires votes from both the FUry Community and Incubator Community.
+作为一个孵化项目，新版本发布需要 Apache Fury 社区和孵化器社区的投票。
 
-- release_version: the version for fury, like 0.5.0.
-- release_candidate_version: the version for voting, like 0.5.0-rc1.
-- maven_artifact_number: the number for Maven staging artifacts, like 1001. Specifically, the maven_artifact_number can be found by searching "fury" on https://repository.apache.org/#stagingRepositories.
+- release_version：Fury 的版本，如 0.5.0。
+- release_candidate_version：投票的版本，如 0.5.0-rc1。
+- maven_artifact_number：Maven 暂存 artifacts 的数量。如 1001. 具体来说，可以通过搜索 “fury” 来找到 maven_artifact_number https://repository.apache.org/#stagingRepositories.
 
-### Fury Community Vote
+### Fury 社区投票
 
-Send an email to Fury Community: dev@fury.apache.org:
+发送电子邮件至 Fury Community：dev@fury.apache.org：
 
-Title:
+标题：
 
 ```
 [VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
-Content:
+内容：
 
 ```
 Hello, Apache Fury(incubating) Community:
@@ -318,20 +317,19 @@ https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklis
 
 How to Build and Test, please refer to: https://github.com/apache/fury/blob/main/docs/guide/DEVELOPMENT.md
 
-
 Thanks,
 Chaokun Yang
 ```
 
-After at least 3 +1 binding vote (from Fury Podling PMC member and committers) and no veto, claim the vote result:
+在至少获得 3 + 1 且具有约束力的投票（来自 Fury Podling PMC 成员和提交者）并没有收到否决票之后，发布投票结果：
 
-Title:
+标题：
 
 ```
 [RESULT][VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
-Content:
+内容：
 
 ```
 Hello, Apache Fury(incubating) Community,
@@ -353,17 +351,17 @@ Thanks,
 ${name}
 ```
 
-### Incubator Community Vote
+### 孵化器社区投票
 
-Send an email to: general@incubator.apache.org:
+发送电子邮件至：general@incubator.apache.org：
 
-Title:
+标题：
 
 ```
 [VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
-Content:
+内容：
 
 ```
 Hello everyone,
@@ -425,15 +423,15 @@ Thanks,
 ${name}
 ```
 
-After at least 72 hours with at least 3 +1 binding vote (from Incubator PMC member) and no veto, claim the vote result:
+至少 72 小时后，至少有 3 + 1 具有约束力的投票（来自孵化器 PMC 成员）且没有否决票，发布投票结果：
 
-Title:
+标题：
 
 ```
 [RESULT][VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
 ```
 
-Content:
+内容：
 
 ```
 Hi Incubator PMC,
@@ -458,44 +456,44 @@ Thanks for reviewing and voting for our release candidate.
 We will proceed with publishing the approved artifacts and sending out the announcement soon.
 ```
 
-### What if vote fail
+### 如果投票失败怎么办
 
-If the vote failed, click "Drop" to drop the staging Maven artifacts.
+如果投票失败，请单击“删除”以删除暂存的 Maven artifacts。
 
-Address the raised issues, then bump `rc_version` and file a new vote again.
+解决提出的问题，然后再次提出 `rc_version` 的新投票。
 
-## Official Release
+## 官方发布
 
-### Publish artifacts to SVN Release Directory
+### 将 artifacts 发布到 SVN 发布目录
 
-- release_version: the release version for fury, like 0.5.0
-- release_candidate_version: the version for voting, like 0.5.0-rc1
+- release_version：Fury 的发布版本，如 0.5.0
+- release_candidate_version：投票版本，如 0.5.0-rc1
 
 ```bash
 svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version} -m "Release fury ${release_version}"
 ```
 
-### Change Fury Website download link
+### 更改 Fury 网站下载链接
 
-Submit a PR to https://github.com/apache/fury-site to update [Download page](https://fury.apache.org/download)
+提交 PR 到 https://github.com/apache/fury-site 仓库更新 Fury 版本，[下载页面](https://fury.apache.org/download)
 
-### Release Maven artifacts
+### 发布 Maven artifacts
 
-- maven_artifact_number: the number for Maven staging artifacts, like 1001.
-- Open https://repository.apache.org/#stagingRepositories.
-- Find the artifact `orgapachefury-${maven_artifact_number}`, click "Release".
+- maven_artifact_number：Maven 暂存 artifacts 的数量。如 1001。
+- 打开https://repository.apache.org/#stagingRepositories.
+- 找到 artifacts `orgapachefury-${maven_artifact_number}`，点击“发布”。
 
-### Send the announcement
+### 发送公告
 
-Send the release announcement to dev@fury.apache.org and CC announce@apache.org.
+将发布公告发送给 dev@fury.apache.org 并且抄送给 announce@apache.org。
 
-Title:
+标题：
 
 ```
 [ANNOUNCE] Release Apache Fury(incubating) ${release_version}
 ```
 
-Content:
+内容：
 
 ```
 Hi all,
@@ -529,3 +527,5 @@ mailing list or on GitHub. We will be happy to help you get started.
 Best Regards,
 ${your_name}
 ```
+
+至此，整个发布流程结束。
