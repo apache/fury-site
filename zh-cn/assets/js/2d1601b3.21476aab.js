@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfury_site=self.webpackChunkfury_site||[]).push([[188],{3538:e=>{e.exports=JSON.parse('[{"label":"fury","permalink":"/zh-cn/blog/tags/fury","count":15}]')}}]);
