@@ -9,7 +9,7 @@ id: how_to_verify
 ## 下载 Apache Fury
 
 ```bash
-#If there is svn locally, you can clone to the local
+# If there is svn locally, you can clone to the local
 svn co https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/
 # You can download the material file directly
 wget https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/xxx.xxx
