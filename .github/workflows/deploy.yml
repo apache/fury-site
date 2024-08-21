@@ -41,7 +41,7 @@ jobs:
           python --version
           cd scripts/unified-docs
           python script.py
-          ls -lR ../../i18n/zh-cn/ ../../i18n/en-us/
+          ls -lR ../../i18n/zh-CN/ ../../i18n/eu-US/
 
       - name: NPM Install & Build
         run: |

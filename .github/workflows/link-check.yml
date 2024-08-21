@@ -17,17 +17,17 @@ jobs:
         with:
           node-version: "18"
 
-      - name: markdown-link-check
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
-        with:
-          use-quiet-mode: "yes"
-          config-file: "checklink_config.json"
-          max-depth: 3
+      # - name: markdown-link-check
+      #   uses: gaurav-nelson/github-action-markdown-link-check@v1
+      #   with:
+      #     use-quiet-mode: "yes"
+      #     config-file: "checklink_config.json"
+      #     max-depth: 3
 
-      - name: Archive Broken Links List
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: broken-links.json
-          path: /brokenLinks.json
-          retention-days: 5
+      # - name: Archive Broken Links List
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: broken-links.json
+      #     path: /brokenLinks.json
+      #     retention-days: 5

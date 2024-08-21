@@ -36,7 +36,7 @@ def copy_markdown_files(src_folder, dst_folder):
 
     for root, _, files in os.walk(src_folder):
         for file in files:
-            if file.endswith('.md'):
+            if file.endswith(".md"):
                 src_file = os.path.join(root, file)
                 rel_path = os.path.relpath(src_file, src_folder)
                 dst_file = os.path.join(dst_folder, rel_path)
@@ -48,12 +48,12 @@ def copy_markdown_files(src_folder, dst_folder):
 
 def execute():
     base_src_folder = "../../docs/"
-    zh_cn_docs_dst = "../../i18n/zh-cn/docusaurus-plugin-content-docs/current/"
-    en_us_docs_dst = "../../i18n/en-us/docusaurus-plugin-content-docs/current/"
+    zh_cn_docs_dst = "../../i18n/zh-CN/docusaurus-plugin-content-docs/current/"
+    en_us_docs_dst = "../../i18n/eu-US/docusaurus-plugin-content-docs/current/"
 
     base_blog_folder = "../../blog/"
-    zh_cn_blog_dst = "../../i18n/zh-cn/docusaurus-plugin-content-blog/"
-    en_us_blog_dst = "../../i18n/en-us/docusaurus-plugin-content-blog/"
+    zh_cn_blog_dst = "../../i18n/zh-CN/docusaurus-plugin-content-blog/"
+    en_us_blog_dst = "../../i18n/eu-US/docusaurus-plugin-content-blog/"
 
     copy_markdown_files(base_src_folder, zh_cn_docs_dst)
     copy_markdown_files(base_src_folder, en_us_docs_dst)
