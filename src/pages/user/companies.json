@@ -48,5 +48,10 @@
     "name": "libgdx",
     "link": "https://libgdx.com/",
     "imgUrl": "libgdx.svg"
+  },
+  {
+    "name": "KCloud-Platform-IoT",
+    "link": "https://github.com/KouShenhai/KCloud-Platform-IoT",
+    "imgUrl": "KCloud-Platform-IoT.png"
   }
 ]
