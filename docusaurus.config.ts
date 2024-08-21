@@ -17,14 +17,14 @@ const config: Config = {
   onBrokenMarkdownLinks: 'warn',
 
    i18n: {
-    defaultLocale: 'en-us',
-    locales: ['en-us', 'zh-CN'],
+    defaultLocale: 'eu-US',
+    locales: ['eu-US', 'zh-CN'],
     path: 'i18n',
     localeConfigs: {
-      'en-us': {
-        path: "en-us",
+      'eu-US': {
+        path: "eu-US",
         label: 'English',
-        htmlLang: 'en-US',
+        htmlLang: 'eu-US',
       },
       'zh-CN': {
         path: "zh-CN",
