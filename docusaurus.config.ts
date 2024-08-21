@@ -17,14 +17,14 @@ const config: Config = {
   onBrokenMarkdownLinks: 'warn',
 
    i18n: {
-    defaultLocale: 'eu-US',
-    locales: ['eu-US', 'zh-CN'],
+    defaultLocale: 'en-US',
+    locales: ['en-US', 'zh-CN'],
     path: 'i18n',
     localeConfigs: {
-      'eu-US': {
-        path: "eu-US",
+      'en-US': {
+        path: "en-US",
         label: 'English',
-        htmlLang: 'eu-US',
+        htmlLang: 'en-US',
       },
       'zh-CN': {
         path: "zh-CN",
@@ -40,8 +40,16 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: ({locale, version, docPath }) => {
-            version = version === "current" ? "current" : "version-" + version
-            return `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-docs/${docPath}`;
+            var editUrl = "";
+            if (locale === "en-US") {
+              editUrl = `https://github.com/apache/fury-site/tree/main/docs/${docPath}`;
+            } else if (locale === "zh-CN") {
+              version = version === "current" ? "current" : "version-" + version
+              editUrl = `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-docs/${version}/${docPath}`;
+            } else {
+              editUrl = `https://github.com/apache/fury-site/tree/main`
+            }
+            return editUrl;
           },
         },
         blog: {
@@ -49,7 +57,15 @@ const config: Config = {
           blogSidebarTitle: 'All our posts',
           showReadingTime: true,
           editUrl: ({ blogPath, locale }) => {
-            return `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
+            var editUrl = "";
+            if (locale === "en-US") {
+              editUrl = `https://github.com/apache/fury-site/tree/main/blog/${blogPath}`;
+            } else if (locale === "zh-CN") {
+              editUrl = `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
+            } else {
+              editUrl =  `https://github.com/apache/fury-site/tree/main`
+            }
+            return editUrl;
           },
         },
         theme: {
