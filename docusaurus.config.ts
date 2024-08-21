@@ -18,7 +18,7 @@ const config: Config = {
 
    i18n: {
     defaultLocale: 'en-us',
-    locales: ['en-us', 'zh-cn'],
+    locales: ['en-us', 'zh-CN'],
     path: 'i18n',
     localeConfigs: {
       'en-us': {
@@ -26,8 +26,8 @@ const config: Config = {
         label: 'English',
         htmlLang: 'en-US',
       },
-      'zh-cn': {
-        path: "zh-cn",
+      'zh-CN': {
+        path: "zh-CN",
         label: '简体中文',
         htmlLang: 'zh-CN',
       },

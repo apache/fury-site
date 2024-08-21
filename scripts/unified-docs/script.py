@@ -48,11 +48,11 @@ def copy_markdown_files(src_folder, dst_folder):
 
 def execute():
     base_src_folder = "../../docs/"
-    zh_cn_docs_dst = "../../i18n/zh-cn/docusaurus-plugin-content-docs/current/"
+    zh_cn_docs_dst = "../../i18n/zh-CN/docusaurus-plugin-content-docs/current/"
     en_us_docs_dst = "../../i18n/en-us/docusaurus-plugin-content-docs/current/"
 
     base_blog_folder = "../../blog/"
-    zh_cn_blog_dst = "../../i18n/zh-cn/docusaurus-plugin-content-blog/"
+    zh_cn_blog_dst = "../../i18n/zh-CN/docusaurus-plugin-content-blog/"
     en_us_blog_dst = "../../i18n/en-us/docusaurus-plugin-content-blog/"
 
     copy_markdown_files(base_src_folder, zh_cn_docs_dst)
