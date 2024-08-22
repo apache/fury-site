@@ -4,7 +4,7 @@ title: Apache Fury 使用
 sidebar_position: 1
 ---
 
-本章节演示不同语言使用 Apache Fury 进行序列化。
+本章节演示不同编程语言使用 Apache Fury 进行序列化。
 
 ## Java 序列化
 
