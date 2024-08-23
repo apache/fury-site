@@ -1,26 +1,26 @@
 ---
-title: Development
+title: 开发指南
 sidebar_position: 7
 id: development
 ---
 
-## How to build Fury
+## 本地构建 Apache Fury
 
-Please pull latest code from [Github Repository](https://github.com/apache/fury).
+从 [Github 代码库](https://github.com/apache/fury) 拉取最新代码。
 
-### Build Fury Java
+### 构建 Apache Fury Java
 
 ```bash
 cd java
 mvn clean compile -DskipTests
 ```
 
-#### Environment Requirements
+#### 本地环境要求
 
 - java 1.8+
 - maven 3.6.3+
 
-### Build Fury Python
+### 构建 Apache Fury Python
 
 ```bash
 cd python
@@ -28,11 +28,11 @@ pip install pyarrow==14.0.0 Cython wheel numpy pytest
 pip install -v -e .
 ```
 
-#### Environment Requirements
+#### 本地环境要求
 
 - python 3.6+
 
-### Build Fury C++
+### 构建 Apache Fury C++
 
 Build fury row format：
 
@@ -48,12 +48,12 @@ pip install pyarrow==14.0.0
 bazel build //cpp/fury/encoder:fury_encoder
 ```
 
-#### Environment Requirements
+#### 本地环境要求
 
 - compilers with C++17 support
 - bazel 6.3.2
 
-### Build Fury GoLang
+### 构建 Apache Fury GoLang
 
 ```bash
 cd go/fury
@@ -63,11 +63,11 @@ go test -v
 go test -v fury_xlang_test.go
 ```
 
-#### Environment Requirements
+#### 本地环境要求
 
 - go 1.13+
 
-### Build Fury Rust
+### 构建 Apache Fury Rust
 
 ```bash
 cd rust
@@ -77,13 +77,13 @@ cargo build
 cargo test
 ```
 
-#### Environment Requirements
+#### 本地环境要求
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-### Build Fury JavaScript
+### 构建 Apache Fury JavaScript
 
 ```bash
 cd javascript
@@ -95,7 +95,7 @@ npm run build
 npm run test
 ```
 
-#### Environment Requirements
+#### 本地环境要求
 
 - node 14+
 - npm 8+
