@@ -6,7 +6,7 @@ id: development
 
 ## 本地构建 Apache Fury
 
-从 [Github 主仓库](https://github.com/apache/fury) 拉取最新代码。
+从 [Github 代码库](https://github.com/apache/fury) 拉取最新代码。
 
 ### 构建 Apache Fury Java
 
