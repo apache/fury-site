@@ -173,7 +173,7 @@ Compare speed: Fury is 45.70x speed of JDK
 Compare size: Fury is 0.43x size of JDK
 ```
 
-压缩数量：
+开启压缩时测试结果：
 
 ```
 Benchmark repeat number: 400000
