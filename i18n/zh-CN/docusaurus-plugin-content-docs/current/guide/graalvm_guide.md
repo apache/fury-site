@@ -159,7 +159,7 @@ public class Struct implements Serializable {
 
 #### 基准测试结果
 
-无压缩：
+不开启压缩时测试结果：
 
 ```
 Benchmark repeat number: 400000
