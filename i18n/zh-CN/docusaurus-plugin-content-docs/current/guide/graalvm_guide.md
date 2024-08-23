@@ -7,7 +7,7 @@ id: graalvm_guide
 ## GraalVM Native Image 介绍
 
 GraalVM Native Image 能够将 Java 应用代码编译成为原生的本地应用程序代码，以构建更快、更小、更精简的应用程序。
-其不能使用 JIT 编译器将字节码编译为机器码，并且在没有配置相关反射文件的前提下不支持反射。
+其不能使用 JIT 编译器将字节码编译为机器码，并且在没有配置相关反射文件的前提下不支持反射，在很多情况下使用较为复杂。
 
 Apache Fury 对 GraalVM Native Image 支持非常完善。Apache Fury 在 Graalvm 构建时能够为 `Fury JIT framework` 和 `MethodHandle/LambdaMetafactory` 生成所有的序列化代码。然后在运行时使用这些生成的代码进行序列化，无需任何额外成本，性能非常出色。
 
