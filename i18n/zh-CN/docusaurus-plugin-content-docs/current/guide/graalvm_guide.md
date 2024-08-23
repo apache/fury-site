@@ -1,37 +1,31 @@
 ---
-title: GraalVM Guide
+title: GraalVM 指南
 sidebar_position: 6
 id: graalvm_guide
 ---
 
-## GraalVM Native Image
+## GraalVM Native Image 介绍
 
-GraalVM `native image` can compile java code into native code ahead to build faster, smaller, leaner applications.
-The native image doesn't have a JIT compiler to compile bytecode into machine code, and doesn't support
-reflection unless configure reflection file.
+GraalVM Native Image 能够将 Java 应用代码编译成为原生的本地应用程序代码，以构建更快、更小、更精简的应用程序。
+其不能使用 JIT 编译器将字节码编译为机器码，并且在没有配置相关反射文件的前提下不支持反射。
 
-Fury runs on GraalVM native image pretty well. Fury generates all serializer code for `Fury JIT framework` and `MethodHandle/LambdaMetafactory` at graalvm build time. Then use those generated code for serialization at runtime without any extra cost, the performance is great.
+Apache Fury 对 GraalVM Native Image 支持非常完善。Apache Fury 在 Graalvm 构建时能够为 `Fury JIT framework` 和 `MethodHandle/LambdaMetafactory` 生成所有的序列化代码。然后在运行时使用这些生成的代码进行序列化，无需任何额外成本，性能非常出色。
 
-In order to use Fury on graalvm native image, you must create Fury as an **static** field of a class, and **register** all classes at
- the enclosing class initialize time. Then configure `native-image.properties` under
-`resources/META-INF/native-image/$xxx/native-image.propertie` to tell graalvm to init the class at native image
-build time. For example, here we configure `org.apache.fury.graalvm.Example` class be init at build time:
+为了在 Graalvm Native Images 上使用 Fury，您必须将 Apache Fury 创建为**静态**的类字段，并且在 `enclosing class` 初始化时间期间完成所有的类**注册**。 然后在`resources/META-INF/native-image/$xxx/` 目录下添加 `native-image.properties` 配置文件。指导 GraalVM 在构建 Native Images 时初始化配置的类。
+
+例如，这里我们在配置文件中加入 `org.apache.fury.graalvm.Example` 类：
 
 ```properties
 Args = --initialize-at-build-time=org.apache.fury.graalvm.Example
 ```
 
-Another benefit using fury is that you don't have to configure [reflection json](https://www.graalvm.org/latest/reference-manual/native-image/metadata/#specifying-reflection-metadata-in-json) and
-[serialization json](https://www.graalvm.org/latest/reference-manual/native-image/metadata/#serialization), which is
-very tedious, cumbersome and inconvenient. When using fury, you just need to invoke
-`org.apache.fury.Fury.register(Class<?>, boolean)` for every type you want to serialize.
+使用 Apache Fury 的另一个好处是，您不必配置[反射 JSON](https://www.graalvm.org/latest/reference-manual/native-image/metadata/#specifying-reflection-metadata-in-json)和[序列化 JSON](https://www.graalvm.org/latest/reference-manual/native-image/metadata/#serialization)，这非常乏味、繁琐且不方便。使用 Apache Fury 时，您只需为要序列化的每个类型调用 `org.apache.fury.Fury.register(Class<?>, boolean)` 即可。
 
-Note that Fury `asyncCompilationEnabled` option will be disabled automatically for graalvm native image since graalvm
-native image doesn't support JIT at the image run time.
+请注意，由于 GraalVM Native Image 在镜像运行时不支持 JIT，因此 Apache Fury 的 `asyncCompilationEnabled` 选项将在使用 GraalVM Native Image 构建应用时自动禁用。
 
-## Not thread-safe Fury
+## 线程不安全
 
-Example:
+Example：
 
 ```java
 import org.apache.fury.Fury;
@@ -67,13 +61,13 @@ public class Example {
 }
 ```
 
-Then add `org.apache.fury.graalvm.Example` build time init to `native-image.properties` configuration:
+之后在 `native-image.properties` 中加入 `org.apache.fury.graalvm.Example` 配置：
 
 ```properties
 Args = --initialize-at-build-time=org.apache.fury.graalvm.Example
 ```
 
-## Thread-safe Fury
+## 线程安全
 
 ```java
 import org.apache.fury.Fury;
@@ -116,38 +110,35 @@ public class ThreadSafeExample {
 }
 ```
 
-Then add `org.apache.fury.graalvm.ThreadSafeExample` build time init to `native-image.properties` configuration:
+之后在 `native-image.properties` 中加入 `org.apache.fury.graalvm.ThreadSafeExample` 配置：
 
 ```properties
 Args = --initialize-at-build-time=org.apache.fury.graalvm.ThreadSafeExample
 ```
 
-## Framework Integration
+## 框架集成
 
-For framework developers, if you want to integrate fury for serialization, you can provided a configuration file to let
-the users to list all the classes they want to serialize, then you can load those classes and invoke
-`org.apache.fury.Fury.register(Class<?>, boolean)` to register those classes in your Fury integration class, and configure that
-class be initialized at graalvm native image build time.
+对于框架开发人员，如果您想集成 Apache Fury 进行序列化。您可以提供一个配置文件，让用户列出他们想要序列化的所有类，然后您可以加载这些类并调用 `org.apache.fury.Fury.register(Class<?>, boolean)` 在您的 Fury 集成类中注册这些类，并配置该类在 GraalVM Native Image 构建时进行初始化。
 
-## Benchmark
+## 基准测试
 
-Here we give two class benchmarks between Fury and Graalvm Serialization.
+在这里，我们给出了 Apache Fury 和 Graalvm 序列化之间的两个类基准测试。
 
-When Fury compression is disabled:
+禁用 Apache Fury compression 时：
 
-- Struct: Fury is `46x speed, 43% size` compared to JDK.
-- Pojo: Fury is `12x speed, 56% size` compared to JDK.
+- Struct：Fury 与 `46x speed, 43% size` JDK 进行比较。
+- Pojo：Fury 与 `12x speed, 56% size` JDK进行比较。
 
-When Fury compression is enabled:
+启用 Apache Fury compression 时：
 
-- Struct: Fury is `24x speed, 31% size` compared to JDK.
-- Pojo: Fury is `12x speed, 48% size` compared to JDK.
+- Struct：Fury 与 `24x speed, 31% size` JDK进行比较。
+- Pojo：Fury 与 `12x speed, 48% size` JDK进行比较。
 
-See [Benchmark.java](https://github.com/apache/fury/blob/main/integration_tests/graalvm_tests/src/main/java/org/apache/fury/graalvm/Benchmark.java) for benchmark code.
+有关基准测试代码，请参阅 [Benchmark.java](https://github.com/apache/fury/blob/main/integration_tests/graalvm_tests/src/main/java/org/apache/fury/graalvm/Benchmark.java)。
 
-### Struct Benchmark
+### 结构体基准测试
 
-#### Class Fields
+#### 类字段
 
 ```java
 public class Struct implements Serializable {
@@ -166,9 +157,9 @@ public class Struct implements Serializable {
 }
 ```
 
-#### Benchmark Results
+#### 基准测试结果
 
-No compression:
+无压缩：
 
 ```
 Benchmark repeat number: 400000
@@ -182,7 +173,7 @@ Compare speed: Fury is 45.70x speed of JDK
 Compare size: Fury is 0.43x size of JDK
 ```
 
-Compress number:
+压缩数量：
 
 ```
 Benchmark repeat number: 400000
@@ -196,9 +187,9 @@ Compare speed: Fury is 24.16x speed of JDK
 Compare size: Fury is 0.31x size of JDK
 ```
 
-### Pojo Benchmark
+### Pojo 基准测试
 
-#### Class Fields
+#### 类字段
 
 ```java
 public class Foo implements Serializable {
@@ -209,9 +200,9 @@ public class Foo implements Serializable {
 }
 ```
 
-#### Benchmark Results
+#### 基准测试结果
 
-No compression:
+无压缩：
 
 ```
 Benchmark repeat number: 400000
@@ -225,7 +216,7 @@ Compare speed: Fury is 12.19x speed of JDK
 Compare size: Fury is 0.56x size of JDK
 ```
 
-Compress number:
+压缩数量：
 
 ```
 Benchmark repeat number: 400000
