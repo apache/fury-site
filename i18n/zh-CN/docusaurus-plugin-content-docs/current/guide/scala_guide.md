@@ -20,9 +20,9 @@ Scala 2 和 3 均支持。
 libraryDependencies += "org.apache.fury" % "fury-core" % "0.7.0"
 ```
 
-## Apache Fury 创建
+## Fury 对象创建
 
-当使用 Apache Fury 进行 Scala 序列化时，您应该至少使用以下选项创建 Apache Fury 对象：
+当使用 Apache Fury 进行 Scala 序列化时，您应该至少使用以下选项创建 Fury 对象：
 
 ```scala
 val fury = Fury.builder()
@@ -45,9 +45,9 @@ fury.register(Class.forName("scala.Enumeration.Val"))
 
 循环引用在 Scala 中很常见，`Reference tracking` 应该由 `FuryBuilder#withRefTracking(true)` 配置选项开启。如果不启用 `Reference tracking`，则在序列化 Scala Enumeration 时，某些 Scala 版本可能会发生 [StackOverflowError 错误](https://github.com/apache/fury/issues/1032)。
 
-> 注意：Apache Fury 实例应该在多个序列化之间共享，创建 Fury 实例开销很大，应该尽量复用。
+> 注意：Fury 实例应该在多个序列化之间共享，创建 Fury 实例开销很大，应该尽量复用。
 
-如果您在多个线程中使用共享的 Dury 实例，您应该使用 `ThreadSafeFury` 代替 `FuryBuilder#buildThreadSafeFury()`。
+如果您在多个线程中使用共享的 Fury 实例，您应该使用 `ThreadSafeFury` 代替 `FuryBuilder#buildThreadSafeFury()`。
 
 ## 序列化 case 对象
 
