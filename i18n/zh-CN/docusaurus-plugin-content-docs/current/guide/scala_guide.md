@@ -116,7 +116,7 @@ object ColorEnum extends Enumeration {
 println(fury.deserialize(fury.serialize(ColorEnum.Green)))
 ```
 
-## 序列化选项
+## 序列化 Option 类型
 
 ```scala
 val opt: Option[Long] = Some(100)
