@@ -40,7 +40,7 @@ public class Example {
 }
 ```
 
-Fury 多线程用法：
+使用多线程版本 Fury：
 
 ```java
 import java.util.List;
