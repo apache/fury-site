@@ -364,7 +364,7 @@ Apache Fury 支持反序列化不存在的类，通过`FuryBuilder#deserializeNo
 
 如果未启用元数据共享，新类数据将被跳过，并返回一个 `NonexistentSkipClass` 的stub 对象。
 
-## 迁移
+## 序列化库迁移
 
 ### JDK 迁移
 
@@ -405,7 +405,7 @@ MemoryBuffer buffer=xxx;
 
 如果您小版本范围内升级了 Fury，或者您不会再有被旧版本 Fury 序列化的数据。您可以直接升级 Fury、无需对序列化数据进行“版本控制”。
 
-### 故障排除
+## 常见问题排查
 
 ### 类不一致和类版本检查
 
