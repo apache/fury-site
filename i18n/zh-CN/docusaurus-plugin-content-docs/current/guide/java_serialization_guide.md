@@ -12,9 +12,9 @@ id: java_object_graph_guide
 
 注意：Fury 对象创建的代价很高， 因此 **Fury 对象应该尽可能被复用**，而不是每次都重新创建。
 
-您应该创建一个全局的静态变量，或者单例变量和受限制的 Fury 变量。
+您应该为 Fury 创建一个全局的静态变量，或者有限的的 Fury 实例对象。Fury本身占用一定内存，请不要创建上万个Fury对象
 
-Fury 单线程用法:
+使用单线程版本 Fury:
 
 ```java
 import java.util.List;
@@ -100,13 +100,13 @@ public class Example {
 | `compressInt`                       | 启用或禁用 int 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
 | `compressLong`                      | 启用或禁用 long 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `true`                                                         |
 | `compressString`                    | 启用或禁用 String 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
-| `classLoader`                       | 不应更新类加载器；Fury 会缓存类元数据。使用 `LoaderBinding` 或 `ThreadSafeFury` 进行类加载器更新。                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
-| `compatibleMode`                    | 类型的向前/向后兼容性配置。也与 `checkClassVersion` 配置相关。`schema_consistent`： 类模式必须在序列化对等节点和反序列化对等节点之间保持一致。`COMPATIBLE`： 序列化对等节点和反序列化对等节点之间的类模式可以不同。它们可以独立添加/删除字段。                                                                                                                                                                                    | `CompatibleMode.SCHEMA_CONSISTENT`                             |
-| `checkClassVersion`                 | 决定是否检查类模式的一致性。如果启用，Fury 将使用 `classVersionHash` 检查、写入和检查一致性。当启用 `CompatibleMode#COMPATIBLE` 时，它将自动禁用。除非能确保类不会演化，否则不建议禁用。                                                                                                                                                                                                                  | `false`                                                        |
+| `classLoader`                       | 关联到当前 Fury 的类加载器，每个 Fury 会关联一个不可变的类加载器，用于缓存类元数据。如果需要切换类加载器，请使用 `LoaderBinding` 或 `ThreadSafeFury` 进行更新。                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
+| `compatibleMode`                    | 类型的向前/向后兼容性配置。也与 `checkClassVersion` 配置相关。`schema_consistent`： 类的Schema信息必须在序列化对等节点和反序列化对等节点之间保持一致。`COMPATIBLE`： 序列化对等节点和反序列化对等节点之间的类模式可以不同。它们可以独立添加/删除字段。                                                                                                                                                                                    | `CompatibleMode.SCHEMA_CONSISTENT`                             |
+| `checkClassVersion`                 | 决定是否检查类模式的一致性。如果启用，Fury 将写入 `classVersionHash` 和基于其检查类型一致性。当启用 `CompatibleMode#COMPATIBLE` 时，它将自动禁用。除非能确保类不会演化，否则不建议禁用。                                                                                                                                                                                                                  | `false`                                                        |
 | `checkJdkClassSerializable`         | 启用或禁用 `java.*` 下类的 `Serializable` 接口检查。如果 `java.*` 下的类不是 `Serializable`，Fury 将抛出 `UnsupportedOperationException`。                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
 | `registerGuavaTypes`                | 是否预先注册 Guava 类型，如 `RegularImmutableMap`/`RegularImmutableList`。这些类型不是公共 API，但似乎非常稳定。                                                                                                                                                                                                                                                                                                                                                                                 | `true`                                                         |
 | `requireClassRegistration`          | 禁用可能会允许未知类被反序列化，从而带来潜在的安全风险。                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
-| `suppressClassRegistrationWarnings` | 是否抑制类注册警告。这些警告可用于安全审计，但可能会令人反感，默认情况下将启用此抑制功能。                                                                                                                                                                                                                                                                                                                                                                    | `true`                                                         |
+| `suppressClassRegistrationWarnings` | 是否抑制类注册警告。这些警告可用于安全审计，但可能会较琐碎，默认情况下将启用此抑制功能。                                                                                                                                                                                                                                                                                                                                                                    | `true`                                                         |
 | `metaShareEnabled`                  | 是否否开启原元数据共享。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `false`                                                        |
 | `scopedMetaShareEnabled`            | 范围元数据共享侧重于单一序列化流程。在此过程中创建或识别的元数据为该过程独有，不会与其他序列化过程共享。                                                                                                                                                                                                                                                                                                                                                | `false`                                                        |
 | `metaCompressor`                    | 元数据压缩器。请注意，传递的元压缩器应是线程安全的。默认情况下，将使用基于 `Deflater` 的压缩器 `DeflaterMetaCompressor`。用户可以使用其他压缩器，如 `zstd` 以获得更好的压缩率。                                                                                                                                                                                                                                                                    | `DeflaterMetaCompressor`                                       |
@@ -162,11 +162,11 @@ ThreadSafeFury fury=Fury.builder()
   System.out.println(fury.deserialize(bytes));
 ```
 
-### 受限的 Fury 对象创建：
+### 配置Fury生成更小的序列化体积：
 
 `FuryBuilder#withIntCompressed`/`FuryBuilder#withLongCompressed` 可用于压缩 `int/long`，使其体积更小。通常压缩 int 类型就足够了。
 
-如果序列化不重要，这两种压缩属性默认启用。序列化时，不会压缩任何东西，此时就应该禁用压缩。如果数据都是数字，压缩可能会带来 80% 的性能损耗。
+这两个压缩属性默认启用。如果序列化大小不重要，比如你之前使用flatbuffers进行序列化，flatbuffers不会压缩任何东西，那么这种情况下建议关闭压缩。如果数据都是数字，压缩可能会带来 80%以上的性能损耗。
 
 对于 int 压缩，Fury 使用 1~5 字节进行编码。每个字节的第一位表示是否有下一个字节位，如果下一个字节位被设置，则将读取下一个字节，直到下一个字节位未被设置时停止。
 
@@ -178,10 +178,10 @@ ThreadSafeFury fury=Fury.builder()
 - Fury PVL（渐进可变长）编码：
   - 每个字节的第一位表示是否有下一个字节。如果第一位被设置，则将读取下一个字节。
       直到下一字节的第一位未设置。
-  - 负数将通过 `(v << 1) ^ (v >> 63)` 转换为正数，以减少小负数的代价。
+  - 负数将通过 `(v << 1) ^ (v >> 63)` 转换为正数，以减少小负数的编码空间占用。
 
-如果一个数字是 “长 ”类型，大多不能用更小的字节表示，压缩效果就不够好。
-与性能成本相比，这是不值得的。如果您发现长压缩并没有带来多少好处，也许您应该尝试禁用长压缩，以节省空间。
+如果一个数字是 `Long` 类型，大多不能用更小的字节表示，压缩效果就不够好。
+与占用的性能开销相比，这是不值得的。如果您发现`Long`类型压缩并没有带来多少好处，也许您应该尝试关闭`Long`类型压缩，以提升性能。
 
 ### 对象深拷贝
 
@@ -207,8 +207,8 @@ Fury fury=Fury.builder()
 
 ### 实现自定义的序列化器
 
-在某些情况下，您可能希望为您的类型自定义实现一个序列化器，特别是某些类通过
- JDK `writeObject/writeReplace/readObject/readResolve` 实现序列化，这样做效率很低。例如您不想 `Foo#writeObject` 被调用。以下面的 `FooSerializer` 为例：
+在某些情况下，您可能希望为您的自定义类型实现一个序列化器，特别是某些通过
+ JDK `writeObject/writeReplace/readObject/readResolve` 实现序列化的类，JDK序列化的性能和空间效率很低。比如说，如果您不想下面的 `Foo#writeObject` 被调用，你可以实现类型下面的 `FooSerializer` ：
 
 ```java
 class Foo {
@@ -248,9 +248,9 @@ Fury fury=getFury();
 
 ### 安全与类注册
 
-可以使用 `FuryBuilder#requireClassRegistration` 来禁用类注册，这将允许反序列化未知类型的对象，使用更灵活。**但如果类中包含恶意代码，可能会不安全**。
+可以使用 `FuryBuilder#requireClassRegistration` 来禁用类注册，这将允许反序列化未知类型的对象，使用更灵活。**但如果类中包含恶意代码，就会出现安全漏洞**。
 
-**除非能确保环境安全，否则请勿禁用类注册**。
+**除非能确保运行环境和外部交互环境安全，否则请勿禁用类注册检查**。
 
 如果禁用此选项，在反序列化未知/不可信任的类型时，可能会执行`init/equals/hashCode`中的恶意代码。
 禁用。
@@ -323,7 +323,7 @@ public class ZeroCopyExample {
 
 ### Meta 共享
 
-Apache Fury 支持在同一个上下文（例如：`TCP Connection`）中的多个序列中共享类型元数据（例如：class name，filed name，final field type information 等），这些信息将在上下文中第一次序列化时发送给 peer。根据这些元数据，peer 方可重建相同的反序列化器，从而避免为后续序列化传输元数据，减少网络流量压力，并支持类型定义。实现向前/向后兼容性。
+Apache Fury 支持在同一个上下文（例如：`TCP Connection`）中的多个序列中共享类型元数据（例如：类名称，字段名称，字段类型信息 等），这些信息将在上下文中第一次序列化时发送给 对端。根据这些元数据，对端方可重建相同的反序列化器，从而避免为后续序列化传输元数据，减少网络流量压力，并支持类型向前/向后兼容。
 
 ```java
 // Fury.builder()
@@ -360,7 +360,7 @@ MetaContext context=xxx;
 
 ### 反序列化不存在的类
 
-Apache Fury 支持反序列化不存在的类，通过`FuryBuilder#deserializeNonexistentClass(true)` 选项开启。当此选项开启的时候，同时也会开启元数据共享。Apache Fury 会将该类型的反序列化数据存储在 Map 的lazy subclass 中。通过使用 Fury 实现的 lazy map，可以避免在反序列化过程中补平 map 的再平衡成本，从而进一步提高性能。如果这些数据被发送到另一个进程，而该进程中存在该类，那么数据将被反序列化为该类型的对象，而不会丢失任何信息。
+Apache Fury 支持反序列化不存在的类，通过`FuryBuilder#deserializeNonexistentClass(true)` 选项开启。当此选项开启的时候，同时也会开启元数据共享。Apache Fury 会将该类型的反序列化数据存储在 lazy Map 子类中。通过使用 Fury 实现的 lazy Map，可以避免在反序列化过程中填充 map 时 map 内部节点的rebalance来下，从而进一步提高性能。如果这些数据被发送到另一个进程，而该进程中存在该类，那么数据将被反序列化为该类型的对象，而不会丢失任何信息。
 
 如果未启用元数据共享，新类数据将被跳过，并返回一个 `NonexistentSkipClass` 的stub 对象。
 
@@ -368,7 +368,7 @@ Apache Fury 支持反序列化不存在的类，通过`FuryBuilder#deserializeNo
 
 ### JDK 迁移
 
-如果您之前使用 JDK 序列化，并且没有同时升级 client 和 server。这在线上应用很常见，Apache Fury 提供了一个 `org.apache.fury.serializer.JavaSerializer.serializedByJDK` 工具方法来检查二进制文件是否由 JDK 序列化生成。您可以使用以下模式使退出的序列化具有协议感知能力、然后以异步滚动的方式将序列化器升级至 Apache Fury：
+如果您之前使用 JDK 序列化，并且没有同时升级 client 和 server。这在线上应用很常见，Apache Fury 提供了一个 `org.apache.fury.serializer.JavaSerializer.serializedByJDK` 工具方法来检查二进制文件是否由 JDK 序列化生成。您可以使用以下模式使已有的序列化具有探测运行协议的能力、然后以异步滚动升级的方式将序列化器逐步升级至 Apache Fury：
 
 ```java
 if(JavaSerializer.serializedByJDK(bytes)){
@@ -382,7 +382,7 @@ if(JavaSerializer.serializedByJDK(bytes)){
 ### Apache Fury 更新
 
 当前只保证小版本之间的兼容性。例如：您使用的 Fury 版本为 `0.2.0`，当升级到 Fury `0.2.1` 版本，可以确保二进制协议的兼容性。但是，如果更新到 Fury `0.4.1` 版本，二进制协议兼容性能力不能得到保证。
-大多数情况下，您没有必要升级 Aapche Fury 到最新版本。当前使用的版本足够快速和紧凑了，并且我们为最近的版本做了些小的修复。
+大多数情况下，您没有必要升级 Aapche Fury 到最新版本。当前提供的版本足够快速和空间高效了，并且我们会为最近的几个版本做部分缺陷修复。
 
 如果您仍然想升级 Apache Fury 以获得更好的性能和更小的体积，您需要将 Fury 版本号写入序列化数据头中，保证二进制协议的兼容性。
 
@@ -401,7 +401,7 @@ MemoryBuffer buffer=xxx;
   fury.deserialize(buffer);
 ```
 
-`getFury` 是加载对应 Fury 版本的方法，您可以将不同版本的 Apache Fury 掩盖并重新定位到不同的包，并按版本加载 Fury。
+`getFury` 是加载对应版本 Fury 的方法，您可以使用 maven shade插件将不同版本的 Fury shade 并重新定位到不同的包下面，这样就可以按不同路径加载 不同版本的Fury。
 
 如果您小版本范围内升级了 Fury，或者您不会再有被旧版本 Fury 序列化的数据。您可以直接升级 Fury、无需对序列化数据进行“版本控制”。
 

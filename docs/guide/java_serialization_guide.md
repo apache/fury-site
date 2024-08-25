@@ -188,7 +188,7 @@ For long compression, fury support two encoding:
       numbers.
 
 If a number are `long` type, it can't be represented by smaller bytes mostly, the compression won't get good enough
-result, not worthy compared to performance cost. Maybe you should try to disable long compression if you find it didn't bring much, space savings.
+result, not worthy compared to performance cost. Maybe you should try to disable long compression if you find it didn't bring much space savings.
 
 ### Object deep copy
 
@@ -270,7 +270,7 @@ Class registration can not only reduce security risks, but also avoid classname 
 
 You can register class with API `Fury#register`.
 
-> Note that class registration order is important, serialization and deserialization peer, should have same registration order.
+> Note that class registration order is important, serialization and deserialization peer should have same registration order.
 
 ```java
 Fury fury=xxx;
