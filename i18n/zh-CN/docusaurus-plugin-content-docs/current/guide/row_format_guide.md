@@ -1,5 +1,5 @@
 ---
-title: row format 指南
+title: Row format 指南
 sidebar_position: 1
 id: row_format_guide
 ---
