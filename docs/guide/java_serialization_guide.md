@@ -11,9 +11,8 @@ graph serialization.
 
 ## Quick Start
 
-Note that fury creation is not cheap, the **fury instances should be reused between serializations** instead of creating
-it everytime.
-You should keep fury to a static global variable, or instance variable of some singleton object or limited objects.
+Note that fury creation is not cheap, the **fury instances should be reused between serializations** instead of creating it everytime.
+You should create a global static variable for Fury, or a limited number of Fury instance objects; Fury itself takes up some memory, so don't create tens of thousands of Fury objects!
 
 Fury for single-thread usage:
 
@@ -101,9 +100,9 @@ public class Example {
 | `compressInt`                       | Enables or disables int compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `true`                                                         |
 | `compressLong`                      | Enables or disables long compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `true`                                                         |
 | `compressString`                    | Enables or disables string compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `true`                                                         |
-| `classLoader`                       | The classloader should not be updated; Fury caches class metadata. Use `LoaderBinding` or `ThreadSafeFury` for classloader updates.                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
+| `classLoader`                       | The class loader associated with the current Fury. Each Fury is associated with an immutable class loader that caches class metadata. If you need to switch class loaders, use `LoaderBinding` or `ThreadSafeFury` to update them.                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
 | `compatibleMode`                    | Type forward/backward compatibility config. Also Related to `checkClassVersion` config. `SCHEMA_CONSISTENT`: Class schema must be consistent between serialization peer and deserialization peer. `COMPATIBLE`: Class schema can be different between serialization peer and deserialization peer. They can add/delete fields independently.                                                                                                                                                                                      | `CompatibleMode.SCHEMA_CONSISTENT`                             |
-| `checkClassVersion`                 | Determines whether to check the consistency of the class schema. If enabled, Fury checks, writes, and checks consistency using the `classVersionHash`. It will be automatically disabled when `CompatibleMode#COMPATIBLE` is enabled. Disabling is not recommended unless you can ensure the class won't evolve.                                                                                                                                                                                                                  | `false`                                                        |
+| `checkClassVersion`                 | Determines whether to check for class schema consistency. If enabled, Fury will write `classVersionHash` and check for type consistency based on it. It will be automatically disabled when `CompatibleMode#COMPATIBLE` is enabled. Disabling is not recommended unless you can ensure the class won't evolve.                                                                                                                                                                                                                  | `false`                                                        |
 | `checkJdkClassSerializable`         | Enables or disables checking of `Serializable` interface for classes under `java.*`. If a class under `java.*` is not `Serializable`, Fury will throw an `UnsupportedOperationException`.                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
 | `registerGuavaTypes`                | Whether to pre-register Guava types such as `RegularImmutableMap`/`RegularImmutableList`. These types are not public API, but seem pretty stable.                                                                                                                                                                                                                                                                                                                                                                                 | `true`                                                         |
 | `requireClassRegistration`          | Disabling may allow unknown classes to be deserialized, potentially causing security risks.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
@@ -163,7 +162,7 @@ ThreadSafeFury fury=Fury.builder()
   System.out.println(fury.deserialize(bytes));
 ```
 
-### Smaller size
+### Configure Fury to generate smaller serialization volumes
 
 `FuryBuilder#withIntCompressed`/`FuryBuilder#withLongCompressed` can be used to compress int/long for smaller size.
 Normally compress int is enough.
@@ -215,11 +214,7 @@ Fury fury=Fury.builder()
 
 ### Implement a customized serializer
 
-In some cases, you may want to implement a serializer for your type, especially some class customize serialization by
-JDK
-writeObject/writeReplace/readObject/readResolve, which is very inefficient. For example, you don't want
-following `Foo#writeObject`
-got invoked, you can take following `FooSerializer` as an example:
+Implementing serialized classes, JDK serialization is very performance and space inefficient. For example, if you don't want `Foo#writeObject` below to be called, you can implement `FooSerializer` below the type:
 
 ```java
 class Foo {
@@ -259,12 +254,11 @@ Fury fury=getFury();
 
 ### Security & Class Registration
 
-`FuryBuilder#requireClassRegistration` can be used to disable class registration, this will allow to deserialize objects unknown types, more flexible but **may be insecure if the classes contains malicious code**.
+`FuryBuilder#requireClassRegistration` can be used to disable class registration, this will allow to deserialize objects unknown types, more flexible but ****if the class contains malicious code, a security breach can occur**.**.
 
-**Do not disable class registration unless you can ensure your environment is secure**.
+**Do not disable class registration checking unless you can ensure the security of your runtime environment and external interactions**.
 
-Malicious code in `init/equals/hashCode` can be executed when deserializing unknown/untrusted types when this option
-disabled.
+Malicious code in `init/equals/hashCode` can be executed when deserializing unknown/untrusted types when this option disabled.
 
 Class registration can not only reduce security risks, but also avoid classname serialization cost.
 
@@ -392,15 +386,11 @@ losing any information.
 If metadata sharing is not enabled, the new class data will be skipped and an `NonexistentSkipClass` stub object will be
 returned.
 
-## Migration
+## Serialized Library Migration
 
 ### JDK migration
 
-If you use JDK serialization before, and you can't upgrade your client and server at the same time, which is common for
-online application. Fury provided an util method `org.apache.fury.serializer.JavaSerializer.serializedByJDK` to check
-whether
-the binary are generated by jdk serialization, you use following pattern to make exiting serialization protocol-aware,
-then upgrade serialization to fury in an async rolling-up way:
+If you use JDK serialization before, and you can't upgrade your client and server at the same time, which is common for online application. Fury provided an util method `org.apache.fury.serializer.JavaSerializer.serializedByJDK` to check whether the binary are generated by jdk serialization, you use following pattern to make exiting serialization protocol-aware, then upgrade serialization to fury in an async rolling-up way:
 
 ```java
 if(JavaSerializer.serializedByJDK(bytes)){
@@ -413,13 +403,11 @@ if(JavaSerializer.serializedByJDK(bytes)){
 
 ### Upgrade fury
 
-Currently binary compatibility is ensured for minor versions only. For example, if you are using fury`v0.2.0`, binary
-compatibility will be provided if you upgrade to fury `v0.2.1`. But if upgrade to fury `v0.4.1`, no binary compatibility are ensured.
+Currently binary compatibility is ensured for minor versions only. For example, if you are using fury`v0.2.0`, binary compatibility will be provided if you upgrade to fury `v0.2.1`. But if upgrade to fury `v0.4.1`, no binary compatibility are ensured.
 Most of the time there is no need to upgrade fury to newer major version, the current version is fast and compact
 enough, and we provide some minor fix for recent older versions.
 
-But if you do want to upgrade fury for better performance and smaller size, you need to write fury version as header to
-serialized data using code like following to keep binary compatibility:
+But if you do want to upgrade fury for better performance and smaller size, you need to write fury version as header to serialized data using code like following to keep binary compatibility:
 
 ```java
 MemoryBuffer buffer=xxx;
@@ -436,36 +424,25 @@ MemoryBuffer buffer=xxx;
   fury.deserialize(buffer);
 ```
 
-`getFury` is a method to load corresponding fury, you can shade and relocate different version of fury to different
-package, and load fury by version.
+`getFury` is the way to load the corresponding version of Fury. You can use the maven shade plugin to shade different versions of Fury and relocate them under different packages, so that you can load different versions of Fury under different paths.
 
-If you upgrade fury by minor version, or you won't have data serialized by older fury, you can upgrade fury directly,
-no need to `versioning` the data.
+If you upgrade fury by minor version, or you won't have data serialized by older fury, you can upgrade fury directly, no need to `versioning` the data.
 
-## Trouble shooting
+## Troubleshooting Common Problems
 
 ### Class inconsistency and class version check
 
-If you create fury without setting `CompatibleMode` to `org.apache.fury.config.CompatibleMode.COMPATIBLE`, and you got a
-strange serialization error, it may be caused by class inconsistency between serialization peer and deserialization peer.
+If you create fury without setting `CompatibleMode` to `org.apache.fury.config.CompatibleMode.COMPATIBLE`, and you got a strange serialization error, it may be caused by class inconsistency between serialization peer and deserialization peer.
 
-In such cases, you can invoke `FuryBuilder#withClassVersionCheck` to create fury to validate it, if deserialization
-throws `org.apache.fury.exception.ClassNotCompatibleException`, it shows class are inconsistent, and you should create
-fury with
-`FuryBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)`.
+In such cases, you can invoke `FuryBuilder#withClassVersionCheck` to create fury to validate it, if deserialization throws `org.apache.fury.exception.ClassNotCompatibleException`, it shows class are inconsistent, and you should create fury with `FuryBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)`.
 
-`CompatibleMode.COMPATIBLE` has more performance and space cost, do not set it by default if your classes are always
-consistent between serialization and deserialization.
+`CompatibleMode.COMPATIBLE` has more performance and space cost, do not set it by default if your classes are always consistent between serialization and deserialization.
 
 ### Use wrong API for deserialization
 
 If you serialize an object by invoking `Fury#serialize`, you should invoke `Fury#deserialize` for deserialization
-instead of
-`Fury#deserializeJavaObject`.
+instead of `Fury#deserializeJavaObject`.
 
-If you serialize an object by invoking `Fury#serializeJavaObject`, you should invoke `Fury#deserializeJavaObject` for
-deserialization instead of `Fury#deserializeJavaObjectAndClass`/`Fury#deserialize`.
+If you serialize an object by invoking `Fury#serializeJavaObject`, you should invoke `Fury#deserializeJavaObject` for deserialization instead of `Fury#deserializeJavaObjectAndClass`/`Fury#deserialize`.
 
-If you serialize an object by invoking `Fury#serializeJavaObjectAndClass`, you should
-invoke `Fury#deserializeJavaObjectAndClass` for deserialization instead
-of `Fury#deserializeJavaObject`/`Fury#deserialize`.
+If you serialize an object by invoking `Fury#serializeJavaObjectAndClass`, you should invoke `Fury#deserializeJavaObjectAndClass` for deserialization instead of `Fury#deserializeJavaObject`/`Fury#deserialize`.
