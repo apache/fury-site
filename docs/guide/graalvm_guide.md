@@ -10,7 +10,8 @@ GraalVM `native image` can compile java code into native code ahead to build fas
 The native image doesn't have a JIT compiler to compile bytecode into machine code, and doesn't support
 reflection unless configure reflection file.
 
-Fury runs on GraalVM native image pretty well. Fury generates all serializer code for `Fury JIT framework` and `MethodHandle/LambdaMetafactory` at graalvm build time. Then use those generated code for serialization at runtime without any extra cost, the performance is great.
+Fury runs on GraalVM native image pretty well. Fury generates all serializer code for `Fury JIT framework` and `MethodHandle/LambdaMetafactory` at graalvm build time. Then use those generated code for serialization at runtime without
+any extra cost, the performance is great.
 
 In order to use Fury on graalvm native image, you must create Fury as an **static** field of a class, and **register** all classes at
  the enclosing class initialize time. Then configure `native-image.properties` under
@@ -143,7 +144,7 @@ When Fury compression is enabled:
 - Struct: Fury is `24x speed, 31% size` compared to JDK.
 - Pojo: Fury is `12x speed, 48% size` compared to JDK.
 
-See [Benchmark.java](https://github.com/apache/fury/blob/main/integration_tests/graalvm_tests/src/main/java/org/apache/fury/graalvm/Benchmark.java) for benchmark code.
+See [[Benchmark.java](https://github.com/apache/fury/blob/main/integration_tests/graalvm_tests/src/main/java/org/apache/fury/graalvm/Benchmark.java)] for benchmark code.
 
 ### Struct Benchmark
 
