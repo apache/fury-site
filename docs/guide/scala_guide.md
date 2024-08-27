@@ -40,12 +40,11 @@ fury.register(Class.forName("scala.Enumeration.Val"))
 ```
 
 If you want to avoid such registration, you can disable class registration by `FuryBuilder#requireClassRegistration(false)`.
+Note that this option allow to deserialize objects unknown types, more flexible but may be insecure if the classes contains malicious code.
 
-> Note that this option allow to deserialize objects unknown types, more flexible but may be insecure if the classes contains malicious code.
+And circular references are common in scala, `Reference tracking` should be enabled by `FuryBuilder#withRefTracking(true)`. If you don't enable reference tracking, [StackOverflowError](https://github.com/apache/fury/issues/1032) may happen for some scala versions when serializing scala Enumeration.
 
-And circular references are common in scala, `Reference tracking` should be enabled by `FuryBuilder#withRefTracking(true)`. If you don't enable `Reference tracking`, [StackOverflowError](https://github.com/apache/fury/issues/1032) may happen for some scala versions when serializing scala Enumeration.
-
-> Note that fury instance should be shared between multiple serialization, the creation of fury instance is not cheap.
+Note that fury instance should be shared between multiple serialization, the creation of fury instance is not cheap.
 
 If you use shared fury instance across multiple threads, you should create `ThreadSafeFury` instead by `FuryBuilder#buildThreadSafeFury()` instead.
 

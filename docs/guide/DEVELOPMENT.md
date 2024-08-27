@@ -6,7 +6,7 @@ id: development
 
 ## How to build Fury
 
-Please pull latest code from [Github Repository](https://github.com/apache/fury).
+Please checkout the source tree from https://github.com/apache/fury.
 
 ### Build Fury Java
 
