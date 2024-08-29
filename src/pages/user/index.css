@@ -37,7 +37,7 @@
 .user-main .user_case .case_item {
   display: flex;
   min-width: 0;
-  background: #FFFFFF;
+  background: #ebedf0;
   margin: 5px;
   height: 80px;
   border: 1px solid #eaecef;
