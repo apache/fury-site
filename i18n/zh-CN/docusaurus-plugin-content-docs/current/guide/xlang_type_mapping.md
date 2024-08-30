@@ -7,7 +7,7 @@ id: xlang_type_mapping
 注意：
 
 - 有关类型定义，请参阅 [Spec 中的类型系统](.../specification/xlang_serialization_spec.md#type-systems)
-- int16_t[n]/vector<T>` 表示 `int16_t[n]/vector<int16_t>`.
+- `int16_t[n]/vector<T>` 表示 `int16_t[n]/vector<int16_t>`.
 - 跨语言序列化并不稳定，请勿在生产环境中使用。
 
 ## Type Mapping
