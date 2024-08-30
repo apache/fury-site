@@ -62,7 +62,7 @@ id: xlang_type_mapping
 这些信息也可以用其他语言提供：
 
 - java：使用注解；
-- cpp：使用宏和板；
+- cpp：使用宏和模板；
 - golang：使用 struct tag；
 - python: 使用 typehint；
 - rust：使用宏。
