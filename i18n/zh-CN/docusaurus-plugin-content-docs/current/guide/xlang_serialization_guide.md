@@ -1,14 +1,14 @@
 ---
-title: Xlang Serialization Guide
+title: 多语言序列化指南
 sidebar_position: 2
 id: xlang_object_graph_guide
 ---
 
-## Cross-language object graph serialization
+## 跨语言对象图序列化
 
-### Serialize built-in types
+### 序列化内置类型
 
-Common types can be serialized automatically: primitive numeric types, string, binary, array, list, map and so on.
+常见类型可自动序列化：rimitive numeric types, string, binary, array, list, map 等。
 
 **Java**
 
@@ -125,9 +125,9 @@ fn run() {
 }
 ```
 
-### Serialize custom types
+### 序列化自定义类型
 
-Serializing user-defined types needs registering the custom type using the register API to establish the mapping relationship between the type in different languages.
+序列化用户定义的类型需要使用注册 API 注册自定义类型，以便在不同语言中建立类型之间的映射关系。
 
 **Java**
 
@@ -394,9 +394,9 @@ fn complex_struct() {
 }
 ```
 
-### Serialize Shared Reference and Circular Reference
+### 序列化共享引用和循环引用
 
-Shared reference and circular reference can be serialized automatically, no duplicate data or recursion error.
+共享引用和循环引用可自动序列化，不会出现重复数据或递归错误。
 
 **Java**
 
