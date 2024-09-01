@@ -9,6 +9,7 @@ import styles from "./index.module.css";
 import Translate, { translate } from "@docusaurus/Translate";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import PhotoSlider from "../components/PhotoSlider/PhotoSlider";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -97,6 +98,7 @@ export default function Home(): JSX.Element {
         <main>
           <div data-aos="fade-up" data-aos-delay="600">
             <HomepageFeatures />
+            <PhotoSlider />
           </div>
         </main>
       </Layout>
