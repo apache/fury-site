@@ -8,7 +8,7 @@ id: xlang_object_graph_guide
 
 ### 序列化内置类型
 
-常见类型可自动序列化：rimitive numeric types, string, binary, array, list, map 等。
+Apache Fury可以自动序列化编程语言的常见数据类型：primitive numeric types, string, binary, array, list, map 等。
 
 **Java**
 
