@@ -9,7 +9,7 @@ sidebar_position: 1
 ```java
 import java.util.List;
 import java.util.Arrays;
-import io.fury.*;
+import org.apache.fury.*;
 
 public class Example {
   public static void main(String[] args) {
@@ -36,7 +36,7 @@ public class Example {
 
 ```java
 import com.google.common.collect.ImmutableMap;
-import io.fury.*;
+import org.apache.fury.*;
 
 import java.util.Map;
 
