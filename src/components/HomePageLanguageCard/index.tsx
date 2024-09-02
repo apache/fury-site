@@ -15,44 +15,63 @@ export const HomePageLanguageCard = () => (
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <Card.Grid style={gridStyle} onClick={() => {
-        window.location.href =
-          "https://fury.apache.org/docs/start/usage/#java-serialization";
-      }}>
+      <Card.Grid
+        style={gridStyle}
+        onClick={() => {
+          window.location.href =
+            "https://fury.apache.org/docs/start/usage/#java-serialization";
+        }}
+      >
         <img src="..//java.svg" style={imageStyle} />
         Java
       </Card.Grid>
-      <Card.Grid style={gridStyle} onClick={() => {
-        window.location.href =
-          "https://fury.apache.org/docs/start/usage/#python";
-      }}>
+      <Card.Grid
+        style={gridStyle}
+        onClick={() => {
+          window.location.href =
+            "https://fury.apache.org/docs/start/usage/#python";
+        }}
+      >
         <img src="..//python.svg" style={imageStyle} />
         Python
       </Card.Grid>
-        <Card.Grid style={gridStyle} onClick={() => {
-        window.location.href =
-          "https://fury.apache.org/docs/start/usage/#golang";
-      }}>
+      <Card.Grid
+        style={gridStyle}
+        onClick={() => {
+          window.location.href =
+            "https://fury.apache.org/docs/start/usage/#golang";
+        }}
+      >
         <img src="..//golang.svg" style={imageStyle} />
         Golang
       </Card.Grid>
-        <Card.Grid style={gridStyle} onClick={() => {
-        window.location.href =
-          "https://fury.apache.org/docs/start/usage/#javascript";
-      }}>
-        <img src="..//javascript.svg" style={imageStyle} />
+      <Card.Grid
+        style={gridStyle}
+        onClick={() => {
+          window.location.href =
+            "https://fury.apache.org/docs/start/usage/#javascript";
+        }}
+      >
+        <img src="..//JavaScript.svg" style={imageStyle} />
         JavaScript
       </Card.Grid>
-        <Card.Grid style={gridStyle} onClick={() => {
-        window.location.href = "https://fury.apache.org/docs/start/usage/#rust";
-      }}>
+      <Card.Grid
+        style={gridStyle}
+        onClick={() => {
+          window.location.href =
+            "https://fury.apache.org/docs/start/usage/#rust";
+        }}
+      >
         <img src="..//Rust.svg" style={imageStyle} />
         Rust
       </Card.Grid>
-      <Card.Grid style={gridStyle} onClick={() => {
-        window.location.href =
-          "https://fury.apache.org/docs/start/usage/#crosslanguage-serialization";
-      }}>
+      <Card.Grid
+        style={gridStyle}
+        onClick={() => {
+          window.location.href =
+            "https://fury.apache.org/docs/start/usage/#crosslanguage-serialization";
+        }}
+      >
         <img src="..//more.svg" style={imageStyle} />
         More
       </Card.Grid>
