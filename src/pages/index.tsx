@@ -9,6 +9,8 @@ import styles from "./index.module.css";
 import Translate, { translate } from "@docusaurus/Translate";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { HomePageLanguageCard } from "../components/HomePageLanguageCard";
+import { HomepageCodeDisplay } from "../components/HomepageCode";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -95,11 +97,21 @@ export default function Home(): JSX.Element {
       >
         <HomepageHeader />
         <main>
-          <div data-aos="fade-up" data-aos-delay="600">
+          <div data-aos="fade-up" data-aos-delay="10">
             <HomepageFeatures />
+          </div>
+        </main>
+        <main>
+          <div data-aos="fade-up" data-aos-delay="10">
+            <HomePageLanguageCard />
+          </div>
+        </main>
+        <main>
+          <div data-aos="fade-up" data-aos-delay="10">
+            <HomepageCodeDisplay />
           </div>
         </main>
       </Layout>
     </>
-  );
+  );  
 }
