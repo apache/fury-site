@@ -6,7 +6,7 @@ export const HomepageCodeDisplay = () => {
   const [copySuccess, setCopySuccess] = useState("");
   const codeString = `import java.util.List;
 import java.util.Arrays;
-import io.fury.*;
+import org.apache.fury.*;
 
 public class Example {
   public static void main(String[] args) {
