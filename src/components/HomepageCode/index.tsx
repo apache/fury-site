@@ -3,10 +3,12 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export const HomepageCodeDisplay = () => {
-  const [copySuccess, setCopySuccess] = useState("");
-  const codeString = `import java.util.List;
+
+const [copySuccess, setCopySuccess] = useState("");
+const codeString = `import java.util.List;
 import java.util.Arrays;
-import io.fury.*;
+import org.apache.fury.*;
+
 
 public class Example {
   public static void main(String[] args) {
@@ -29,6 +31,7 @@ public class Example {
 }
   `;
 
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(codeString).then(
       () => {
@@ -40,6 +43,7 @@ public class Example {
       }
     );
   };
+
 
   return (
     <>
@@ -88,6 +92,10 @@ public class Example {
           >
             {copySuccess ? copySuccess : "Copy"}
           </button>
+            width: "50%", 
+            height: "auto", 
+          }}
+        >
           <SyntaxHighlighter
             language="java"
             style={dracula}
