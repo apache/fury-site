@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export const HomepageCodeDisplay = () => {
+  const [copySuccess, setCopySuccess] = useState("");
   const codeString = `import java.util.List;
 import java.util.Arrays;
 import io.fury.*;
@@ -28,6 +29,18 @@ public class Example {
 }
   `;
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(codeString).then(
+      () => {
+        setCopySuccess("Copied!");
+        setTimeout(() => setCopySuccess(""), 2000); // 清除复制成功的提示
+      },
+      (err) => {
+        setCopySuccess("Failed to copy!");
+      }
+    );
+  };
+
   return (
     <>
       <div
@@ -49,14 +62,32 @@ public class Example {
         </div>
         <div
           style={{
+            position: "relative", // 为绝对定位的按钮提供相对参考
             padding: "12px",
             justifyContent: "flex-end",
             backgroundColor: "#2d2d2d",
             borderRadius: "5px",
-            width: "50%", 
-            height: "auto", 
+            width: "50%",
+            height: "auto",
           }}
         >
+          {/* 复制按钮 */}
+          <button
+            onClick={copyToClipboard}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              backgroundColor: "#444",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              padding: "5px 10px",
+              cursor: "pointer",
+            }}
+          >
+            {copySuccess ? copySuccess : "Copy"}
+          </button>
           <SyntaxHighlighter
             language="java"
             style={dracula}
