@@ -368,6 +368,7 @@ length(unsigned varint) | collection header | elements header | elements data
 - 对于 `HashMap/LinkedHashMap`，这将是空的。
 
 对于 `TreeMap`，这将是 `Comparator`
+
 - 对于其他 `Map`，这可能是额外的对象字段信息。
 
 #### 映射键值数据
