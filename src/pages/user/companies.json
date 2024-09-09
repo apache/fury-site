@@ -12,7 +12,7 @@
   {
     "name": "AliCloud",
     "link": "https://www.aliyun.com/",
-    "imgUrl": "AliCloud.png"
+    "imgUrl": "aliyun.png"
   },
   {
     "name": "Taobao",
@@ -27,7 +27,7 @@
   {
     "name": "饿了么",
     "link": "https://www.ele.me/",
-    "imgUrl": "eleme.png"
+    "imgUrl": "eleme.svg"
   },
   {
     "name": "高德地图",
