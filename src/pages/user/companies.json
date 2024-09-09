@@ -2,17 +2,42 @@
   {
     "name": "AntGroup",
     "link": "https://www.antgroup.com/",
-    "imgUrl": "AntGroup.jpg"
+    "imgUrl": "AntGroup.png"
   },
   {
     "name": "Alibaba",
     "link": "https://www.alibaba.com/",
-    "imgUrl": "Alibaba.jpg"
+    "imgUrl": "Alibaba.png"
   },
   {
     "name": "AliCloud",
     "link": "https://www.aliyun.com/",
-    "imgUrl": "AliCloud.jpg"
+    "imgUrl": "AliCloud.png"
+  },
+  {
+    "name": "Taobao",
+    "link": "https://www.taobao.com/",
+    "imgUrl": "taobao.png"
+  },
+  {
+    "name": "Tmall",
+    "link": "https://www.tmall.com/",
+    "imgUrl": "tmall.png"
+  },
+  {
+    "name": "饿了么",
+    "link": "https://www.ele.me/",
+    "imgUrl": "eleme.png"
+  },
+  {
+    "name": "高德地图",
+    "link": "https://www.amap.com/",
+    "imgUrl": "amap.png"
+  },
+  {
+    "name": "飞猪",
+    "link": "https://www.fliggy.com/",
+    "imgUrl": "fliggy.png"
   },
   {
     "name": "Redisson",
