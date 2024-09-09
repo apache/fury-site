@@ -1,6 +1,6 @@
 # Apache Fury (incubating) Website
 
-The source repository of static website for Apache Fury (incubating).
+The source repository of static website for Apache Fury (incubating): https://github.com/apache/fury.
 
 > [!IMPORTANT]
 > Apache Fury (incubating) is an effort undergoing incubation at the Apache
