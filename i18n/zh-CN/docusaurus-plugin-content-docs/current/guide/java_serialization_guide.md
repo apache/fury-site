@@ -381,29 +381,7 @@ if(JavaSerializer.serializedByJDK(bytes)){
 
 ### Apache Fury 更新
 
-当前只保证小版本之间的兼容性。例如：您使用的 Fury 版本为 `0.2.0`，当升级到 Fury `0.2.1` 版本，可以确保二进制协议的兼容性。但是，如果更新到 Fury `0.4.1` 版本，二进制协议兼容性能力不能得到保证。
-大多数情况下，您没有必要升级 Aapche Fury 到最新版本。当前提供的版本足够快速和空间高效了，并且我们会为最近的几个版本做部分缺陷修复。
-
-如果您仍然想升级 Apache Fury 以获得更好的性能和更小的体积，您需要将 Fury 版本号写入序列化数据头中，保证二进制协议的兼容性。
-
-```java
-MemoryBuffer buffer=xxx;
-  buffer.writeVarInt32(2);
-  fury.serialize(buffer,obj);
-```
-
-之后的反序列化，您需要：
-
-```java
-MemoryBuffer buffer=xxx;
-  int furyVersion=buffer.readVarInt32()
-  Fury fury=getFury(furyVersion);
-  fury.deserialize(buffer);
-```
-
-`getFury` 是加载对应版本 Fury 的方法，您可以使用 maven shade插件将不同版本的 Fury shade 并重新定位到不同的包下面，这样就可以按不同路径加载 不同版本的Fury。
-
-如果您小版本范围内升级了 Fury，或者您不会再有被旧版本 Fury 序列化的数据。您可以直接升级 Fury、无需对序列化数据进行“版本控制”。
+当前只保证小版本之间的兼容性。例如：您使用的 Fury 版本为 `0.7.0`，当升级到 Fury `0.7.1` 版本，可以确保二进制协议的兼容性。但是，如果更新到 Fury `0.8.0` 版本，二进制协议兼容性能力不能得到保证。我们计划在1.0.0版本开始提供大版本内的二进制兼容性。
 
 ## 常见问题排查
 
