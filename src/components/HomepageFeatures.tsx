@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Heading from "@theme/Heading";
-import styles from "./styles.module.css";
+import styles from "../css/styles.module.css";
 import Translate, { translate } from "@docusaurus/Translate";
 import React from "react";
 
