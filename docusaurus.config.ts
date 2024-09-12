@@ -135,11 +135,6 @@ const config: Config = {
           to: 'download',
           label: 'Download',
         },
-        {
-          position: 'right',
-          to: 'https://github.com/apache/fury/issues/1793',
-          label: 'FAQ',
-        },
         {to: '/blog', label: 'Blog', position: 'right'},
         {
           type: 'dropdown',
