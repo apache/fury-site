@@ -17,7 +17,7 @@ Scala 2 和 3 均支持。
 ## 安装
 
 ```sbt
-libraryDependencies += "org.apache.fury" % "fury-core" % "0.7.0"
+libraryDependencies += "org.apache.fury" % "fury-core" % "0.7.1"
 ```
 
 ## Fury 对象创建
