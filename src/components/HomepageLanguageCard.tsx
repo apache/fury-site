@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "antd";
 
-export const HomePageLanguageCard = () => (
+export const HomepageLanguageCard = () => (
   <div>
     <div style={{ textAlign: "center" }}>
       <h2>Quick Start!</h2>
