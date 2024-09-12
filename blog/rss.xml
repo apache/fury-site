@@ -4,17 +4,66 @@
         <title>Apache Fury (incubating) Blog</title>
         <link>https://fury.apache.org/blog</link>
         <description>Apache Fury (incubating) Blog</description>
-        <lastBuildDate>Sun, 04 Aug 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 12 Sep 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en-US</language>
+        <item>
+            <title><![CDATA[Fury v0.7.1 Released]]></title>
+            <link>https://fury.apache.org/blog/fury_0_7_1_release</link>
+            <guid>https://fury.apache.org/blog/fury_0_7_1_release</guid>
+            <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Apache Fury team is pleased to announce the 0.7.1 release. This is a major release that includes 20 PR from 8 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.7.1 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.0...v0.7.1" target="_blank" rel="noopener noreferrer">20 PR</a> from 8 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_7_1_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h2>
+<ul>
+<li>feat(javascript): Added MetaString Class for Unicode Encoding/Decoding in Type.Object Code Generation by @Forchapeatl in <a href="https://github.com/apache/fury/pull/1774" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1774</a></li>
+<li>feat(Rust): Refine Code Structure &amp;  Prepare for Future Compatibility Features by @theweipeng in <a href="https://github.com/apache/fury/pull/1787" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1787</a></li>
+<li>feat(java): ThreadSafeFury add getClassResolver method by @funky-eyes in <a href="https://github.com/apache/fury/pull/1780" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1780</a></li>
+<li>feat(Rust): Implement TypeMeta part of the compatibility features by @theweipeng in <a href="https://github.com/apache/fury/pull/1789" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1789</a></li>
+<li>feat(Rust): Support polymorphism by @theweipeng in <a href="https://github.com/apache/fury/pull/1795" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1795</a></li>
+<li>feat(java): Support copy capabilities for some classes without no-argument constructors by @zhaommmmomo in <a href="https://github.com/apache/fury/pull/1794" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1794</a></li>
+<li>feat(java): support jdk9+ java.util.ImmutableCollections copy by @zhaommmmomo in <a href="https://github.com/apache/fury/pull/1800" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1800</a></li>
+<li>feat(rust): support enum serialization by @jiacai2050 in <a href="https://github.com/apache/fury/pull/1817" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1817</a></li>
+<li>refine fury website and add chinese documents by @yuluo-yx and  @LofiSu</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_7_1_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>ci: fix rust ci failed by @LiangliangSui in <a href="https://github.com/apache/fury/pull/1783" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1783</a></li>
+<li>fix(java): fix classloader get npe by @chaokunyang in <a href="https://github.com/apache/fury/pull/1792" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1792</a></li>
+<li>fix(scala): fix nested type serialization in scala object type by @chaokunyang in <a href="https://github.com/apache/fury/pull/1809" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1809</a></li>
+<li>fix(java): Fix replace resolver serializaiton by @chaokunyang in <a href="https://github.com/apache/fury/pull/1812" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1812</a></li>
+<li>fix(java): fix reserved keyword conflict by @chaokunyang in <a href="https://github.com/apache/fury/pull/1819" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1819</a></li>
+<li>fix(java): fix nested map field value serialization by private map serializer by @chaokunyang in <a href="https://github.com/apache/fury/pull/1820" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1820</a></li>
+<li>fix(rust): use iter to avoid reallocate by @jiacai2050 in <a href="https://github.com/apache/fury/pull/1821" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1821</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/blog/fury_0_7_1_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements">​</a></h2>
+<ul>
+<li>chore(java): Disallow writing meta classdef when obj is null by @LiangliangSui in <a href="https://github.com/apache/fury/pull/1686" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1686</a></li>
+<li>chore(infra): optimize github tmpl &amp; update actions/checkout version to 4.1.7 by @yuluo-yx in <a href="https://github.com/apache/fury/pull/1807" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1807</a></li>
+<li>chore(infra): remove redundant bug reporting options by @yuluo-yx in <a href="https://github.com/apache/fury/pull/1810" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1810</a></li>
+<li>docs: add check lint ci &amp; fix md lint by @yuluo-yx in <a href="https://github.com/apache/fury/pull/1811" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1811</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-contributors">New Contributors<a href="https://fury.apache.org/blog/fury_0_7_1_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors">​</a></h2>
+<ul>
+<li>@Forchapeatl made their first contribution in <a href="https://github.com/apache/fury/pull/1774" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1774</a></li>
+<li>@funky-eyes made their first contribution in <a href="https://github.com/apache/fury/pull/1780" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1780</a></li>
+<li>@yuluo-yx made their first contribution in <a href="https://github.com/apache/fury/pull/1807" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1807</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.7.0...v0.7.1" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.7.0...v0.7.1</a></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="acknowledgements">Acknowledgements<a href="https://fury.apache.org/blog/fury_0_7_1_release#acknowledgements" class="hash-link" aria-label="Direct link to Acknowledgements" title="Direct link to Acknowledgements">​</a></h2>
+<p>Thanks @jiacai2050 @chaokunyang @theweipeng @funky-eyes @Forchapeatl @zhaommmmomo @yuluo-yx @LiangliangSui @LofiSu</p>
+<p>A big thank you to all our contributors who have worked hard on this release. Your contributions, whether through code,
+documentation, or issue reporting, are really appreciated.</p>]]></content:encoded>
+            <category>fury</category>
+        </item>
         <item>
             <title><![CDATA[Fury v0.7.0 Released]]></title>
             <link>https://fury.apache.org/blog/fury_0_7_0_release</link>
             <guid>https://fury.apache.org/blog/fury_0_7_0_release</guid>
             <pubDate>Sun, 04 Aug 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes 24 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.6.0...v0.7.0" target="_blank" rel="noopener noreferrer">24 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <description><![CDATA[The Apache Fury team is pleased to announce the 0.7.0 release. This is a major release that includes 24 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.7.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.6.0...v0.7.0" target="_blank" rel="noopener noreferrer">24 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="high-light">High Light<a href="https://fury.apache.org/blog/fury_0_7_0_release#high-light" class="hash-link" aria-label="Direct link to High Light" title="Direct link to High Light">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="experimental">Experimental<a href="https://fury.apache.org/blog/fury_0_7_0_release#experimental" class="hash-link" aria-label="Direct link to Experimental" title="Direct link to Experimental">​</a></h3>
 <p>Implement fast object deep copy framework for java:</p>
