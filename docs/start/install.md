@@ -27,6 +27,7 @@ To add a dependency on Fury using Maven, use the following:
 ```
 
 ## Scala
+
 To add a dependency on Fury scala for scala 2.13 with maven, use the following:
 
 ```xml
