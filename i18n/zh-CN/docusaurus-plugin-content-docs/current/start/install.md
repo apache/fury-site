@@ -25,6 +25,7 @@ Apache Fury 源码下载请参见 Apache Fury [download](https://github.com/apac
 ```
 
 ### Fury Scala 安装
+
 要使用 Maven 添加 scala 2.13 的 Fury scala 依赖，请使用以下配置：
 
 ```xml
