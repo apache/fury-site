@@ -4,10 +4,60 @@
         <title>Apache Fury (incubating) Blog</title>
         <link>https://fury.apache.org/blog</link>
         <description>Apache Fury (incubating) Blog</description>
-        <lastBuildDate>Thu, 12 Sep 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 04 Oct 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en-US</language>
+        <item>
+            <title><![CDATA[Fury v0.8.0 Released]]></title>
+            <link>https://fury.apache.org/blog/fury_0_8_0_release</link>
+            <guid>https://fury.apache.org/blog/fury_0_8_0_release</guid>
+            <pubDate>Fri, 04 Oct 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes 23 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">23 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_8_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<ul>
+<li>refactor(rust): simplify error handle by @jiacai2050 in <a href="https://github.com/apache/fury/pull/1823" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1823</a></li>
+<li>feat(java): support graalvm 17/21/22 by @chaokunyang in <a href="https://github.com/apache/fury/pull/1845" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1845</a></li>
+<li>perf(java): inline same element invoke in jit by @chaokunyang in <a href="https://github.com/apache/fury/pull/1851" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1851</a></li>
+<li>perf(java): optimize read classdef perf by @chaokunyang in <a href="https://github.com/apache/fury/pull/1852" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1852</a></li>
+<li>feat(scala): optimize scala class serialization by @chaokunyang in <a href="https://github.com/apache/fury/pull/1853" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1853</a></li>
+<li>feat(java): implement sublist serializers by @chaokunyang in <a href="https://github.com/apache/fury/pull/1856" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1856</a></li>
+<li>feat(java): use SubListViewSerializer only when tracking ref by @chaokunyang in <a href="https://github.com/apache/fury/pull/1858" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1858</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_8_0_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>fix(java): DeserializationException#getMessage call by @yoohaemin in <a href="https://github.com/apache/fury/pull/1830" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1830</a></li>
+<li>fix(java): fix collection view serialization by @chaokunyang in <a href="https://github.com/apache/fury/pull/1833" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1833</a></li>
+<li>fix(java): fix long type name meta string encoding by @chaokunyang in <a href="https://github.com/apache/fury/pull/1837" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1837</a></li>
+<li>fix(java): fix serializer factory getSerializerClass by @chaokunyang in <a href="https://github.com/apache/fury/pull/1836" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1836</a></li>
+<li>fix(rust): replace <code>(value &lt;&lt; 8) | (value &gt;&gt; 8)</code> with <code>value.rotate_right(8)</code> by @chaokunyang in <a href="https://github.com/apache/fury/pull/1841" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1841</a></li>
+<li>fix(java): Fix for maximum size of java arrays by @fink-arthur in <a href="https://github.com/apache/fury/pull/1843" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1843</a></li>
+<li>fix(java): Fix max Java array size for reader by @fink-arthur in <a href="https://github.com/apache/fury/pull/1844" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1844</a></li>
+<li>fix(java): fix jdk proxy serialization when proxy writeReplace method by @chaokunyang in <a href="https://github.com/apache/fury/pull/1857" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1857</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/blog/fury_0_8_0_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements">​</a></h2>
+<ul>
+<li>chore(java): fix default value doc for metaShareEnabled/scopedMetaShareEnabled by @chaokunyang in <a href="https://github.com/apache/fury/pull/1826" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1826</a></li>
+<li>chore(doc): fix 'how to upgrade fury' link in README by @sh-cho in <a href="https://github.com/apache/fury/pull/1846" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1846</a></li>
+<li>build(deps): bump com.google.protobuf<!-- -->:protobuf-java<!-- --> from 3.16.3 to 3.25.5 in /java/benchmark by @dependabot in <a href="https://github.com/apache/fury/pull/1847" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1847</a></li>
+<li>chore(java): simplify generated codec name by @chaokunyang in <a href="https://github.com/apache/fury/pull/1850" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1850</a></li>
+<li>ci: only run sync job if the repo is apache/fury by @pjfanning in <a href="https://github.com/apache/fury/pull/1860" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1860</a></li>
+<li>feat(scala): upgrade sbt and sbt-apache-sonatype by @pjfanning in <a href="https://github.com/apache/fury/pull/1859" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1859</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-contributors">New Contributors<a href="https://fury.apache.org/blog/fury_0_8_0_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors">​</a></h2>
+<ul>
+<li>@yoohaemin made their first contribution in <a href="https://github.com/apache/fury/pull/1830" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1830</a></li>
+<li>@fink-arthur made their first contribution in <a href="https://github.com/apache/fury/pull/1843" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1843</a></li>
+<li>@sh-cho made their first contribution in <a href="https://github.com/apache/fury/pull/1846" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1846</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.7.1...v0.8.0</a></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="acknowledgements">Acknowledgements<a href="https://fury.apache.org/blog/fury_0_8_0_release#acknowledgements" class="hash-link" aria-label="Direct link to Acknowledgements" title="Direct link to Acknowledgements">​</a></h2>
+<p>Thanks @@jiacai2050 @fink-arthur @sh-cho @pjfanning @chaokunyang @yoohaemin</p>
+<p>A big thank you to all our contributors who have worked hard on this release. Your contributions, whether through code,
+documentation, or issue reporting, are really appreciated.</p>]]></content:encoded>
+            <category>fury</category>
+        </item>
         <item>
             <title><![CDATA[Fury v0.7.1 Released]]></title>
             <link>https://fury.apache.org/blog/fury_0_7_1_release</link>
