@@ -16,12 +16,46 @@ To add a dependency on Fury using Maven, use the following:
 <dependency>
   <groupId>org.apache.fury</groupId>
   <artifactId>fury-core</artifactId>
-  <version>0.7.1</version>
+  <version>0.8.0</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
   <groupId>org.apache.fury</groupId>
   <artifactId>fury-format</artifactId>
-  <version>0.7.1</version>
+  <version>0.8.0</version>
 </dependency> -->
+```
+
+## Scala
+
+To add a dependency on Fury scala for scala 2.13 with maven, use the following:
+
+```xml
+<dependency>
+  <groupId>org.apache.fury</groupId>
+  <artifactId>fury-scala_2.13</artifactId>
+  <version>0.8.0</version>
+</dependency>
+```
+
+To add a dependency on Fury scala for scala 3 with maven, use the following:
+
+```xml
+<dependency>
+  <groupId>org.apache.fury</groupId>
+  <artifactId>fury-scala_3</artifactId>
+  <version>0.8.0</version>
+</dependency>
+```
+
+To add a dependency on Fury scala for scala 2.13 with sbt, use the following:
+
+```sbt
+libraryDependencies += "org.apache.fury" % "fury-scala_2.13" % "0.8.0"
+```
+
+To add a dependency on Fury scala for scala 3 with sbt, use the following:
+
+```sbt
+libraryDependencies += "org.apache.fury" % "fury-scala_3" % "0.8.0"
 ```
