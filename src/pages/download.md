@@ -13,7 +13,7 @@ The latest source release is 0.8.0:
 
 | Version | Date | Source | Release Notes |
 |---------|------------|--------|---------------|
-| 0.8.0   |2024-09-12  | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.8.0/apache-fury-0.8.0-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.8.0/apache-fury-0.8.0-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.8.0/apache-fury-0.8.0-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.8.0) |
+| 0.8.0   |2024-10-04  | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.8.0/apache-fury-0.8.0-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.8.0/apache-fury-0.8.0-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.8.0/apache-fury-0.8.0-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.8.0) |
 
 ## All archived releases
 
