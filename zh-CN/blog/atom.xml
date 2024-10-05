@@ -14,6 +14,12 @@
         <updated>2024-10-04T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes 23 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></summary>
         <content type="html"><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">23 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="highlights">Highlights<a href="https://fury.apache.org/zh-CN/blog/fury_0_8_0_release#highlights" class="hash-link" aria-label="Highlights的直接链接" title="Highlights的直接链接">​</a></h3>
+<ul>
+<li>Support graalvm 17/21/22 native image</li>
+<li>Release fury optimized serializers for scala collection</li>
+<li>Reduce scala collection classname serialization cost using dict encoding</li>
+</ul>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/zh-CN/blog/fury_0_8_0_release#features" class="hash-link" aria-label="Features的直接链接" title="Features的直接链接">​</a></h3>
 <ul>
 <li>refactor(rust): simplify error handle by @jiacai2050 in <a href="https://github.com/apache/fury/pull/1823" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1823</a></li>
