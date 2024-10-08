@@ -9,20 +9,24 @@ import java.util.Arrays;
 import org.apache.fury.*;
 
 public class Example {
-  public static void main(String[] args) {
-    SomeClass object = new SomeClass();
-    // Note that Fury instances should be reused between
-    // multiple serializations of different objects.
-    Fury fury = Fury.builder().withLanguage(Language.JAVA)
-      // Allow to deserialize objects unknown types,
-      // more flexible but less secure.
-      // .withSecureMode(false)
-      .build();
+  // Note that Fury instances should be reused between
+  // multiple serializations of different objects.
+  static ThreadSafeFury fury = Fury.builder().withLanguage(Language.JAVA)
+    // Allow to deserialize objects unknown types,
+    // more flexible but less secure.
+    // .withSecureMode(false)
+    .buildThreadSafeFury();
+
+  static {
     // Registering types can reduce class name serialization
     // overhead but not mandatory.
     // If secure mode enabled
     //all custom types must be registered.
     fury.register(SomeClass.class);
+  }
+
+  public static void main(String[] args) {
+    SomeClass object = new SomeClass();
     byte[] bytes = fury.serialize(object);
     System.out.println(fury.deserialize(bytes));
   }
