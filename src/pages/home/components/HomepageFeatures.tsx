@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Heading from "@theme/Heading";
-import Translate, { translate } from "@docusaurus/Translate";
+import Translate from "@docusaurus/Translate";
 import React from "react";
 
 type FeatureItem = {

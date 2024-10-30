@@ -26,6 +26,9 @@ export default function UserPage() {
     window.addEventListener("load", AOS.refresh);
   }, []);
 
+  const ourUsers = dataSource.common.ourUsers;
+  const tip = dataSource.common.tip;
+
   return (
     <Layout>
       <BrowserOnly>
@@ -36,7 +39,7 @@ export default function UserPage() {
                 className="fs-2 mb-4 fw-bold text-center"
                 style={{ padding: "10px 0 30px", textAlign: "center" }}
               >
-                {dataSource.common.ourUsers}
+                {ourUsers}
               </h3>
               <hr
                 className="divider my-4 mx-auto"
@@ -44,7 +47,7 @@ export default function UserPage() {
               ></hr>
               <div
                 className="desc"
-                dangerouslySetInnerHTML={{ __html: dataSource.common.tip }}
+                dangerouslySetInnerHTML={{ __html: tip }}
               ></div>
               <div className="user_case home_block">
                 {companies.map((item, i) => (

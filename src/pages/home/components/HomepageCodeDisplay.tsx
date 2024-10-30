@@ -46,6 +46,8 @@ public class Example {
     );
   };
 
+  const programmingImageUrl = useBaseUrl("/home/programming.svg");
+
   return (
     <>
       <div
@@ -63,11 +65,11 @@ public class Example {
             height: "auto",
           }}
         >
-          <img src={useBaseUrl("/home/programming.svg")} alt="programming-coding" />
+          <img src={programmingImageUrl} alt="programming-coding" />
         </div>
         <div
           style={{
-            position: "relative", // 为绝对定位的按钮提供相对参考
+            position: "relative",
             padding: "12px",
             justifyContent: "flex-end",
             backgroundColor: "#2d2d2d",
