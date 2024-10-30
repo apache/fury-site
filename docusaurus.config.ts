@@ -132,7 +132,7 @@ const config: Config = {
         },
         {
           position: 'right',
-          to: 'download',
+          to: '/download',
           label: 'Download',
         },
         {to: '/blog', label: 'Blog', position: 'right'},
