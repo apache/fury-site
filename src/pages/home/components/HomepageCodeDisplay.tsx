@@ -1,8 +1,9 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export const HomepageCodeDisplay = () => {
+export default function HomepageCodeDisplay() {
   const [copySuccess, setCopySuccess] = useState("");
   const codeString = `import java.util.List;
 import java.util.Arrays;
@@ -45,6 +46,8 @@ public class Example {
     );
   };
 
+  const programmingImageUrl = useBaseUrl("/home/programming.svg");
+
   return (
     <>
       <div
@@ -62,11 +65,11 @@ public class Example {
             height: "auto",
           }}
         >
-          <img src="/programming.svg" alt="programming-coding" />
+          <img src={programmingImageUrl} alt="programming-coding" />
         </div>
         <div
           style={{
-            position: "relative", // 为绝对定位的按钮提供相对参考
+            position: "relative",
             padding: "12px",
             justifyContent: "flex-end",
             backgroundColor: "#2d2d2d",

@@ -1,14 +1,25 @@
 import React from "react";
 import { Card } from "antd";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
-export const HomePageLanguageCard = () => {
-  const locale = "zh-CN"; 
+export default function HomePageLanguageCard() {
+  const locale = "zh-CN";
 
   const getLanguageUrl = (language) => {
-    const baseUrl = locale === "zh-CN" 
-      ? "https://fury.apache.org/zh-CN/docs/start/usage/#" 
-      : "https://fury.apache.org/docs/start/usage/#";
+    const baseUrl =
+      locale === "zh-CN"
+        ? "https://fury.apache.org/zh-CN/docs/start/usage/#"
+        : "https://fury.apache.org/docs/start/usage/#";
     return `${baseUrl}${language}`;
+  };
+
+  const imageUrls = {
+    java: useBaseUrl("/home/java.svg"),
+    python: useBaseUrl("/home/python.svg"),
+    golang: useBaseUrl("/home/golang.svg"),
+    javascript: useBaseUrl("/home/JavaScript.svg"),
+    rust: useBaseUrl("/home/Rust.svg"),
+    more: useBaseUrl("/home/more.svg"),
   };
 
   return (
@@ -31,7 +42,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("java-serialization");
           }}
         >
-          <img src="../java.svg" style={imageStyle} alt="Java logo" />
+          <img src={imageUrls.java} style={imageStyle} alt="Java logo" />
           Java
         </Card.Grid>
         <Card.Grid
@@ -40,7 +51,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("python");
           }}
         >
-          <img src="../python.svg" style={imageStyle} alt="Python logo" />
+          <img src={imageUrls.python} style={imageStyle} alt="Python logo" />
           Python
         </Card.Grid>
         <Card.Grid
@@ -49,7 +60,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("golang");
           }}
         >
-          <img src="../golang.svg" style={imageStyle} alt="Golang logo" />
+          <img src={imageUrls.golang} style={imageStyle} alt="Golang logo" />
           Golang
         </Card.Grid>
         <Card.Grid
@@ -58,7 +69,11 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("javascript");
           }}
         >
-          <img src="../JavaScript.svg" style={imageStyle} alt="JavaScript logo" />
+          <img
+            src={imageUrls.javascript}
+            style={imageStyle}
+            alt="JavaScript logo"
+          />
           JavaScript
         </Card.Grid>
         <Card.Grid
@@ -67,22 +82,24 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("rust");
           }}
         >
-          <img src="../Rust.svg" style={imageStyle} alt="Rust logo" />
+          <img src={imageUrls.rust} style={imageStyle} alt="Rust logo" />
           Rust
         </Card.Grid>
         <Card.Grid
           style={gridStyle}
           onClick={() => {
-            window.location.href = getLanguageUrl("crosslanguage-serialization");
+            window.location.href = getLanguageUrl(
+              "crosslanguage-serialization"
+            );
           }}
         >
-          <img src="../more.svg" style={imageStyle} alt="More languages" />
+          <img src={imageUrls.more} style={imageStyle} alt="More languages" />
           More
         </Card.Grid>
       </Card>
     </div>
   );
-};
+}
 
 const gridStyle: React.CSSProperties = {
   width: "50%",
