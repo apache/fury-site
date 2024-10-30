@@ -47,7 +47,7 @@ export default function UserPage() {
                 dangerouslySetInnerHTML={{ __html: dataSource.common.tip }}
               ></div>
               <div className="user_case home_block">
-                {companies.map((company, i) => (
+                {companies.map((item, i) => (
                   <div
                     key={i}
                     data-aos="fade-up"
@@ -55,20 +55,20 @@ export default function UserPage() {
                     className="company-item"
                   >
                     <a
-                      href={company.link}
+                      href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <div className="case_item case_hover">
                         <img
-                          src={useBaseUrl("/" + company.imgUrl)}
-                          alt={company.name}
+                          src={useBaseUrl("/user/" + item.imgUrl)}
+                          alt={item.name}
                         />
                       </div>
                     </a>
                   </div>
                 ))}
-                {nologo_companies.map((company, i) => (
+                {nologo_companies.map((item, i) => (
                   <div
                     key={i}
                     data-aos="fade-up"
@@ -76,8 +76,7 @@ export default function UserPage() {
                     className="company-item"
                   >
                     <a className="company_name ">
-                      {" "}
-                      <div className="case_item case_hover">{company.name}</div>
+                      <div className="case_item case_hover">{item.name}</div>
                     </a>
                   </div>
                 ))}

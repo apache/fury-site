@@ -1,3 +1,4 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -62,7 +63,7 @@ public class Example {
             height: "auto",
           }}
         >
-          <img src="/programming.svg" alt="programming-coding" />
+          <img src={useBaseUrl("/home/programming.svg")} alt="programming-coding" />
         </div>
         <div
           style={{

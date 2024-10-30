@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "antd";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export const HomePageLanguageCard = () => {
   const locale = "zh-CN"; 
@@ -31,7 +32,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("java-serialization");
           }}
         >
-          <img src="../java.svg" style={imageStyle} alt="Java logo" />
+          <img src={useBaseUrl("/home/java.svg")} style={imageStyle} alt="Java logo" />
           Java
         </Card.Grid>
         <Card.Grid
@@ -40,7 +41,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("python");
           }}
         >
-          <img src="../python.svg" style={imageStyle} alt="Python logo" />
+          <img src={useBaseUrl("/home/python.svg")} style={imageStyle} alt="Python logo" />
           Python
         </Card.Grid>
         <Card.Grid
@@ -49,7 +50,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("golang");
           }}
         >
-          <img src="../golang.svg" style={imageStyle} alt="Golang logo" />
+          <img src={useBaseUrl("/home/golang.svg")} style={imageStyle} alt="Golang logo" />
           Golang
         </Card.Grid>
         <Card.Grid
@@ -58,7 +59,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("javascript");
           }}
         >
-          <img src="../JavaScript.svg" style={imageStyle} alt="JavaScript logo" />
+          <img src={useBaseUrl("/home/JavaScript.svg")} style={imageStyle} alt="JavaScript logo" />
           JavaScript
         </Card.Grid>
         <Card.Grid
@@ -67,7 +68,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("rust");
           }}
         >
-          <img src="../Rust.svg" style={imageStyle} alt="Rust logo" />
+          <img src={useBaseUrl("/home/Rust.svg")} style={imageStyle} alt="Rust logo" />
           Rust
         </Card.Grid>
         <Card.Grid
@@ -76,7 +77,7 @@ export const HomePageLanguageCard = () => {
             window.location.href = getLanguageUrl("crosslanguage-serialization");
           }}
         >
-          <img src="../more.svg" style={imageStyle} alt="More languages" />
+          <img src={useBaseUrl("/home/more.svg")} style={imageStyle} alt="More languages" />
           More
         </Card.Grid>
       </Card>
