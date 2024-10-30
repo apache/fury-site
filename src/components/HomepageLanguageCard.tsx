@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "antd";
 
-export const HomePageLanguageCard = () => {
+export const HomepageLanguageCard = () => {
   const locale = "zh-CN"; 
 
   const getLanguageUrl = (language) => {
