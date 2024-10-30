@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export const HomepageCodeDisplay = () => {
+export default function HomepageCodeDisplay() {
   const [copySuccess, setCopySuccess] = useState("");
   const codeString = `import java.util.List;
 import java.util.Arrays;

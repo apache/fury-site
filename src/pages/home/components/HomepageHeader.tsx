@@ -8,7 +8,7 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
 
-export const HomepageHeader = () => {
+export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
 
   useEffect(() => {

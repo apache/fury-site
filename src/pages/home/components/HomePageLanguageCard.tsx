@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "antd";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-export const HomePageLanguageCard = () => {
+export default function HomePageLanguageCard() {
   const locale = "zh-CN"; 
 
   const getLanguageUrl = (language) => {

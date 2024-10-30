@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import HomepageFeatures from "@site/src/pages/home/components/HomepageFeatures";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { HomePageLanguageCard } from "./components/HomePageLanguageCard";
-import { HomepageCodeDisplay } from "./components/HomepageCodeDisplay";
+import HomePageLanguageCard from "./components/HomePageLanguageCard";
+import HomepageCodeDisplay from "./components/HomepageCodeDisplay";
 import HomepageFoot from "./components/HomepageFoot";
-import { HomepageHeader } from "./components/HomepageHeader";
+import HomepageHeader from "./components/HomepageHeader";
 
 
-export const Home = () => {
+export default function Home() {
   useEffect(() => {
     AOS.init({
       offset: 100,
