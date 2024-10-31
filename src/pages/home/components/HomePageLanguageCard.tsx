@@ -3,13 +3,12 @@ import { Card } from "antd";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function HomePageLanguageCard() {
-  const locale = "zh-CN";
+  const locale = navigator.language || "en-US";
 
-  const getLanguageUrl = (language) => {
-    const baseUrl =
-      locale === "zh-CN"
-        ? "https://fury.apache.org/zh-CN/docs/start/usage/#"
-        : "https://fury.apache.org/docs/start/usage/#";
+  const getLanguageUrl = (language: string) => {
+    const baseUrl = locale.startsWith("zh-CN")
+      ? "https://fury.apache.org/zh-CN/docs/start/usage/#"
+      : "https://fury.apache.org/docs/start/usage/#";
     return `${baseUrl}${language}`;
   };
 
