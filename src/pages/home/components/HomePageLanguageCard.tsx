@@ -29,6 +29,7 @@ export default function HomePageLanguageCard() {
 
   return (
     <div>
+      <style>{mediaQueryStyles}</style>
       <div style={{ textAlign: "center" }}>
         <h2>Quick Start!</h2>
         <p>Choose a language to get started.</p>
@@ -42,33 +43,37 @@ export default function HomePageLanguageCard() {
         }}
       >
         <Card.Grid
+          className="grid-item"
           style={gridStyle}
           onClick={() => {
             window.location.href = getLanguageUrl("java-serialization");
           }}
         >
           <img src={imageUrls.java} style={imageStyle} alt="Java logo" />
-          Java
+          <span>Java</span>
         </Card.Grid>
         <Card.Grid
+          className="grid-item"
           style={gridStyle}
           onClick={() => {
             window.location.href = getLanguageUrl("python");
           }}
         >
           <img src={imageUrls.python} style={imageStyle} alt="Python logo" />
-          Python
+          <span>Python</span>
         </Card.Grid>
         <Card.Grid
+          className="grid-item"
           style={gridStyle}
           onClick={() => {
             window.location.href = getLanguageUrl("golang");
           }}
         >
           <img src={imageUrls.golang} style={imageStyle} alt="Golang logo" />
-          Golang
+          <span>Golang</span>
         </Card.Grid>
         <Card.Grid
+          className="grid-item"
           style={gridStyle}
           onClick={() => {
             window.location.href = getLanguageUrl("javascript");
@@ -79,18 +84,20 @@ export default function HomePageLanguageCard() {
             style={imageStyle}
             alt="JavaScript logo"
           />
-          JavaScript
+          <span>JavaScript</span>
         </Card.Grid>
         <Card.Grid
+          className="grid-item"
           style={gridStyle}
           onClick={() => {
             window.location.href = getLanguageUrl("rust");
           }}
         >
           <img src={imageUrls.rust} style={imageStyle} alt="Rust logo" />
-          Rust
+          <span>Rust</span>
         </Card.Grid>
         <Card.Grid
+          className="grid-item"
           style={gridStyle}
           onClick={() => {
             window.location.href = getLanguageUrl(
@@ -99,7 +106,7 @@ export default function HomePageLanguageCard() {
           }}
         >
           <img src={imageUrls.more} style={imageStyle} alt="More languages" />
-          More
+          <span>More</span>
         </Card.Grid>
       </Card>
     </div>
@@ -117,7 +124,25 @@ const gridStyle: React.CSSProperties = {
   borderRadius: "10px",
   fontWeight: "bold",
   fontSize: "18px",
+  cursor: "pointer",
 };
+
+//媒体查询
+const mediaQueryStyles = `
+  @media (max-width: 768px) {
+    .grid-item {
+      width: 100% !important;
+    }
+    .grid-item img {
+      width: 28px !important;
+      height: 28px !important;
+    }
+    .grid-item span {
+      display: none !important; 
+    }
+  }
+`;
+
 const imageStyle: React.CSSProperties = {
   width: "38px",
   height: "38px",
