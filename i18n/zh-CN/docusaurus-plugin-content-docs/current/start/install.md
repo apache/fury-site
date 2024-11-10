@@ -57,3 +57,15 @@ libraryDependencies += "org.apache.fury" % "fury-scala_2.13" % "0.9.0"
 ```sbt
 libraryDependencies += "org.apache.fury" % "fury-scala_3" % "0.9.0"
 ```
+
+## Fury Kotlin 安装
+
+To add a dependency on Fury kotlin with maven, use the following:
+
+```xml
+<dependency>
+  <groupId>org.apache.fury</groupId>
+  <artifactId>fury-kotlin</artifactId>
+  <version>0.9.0</version>
+</dependency>
+```
