@@ -12,8 +12,8 @@
         <id>https://fury.apache.org/zh-CN/blog/fury_0_9_0_release</id>
         <link href="https://fury.apache.org/zh-CN/blog/fury_0_9_0_release"/>
         <updated>2024-11-10T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes 34 PR from 14 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></summary>
-        <content type="html"><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">34 PR</a> from 14 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+        <summary type="html"><![CDATA[The Apache Fury team is pleased to announce the 0.9.0 release. This is a major release that includes 34 PR from 14 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></summary>
+        <content type="html"><![CDATA[<p>The Apache Fury team is pleased to announce the 0.9.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">34 PR</a> from 14 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlight">Highlight<a href="https://fury.apache.org/zh-CN/blog/fury_0_9_0_release#highlight" class="hash-link" aria-label="Highlight的直接链接" title="Highlight的直接链接">​</a></h2>
 <ul>
 <li>Optimized serializers for Fury kotlin support</li>
