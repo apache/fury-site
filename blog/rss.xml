@@ -4,10 +4,82 @@
         <title>Apache Fury (incubating) Blog</title>
         <link>https://fury.apache.org/blog</link>
         <description>Apache Fury (incubating) Blog</description>
-        <lastBuildDate>Fri, 04 Oct 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 10 Nov 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en-US</language>
+        <item>
+            <title><![CDATA[Fury v0.9.0 Released]]></title>
+            <link>https://fury.apache.org/blog/fury_0_9_0_release</link>
+            <guid>https://fury.apache.org/blog/fury_0_9_0_release</guid>
+            <pubDate>Sun, 10 Nov 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes 34 PR from 14 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">34 PR</a> from 14 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlight">Highlight<a href="https://fury.apache.org/blog/fury_0_9_0_release#highlight" class="hash-link" aria-label="Direct link to Highlight" title="Direct link to Highlight">​</a></h2>
+<ul>
+<li>Optimized serializers for Fury kotlin support</li>
+<li>Highly-optimized UTF-8 string encoding implementation for Java(2x faster than JDK utf8 encoding)</li>
+<li>Reduce metastring hashcode payload for small string(<code>&lt;=16 bytes</code>)</li>
+<li>Support building C++ libs on windows platform</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_9_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h2>
+<ul>
+<li>feat(kotlin): Introduce kotlin package with stdlib collections and tests by @wywen in <a href="https://github.com/apache/fury/pull/1877" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1877</a></li>
+<li>feat(kotlin): Add Unsigned Primitive Support by @wywen in <a href="https://github.com/apache/fury/pull/1886" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1886</a></li>
+<li>feat(kotlin): Add unsigned array support and tests for arrays and strings by @wywen in <a href="https://github.com/apache/fury/pull/1891" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1891</a></li>
+<li>feat(java): Refactor String serialization and deserialization by @HuangXingBo in <a href="https://github.com/apache/fury/pull/1890" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1890</a></li>
+<li>feat(java): support thread safe register callback for scala kotlin by @chaokunyang in <a href="https://github.com/apache/fury/pull/1895" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1895</a></li>
+<li>feat(scala): add scala range serializer by @chaokunyang in <a href="https://github.com/apache/fury/pull/1899" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1899</a></li>
+<li>feat(java): add option to treat enum as string by @orisgarno in <a href="https://github.com/apache/fury/pull/1892" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1892</a></li>
+<li>feat(kotlin): Add tests and support for built-in types from the kotlin stdlib by @wywen in <a href="https://github.com/apache/fury/pull/1901" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1901</a></li>
+<li>feat(java): reduce metastring hashcode payload for small string(<code>&lt;=16 bytes</code>) by @chaokunyang in <a href="https://github.com/apache/fury/pull/1909" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1909</a></li>
+<li>feat(javascript): Added serialization and serialization for  Type Meta Layer by @Forchapeatl in <a href="https://github.com/apache/fury/pull/1825" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1825</a></li>
+<li>feat(bazel): support building C++ libs on windows platform by @An-DJ in <a href="https://github.com/apache/fury/pull/1873" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1873</a></li>
+<li>feat(scala): support scala native image build by @chaokunyang in <a href="https://github.com/apache/fury/pull/1922" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1922</a></li>
+<li>perf(python): Add python benchmark test by @penguin-wwy in <a href="https://github.com/apache/fury/pull/1916" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1916</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_9_0_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>fix(scala): ban these sbt commands by @pjfanning in <a href="https://github.com/apache/fury/pull/1862" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1862</a></li>
+<li>fix(java): fix async compilation switch for non-public nested class by @chaokunyang in <a href="https://github.com/apache/fury/pull/1883" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1883</a></li>
+<li>fix(java): fix add fury thread safety issue by @chaokunyang in <a href="https://github.com/apache/fury/pull/1889" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1889</a></li>
+<li>fix(other): fix feature request template by @chaokunyang in <a href="https://github.com/apache/fury/pull/1898" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1898</a></li>
+<li>fix(java): NonExistentEnum on mode serializeEnumByName by @orisgarno in <a href="https://github.com/apache/fury/pull/1904" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1904</a></li>
+<li>fix(java): ThreadLocalFury and ThreadPoolFury prioritize using the user classloader by @Aliothmoon in <a href="https://github.com/apache/fury/pull/1907" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1907</a></li>
+<li>fix(java): child container deep copy by @zhaommmmomo in <a href="https://github.com/apache/fury/pull/1911" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1911</a></li>
+<li>fix(java): Fix incorrect results of utf16 to utf8 conversion for latin1 but not ascii characters in <a href="https://github.com/apache/fury/pull/1914" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1914</a></li>
+<li>fix(python): Eliminate PytestCollectionWarning when running pytest by @penguin-wwy in <a href="https://github.com/apache/fury/pull/1917" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1917</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/blog/fury_0_9_0_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements">​</a></h2>
+<ul>
+<li>chore(py314): Replace deprecated pkgutil.find_loader by @effigies in <a href="https://github.com/apache/fury/pull/1888" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1888</a></li>
+<li>docs(guide): Fix package typo by @mandrean in <a href="https://github.com/apache/fury/pull/1906" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1906</a></li>
+<li>build(kotlin): Add spotless ktfmt and enable explicit api mode for library code. by @wywen in <a href="https://github.com/apache/fury/pull/1912" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1912</a></li>
+<li>build(deps): upgrade scala (2.13.15/3.3.4) by @pjfanning in <a href="https://github.com/apache/fury/pull/1861" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1861</a></li>
+<li>feat(rust):  add rust-analyzer to toolchain by @caicancai in <a href="https://github.com/apache/fury/pull/1865" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1865</a></li>
+<li>chore(scala): add scala build script by @chaokunyang in <a href="https://github.com/apache/fury/pull/1920" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1920</a></li>
+<li>chore(kotlin): add parent pom for fury kotlin by @chaokunyang in <a href="https://github.com/apache/fury/pull/1921" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1921</a></li>
+<li>feat(java): Improve error message on architecture not using little-endian format by @apupier in <a href="https://github.com/apache/fury/pull/1918" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1918</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-contributors">New Contributors<a href="https://fury.apache.org/blog/fury_0_9_0_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors">​</a></h2>
+<ul>
+<li>@An-DJ made their first contribution in <a href="https://github.com/apache/fury/pull/1873" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1873</a></li>
+<li>@wywen made their first contribution in <a href="https://github.com/apache/fury/pull/1877" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1877</a></li>
+<li>@effigies made their first contribution in <a href="https://github.com/apache/fury/pull/1888" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1888</a></li>
+<li>@HuangXingBo made their first contribution in <a href="https://github.com/apache/fury/pull/1890" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1890</a></li>
+<li>@orisgarno made their first contribution in <a href="https://github.com/apache/fury/pull/1892" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1892</a></li>
+<li>@mandrean made their first contribution in <a href="https://github.com/apache/fury/pull/1906" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1906</a></li>
+<li>@Aliothmoon made their first contribution in <a href="https://github.com/apache/fury/pull/1907" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1907</a></li>
+<li>@penguin-wwy made their first contribution in <a href="https://github.com/apache/fury/pull/1916" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1916</a></li>
+<li>@apupier made their first contribution in <a href="https://github.com/apache/fury/pull/1918" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1918</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.8.0...v0.9.0</a></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="acknowledgements">Acknowledgements<a href="https://fury.apache.org/blog/fury_0_9_0_release#acknowledgements" class="hash-link" aria-label="Direct link to Acknowledgements" title="Direct link to Acknowledgements">​</a></h2>
+<p>Thanks @effigies @apupier @wywen @mandrean @HuangXingBo @pjfanning @chaokunyang @penguin-wwy @An-DJ @Forchapeatl @orisgarno @zhaommmmomo @caicancai @Aliothmoon</p>
+<p>A big thank you to all our contributors who have worked hard on this release. Your contributions, whether through code,
+documentation, or issue reporting, are really appreciated.</p>]]></content:encoded>
+            <category>fury</category>
+        </item>
         <item>
             <title><![CDATA[Fury v0.8.0 Released]]></title>
             <link>https://fury.apache.org/blog/fury_0_8_0_release</link>
@@ -15,13 +87,13 @@
             <pubDate>Fri, 04 Oct 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes 23 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">23 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="highlights">Highlights<a href="https://fury.apache.org/blog/fury_0_8_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights">​</a></h3>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlights">Highlights<a href="https://fury.apache.org/blog/fury_0_8_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights">​</a></h2>
 <ul>
 <li>Support graalvm 17/21/22 native image</li>
 <li>Release fury optimized serializers for scala collection</li>
 <li>Reduce scala collection classname serialization cost using dict encoding</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_8_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_8_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h2>
 <ul>
 <li>refactor(rust): simplify error handle by @jiacai2050 in <a href="https://github.com/apache/fury/pull/1823" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1823</a></li>
 <li>feat(java): support graalvm 17/21/22 by @chaokunyang in <a href="https://github.com/apache/fury/pull/1845" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1845</a></li>
@@ -59,7 +131,7 @@
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.7.1...v0.8.0</a></p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="acknowledgements">Acknowledgements<a href="https://fury.apache.org/blog/fury_0_8_0_release#acknowledgements" class="hash-link" aria-label="Direct link to Acknowledgements" title="Direct link to Acknowledgements">​</a></h2>
-<p>Thanks @@jiacai2050 @fink-arthur @sh-cho @pjfanning @chaokunyang @yoohaemin</p>
+<p>Thanks @jiacai2050 @fink-arthur @sh-cho @pjfanning @chaokunyang @yoohaemin</p>
 <p>A big thank you to all our contributors who have worked hard on this release. Your contributions, whether through code,
 documentation, or issue reporting, are really appreciated.</p>]]></content:encoded>
             <category>fury</category>
