@@ -48,26 +48,44 @@ public class Example {
 
   const programmingImageUrl = useBaseUrl("/home/programming.svg");
 
+  const mediaQueryStyles = `
+  @media (max-width: 768px) {
+    .desktop-only {
+      display: none !important;
+    }
+    .code-display {
+      width: 100% !important;
+    }
+    .code-display pre {
+      font-size: 8px !important; // 调整移动端字体大小
+    } 
+  }
+  `;
   return (
     <>
+      <style>{mediaQueryStyles}</style>
       <div
         style={{
           display: "flex",
-          margin: "12%",
+          margin: "10%",
           borderRadius: "10px",
+          flexDirection: "row",
         }}
       >
         <div
+          className="desktop-only"
           style={{
             width: "50%",
             justifyContent: "flex-start",
             margin: "50px",
             height: "auto",
+            display: "block",
           }}
         >
           <img src={programmingImageUrl} alt="programming-coding" />
         </div>
         <div
+          className="code-display"
           style={{
             position: "relative",
             padding: "12px",
@@ -75,7 +93,7 @@ public class Example {
             backgroundColor: "#2d2d2d",
             borderRadius: "5px",
             width: "50%",
-            height: "auto",
+            height: "0 auto",
           }}
         >
           {/* 复制按钮 */}
