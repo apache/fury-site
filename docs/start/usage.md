@@ -30,6 +30,54 @@ public class Example {
 }
 ```
 
+## Scala Serialization
+
+```scala
+import org.apache.fury.Fury
+import org.apache.fury.serializer.scala.ScalaSerializers
+
+case class Person(name: String, id: Long, github: String)
+case class Point(x : Int, y : Int, z : Int)
+
+object ScalaExample {
+  val fury: Fury = Fury.builder().withScalaOptimizationEnabled(true).build()
+  // Register optimized fury serializers for scala
+  ScalaSerializers.registerSerializers(fury)
+  fury.register(classOf[Person])
+  fury.register(classOf[Point])
+
+  def main(args: Array[String]): Unit = {
+    val p = Person("Shawn Yang", 1, "https://github.com/chaokunyang")
+    println(fury.deserialize(fury.serialize(p)))
+    println(fury.deserialize(fury.serialize(Point(1, 2, 3))))
+  }
+}
+```
+
+## Kotlin Serialization
+
+```kotlin
+import org.apache.fury.Fury
+import org.apache.fury.ThreadSafeFury
+import org.apache.fury.serializer.kotlin.KotlinSerializers
+
+data class Person(val name: String, val id: Long, val github: String)
+data class Point(val x : Int, val y : Int, val z : Int)
+
+fun main(args: Array<String>) {
+    // Note: following fury init code should be executed only once in a global scope instead
+    // of initializing it everytime when serialization.
+    val fury: ThreadSafeFury = Fury.builder().requireClassRegistration(true).buildThreadSafeFury()
+    KotlinSerializers.registerSerializers(fury)
+    fury.register(Person::class.java)
+    fury.register(Point::class.java)
+
+    val p = Person("Shawn Yang", 1, "https://github.com/chaokunyang")
+    println(fury.deserialize(fury.serialize(p)))
+    println(fury.deserialize(fury.serialize(Point(1, 2, 3))))
+}
+```
+
 ## CrossLanguage Serialization
 
 ### Java

@@ -32,6 +32,51 @@ public class Example {
 }
 ```
 
+## Scala序列化
+
+```scala
+import org.apache.fury.Fury
+import org.apache.fury.serializer.scala.ScalaSerializers
+
+case class Person(name: String, id: Long, github: String)
+case class Point(x : Int, y : Int, z : Int)
+
+object ScalaExample {
+  val fury: Fury = Fury.builder().withScalaOptimizationEnabled(true).build()
+  // Register optimized fury serializers for scala
+  ScalaSerializers.registerSerializers(fury)
+  fury.register(classOf[Person])
+  fury.register(classOf[Point])
+
+  def main(args: Array[String]): Unit = {
+    val p = Person("Shawn Yang", 1, "https://github.com/chaokunyang")
+    println(fury.deserialize(fury.serialize(p)))
+    println(fury.deserialize(fury.serialize(Point(1, 2, 3))))
+  }
+}
+
+## Kotlin序列化
+```kotlin
+import org.apache.fury.Fury
+import org.apache.fury.ThreadSafeFury
+import org.apache.fury.serializer.kotlin.KotlinSerializers
+
+data class Person(val name: String, val id: Long, val github: String)
+data class Point(val x : Int, val y : Int, val z : Int)
+
+fun main(args: Array<String>) {
+    // 注意: 下面的Fury初始化代码应该只执行一次，而不是在每次序列化前都运行
+    val fury: ThreadSafeFury = Fury.builder().requireClassRegistration(true).buildThreadSafeFury()
+    KotlinSerializers.registerSerializers(fury)
+    fury.register(Person::class.java)
+    fury.register(Point::class.java)
+
+    val p = Person("Shawn Yang", 1, "https://github.com/chaokunyang")
+    println(fury.deserialize(fury.serialize(p)))
+    println(fury.deserialize(fury.serialize(Point(1, 2, 3))))
+}
+```
+
 ## 跨语言序列化
 
 ### Java
