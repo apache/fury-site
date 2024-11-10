@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "antd";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function HomePageLanguageCard() {
-  const locale = navigator.language || "en-US";
+  const [locale, setLocale] = useState("en-US");
+
+  useEffect(() => {
+    if (typeof navigator !== "undefined") {
+      setLocale(navigator.language || "en-US");
+    }
+  }, []);
 
   const getLanguageUrl = (language: string) => {
     const baseUrl = locale.startsWith("zh-CN")
