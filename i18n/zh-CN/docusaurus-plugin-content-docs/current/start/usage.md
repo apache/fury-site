@@ -33,6 +33,7 @@ public class Example {
 ```
 
 ## Scala序列化
+
 ```scala
 import org.apache.fury.Fury
 import org.apache.fury.serializer.scala.ScalaSerializers
