@@ -47,7 +47,8 @@ public class Example {
   };
 
   const programmingImageUrl = useBaseUrl("/home/programming.svg");
-
+  
+  //媒体查询
   const mediaQueryStyles = `
   @media (max-width: 768px) {
     .desktop-only {
@@ -57,7 +58,7 @@ public class Example {
       width: 100% !important;
     }
     .code-display pre {
-      font-size: 8px !important; // 调整移动端字体大小
+      font-size: 8px !important; 
     } 
   }
   `;

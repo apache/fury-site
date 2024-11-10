@@ -127,7 +127,7 @@ const gridStyle: React.CSSProperties = {
   cursor: "pointer",
 };
 
-//添加媒体查询
+//媒体查询
 const mediaQueryStyles = `
   @media (max-width: 768px) {
     .grid-item {
