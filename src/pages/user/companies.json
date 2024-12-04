@@ -55,6 +55,16 @@
     "imgUrl": "redisson_h95.png"
   },
   {
+    "name": "Quarkus",
+    "link": "https://github.com/quarkusio/quarkus",
+    "imgUrl": "quarkus.png"
+  },
+  {
+    "name": "Adrestus",
+    "link": "https://www.adrestus.net/",
+    "imgUrl": "adrestus.png"
+  },
+  {
     "name": "安恒信息",
     "link": "https://www.dbappsecurity.com.cn/product/cloud157.html?ad=360&plan=BLJ&keywordid2=237985647369",
     "imgUrl": "anheng.jpg"
