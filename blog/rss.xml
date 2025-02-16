@@ -4,10 +4,76 @@
         <title>Apache Fury (incubating) Blog</title>
         <link>https://fury.apache.org/blog</link>
         <description>Apache Fury (incubating) Blog</description>
-        <lastBuildDate>Sun, 10 Nov 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 16 Feb 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en-US</language>
+        <item>
+            <title><![CDATA[Fury v0.10.0 Released]]></title>
+            <link>https://fury.apache.org/blog/fury_0_10_0_release</link>
+            <guid>https://fury.apache.org/blog/fury_0_10_0_release</guid>
+            <pubDate>Sun, 16 Feb 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Apache Fury team is pleased to announce the 0.10.0 release. This is a major release that includes 27 PR from 16 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.9.0...v0.10.0" target="_blank" rel="noopener noreferrer">27 PR</a> from 16 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlight">Highlight<a href="https://fury.apache.org/blog/fury_0_10_0_release#highlight" class="hash-link" aria-label="Direct link to Highlight" title="Direct link to Highlight">​</a></h2>
+<ul>
+<li>Chunk based map serialization</li>
+<li>Highly optimized JavaScript string serialization</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_10_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h2>
+<ul>
+<li>feat(java): ReplaceResolveSerializer deep copy by @zhaommmmomo in <a href="https://github.com/apache/fury/pull/1925" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1925</a></li>
+<li>feat(java): use varint for jdk compatible serializers by @chaokunyang in <a href="https://github.com/apache/fury/pull/1960" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1960</a></li>
+<li>feat(java): configurable buffer size limit by @theigl in <a href="https://github.com/apache/fury/pull/1963" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1963</a></li>
+<li>feat(java): make 4 bytes utf16 size header optional for utf8 encoding by @chaokunyang in <a href="https://github.com/apache/fury/pull/2010" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2010</a></li>
+<li>feat(ci): support building python on windows by @An-DJ in <a href="https://github.com/apache/fury/pull/1885" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1885</a></li>
+<li>feat(java): Chunk by chunk predictive map serialization protocol by @Hen1ng in <a href="https://github.com/apache/fury/pull/1722" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1722</a></li>
+<li>feat(java): support streaming encode/decode to/from buffer for row format by @chaokunyang in <a href="https://github.com/apache/fury/pull/2024" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2024</a></li>
+<li>feat(java): new implementation and protocol refine for chunk based map serialization by @chaokunyang in <a href="https://github.com/apache/fury/pull/2025" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2025</a></li>
+<li>feat(java): jit support for chunk based map serialization by @chaokunyang in <a href="https://github.com/apache/fury/pull/2027" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2027</a></li>
+<li>feat(java): Add basicMultiConfigFury dataprovider and add basic map unit test use the dataProvider by @Hen1ng in <a href="https://github.com/apache/fury/pull/2032" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2032</a></li>
+<li>feat(java): deserialize one pojo into another type by @orisgarno in <a href="https://github.com/apache/fury/pull/2012" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2012</a></li>
+<li>feat(python): chunk based map serialization for python by @chaokunyang in <a href="https://github.com/apache/fury/pull/2038" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2038</a></li>
+<li>feat(java): zstd meta compressor by @orisgarno in <a href="https://github.com/apache/fury/pull/2042" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2042</a></li>
+<li>feat(python): automatic release pyfury on macos and windows by @chaokunyang in <a href="https://github.com/apache/fury/pull/2045" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2045</a></li>
+<li>feat(javascript): optimize  string serializer by @theweipeng in <a href="https://github.com/apache/fury/pull/2043" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2043</a></li>
+<li>feat(python): add macos pyfury ci by @chaokunyang in <a href="https://github.com/apache/fury/pull/2041" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2041</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_10_0_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>fix(java): Move schema caching to unsafe trait to avoid issues when using non-inferred schema. by @wywen in <a href="https://github.com/apache/fury/pull/1944" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1944</a></li>
+<li>fix(java): ClassLoaderFuryPooled#setFactoryCallback cannot effect old Fury by @MrChang0 in <a href="https://github.com/apache/fury/pull/1946" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1946</a></li>
+<li>fix(java): fix find constructor error in generated serializer class caused by duplicated class classloading for Fury by @chaokunyang in <a href="https://github.com/apache/fury/pull/1948" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1948</a></li>
+<li>fix(c++): fix bazel install by @chaokunyang in <a href="https://github.com/apache/fury/pull/1979" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1979</a></li>
+<li>fix(java): Fix flakiness in ExpressionVisitorTest#testTraverseExpression by @AmitPr in <a href="https://github.com/apache/fury/pull/1968" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1968</a></li>
+<li>fix(java): Fix the issue caused by not using readCompressedBytesString during deserialization when string compression is enabled. by @Aliothmoon in <a href="https://github.com/apache/fury/pull/1991" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1991</a></li>
+<li>fix(java): Compatible mode on de/serialize api failed to deserialize by @orisgarno in <a href="https://github.com/apache/fury/pull/1996" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1996</a></li>
+<li>fix(java): chunk map serialize an error by @Hen1ng in <a href="https://github.com/apache/fury/pull/2030" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2030</a></li>
+<li>fix(python): Fix missing parameters and old API names by @pandalee99 in <a href="https://github.com/apache/fury/pull/2049" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2049</a></li>
+<li>fix(doc): set compressString default value to false by @chaokunyang in <a href="https://github.com/apache/fury/pull/1913" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1913</a></li>
+<li>fix(java): Remove duplicate maven dependency by @Hen1ng in <a href="https://github.com/apache/fury/pull/2044" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2044</a></li>
+<li>fix(java): fix duplicate entry write at max chunk size bound by @chaokunyang in <a href="https://github.com/apache/fury/pull/2040" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2040</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/blog/fury_0_10_0_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements">​</a></h2>
+<ul>
+<li>chore(ci): Migrate the ci from macOS 12 to macOS 13 by @penguin-wwy in <a href="https://github.com/apache/fury/pull/1927" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1927</a></li>
+<li>chore(Rust): fix lint problems by @theweipeng in <a href="https://github.com/apache/fury/pull/1962" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1962</a></li>
+<li>docs(java): add object mapping example and tests by @chaokunyang in <a href="https://github.com/apache/fury/pull/1974" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1974</a></li>
+<li>chore(python): drop py3.7 support by @chaokunyang in <a href="https://github.com/apache/fury/pull/1981" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1981</a></li>
+<li>fix(java): only print warn message if scopedMetaShareEnabled is true … by @zhfeng in <a href="https://github.com/apache/fury/pull/1985" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1985</a></li>
+<li>docs: update copyright date in NOTICE by @caicancai in <a href="https://github.com/apache/fury/pull/2029" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2029</a></li>
+<li>docs(java): update java serialization schema compatibility doc by @chaokunyang in <a href="https://github.com/apache/fury/pull/2047" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2047</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="new-contributors">New Contributors<a href="https://fury.apache.org/blog/fury_0_10_0_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors">​</a></h2>
+<ul>
+<li>@theigl made their first contribution in <a href="https://github.com/apache/fury/pull/1963" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1963</a></li>
+<li>@AmitPr made their first contribution in <a href="https://github.com/apache/fury/pull/1968" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1968</a></li>
+<li>@zhfeng made their first contribution in <a href="https://github.com/apache/fury/pull/1985" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1985</a></li>
+<li>@Hen1ng made their first contribution in <a href="https://github.com/apache/fury/pull/1722" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1722</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.9.0...v0.10.0" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.9.0...v0.10.0</a></p>]]></content:encoded>
+            <category>fury</category>
+        </item>
         <item>
             <title><![CDATA[Fury v0.9.0 Released]]></title>
             <link>https://fury.apache.org/blog/fury_0_9_0_release</link>
