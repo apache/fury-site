@@ -77,5 +77,5 @@ It should output something like:
 pub   rsa4096 2025-02-07 [SC]
       F479 6001 3364 53FD E7BB  4570 9C02 12E2 8DD7 828C
 uid           [ultimate] Weipeng Wang (CODE SIGNING KEY) <wangweipeng@apache.org>
-sub   rsa4096 2025-02-07 
+sub   rsa4096 2025-02-07
 ```
