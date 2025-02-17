@@ -15,7 +15,7 @@ public class Example {
   static ThreadSafeFury fury = Fury.builder().withLanguage(Language.JAVA)
     // Allow to deserialize objects unknown types,
     // more flexible but less secure.
-    // .withSecureMode(false)
+    // .requireClassRegistration(false)
     .buildThreadSafeFury();
 
   static {
