@@ -60,9 +60,24 @@
     "imgUrl": "quarkus.png"
   },
   {
+    "name": "Apache Camel",
+    "link": "https://camel.apache.org",
+    "imgUrl": "camel.svg"
+  },
+  {
+    "name": "Apache Dubbo",
+    "link": "https://dubbo.apache.org",
+    "imgUrl": "dubbo.jpeg"
+  },
+  {
+    "name": "Apache HugeGraph",
+    "link": "https://hugegraph.apache.org/",
+    "imgUrl": "hugegraph.png"
+  },
+  {
     "name": "Adrestus",
     "link": "https://www.adrestus.net/",
-    "imgUrl": "adrestus.jpg"
+    "imgUrl": "adrestus.png"
   },
   {
     "name": "安恒信息",
