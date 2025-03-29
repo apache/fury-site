@@ -1,150 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "antd";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import "../css/tailwind.css";
+import { imageUrls } from "../../constants";
 
 export default function HomePageLanguageCard() {
   const [locale, setLocale] = useState("en-US");
+  const [processedImageUrls, setProcessedImageUrls] = useState([]);
+
+  //用useBaseUrl处理一遍图像，防止本地资源不部署
+  const processedImages = imageUrls.map((item) => ({
+    ...item,
+    src: useBaseUrl(item.src),
+  }));
 
   useEffect(() => {
     if (typeof navigator !== "undefined") {
       setLocale(navigator.language || "en-US");
     }
+    setProcessedImageUrls(processedImages);
   }, []);
 
-  const getLanguageUrl = (language: string) => {
+  const getLanguageUrl = (language) => {
     const baseUrl = locale.startsWith("zh-CN")
       ? "https://fury.apache.org/zh-CN/docs/start/usage/#"
       : "https://fury.apache.org/docs/start/usage/#";
     return `${baseUrl}${language}`;
   };
 
-  const imageUrls = {
-    java: useBaseUrl("/home/java.svg"),
-    python: useBaseUrl("/home/python.svg"),
-    golang: useBaseUrl("/home/golang.svg"),
-    javascript: useBaseUrl("/home/JavaScript.svg"),
-    rust: useBaseUrl("/home/Rust.svg"),
-    more: useBaseUrl("/home/more.svg"),
-  };
-
   return (
-    <div>
-      <style>{mediaQueryStyles}</style>
-      <div style={{ textAlign: "center" }}>
-        <h2>Quick Start!</h2>
-        <p>Choose a language to get started.</p>
+    <div className="text-center">
+      <h2 className="text-2xl font-bold mb-5">Quick Start!</h2>
+      <p className="text-lg mb-5">Choose a language to get started.</p>
+      <div className="w-3/5 mx-auto rounded-md">
+        <div className="grid md:grid-cols-2 sm:grid-cols-1 min-w-0 border-gray-400 rounded-md">
+          {processedImageUrls.map(({ key, src, label }) => (
+            <div
+              key={key}
+              className="flex items-center justify-center h-24 text-lg font-bold border border-gray-400 rounded-md cursor-pointer transition-transform duration-300 transform hover:scale-105 active:scale-100 hover:bg-gray-100 hover:border-gray-200"
+              onClick={() =>
+                (window.location.href = getLanguageUrl(
+                  key === "java"
+                    ? "java-serialization"
+                    : key === "more"
+                    ? "crosslanguage-serialization"
+                    : key
+                ))
+              }
+            >
+              <img src={src} className="w-10 h-10 mr-2" alt={`${label} logo`} />
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <Card
-        style={{
-          width: "60%",
-          margin: "0 auto",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Card.Grid
-          className="grid-item"
-          style={gridStyle}
-          onClick={() => {
-            window.location.href = getLanguageUrl("java-serialization");
-          }}
-        >
-          <img src={imageUrls.java} style={imageStyle} alt="Java logo" />
-          <span>Java</span>
-        </Card.Grid>
-        <Card.Grid
-          className="grid-item"
-          style={gridStyle}
-          onClick={() => {
-            window.location.href = getLanguageUrl("python");
-          }}
-        >
-          <img src={imageUrls.python} style={imageStyle} alt="Python logo" />
-          <span>Python</span>
-        </Card.Grid>
-        <Card.Grid
-          className="grid-item"
-          style={gridStyle}
-          onClick={() => {
-            window.location.href = getLanguageUrl("golang");
-          }}
-        >
-          <img src={imageUrls.golang} style={imageStyle} alt="Golang logo" />
-          <span>Golang</span>
-        </Card.Grid>
-        <Card.Grid
-          className="grid-item"
-          style={gridStyle}
-          onClick={() => {
-            window.location.href = getLanguageUrl("javascript");
-          }}
-        >
-          <img
-            src={imageUrls.javascript}
-            style={imageStyle}
-            alt="JavaScript logo"
-          />
-          <span>JavaScript</span>
-        </Card.Grid>
-        <Card.Grid
-          className="grid-item"
-          style={gridStyle}
-          onClick={() => {
-            window.location.href = getLanguageUrl("rust");
-          }}
-        >
-          <img src={imageUrls.rust} style={imageStyle} alt="Rust logo" />
-          <span>Rust</span>
-        </Card.Grid>
-        <Card.Grid
-          className="grid-item"
-          style={gridStyle}
-          onClick={() => {
-            window.location.href = getLanguageUrl(
-              "crosslanguage-serialization"
-            );
-          }}
-        >
-          <img src={imageUrls.more} style={imageStyle} alt="More languages" />
-          <span>More</span>
-        </Card.Grid>
-      </Card>
     </div>
   );
 }
-
-const gridStyle: React.CSSProperties = {
-  width: "50%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100px",
-  textAlign: "center",
-  border: "1px solid #f0f0f0",
-  borderRadius: "10px",
-  fontWeight: "bold",
-  fontSize: "18px",
-  cursor: "pointer",
-};
-
-//媒体查询
-const mediaQueryStyles = `
-  @media (max-width: 768px) {
-    .grid-item {
-      width: 100% !important;
-    }
-    .grid-item img {
-      width: 28px !important;
-      height: 28px !important;
-    }
-    .grid-item span {
-      display: none !important; 
-    }
-  }
-`;
-
-const imageStyle: React.CSSProperties = {
-  width: "38px",
-  height: "38px",
-  marginRight: "8px",
-};

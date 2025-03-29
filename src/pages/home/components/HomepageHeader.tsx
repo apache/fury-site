@@ -1,25 +1,16 @@
-import { useEffect } from "react";
-import AOS from "aos";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Heading from "@theme/Heading";
 import styles from "../css/index.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
+import useAOS from "../../hooks/useAOS";
 
 export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
 
-  useEffect(() => {
-    AOS.init({
-      offset: 100,
-      duration: 700,
-      easing: "ease-out-quad",
-      once: true,
-    });
-    window.addEventListener("load", AOS.refresh);
-  }, []);
+  // useAOS();
 
   return (
     <header
@@ -27,15 +18,18 @@ export default function HomepageHeader() {
       data-aos="fade-up"
     >
       <div className="container">
+        {/* 页面标题 */}
         <Heading as="h1" className="hero__title">
           <Translate id="homepage.hero.title">{siteConfig.title}</Translate>
         </Heading>
+        {/* 页面副标题 */}
         <p className="hero__subtitle">
           <Translate id="homepage.hero.subtitle">
             {siteConfig.tagline}
           </Translate>
         </p>
         <div className={styles.buttons}>
+          {/* GitHub 按钮 */}
           <Link
             className="button button--secondary button--lg"
             to="https://github.com/apache/fury"
@@ -49,6 +43,7 @@ export default function HomepageHeader() {
               GitHub
             </Translate>
           </Link>
+          {/* 开始使用按钮 */}
           <Link
             className="button button--secondary button--lg"
             to="/docs/start/install"
