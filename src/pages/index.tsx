@@ -8,7 +8,7 @@ import HomepageFeatures from "./home/components/HomepageFeatures";
 import HomePageLanguageCard from "./home/components/HomePageLanguageCard";
 import HomepageCodeDisplay from "./home/components/HomepageCodeDisplay";
 import HomepageFoot from "./home/components/HomepageFoot";
-import useAOS from "./hooks/useAOS";
+import useAOS from "../hooks/useAOS";
 
 export default function App() {
   const isBrowser = useIsBrowser();

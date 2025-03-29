@@ -5,7 +5,7 @@ import styles from "../css/index.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
-import useAOS from "../../hooks/useAOS";
+import useAOS from "../../../hooks/useAOS";
 
 export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();

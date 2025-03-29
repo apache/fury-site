@@ -7,7 +7,7 @@ import {
   COPY_FAIL_MSG,
   COPY_SUCCESS_MSG,
   COPY_TIMEOUT,
-} from "../../constants";
+} from "../../../constants";
 
 export default function HomepageCodeDisplay() {
   const [copySuccess, setCopySuccess] = useState("");

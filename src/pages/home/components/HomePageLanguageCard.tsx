@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import "../css/tailwind.css";
-import { imageUrls } from "../../constants";
+import { imageUrls } from "../../../constants";
 
 export default function HomePageLanguageCard() {
   const [locale, setLocale] = useState("en-US");
