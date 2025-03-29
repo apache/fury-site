@@ -10,7 +10,7 @@ import useAOS from "../../hooks/useAOS";
 export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
 
-  // useAOS();
+  useAOS();
 
   return (
     <header
