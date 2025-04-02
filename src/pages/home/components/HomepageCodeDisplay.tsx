@@ -2,128 +2,55 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  CODE_STRING,
+  COPY_FAIL_MSG,
+  COPY_SUCCESS_MSG,
+  COPY_TIMEOUT,
+} from "../../../constants";
 
 export default function HomepageCodeDisplay() {
   const [copySuccess, setCopySuccess] = useState("");
-  const codeString = `import java.util.List;
-import java.util.Arrays;
-import org.apache.fury.*;
-
-public class Example {
-  // Note that Fury instances should be reused between
-  // multiple serializations of different objects.
-  static ThreadSafeFury fury = Fury.builder().withLanguage(Language.JAVA)
-    // Allow to deserialize objects unknown types,
-    // more flexible but less secure.
-    // .requireClassRegistration(false)
-    .buildThreadSafeFury();
-
-  static {
-    // Registering types can reduce class name serialization
-    // overhead but not mandatory.
-    // If secure mode enabled
-    //all custom types must be registered.
-    fury.register(SomeClass.class);
-  }
-
-  public static void main(String[] args) {
-    SomeClass object = new SomeClass();
-    byte[] bytes = fury.serialize(object);
-    System.out.println(fury.deserialize(bytes));
-  }
-}
-  `;
+  const programmingImageUrl = useBaseUrl("/home/programming.svg");
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(codeString).then(
-      () => {
-        setCopySuccess("Copied!");
-        setTimeout(() => setCopySuccess(""), 2000); // 清除复制成功的提示
-      },
-      (err) => {
-        setCopySuccess("Failed to copy!");
-      }
-    );
+    navigator.clipboard
+      .writeText(CODE_STRING)
+      .then(() => {
+        setCopySuccess(COPY_SUCCESS_MSG);
+        setTimeout(() => setCopySuccess(""), COPY_TIMEOUT);
+      })
+      .catch((err) => {
+        console.error("复制代码时出错:", err);
+        setCopySuccess(COPY_FAIL_MSG);
+      });
   };
 
-  const programmingImageUrl = useBaseUrl("/home/programming.svg");
-  
-  //媒体查询
-  const mediaQueryStyles = `
-  @media (max-width: 768px) {
-    .desktop-only {
-      display: none !important;
-    }
-    .code-display {
-      width: 100% !important;
-    }
-    .code-display pre {
-      font-size: 8px !important; 
-    } 
-  }
-  `;
   return (
-    <>
-      <style>{mediaQueryStyles}</style>
-      <div
-        style={{
-          display: "flex",
-          margin: "10%",
-          borderRadius: "10px",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          className="desktop-only"
-          style={{
-            width: "50%",
-            justifyContent: "flex-start",
-            margin: "50px",
-            height: "auto",
-            display: "block",
-          }}
-        >
-          <img src={programmingImageUrl} alt="programming-coding" />
-        </div>
-        <div
-          className="code-display"
-          style={{
-            position: "relative",
-            padding: "12px",
-            justifyContent: "flex-end",
-            backgroundColor: "#2d2d2d",
-            borderRadius: "5px",
-            width: "50%",
-            height: "0 auto",
-          }}
-        >
-          {/* 复制按钮 */}
-          <button
-            onClick={copyToClipboard}
-            style={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              backgroundColor: "#444",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              padding: "5px 10px",
-              cursor: "pointer",
-            }}
-          >
-            {copySuccess ? copySuccess : "Copy"}
-          </button>
-          <SyntaxHighlighter
-            language="java"
-            style={dracula}
-            showLineNumbers
-            customStyle={{ fontSize: "12px" }}
-          >
-            {codeString}
-          </SyntaxHighlighter>
-        </div>
+    <div className="flex flex-col m-10 md:flex-row md:m-40 items-center justify-center">
+      <div className="md:w-1/2 md:justify-start md:m-6 h-auto hidden md:block">
+        <img
+          src={programmingImageUrl}
+          alt="programming-coding"
+          className="w-full h-auto max-w-md max-h-md"
+        />
       </div>
-    </>
+      <div className="relative bg-gray-800 rounded-md md:w-1/2 w-full">
+        <button
+          onClick={copyToClipboard}
+          className="absolute top-2 right-2 bg-gray-600 text-white border-none rounded-md px-1 py-0.5 text-xs"
+        >
+          {copySuccess ? copySuccess : "Copy"}
+        </button>
+        <SyntaxHighlighter
+          language="java"
+          style={dracula}
+          showLineNumbers
+          customStyle={{ fontSize: "12px" }}
+        >
+          {CODE_STRING}
+        </SyntaxHighlighter>
+      </div>
+    </div>
   );
-};
+}
