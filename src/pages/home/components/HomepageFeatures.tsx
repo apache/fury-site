@@ -4,9 +4,9 @@ import Translate from "@docusaurus/Translate";
 import React from "react";
 
 type FeatureItem = {
-  title: string | JSX.Element;
+  title: React.ReactNode;
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
-  description: JSX.Element;
+  description: React.ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
@@ -98,7 +98,7 @@ function Feature({ title, Svg, description }: FeatureItem) {
   );
 }
 
-export default function HomepageFeatures(): JSX.Element {
+const HomepageFeatures: React.FC = () => {
   return (
     <section style={styles.features}>
       <div className="container">
@@ -110,4 +110,5 @@ export default function HomepageFeatures(): JSX.Element {
       </div>
     </section>
   );
-}
+};
+export default HomepageFeatures;
