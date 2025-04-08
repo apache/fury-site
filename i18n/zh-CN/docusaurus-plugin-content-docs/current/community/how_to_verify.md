@@ -1,24 +1,23 @@
 ---
-title: How to verify
+title: 如何验证 Apache Fury
 sidebar_position: 0
 id: how_to_verify
 ---
 
+详细的 Check list，请参阅[Apache 检查清单](https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklist)
 
-For detailed check list, please refer to the [official check list](https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklist)
-
-## Download the candidate version
+## 下载 Apache Fury
 
 ```bash
-#If there is svn locally, you can clone to the local
+# If there is svn locally, you can clone to the local
 svn co https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/
 # You can download the material file directly
 wget https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/xxx.xxx
 ```
 
-## Verify checksums and signatures
+## 验证 checksums 和 signatures
 
-First you need to install gpg:
+首先，您需要安装 gpg：
 
 ```bash
 apt-get install gnupg
@@ -28,7 +27,7 @@ yum install gnupg
 brew install gnupg
 ```
 
-Then import the Fury release manager's public key:
+之后，导入 Apache Fury release manager 的公钥：
 
 ```bash
 curl https://downloads.apache.org/incubator/fury/KEYS > KEYS # Download KEYS
@@ -73,13 +72,13 @@ Please note that the shown key validity is not necessarily correct
 unless you restart the program.
 ```
 
-Next verify signature:
+接下来验证签名：
 
 ```bash
 for i in *.tar.gz; do echo $i; gpg --verify $i.asc $i; done
 ```
 
-If something like the following appears, it means the signature is correct:
+如果出现如下内容，则表示签名正确：
 
 ```bash
 apache-fury-incubating-0.5.0-src.tar.gz
@@ -90,33 +89,33 @@ gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
 gpg: Good signature from "chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org>"
 ```
 
-Then verify checksum:
+然后验证 checksum：
 
 ```bash
 for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
 ```
 
-It should output something like:
+它应该输出如下内容：
 
 ```bash
 apache-fury-incubating-0.5.0-src.tar.gz
 apache-fury-incubating-0.5.0-src.tar.gz: OK
 ```
 
-## Check the file content of the source package
+## 检查源码包中的文件
 
-Unzip `apache-fury-${release_version}-${rc_version}-src.tar.gz` and check the follows:
+解压缩 `apache-fury-${release_version}-${rc_version}-src.tar.gz` 并检查以下内容：
 
-- LICENSE and NOTICE files are correct for the repository.
-- All files have ASF license headers if necessary.
-- Building is OK.
+- 此存储库 LICENSE 和 NOTICE 文件是正确的；
+- 如有必要，所有文件都有 ASF 许可证标头；
+- 项目构建通过。
 
-## Check the Maven artifacts of fury-java
+## 检查 fury-java 的 Maven artifacts
 
-Download the artifacts from https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
+下载 Apache Fury：https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
 
-You can check the follows:
+您可以检查以下内容：
 
-- Checksum of JARs match the bundled checksum file.
-- Signature of JARs match the bundled signature file.
-- JARs is reproducible locally. This means you can build the JARs on your machine and verify the checksum is the same with the bundled one.
+- JAR 的 Checksum 与项目绑定的 checksum 文件一致。
+- JAR 的 signature 与项目绑定的 signature 文件一致。
+- JAR 在本地是可重复的。这意味着您可以在计算机上构建 JAR，并验证 checksum 和与项目绑定的相同。

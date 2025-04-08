@@ -1,36 +1,20 @@
 ---
-title: Java Serialization Guide
+title: Java 序列化指南
 sidebar_position: 0
 id: java_object_graph_guide
-license: |
-  Licensed to the Apache Software Foundation (ASF) under one or more
-  contributor license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  The ASF licenses this file to You under the Apache License, Version 2.0
-  (the "License"); you may not use this file except in compliance with
-  the License.  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
 ---
 
-## Java object graph serialization
+## Java 对象图序列化
 
-When only java object serialization needed, this mode will have better performance compared to cross-language object
-graph serialization.
+当只需要 Java 对象序列化时，其相比跨语言的图序列化拥有更好的性能。
 
-## Quick Start
+## 快速开始
 
-Note that fury creation is not cheap, the **fury instances should be reused between serializations** instead of creating
-it everytime.
-You should keep fury to a static global variable, or instance variable of some singleton object or limited objects.
+注意：Fury 对象创建的代价很高， 因此 **Fury 对象应该尽可能被复用**，而不是每次都重新创建。
 
-Fury for single-thread usage:
+您应该为 Fury 创建一个全局的静态变量，或者有限的的 Fury 实例对象。Fury本身占用一定内存，请不要创建上万个Fury对象
+
+使用单线程版本 Fury:
 
 ```java
 import java.util.List;
@@ -56,7 +40,7 @@ public class Example {
 }
 ```
 
-Fury for multiple-thread usage:
+使用多线程版本 Fury：
 
 ```java
 import java.util.List;
@@ -82,7 +66,7 @@ public class Example {
 }
 ```
 
-Fury instances reuse example:
+Fury 对象复用示例：
 
 ```java
 import java.util.List;
@@ -108,39 +92,38 @@ public class Example {
 }
 ```
 
-## FuryBuilder  options
+## FuryBuilder 参数选项
 
-| Option Name                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Default Value                                                  |
+| 参数选项名                         | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | 默认值                                                  |
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| `timeRefIgnored`                    | Whether to ignore reference tracking of all time types registered in `TimeSerializers` and subclasses of those types when ref tracking is enabled. If ignored, ref tracking of every time type can be enabled by invoking `Fury#registerSerializer(Class, Serializer)`. For example, `fury.registerSerializer(Date.class, new DateSerializer(fury, true))`. Note that enabling ref tracking should happen before serializer codegen of any types which contain time fields. Otherwise, those fields will still skip ref tracking. | `true`                                                         |
-| `compressInt`                       | Enables or disables int compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `true`                                                         |
-| `compressLong`                      | Enables or disables long compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `true`                                                         |
-| `compressString`                    | Enables or disables string compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `false`                                                        |
-| `classLoader`                       | The classloader should not be updated; Fury caches class metadata. Use `LoaderBinding` or `ThreadSafeFury` for classloader updates.                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
-| `compatibleMode`                    | Type forward/backward compatibility config. Also Related to `checkClassVersion` config. `SCHEMA_CONSISTENT`: Class schema must be consistent between serialization peer and deserialization peer. `COMPATIBLE`: Class schema can be different between serialization peer and deserialization peer. They can add/delete fields independently. [See more](#class-inconsistency-and-class-version-check).                                                                                                                            | `CompatibleMode.SCHEMA_CONSISTENT`                             |
-| `checkClassVersion`                 | Determines whether to check the consistency of the class schema. If enabled, Fury checks, writes, and checks consistency using the `classVersionHash`. It will be automatically disabled when `CompatibleMode#COMPATIBLE` is enabled. Disabling is not recommended unless you can ensure the class won't evolve.                                                                                                                                                                                                                  | `false`                                                        |
-| `checkJdkClassSerializable`         | Enables or disables checking of `Serializable` interface for classes under `java.*`. If a class under `java.*` is not `Serializable`, Fury will throw an `UnsupportedOperationException`.                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
-| `registerGuavaTypes`                | Whether to pre-register Guava types such as `RegularImmutableMap`/`RegularImmutableList`. These types are not public API, but seem pretty stable.                                                                                                                                                                                                                                                                                                                                                                                 | `true`                                                         |
-| `requireClassRegistration`          | Disabling may allow unknown classes to be deserialized, potentially causing security risks.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
-| `suppressClassRegistrationWarnings` | Whether to suppress class registration warnings. The warnings can be used for security audit, but may be annoying, this suppression will be enabled by default.                                                                                                                                                                                                                                                                                                                                                                   | `true`                                                         |
-| `metaShareEnabled`                  | Enables or disables meta share mode.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `true` if `CompatibleMode.Compatible` is set, otherwise false. |
-| `scopedMetaShareEnabled`            | Scoped meta share focuses on a single serialization process. Metadata created or identified during this process is exclusive to it and is not shared with by other serializations.                                                                                                                                                                                                                                                                                                                                                | `true` if `CompatibleMode.Compatible` is set, otherwise false. |
-| `metaCompressor`                    | Set a compressor for meta compression. Note that the passed MetaCompressor should be thread-safe. By default, a `Deflater` based compressor `DeflaterMetaCompressor` will be used. Users can pass other compressor such as `zstd` for better compression rate.                                                                                                                                                                                                                                                                    | `DeflaterMetaCompressor`                                       |
-| `deserializeNonexistentClass`       | Enables or disables deserialization/skipping of data for non-existent classes.                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `true` if `CompatibleMode.Compatible` is set, otherwise false. |
-| `codeGenEnabled`                    | Disabling may result in faster initial serialization but slower subsequent serializations.                                                                                                                                                                                                                                                                                                                                                                                                                                        | `true`                                                         |
-| `asyncCompilationEnabled`           | If enabled, serialization uses interpreter mode first and switches to JIT serialization after async serializer JIT for a class is finished.                                                                                                                                                                                                                                                                                                                                                                                       | `false`                                                        |
-| `scalaOptimizationEnabled`          | Enables or disables Scala-specific serialization optimization.                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `false`                                                        |
-| `copyRef`                           | When disabled, the copy performance will be better. But fury deep copy will ignore circular and shared reference. Same reference of an object graph will be copied into different objects in one `Fury#copy`.                                                                                                                                                                                                                                                                                                                     | `true`                                                         |
-| `serializeEnumByName`               | When Enabled, fury serialize enum by name instead of ordinal.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `false`                                                        |
+| `timeRefIgnored`                    | 启用 reference tracking 时，是否忽略在 `TimeSerializers` 中注册的所有时间类型及其子类的引用跟踪。如果忽略，则可以通过调用 `Fury#registerSerializer(Class, Serializer)` 来启用对每种时间类型的引用跟踪。例如，`fury.registerSerializer(Date.class, new DateSerializer(fury, true))`。请注意，启用 ref tracking 功能应在任何包含时间字段的类型的序列化程序编码之前进行。否则，这些字段仍将跳过 reference tracking。 | `true`                                                         |
+| `compressInt`                       | 启用或禁用 int 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
+| `compressLong`                      | 启用或禁用 long 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `true`                                                         |
+| `compressString`                    | 启用或禁用 String 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
+| `classLoader`                       | 关联到当前 Fury 的类加载器，每个 Fury 会关联一个不可变的类加载器，用于缓存类元数据。如果需要切换类加载器，请使用 `LoaderBinding` 或 `ThreadSafeFury` 进行更新。                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
+| `compatibleMode`                    | 类型的向前/向后兼容性配置。也与 `checkClassVersion` 配置相关。`schema_consistent`： 类的Schema信息必须在序列化对等节点和反序列化对等节点之间保持一致。`COMPATIBLE`： 序列化对等节点和反序列化对等节点之间的类模式可以不同。它们可以独立添加/删除字段。                                                                                                                                                                                    | `CompatibleMode.SCHEMA_CONSISTENT`                             |
+| `checkClassVersion`                 | 决定是否检查类模式的一致性。如果启用，Fury 将写入 `classVersionHash` 和基于其检查类型一致性。当启用 `CompatibleMode#COMPATIBLE` 时，它将自动禁用。除非能确保类不会演化，否则不建议禁用。                                                                                                                                                                                                                  | `false`                                                        |
+| `checkJdkClassSerializable`         | 启用或禁用 `java.*` 下类的 `Serializable` 接口检查。如果 `java.*` 下的类不是 `Serializable`，Fury 将抛出 `UnsupportedOperationException`。                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
+| `registerGuavaTypes`                | 是否预先注册 Guava 类型，如 `RegularImmutableMap`/`RegularImmutableList`。这些类型不是公共 API，但似乎非常稳定。                                                                                                                                                                                                                                                                                                                                                                                 | `true`                                                         |
+| `requireClassRegistration`          | 禁用可能会允许未知类被反序列化，从而带来潜在的安全风险。                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
+| `suppressClassRegistrationWarnings` | 是否抑制类注册警告。这些警告可用于安全审计，但可能会较琐碎，默认情况下将启用此抑制功能。                                                                                                                                                                                                                                                                                                                                                                    | `true`                                                         |
+| `metaShareEnabled`                  | 是否否开启原元数据共享。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `false`                                                        |
+| `scopedMetaShareEnabled`            | 范围元数据共享侧重于单一序列化流程。在此过程中创建或识别的元数据为该过程独有，不会与其他序列化过程共享。                                                                                                                                                                                                                                                                                                                                                | `false`                                                        |
+| `metaCompressor`                    | 元数据压缩器。请注意，传递的元压缩器应是线程安全的。默认情况下，将使用基于 `Deflater` 的压缩器 `DeflaterMetaCompressor`。用户可以使用其他压缩器，如 `zstd` 以获得更好的压缩率。                                                                                                                                                                                                                                                                    | `DeflaterMetaCompressor`                                       |
+| `deserializeNonexistentClass`       | 启用或禁用反序列化/跳转不存在类的数据。                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `true`， 如果设置了 `CompatibleMode.Compatible`，将会变为 `false`。 |
+| `codeGenEnabled`                    | 禁用后，初始序列化速度会加快，但后续序列化速度会减慢。                                                                                                                                                                                                                                                                                                                                                                                                                                        | `true`                                                         |
+| `asyncCompilationEnabled`           | 如果启用，序列化会首先使用解释器模式，并在类的异步序列化 JIT 完成后切换到 JIT 序列化。                                                                                                                                                                                                                                                                                                                                                                                       | `false`                                                        |
+| `scalaOptimizationEnabled`          | 启用或禁用特定于 Scala 的序列化优化。                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `false`                                                        |
+| `copyRef`                           | 禁用后，复制性能会更好。但 Fury 深度复制将忽略循环引用和共享引用。对象图中的相同引用将在一次 `Fury#copy` 中复制到不同的对象中。                                                                                                                                                                                                                                                                                                                     | `true`                                                         |
 
-## Advanced Usage
+## 高级用法
 
-### Fury creation
+### Fury 创建
 
-Single thread fury:
+单线程 Fury 创建:
 
 ```java
-Fury fury = Fury.builder()
+Fury fury=Fury.builder()
   .withLanguage(Language.JAVA)
   // enable reference tracking for shared/circular reference.
   // Disable it will have better performance if no duplicate reference.
@@ -152,14 +135,14 @@ Fury fury = Fury.builder()
   // enable async multi-threaded compilation.
   .withAsyncCompilation(true)
   .build();
-byte[] bytes = fury.serialize(object);
-System.out.println(fury.deserialize(bytes));
+  byte[]bytes=fury.serialize(object);
+  System.out.println(fury.deserialize(bytes));
 ```
 
-Thread-safe fury:
+多线程 Fury 创建:
 
 ```java
-ThreadSafeFury fury = Fury.builder()
+ThreadSafeFury fury=Fury.builder()
   .withLanguage(Language.JAVA)
   // enable reference tracking for shared/circular reference.
   // Disable it will have better performance if no duplicate reference.
@@ -175,101 +158,57 @@ ThreadSafeFury fury = Fury.builder()
   // enable async multi-threaded compilation.
   .withAsyncCompilation(true)
   .buildThreadSafeFury();
-byte[] bytes = fury.serialize(object);
-System.out.println(fury.deserialize(bytes));
+  byte[]bytes=fury.serialize(object);
+  System.out.println(fury.deserialize(bytes));
 ```
 
-### Handling Class Schema Evolution in Serialization
+### 配置Fury生成更小的序列化体积：
 
-In many systems, the schema of a class used for serialization may change over time. For instance, fields within a class
-may be added or removed. When serialization and deserialization processes use different versions of jars, the schema of
-the class being deserialized may differ from the one used during serialization.
+`FuryBuilder#withIntCompressed`/`FuryBuilder#withLongCompressed` 可用于压缩 `int/long`，使其体积更小。通常压缩 int 类型就足够了。
 
-By default, Fury serializes objects using the `CompatibleMode.SCHEMA_CONSISTENT` mode. This mode assumes that the
-deserialization process uses the same class schema as the serialization process, minimizing payload overhead.
-However, if there is a schema inconsistency, deserialization will fail.
+这两个压缩属性默认启用。如果序列化大小不重要，比如你之前使用flatbuffers进行序列化，flatbuffers不会压缩任何东西，那么这种情况下建议关闭压缩。如果数据都是数字，压缩可能会带来 80%以上的性能损耗。
 
-If the schema is expected to change, to make deserialization succeed, i.e. schema forward/backward compatibility.
-Users must configure Fury to use `CompatibleMode.COMPATIBLE`. This can be done using the
-`FuryBuilder#withCompatibleMode(CompatibleMode.COMPATIBLE)` method.
-In this compatible mode, deserialization can handle schema changes such as missing or extra fields, allowing it to
-succeed even when the serialization and deserialization processes have different class schemas.
+对于 int 压缩，Fury 使用 1~5 字节进行编码。每个字节的第一位表示是否有下一个字节位，如果下一个字节位被设置，则将读取下一个字节，直到下一个字节位未被设置时停止。
 
-Here is an example of creating Fury to support schema evolution:
+对于 long 压缩，Fury 支持两种编码方式：
+
+- Fury SLI（Small long as int）编码（**默认使用**）：
+  - 如果 long 在 [-1073741824, 1073741823] 范围内，则编码为 4 字节 int：`| little-endian: ((int) value) << 1 |`
+  - 否则写成 9 字节： `| 0b1 | little-endian 8 bit long |`
+- Fury PVL（渐进可变长）编码：
+  - 每个字节的第一位表示是否有下一个字节。如果第一位被设置，则将读取下一个字节。
+      直到下一字节的第一位未设置。
+  - 负数将通过 `(v << 1) ^ (v >> 63)` 转换为正数，以减少小负数的编码空间占用。
+
+如果一个数字是 `Long` 类型，大多不能用更小的字节表示，压缩效果就不够好。
+与占用的性能开销相比，这是不值得的。如果您发现`Long`类型压缩并没有带来多少好处，也许您应该尝试关闭`Long`类型压缩，以提升性能。
+
+### 对象深拷贝
+
+深度拷贝示例:
 
 ```java
-Fury fury = Fury.builder()
-  .withCompatibleMode(CompatibleMode.COMPATIBLE)
-  .build();
-
-byte[] bytes = fury.serialize(object);
-System.out.println(fury.deserialize(bytes));
+Fury fury=Fury.builder()
+  ...
+  .withRefCopy(true).build();
+  SomeClass a=xxx;
+  SomeClass copied=fury.copy(a)
 ```
 
-This compatible mode involves serializing class metadata into the serialized output. Despite Fury's use of
-sophisticated compression techniques to minimize overhead, there is still some additional space cost associated with
-class metadata.
-
-To further reduce metadata costs, Fury introduces a class metadata sharing mechanism, which allows the metadata to be
-sent to the deserialization process only once. For more details, please refer to the [Meta Sharing](#MetaSharing)
-section.
-
-### Smaller size
-
-`FuryBuilder#withIntCompressed`/`FuryBuilder#withLongCompressed` can be used to compress int/long for smaller size.
-Normally compress int is enough.
-
-Both compression are enabled by default, if the serialized is not important, for example, you use flatbuffers for
-serialization before, which doesn't compress anything, then you should disable compression. If your data are all
-numbers,
-the compression may bring 80% performance regression.
-
-For int compression, fury use 1~5 bytes for encoding. First bit in every byte indicate whether has next byte. if first
-bit is set, then next byte will be read util first bit of next byte is unset.
-
-For long compression, fury support two encoding:
-
-- Fury SLI(Small long as int) Encoding (**used by default**):
-  - If long is in `[-1073741824, 1073741823]`, encode as 4 bytes int: `| little-endian: ((int) value) << 1 |`
-  - Otherwise write as 9 bytes: `| 0b1 | little-endian 8bytes long |`
-- Fury PVL(Progressive Variable-length Long) Encoding:
-  - First bit in every byte indicate whether has next byte. if first bit is set, then next byte will be read util
-      first bit of next byte is unset.
-  - Negative number will be converted to positive number by `(v << 1) ^ (v >> 63)` to reduce cost of small negative
-      numbers.
-
-If a number are `long` type, it can't be represented by smaller bytes mostly, the compression won't get good enough
-result,
-not worthy compared to performance cost. Maybe you should try to disable long compression if you find it didn't bring
-much
-space savings.
-
-### Object deep copy
-
-Deep copy example:
+使 Fury 深度复制忽略循环引用和共享引用，此配置会将对象图中的相同引用在一次 `Fury#copy` 之后会被复制到不同的对象中。
 
 ```java
-Fury fury = Fury.builder().withRefCopy(true).build();
-SomeClass a = xxx;
-SomeClass copied = fury.copy(a);
+Fury fury=Fury.builder()
+  ...
+  .withRefCopy(false).build();
+  SomeClass a=xxx;
+  SomeClass copied=fury.copy(a)
 ```
 
-Make fury deep copy ignore circular and shared reference, this deep copy mode will ignore circular and shared reference.
-Same reference of an object graph will be copied into different objects in one `Fury#copy`.
+### 实现自定义的序列化器
 
-```java
-Fury fury = Fury.builder().withRefCopy(false).build();
-SomeClass a = xxx;
-SomeClass copied = fury.copy(a);
-```
-
-### Implement a customized serializer
-
-In some cases, you may want to implement a serializer for your type, especially some class customize serialization by
-JDK
-writeObject/writeReplace/readObject/readResolve, which is very inefficient. For example, you don't want
-following `Foo#writeObject`
-got invoked, you can take following `FooSerializer` as an example:
+在某些情况下，您可能希望为您的自定义类型实现一个序列化器，特别是某些通过
+ JDK `writeObject/writeReplace/readObject/readResolve` 实现序列化的类，JDK序列化的性能和空间效率很低。比如说，如果您不想下面的 `Foo#writeObject` 被调用，你可以实现类型下面的 `FooSerializer` ：
 
 ```java
 class Foo {
@@ -300,90 +239,65 @@ class FooSerializer extends Serializer<Foo> {
 }
 ```
 
-Register serializer:
+注册序列化器:
 
 ```java
-Fury fury = getFury();
-fury.registerSerializer(Foo.class, new FooSerializer(fury));
+Fury fury=getFury();
+  fury.registerSerializer(Foo.class,new FooSerializer(fury));
 ```
 
-### Security & Class Registration
+### 安全与类注册
 
-`FuryBuilder#requireClassRegistration` can be used to disable class registration, this will allow to deserialize objects
-unknown types,
-more flexible but **may be insecure if the classes contains malicious code**.
+可以使用 `FuryBuilder#requireClassRegistration` 来禁用类注册，这将允许反序列化未知类型的对象，使用更灵活。**但如果类中包含恶意代码，就会出现安全漏洞**。
 
-**Do not disable class registration unless you can ensure your environment is secure**.
-Malicious code in `init/equals/hashCode` can be executed when deserializing unknown/untrusted types when this option
-disabled.
+**除非能确保运行环境和外部交互环境安全，否则请勿禁用类注册检查**。
 
-Class registration can not only reduce security risks, but also avoid classname serialization cost.
+如果禁用此选项，在反序列化未知/不可信任的类型时，可能会执行`init/equals/hashCode`中的恶意代码。
+禁用。
 
-You can register class with API `Fury#register`.
+类注册不仅可以降低安全风险，还可以避免类名序列化成本。
 
-Note that class registration order is important, serialization and deserialization peer
-should have same registration order.
+您可以使用 `Fury#register` API 来注册类。
+
+> 请注意：类注册顺序很重要，序列化和反序列化对，应具有相同的注册顺序。
 
 ```java
-Fury fury = xxx;
-fury.register(SomeClass.class);
-fury.register(SomeClass1.class, 200);
+Fury fury=xxx;
+  fury.register(SomeClass.class);
+  fury.register(SomeClass1.class,200);
 ```
 
-If you invoke `FuryBuilder#requireClassRegistration(false)` to disable class registration check,
-you can set `org.apache.fury.resolver.ClassChecker` by `ClassResolver#setClassChecker` to control which classes are
-allowed
-for serialization. For example, you can allow classes started with `org.example.*` by:
+如果调用 `FuryBuilder#requireClassRegistration(false)` 来禁用类注册检查、
+可以通过 `ClassResolver#setClassChecker` 设置 `org.apache.fury.resolver.ClassChecker` 来控制哪些类是允许序列化。例如，可以通过以下方式允许以 `org.example.*` 开头的类：
 
 ```java
-Fury fury = xxx;
-fury.getClassResolver().setClassChecker(
-  (classResolver, className) -> className.startsWith("org.example."));
+Fury fury=xxx;
+  fury.getClassResolver().setClassChecker((classResolver,className)->className.startsWith("org.example."));
 ```
 
 ```java
-AllowListChecker checker = new AllowListChecker(AllowListChecker.CheckLevel.STRICT);
-ThreadSafeFury fury = new ThreadLocalFury(classLoader -> {
-  Fury f = Fury.builder().requireClassRegistration(true).withClassLoader(classLoader).build();
+AllowListChecker checker=new AllowListChecker(AllowListChecker.CheckLevel.STRICT);
+  ThreadSafeFury fury=new ThreadLocalFury(classLoader->{
+  Fury f=Fury.builder().requireClassRegistration(true).withClassLoader(classLoader).build();
   f.getClassResolver().setClassChecker(checker);
   checker.addListener(f.getClassResolver());
   return f;
-});
-checker.allowClass("org.example.*");
+  });
+  checker.allowClass("org.example.*");
 ```
 
-Fury also provided a `org.apache.fury.resolver.AllowListChecker` which is allowed/disallowed list based checker to
-simplify
-the customization of class check mechanism. You can use this checker or implement more sophisticated checker by
-yourself.
+Aapche Fury 还提供了一个 `org.apache.fury.resolver.AllowListChecker`，它是一个基于允许/禁止列表的检查器，用于简化类检查机制的定制。您可以使用此检查器或自行实现更复杂的检查器。
 
-### Register class by name
+### 序列化器注册
 
-Register class by id will have better performance and smaller space overhead. But in some cases, management for a bunch
-of type id is complex. In such cases, registering class by name using API
-`register(Class<?> cls, String namespace, String typeName)` is recommended.
+您还可以通过 `Fury#registerSerializer` API 为类注册自定义序列化器。或者为类实现 `java.io.Externalizable`。
 
-```java
-fury.register(Foo.class, "demo", "Foo");
-```
-
-If there are no duplicate name for type, `namespace` can be left as empty to reduce serialized size.
-
-**Do not use this API to register class since it will increase serialized size a lot compared to register
-class by id**
-
-### Serializer Registration
-
-You can also register a custom serializer for a class by `Fury#registerSerializer` API.
-
-Or implement `java.io.Externalizable` for a class.
-
-### Zero-Copy Serialization
+### 零拷贝序列化
 
 ```java
 import org.apache.fury.*;
 import org.apache.fury.config.*;
-import org.apache.fury.serializer.BufferObject;
+import org.apache.fury.serializers.BufferObject;
 import org.apache.fury.memory.MemoryBuffer;
 
 import java.util.*;
@@ -407,13 +321,9 @@ public class ZeroCopyExample {
 }
 ```
 
-### Meta Sharing
+### Meta 共享
 
-Fury supports share type metadata (class name, field name, final field type information, etc.) between multiple
-serializations in a context (ex. TCP connection), and this information will be sent to the peer during the first
-serialization in the context. Based on this metadata, the peer can rebuild the same deserializer, which avoids
-transmitting metadata for subsequent serializations and reduces network traffic pressure and supports type
-forward/backward compatibility automatically.
+Apache Fury 支持在同一个上下文（例如：`TCP Connection`）中的多个序列中共享类型元数据（例如：类名称，字段名称，字段类型信息 等），这些信息将在上下文中第一次序列化时发送给 对端。根据这些元数据，对端方可重建相同的反序列化器，从而避免为后续序列化传输元数据，减少网络流量压力，并支持类型向前/向后兼容。
 
 ```java
 // Fury.builder()
@@ -422,207 +332,73 @@ forward/backward compatibility automatically.
 //   // share meta across serialization.
 //   .withMetaContextShare(true)
 // Not thread-safe fury.
-MetaContext context = xxx;
-fury.getSerializationContext().setMetaContext(context);
-byte[] bytes = fury.serialize(o);
+MetaContext context=xxx;
+  fury.getSerializationContext().setMetaContext(context);
+  byte[]bytes=fury.serialize(o);
 // Not thread-safe fury.
-MetaContext context = xxx;
-fury.getSerializationContext().setMetaContext(context);
-fury.deserialize(bytes);
+  MetaContext context=xxx;
+  fury.getSerializationContext().setMetaContext(context);
+  fury.deserialize(bytes)
 
 // Thread-safe fury
-fury.setClassLoader(beanA.getClass().getClassLoader());
-byte[] serialized = fury.execute(
-  f -> {
-    f.getSerializationContext().setMetaContext(context);
-    return f.serialize(beanA);
+  fury.setClassLoader(beanA.getClass().getClassLoader());
+  byte[]serialized=fury.execute(
+  f->{
+  f.getSerializationContext().setMetaContext(context);
+  return f.serialize(beanA);
   }
-);
+  );
 // thread-safe fury
-fury.setClassLoader(beanA.getClass().getClassLoader());
-Object newObj = fury.execute(
-  f -> {
-    f.getSerializationContext().setMetaContext(context);
-    return f.deserialize(serialized);
+  fury.setClassLoader(beanA.getClass().getClassLoader());
+  Object newObj=fury.execute(
+  f->{
+  f.getSerializationContext().setMetaContext(context);
+  return f.deserialize(serialized);
   }
-);
+  );
 ```
 
-### Deserialize non-existent classes
+### 反序列化不存在的类
 
-Fury support deserializing non-existent classes, this feature can be enabled
-by `FuryBuilder#deserializeNonexistentClass(true)`. When enabled, and metadata sharing enabled, Fury will store
-the deserialized data of this type in a lazy subclass of Map. By using the lazy map implemented by Fury, the rebalance
-cost of filling map during deserialization can be avoided, which further improves performance. If this data is sent to
-another process and the class exists in this process, the data will be deserialized into the object of this type without
-losing any information.
+Apache Fury 支持反序列化不存在的类，通过`FuryBuilder#deserializeNonexistentClass(true)` 选项开启。当此选项开启的时候，同时也会开启元数据共享。Apache Fury 会将该类型的反序列化数据存储在 lazy Map 子类中。通过使用 Fury 实现的 lazy Map，可以避免在反序列化过程中填充 map 时 map 内部节点的rebalance来下，从而进一步提高性能。如果这些数据被发送到另一个进程，而该进程中存在该类，那么数据将被反序列化为该类型的对象，而不会丢失任何信息。
 
-If metadata sharing is not enabled, the new class data will be skipped and an `NonexistentSkipClass` stub object will be
-returned.
+如果未启用元数据共享，新类数据将被跳过，并返回一个 `NonexistentSkipClass` 的stub 对象。
 
-### Coping/Mapping object from one type to another type
+## 序列化库迁移
 
-Fury support mapping object from one type to another type.
-> Notes:
->
-> 1. This mapping will execute a deep copy, all mapped fields are serialized into binary and
-     deserialized from that binary to map into another type.
-> 2. All struct types must be registered with same ID, otherwise Fury can not mapping to correct struct type.
-     > Be careful when you use `Fury#register(Class)`, because fury will allocate an auto-grown ID which might be
-     > inconsistent if you register classes with different order between Fury instance.
+### JDK 迁移
+
+如果您之前使用 JDK 序列化，并且没有同时升级 client 和 server。这在线上应用很常见，Apache Fury 提供了一个 `org.apache.fury.serializer.JavaSerializer.serializedByJDK` 工具方法来检查二进制文件是否由 JDK 序列化生成。您可以使用以下模式使已有的序列化具有探测运行协议的能力、然后以异步滚动升级的方式将序列化器逐步升级至 Apache Fury：
 
 ```java
-public class StructMappingExample {
-  static class Struct1 {
-    int f1;
-    String f2;
-
-    public Struct1(int f1, String f2) {
-      this.f1 = f1;
-      this.f2 = f2;
-    }
-  }
-
-  static class Struct2 {
-    int f1;
-    String f2;
-    double f3;
-  }
-
-  static ThreadSafeFury fury1 = Fury.builder()
-    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFury();
-  static ThreadSafeFury fury2 = Fury.builder()
-    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFury();
-
-  static {
-    fury1.register(Struct1.class);
-    fury2.register(Struct2.class);
-  }
-
-  public static void main(String[] args) {
-    Struct1 struct1 = new Struct1(10, "abc");
-    Struct2 struct2 = (Struct2) fury2.deserialize(fury1.serialize(struct1));
-    Assert.assertEquals(struct2.f1, struct1.f1);
-    Assert.assertEquals(struct2.f2, struct1.f2);
-    struct1 = (Struct1) fury1.deserialize(fury2.serialize(struct2));
-    Assert.assertEquals(struct1.f1, struct2.f1);
-    Assert.assertEquals(struct1.f2, struct2.f2);
-  }
-}
-```
-
-## Migration
-
-### JDK migration
-
-If you use jdk serialization before, and you can't upgrade your client and server at the same time, which is common for
-online application. Fury provided an util method `org.apache.fury.serializer.JavaSerializer.serializedByJDK` to check
-whether
-the binary are generated by jdk serialization, you use following pattern to make exiting serialization protocol-aware,
-then upgrade serialization to fury in an async rolling-up way:
-
-```java
-if (JavaSerializer.serializedByJDK(bytes)) {
+if(JavaSerializer.serializedByJDK(bytes)){
   ObjectInputStream objectInputStream=xxx;
   return objectInputStream.readObject();
-} else {
+  }else{
   return fury.deserialize(bytes);
-}
-```
-
-### Upgrade fury
-
-Currently binary compatibility is ensured for minor versions only. For example, if you are using fury`v0.2.0`, binary
-compatibility will
-be provided if you upgrade to fury `v0.2.1`. But if upgrade to fury `v0.4.1`, no binary compatibility are ensured.
-Most of the time there is no need to upgrade fury to newer major version, the current version is fast and compact
-enough,
-and we provide some minor fix for recent older versions.
-
-But if you do want to upgrade fury for better performance and smaller size, you need to write fury version as header to
-serialized data
-using code like following to keep binary compatibility:
-
-```java
-MemoryBuffer buffer = xxx;
-buffer.writeVarInt32(2);
-fury.serialize(buffer, obj);
-```
-
-Then for deserialization, you need:
-
-```java
-MemoryBuffer buffer = xxx;
-int furyVersion = buffer.readVarInt32();
-Fury fury = getFury(furyVersion);
-fury.deserialize(buffer);
-```
-
-`getFury` is a method to load corresponding fury, you can shade and relocate different version of fury to different
-package, and load fury by version.
-
-If you upgrade fury by minor version, or you won't have data serialized by older fury, you can upgrade fury directly,
-no need to `versioning` the data.
-
-## Trouble shooting
-
-### Class inconsistency and class version check
-
-If you create fury without setting `CompatibleMode` to `org.apache.fury.config.CompatibleMode.COMPATIBLE`, and you got a
-strange
-serialization error, it may be caused by class inconsistency between serialization peer and deserialization peer.
-
-In such cases, you can invoke `FuryBuilder#withClassVersionCheck` to create fury to validate it, if deserialization
-throws `org.apache.fury.exception.ClassNotCompatibleException`, it shows class are inconsistent, and you should create
-fury with
-`FuryBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)`.
-
-`CompatibleMode.COMPATIBLE` has more performance and space cost, do not set it by default if your classes are always
-consistent between serialization and deserialization.
-
-### Deserialize POJO into another type
-
-Fury allows you to serialize one POJO and deserialize it into a different POJO. The different POJO means the schema inconsistency. Users must to configure Fury with
-`CompatibleMode` set to `org.apache.fury.config.CompatibleMode.COMPATIBLE`.
-
-```java
-public class DeserializeIntoType {
-  static class Struct1 {
-    int f1;
-    String f2;
-
-    public Struct1(int f1, String f2) {
-      this.f1 = f1;
-      this.f2 = f2;
-    }
   }
-
-  static class Struct2 {
-    int f1;
-    String f2;
-    double f3;
-  }
-
-  static ThreadSafeFury fury = Fury.builder()
-    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFury();
-
-  public static void main(String[] args) {
-    Struct1 struct1 = new Struct1(10, "abc");
-    byte[] data = fury.serializeJavaObject(struct1);
-    Struct2 struct2 = (Struct2) fury.deserializeJavaObject(bytes, Struct2.class);
-  }
-}
 ```
 
-### Use wrong API for deserialization
+### Apache Fury 更新
 
-If you serialize an object by invoking `Fury#serialize`, you should invoke `Fury#deserialize` for deserialization
-instead of
-`Fury#deserializeJavaObject`.
+当前只保证小版本之间的兼容性。例如：您使用的 Fury 版本为 `0.9.0`，当升级到 Fury `0.8.1` 版本，可以确保二进制协议的兼容性。但是，如果更新到 Fury `0.9.0` 版本，二进制协议兼容性能力不能得到保证。我们计划在1.0.0版本开始提供大版本内的二进制兼容性。
 
-If you serialize an object by invoking `Fury#serializeJavaObject`, you should invoke `Fury#deserializeJavaObject` for
-deserialization instead of `Fury#deserializeJavaObjectAndClass`/`Fury#deserialize`.
+## 常见问题排查
 
-If you serialize an object by invoking `Fury#serializeJavaObjectAndClass`, you should
-invoke `Fury#deserializeJavaObjectAndClass` for deserialization instead
-of `Fury#deserializeJavaObject`/`Fury#deserialize`.
+### 类不一致和类版本检查
+
+如果您在创建 fury 时未将 `CompatibleMode` 设置为 `org.apache.fury.config.CompatibleMode.COMPATIBLE` 而出现奇怪的序列化错误，可能是由于序列化对和反序列化对之间的类不一致造成的。
+
+在这种情况下，您可以调用 `FuryBuilder#withClassVersionCheck` 来创建 Fury 以验证它，如果反序列化时抛出`org.apache.fury.exception.ClassNotCompatibleException`，则表明类是不一致的，您应该通过
+`FuryBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)` 创建 Fury 对象。
+
+`CompatibleMode.COMPATIBLE` 会带来更多的性能和空间代价，如果您的类在序列化和反序列化之间保持一致，请不要设置此选项。
+
+### 使用错误的 API 反序列化
+
+如果您调用 `Fury#serialize` 来序列化对象，则应调用 `Fury#deserialize` 来反序列化对象，而不是使用 `Fury#deserializeJavaObject`。
+
+如果调用 `Fury#serializeJavaObject` 来序列化对象，则应调用 `Fury#deserializeJavaObject` 来进行反序列化。而不是使用`Fury#deserializeJavaObjectAndClass` 或者 `Fury#deserialize`。
+
+如果调用 `Fury#serializeJavaObjectAndClass` 来序列化对象，则应
+调用 `Fury#deserializeJavaObjectAndClass` 进行反序列化，而不是使用`Fury#deserializeJavaObject` 或者 `Fury#deserialize`。

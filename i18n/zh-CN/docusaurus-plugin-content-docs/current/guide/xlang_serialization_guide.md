@@ -1,29 +1,14 @@
 ---
-title: Xlang Serialization Guide
+title: 多语言序列化指南
 sidebar_position: 2
 id: xlang_object_graph_guide
-license: |
-  Licensed to the Apache Software Foundation (ASF) under one or more
-  contributor license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  The ASF licenses this file to You under the Apache License, Version 2.0
-  (the "License"); you may not use this file except in compliance with
-  the License.  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
 ---
 
-## Cross-language object graph serialization
+## 跨语言对象图序列化
 
-### Serialize built-in types
+### 序列化内置类型
 
-Common types can be serialized automatically: primitive numeric types, string, binary, array, list, map and so on.
+Apache Fury可以自动序列化编程语言的常见数据类型：primitive numeric types, string, binary, array, list, map 等。
 
 **Java**
 
@@ -140,9 +125,9 @@ fn run() {
 }
 ```
 
-### Serialize custom types
+### 序列化自定义类型
 
-Serializing user-defined types needs registering the custom type using the register API to establish the mapping relationship between the type in different languages.
+序列化用户定义的类型需要使用注册 API 注册自定义类型，以便在不同语言中建立类型之间的映射关系。
 
 **Java**
 
@@ -240,8 +225,8 @@ class SomeClass2:
 
 if __name__ == "__main__":
     f = pyfury.Fury()
-    f.register_type(SomeClass1, typename="example.SomeClass1")
-    f.register_type(SomeClass2, typename="example.SomeClass2")
+    f.register_class(SomeClass1, type_tag="example.SomeClass1")
+    f.register_class(SomeClass2, type_tag="example.SomeClass2")
     obj1 = SomeClass1(f1=True, f2={-1: 2})
     obj = SomeClass2(
         f1=obj1,
@@ -409,9 +394,9 @@ fn complex_struct() {
 }
 ```
 
-### Serialize Shared Reference and Circular Reference
+### 序列化共享引用和循环引用
 
-Shared reference and circular reference can be serialized automatically, no duplicate data or recursion error.
+共享引用和循环引用可自动序列化，不会出现重复数据或递归错误。
 
 **Java**
 
@@ -459,7 +444,7 @@ class SomeClass:
     f3: Dict[str, str]
 
 fury = pyfury.Fury(ref_tracking=True)
-fury.register_type(SomeClass, typename="example.SomeClass")
+fury.register_class(SomeClass, type_tag="example.SomeClass")
 obj = SomeClass()
 obj.f2 = {"k1": "v1", "k2": "v2"}
 obj.f1, obj.f3 = obj, obj.f2
@@ -538,7 +523,7 @@ Reference cannot be implemented because of rust ownership restrictions
 ```java
 import org.apache.fury.*;
 import org.apache.fury.config.*;
-import org.apache.fury.serializer.BufferObject;
+import org.apache.fury.serializers.BufferObject;
 import org.apache.fury.memory.MemoryBuffer;
 
 import java.util.*;
