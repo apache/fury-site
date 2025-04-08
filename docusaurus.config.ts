@@ -51,14 +51,6 @@ const config: Config = {
             }
             return editUrl;
           },
-          //The build command is `yarn docusaurus docs:version xxx`.It is necessary to add the `path` and `label` configurations here. 
-          lastVersion:'0.10.0',
-          versions:{
-            '0.10.0':{
-              label:'latest 0.10.0',
-              path:'0.10.0'
-            }
-          }
         },
         blog: {
           blogSidebarCount: 'ALL',
@@ -184,7 +176,7 @@ const config: Config = {
           ]
         },
         {
-          type: 'docsVersionDropdown', // 自动显示版本切换器
+          type: 'docsVersionDropdown', 
           position: 'right',
         },
         {
