@@ -1,7 +1,22 @@
 ---
-title: Row format 指南
+title: Row Format Guide
 sidebar_position: 1
 id: row_format_guide
+license: |
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 ---
 
 ## Row format protocol
@@ -84,11 +99,11 @@ print(new_foo.f2[100000], new_foo.f4[100000].f1, new_foo.f4[200000].f2[5])
 print(f"pickle end: {datetime.datetime.now()}")
 ```
 
-### Apache Arrow 支持
+### Apache Arrow Support
 
-Apache Fury Format 还支持从 Arrow Table/RecordBatch 自动转换。
+Fury Format also supports automatic conversion from/to Arrow Table/RecordBatch.
 
-Java：
+Java:
 
 ```java
 Schema schema = TypeInference.inferSchema(BeanA.class);
@@ -101,7 +116,7 @@ for (int i = 0; i < 10; i++) {
 return arrowWriter.finishAsRecordBatch();
 ```
 
-Python：
+Python:
 
 ```python
 import pyfury
@@ -110,7 +125,7 @@ encoder.to_arrow_record_batch([foo] * 10000)
 encoder.to_arrow_table([foo] * 10000)
 ```
 
-C++:
+C++
 
 ```c++
 std::shared_ptr<ArrowWriter> arrow_writer;
