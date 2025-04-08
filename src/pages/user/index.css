@@ -5,8 +5,8 @@
   line-height: 46px;
    display: flex;
   flex-direction: column;
-  align-items: center; /* 垂直居中 */
-  text-align: center; /* 水平居中文本 */
+  align-items: center; 
+  text-align: center; 
 }
 .user-main h3,
 .user-main .divider,
