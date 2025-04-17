@@ -98,44 +98,44 @@ const config: Config = {
         {
           type: 'docSidebar',
           sidebarId: 'startSidebar',
-          position: 'right',
+          position: 'left',
           label: 'Start',
         },
         {
           type: 'docSidebar',
           sidebarId: 'introductionSidebar',
-          position: 'right',
+          position: 'left',
           label: 'Introduction',
         },
         {
           type: 'docSidebar',
           sidebarId: 'guideSidebar',
-          position: 'right',
+          position: 'left',
           label: 'Guide',
         },
         {
           type: 'docSidebar',
           sidebarId: 'specificationSidebar',
-          position: 'right',
+          position: 'left',
           label: 'Specification',
         },
         {
           type: 'docSidebar',
           sidebarId: 'communitySidebar',
-          position: 'right',
+          position: 'left',
           label: 'Community',
         },
         {
           to: '/user',
           label: 'Users',
-          position: "right",
+          position: "left",
         },
         {
-          position: 'right',
+          position: 'left',
           to: '/download',
           label: 'Download',
         },
-        {to: '/blog', label: 'Blog', position: 'right'},
+        {to: '/blog', label: 'Blog', position: 'left'},
         {
           type: 'dropdown',
           label: 'ASF',
@@ -174,6 +174,10 @@ const config: Config = {
               to: 'https://www.apache.org/foundation/policies/conduct.html'
             }
           ]
+        },
+        {
+          type: 'docsVersionDropdown', 
+          position: 'right',
         },
         {
           href: 'https://github.com/apache/fury',
