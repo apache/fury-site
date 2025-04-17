@@ -2,11 +2,48 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fury.apache.org/blog</id>
     <title>Apache Fury (incubating) Blog</title>
-    <updated>2025-02-16T00:00:00.000Z</updated>
+    <updated>2025-04-15T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fury.apache.org/blog"/>
     <subtitle>Apache Fury (incubating) Blog</subtitle>
     <icon>https://fury.apache.org/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Fury v0.10.1 Released]]></title>
+        <id>https://fury.apache.org/blog/fury_0_10_1_release</id>
+        <link href="https://fury.apache.org/blog/fury_0_10_1_release"/>
+        <updated>2025-04-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Apache Fury team is pleased to announce the 0.10.1 release. This is a minor release that includes 14 PR from 10 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></summary>
+        <content type="html"><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.1 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.0...v0.10.1" target="_blank" rel="noopener noreferrer">14 PR</a> from 10 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_10_1_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h2>
+<ul>
+<li>feat(java): support passed tracking ref meta when building serializers by @chaokunyang in <a href="https://github.com/apache/fury/pull/2113" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2113</a></li>
+<li>feat(java): extra entry in disallowed.txt by @pjfanning in <a href="https://github.com/apache/fury/pull/2098" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2098</a></li>
+<li>feat(java): use sha256 to check disallowed.txt tamper by @chaokunyang in <a href="https://github.com/apache/fury/pull/2102" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2102</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_10_1_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>fix(java): fix read null chunk out of bound by @chaokunyang in <a href="https://github.com/apache/fury/pull/2065" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2065</a></li>
+<li>fix(java): Fix error with <code>MemoryBuffer::readBytesAsInt64</code> when not in LITTLE_ENDIAN mode by @LouisLou2 in <a href="https://github.com/apache/fury/pull/2069" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2069</a></li>
+<li>fix(java): fix read primitives error on fill buffer bound by @chaokunyang in <a href="https://github.com/apache/fury/pull/2064" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2064</a></li>
+<li>fix(java): java.util.Date and its subclasses are mutable by @moooonk in <a href="https://github.com/apache/fury/pull/2076" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2076</a></li>
+<li>fix(java): fix ImmutableCollections$SubList duplicate registration by @w-yfan in <a href="https://github.com/apache/fury/pull/2074" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2074</a></li>
+<li>fix(java): Modify some mistake by @Hen1ng in <a href="https://github.com/apache/fury/pull/2086" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2086</a></li>
+<li>fix(java): fix serialization npe of collection with all null elems by @chaokunyang in <a href="https://github.com/apache/fury/pull/2111" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2111</a></li>
+<li>fix(java): fix disallowed.txt check in windows by @chaokunyang in <a href="https://github.com/apache/fury/pull/2128" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2128</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/blog/fury_0_10_1_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements">​</a></h2>
+<ul>
+<li>perf(java): Improve performance by using System.arraycopy to copy between byte arrays by @Cybermaxke in <a href="https://github.com/apache/fury/pull/2101" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2101</a></li>
+<li>perf(java): Refactor ThreadPoolFury to improve performance by @moooonk in <a href="https://github.com/apache/fury/pull/2092" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2092</a></li>
+<li>perf(java): Optimize Computational Efficiency of MetaStringEncoder::encodeGeneric by @LouisLou2 in <a href="https://github.com/apache/fury/pull/2072" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2072</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.10.0...v0.10.1" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.10.0...v0.10.1</a></p>]]></content>
+        <author>
+            <name>Weipeng Wang</name>
+            <uri>https://github.com/theweipeng</uri>
+        </author>
+        <category label="fury" term="fury"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Fury v0.10.0 Released]]></title>
         <id>https://fury.apache.org/blog/fury_0_10_0_release</id>
