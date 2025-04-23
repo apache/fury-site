@@ -205,7 +205,7 @@ If the discussion goes positive, you will need to prepare the release artifiacts
 ### Github branch and tag
 
 - Create a new branch named `releases-0.5.0`
-- Bump version to `$version` by executing command `python ci/release.py -l all -version $version`
+- Bump version to `$version` by executing command `python ci/release.py bump_version -l all -version $version`
 - Make a git commit and push the branch to `git@github.com:apache/fury.git`
 - Create a new tag by `git tag v0.5.0-rc1`, then push it to `git@github.com:apache/fury.git`
 
