@@ -273,8 +273,10 @@ version release-0.5.0-rc3.
 Apache Fury(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
-The change lists about this release:
+The discussion thread:
+https://lists.apache.org/thread/xxr3od301g6v3ndj14zqc05byp9qvclh
 
+The change lists about this release:
 https://github.com/apache/fury/compare/v0.4.1...v0.5.0-rc3
 
 The release candidates:
