@@ -9,11 +9,11 @@ For binary install, please see Fury [install](/docs/start/install/) document.
 
 ## The latest release
 
-The latest source release is 0.10.1:
+The latest source release is 0.10.2:
 
 | Version | Date | Source | Release Notes |
 |---------|------------|--------|---------------|
-| 0.10.1   |2025-04-15  | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.10.1/apache-fury-0.10.1-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.10.1/apache-fury-0.10.1-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.10.1/apache-fury-0.10.1-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.10.1) |
+| 0.10.2   |2025-05-06  | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.10.2/apache-fury-0.10.2-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.10.2/apache-fury-0.10.2-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.10.2/apache-fury-0.10.2-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.10.2) |
 
 ## All archived releases
 
