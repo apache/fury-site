@@ -485,7 +485,6 @@ Submit a PR to https://github.com/apache/fury-site to update other pages and add
 
 Submit a PR to https://github.com/apache/fury to update [README](https://github.com/apache/fury/blob/main/README.md), like [#2207](https://github.com/apache/fury/pull/2207).
 
-
 ### Release Maven artifacts
 
 - maven_artifact_number: the number for Maven staging artifacts, like 1001.
