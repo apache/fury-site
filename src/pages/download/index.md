@@ -31,13 +31,13 @@ These files are named after the files they relate to but have `.sha512/.asc` ext
 To verify the SHA digests, you need the `.tgz` and its associated `.tgz.sha512` file. An example command:
 
 ```bash
-sha512sum --check apache-fury-incubating-0.10.1-src.tar.gz
+sha512sum --check apache-fury-incubating-0.10.2-src.tar.gz
 ```
 
 It should output something like:
 
 ```bash
-apache-fury-incubating-0.10.1-src.tar.gz: OK
+apache-fury-incubating-0.10.2-src.tar.gz: OK
 ```
 
 ### Verifying Signatures
@@ -54,7 +54,7 @@ gpg --import KEYS
 Then you can verify signature:
 
 ```bash
-gpg --verify apache-fury-incubating-0.10.1-src.tar.gz.asc apache-fury-incubating-0.10.1-src.tar.gz
+gpg --verify apache-fury-incubating-0.10.2-src.tar.gz.asc apache-fury-incubating-0.10.2-src.tar.gz
 ```
 
 If something like the following appears, it means the signature is correct:
