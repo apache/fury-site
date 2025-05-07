@@ -477,9 +477,13 @@ Address the raised issues, then bump `rc_version` and file a new vote again.
 svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version} -m "Release fury ${release_version}"
 ```
 
-### Change Fury Website download link
+### Update Fury&Fury-Site content
 
-Submit a PR to https://github.com/apache/fury-site to update [Download page](https://fury.apache.org/download)
+Submit a PR to https://github.com/apache/fury-site to update [Download page](https://fury.apache.org/download), like [#222](https://github.com/apache/fury-site/pull/222).
+
+Submit a PR to https://github.com/apache/fury-site to update other pages and add blog, like [#223](https://github.com/apache/fury-site/pull/223).
+
+Submit a PR to https://github.com/apache/fury to update [README](https://github.com/apache/fury/blob/main/README.md), like [#2207](https://github.com/apache/fury/pull/2207).
 
 ### Release Maven artifacts
 
