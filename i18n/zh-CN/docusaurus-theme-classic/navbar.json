@@ -23,6 +23,10 @@
     "message": "社区",
     "description": "Navbar item with label Community"
   },
+  "item.label.Users": {
+    "message": "用户",
+    "description": "Navbar item with label Users"
+  },
   "item.label.Download": {
     "message": "下载",
     "description": "Navbar item with label Download"
