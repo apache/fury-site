@@ -4,10 +4,44 @@
         <title>Apache Fury (incubating) Blog</title>
         <link>https://fury.apache.org/blog</link>
         <description>Apache Fury (incubating) Blog</description>
-        <lastBuildDate>Tue, 06 May 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 27 May 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en-US</language>
+        <item>
+            <title><![CDATA[Fury v0.10.3 Released]]></title>
+            <link>https://fury.apache.org/blog/fury_0_10_3_release</link>
+            <guid>https://fury.apache.org/blog/fury_0_10_3_release</guid>
+            <pubDate>Tue, 27 May 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Apache Fury team is pleased to announce the 0.10.3 release. This is a minor release that includes 15 PR from 4 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.3 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.3...v0.10.3-rc2" target="_blank" rel="noopener noreferrer">15 PR</a> from 4 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/blog/fury_0_10_3_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h2>
+<ul>
+<li>feat(java): add protobuf serializer for message and byte string by @chaokunyang in <a href="https://github.com/apache/fury/pull/2213" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2213</a></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://fury.apache.org/blog/fury_0_10_3_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h2>
+<ul>
+<li>fix(java): mark fury-test-core as test dep in fury extensions by @chaokunyang in <a href="https://github.com/apache/fury/pull/2231" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2231</a></li>
+<li>fix(java): ensure readVarUint36Small reads full bits regardless of remaining buffer size by @LouisLou2 in <a href="https://github.com/apache/fury/pull/2179" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2179</a></li>
+<li>fix(java): ensure FuryObjectInputStream.read never returns 0 when length&gt;0 by @X-czh in <a href="https://github.com/apache/fury/pull/2205" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2205</a></li>
+<li>fix(java): Fix empty string processing in MetaStringBytes by @LouisLou2 in <a href="https://github.com/apache/fury/pull/2212" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2212</a></li>
+<li>fix(java): fix field super class missing in compatible mode by @chaokunyang in <a href="https://github.com/apache/fury/pull/2214" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2214</a></li>
+<li>fix(python): fix pyfury build using pyproject.toml by @chaokunyang in <a href="https://github.com/apache/fury/pull/2206" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2206</a></li>
+<li>fix: install bazel by @chaokunyang</li>
+<li>fix: print python tests exception by @chaokunyang</li>
+<li>fix: install pyarrow by @chaokunyang</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="chores">Chores<a href="https://fury.apache.org/blog/fury_0_10_3_release#chores" class="hash-link" aria-label="Direct link to Chores" title="Direct link to Chores">​</a></h2>
+<ul>
+<li>chore: cherry-pick commits for 0.10.3 by @chaokunyang in <a href="https://github.com/apache/fury/pull/2219" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2219</a></li>
+<li>chore: cherry-pick commits for 0.10.3 by @chaokunyang in <a href="https://github.com/apache/fury/pull/2234" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2234</a></li>
+<li>chore: Bump version to 0.10.3 by @pandalee99 in <a href="https://github.com/apache/fury/pull/2235" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2235</a></li>
+<li>chore: fix Releases 0.10 by @pandalee99 in <a href="https://github.com/apache/fury/pull/2236" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2236</a></li>
+<li>chore(javascript): remove nodejs 12 support by @chaokunyang in <a href="https://github.com/apache/fury/pull/2233" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2233</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.10.3...v0.10.3-rc2" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.10.3...v0.10.3-rc2</a></p>]]></content:encoded>
+            <category>fury</category>
+        </item>
         <item>
             <title><![CDATA[Fury v0.10.2 Released]]></title>
             <link>https://fury.apache.org/blog/fury_0_10_2_release</link>
@@ -1332,53 +1366,6 @@ Multiple scala serialization JIT optimization are included, and java serializati
 <li>[Java] Skip toString in annotation invocation handler readObject (#746)</li>
 <li>[Python] Use cloudpickle for local function serialization (#914)</li>
 <li>[Python] fix row format getter (#915)</li>
-</ul>
-<p><strong>Full Changelog</strong>: <a href="https://github.com/alipay/fury/compare/v0.1.0...v0.1.1" target="_blank" rel="noopener noreferrer">https://github.com/alipay/fury/compare/v0.1.0...v0.1.1</a></p>]]></content:encoded>
-            <category>fury</category>
-        </item>
-        <item>
-            <title><![CDATA[Fury v0.1.1 released]]></title>
-            <link>https://fury.apache.org/blog/fury_0_1_1_release</link>
-            <guid>https://fury.apache.org/blog/fury_0_1_1_release</guid>
-            <pubDate>Thu, 21 Sep 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[This release was made before Fury joined the Apache Incubator and thus it's a non-ASF release.]]></description>
-            <content:encoded><![CDATA[<div class="theme-admonition theme-admonition-info admonition_xJq3 alert alert--info"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>info</div><div class="admonitionContent_BuS1"><p><strong>This release was made before Fury joined the Apache Incubator and thus it's a non-ASF release.</strong></p></div></div>
-<p>Author: <a href="https://github.com/chaokunyang" target="_blank" rel="noopener noreferrer">chaokunyang</a></p>
-<p>I'm pleased to announce the <code>0.1.1</code> release of Fury. This release is a enhanced verson based on fury <code>0.1.0</code>. It keeps binary compatibility with <code>0.1.0</code>.</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlights">Highlights<a href="https://fury.apache.org/blog/fury_0_1_1_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights">​</a></h2>
-<ul>
-<li>Java<!-- -->
-<ul>
-<li>Dubbo fury integration: <a href="https://github.com/fury-project/dubbo-serialization-fury" target="_blank" rel="noopener noreferrer">https://github.com/fury-project/dubbo-serialization-fury</a></li>
-<li>Add class checker API to customize security check behaviour(#890)</li>
-</ul>
-</li>
-<li>Python<!-- -->
-<ul>
-<li>Support pyarrow6 bazel build (#859 #862)</li>
-<li>Support python 3.10 (#859 #862)</li>
-</ul>
-</li>
-</ul>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="whats-changed">What's Changed<a href="https://fury.apache.org/blog/fury_0_1_1_release#whats-changed" class="hash-link" aria-label="Direct link to What's Changed" title="Direct link to What's Changed">​</a></h2>
-<ul>
-<li>[Java] Dubbo fury integration: <a href="https://github.com/fury-project/dubbo-serialization-fury" target="_blank" rel="noopener noreferrer">https://github.com/fury-project/dubbo-serialization-fury</a></li>
-<li>[Java] fix isSecure check for xlang in java (#822)</li>
-<li>[Java] register empty object by default (#829)</li>
-<li>[Java] upgrade guava for(#831)</li>
-<li>[Python] Support pyarrow6 bazel build (#859)</li>
-<li>[Python] add missing shared lib for python (#862)</li>
-<li>[Java] optimize buffer copy (#870)</li>
-<li>[Doc] Fix row format doc (#873)</li>
-<li>[Java] fix ofHashMap (#877)</li>
-<li>[Java] add jdk tools.jar for tests (#881)</li>
-<li>[Java] Fix lazy bean serializer (#883)</li>
-<li>[Java] print exception for fury creation (#885)</li>
-<li>[Java] remove getCurrentFury API (#887)</li>
-<li>[Java] Add fury map iterator api (#889)</li>
-<li>[Java] Add class checker API (#890)</li>
-<li>[Python] Fix python linux deploy missing shared library files (#892)</li>
-<li>[[Java] refine AllowListChecker (#893)</li>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/alipay/fury/compare/v0.1.0...v0.1.1" target="_blank" rel="noopener noreferrer">https://github.com/alipay/fury/compare/v0.1.0...v0.1.1</a></p>]]></content:encoded>
             <category>fury</category>
