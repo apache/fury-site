@@ -9,11 +9,11 @@ For binary install, please see Fury [install](/docs/start/install/) document.
 
 ## The latest release
 
-The latest source release is 0.10.2:
+The latest source release is 0.10.3:
 
-| Version | Date | Source | Release Notes |
+| Version | Date       | Source | Release Notes |
 |---------|------------|--------|---------------|
-| 0.10.2   |2025-05-06  | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.10.2/apache-fury-0.10.2-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.10.2/apache-fury-0.10.2-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.10.2/apache-fury-0.10.2-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.10.2) |
+| 0.10.3   | 2025-05-27 | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.10.3/apache-fury-0.10.3-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.10.3/apache-fury-0.10.3-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.10.3/apache-fury-0.10.3-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.10.3) |
 
 ## All archived releases
 
@@ -31,13 +31,13 @@ These files are named after the files they relate to but have `.sha512/.asc` ext
 To verify the SHA digests, you need the `.tgz` and its associated `.tgz.sha512` file. An example command:
 
 ```bash
-sha512sum --check apache-fury-incubating-0.10.2-src.tar.gz
+sha512sum --check apache-fury-incubating-0.10.3-src.tar.gz
 ```
 
 It should output something like:
 
 ```bash
-apache-fury-incubating-0.10.2-src.tar.gz: OK
+apache-fury-incubating-0.10.3-src.tar.gz: OK
 ```
 
 ### Verifying Signatures
@@ -54,7 +54,7 @@ gpg --import KEYS
 Then you can verify signature:
 
 ```bash
-gpg --verify apache-fury-incubating-0.10.2-src.tar.gz.asc apache-fury-incubating-0.10.2-src.tar.gz
+gpg --verify apache-fury-incubating-0.10.3-src.tar.gz.asc apache-fury-incubating-0.10.3-src.tar.gz
 ```
 
 If something like the following appears, it means the signature is correct:
