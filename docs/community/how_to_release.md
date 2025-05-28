@@ -300,25 +300,37 @@ instructions: [Publishing Maven Artifacts](https://infra.apache.org/publishing-m
 Steps to encrypt your password:
 
 1. Generate a master password (if you haven't already):
-   ```sh
+   
+2. ```sh
+   
    mvn --encrypt-master-password your-master-password
+   
    ```
+   
    Save the output to `~/.m2/settings-security.xml`:
-   ```xml
+   
+3. ```xml
+   
    <settingsSecurity>
        <master>{your-encrypted-master-password}</master>
    </settingsSecurity>
+   
    ```
 
 2. Encrypt your Apache account password:
+
    ```sh
+   
    mvn --encrypt-password your-apache-password
+   
    ```
+   
    Place the encrypted output into the `password` field in `settings.xml`
 
 #### Build and Publish Java Module
 
 ```sh
+
 # Navigate to the Java module directory
 cd java
 
@@ -330,22 +342,26 @@ cd java
 # -DskipTests: Skip tests
 # -Dgpg.skip=false: Enable GPG signing (required for release verification)
 mvn -T10 clean deploy -Papache-release -DskipTests -Dgpg.skip=false
+
 ```
 
 #### Build and Publish Kotlin Module
 
 ```sh
+
 # Return to project root and navigate to Kotlin module
 cd ../kotlin
 
 # Execute the same Maven command as Java module
 # Configuration parameters are identical to Java module
 mvn -T10 clean deploy -Papache-release -DskipTests -Dgpg.skip=false
+
 ```
 
 #### Build and Publish Scala Module
 
 ```sh
+
 # Return to project root and navigate to Scala module
 cd ../scala
 
@@ -365,6 +381,7 @@ echo "Starting JAR upload..."
 sbt sonatypeBundleUpload
 
 echo "Scala JAR deployment succeeded!"
+
 ```
 
 #### Lock the Release in Nexus
