@@ -246,15 +246,133 @@ If some files are unexpected, you need to remove by `svn delete` and repeat the 
 
 ## Voting
 
+### check version
+
 As an incubating project, Fury requires votes from both the FUry Community and Incubator Community.
 
 - release_version: the version for fury, like 0.5.0.
 - release_candidate_version: the version for voting, like 0.5.0-rc1.
 - maven_artifact_number: the number for Maven staging artifacts, like 1001. Specifically, the maven_artifact_number can be found by searching "fury" on https://repository.apache.org/#stagingRepositories.
 
+### Build the source code of fury and release it to nexus
+
+#### Configure Apache Account Passwords
+
+Before publishing Fury to Nexus, you need to securely configure your Apache account credentials. This step is critical as passwords must be encrypted.
+
+First, open your Maven global settings file `settings.xml`, typically located at `~/.m2/settings.xml`. Add or modify the following section:
+
+```xml
+<servers>
+    <server>
+        <id>apache.snapshots.https</id>
+        <username>your-apache-username</username>
+        <password>{your-encrypted-password}</password>
+    </server>
+    <server>
+        <id>apache.releases.https</id>
+        <username>your-apache-username</username>
+        <password>{your-encrypted-password}</password>
+    </server>
+</servers>
+```
+
+**Important Notes:**
+- Replace `your-apache-username` with your Apache LDAP username
+- Passwords must be encrypted using Maven's password encryption tool
+- Encrypted passwords should be enclosed in curly braces `{}`
+
+Refer to the official documentation for detailed encryption instructions: [Publishing Maven Artifacts](https://infra.apache.org/publishing-maven-artifacts.html)
+
+Steps to encrypt your password:
+
+1. Generate a master password (if you haven't already):
+   ```sh
+   mvn --encrypt-master-password your-master-password
+   ```
+   Save the output to `~/.m2/settings-security.xml`:
+   ```xml
+   <settingsSecurity>
+       <master>{your-encrypted-master-password}</master>
+   </settingsSecurity>
+   ```
+
+2. Encrypt your Apache account password:
+   ```sh
+   mvn --encrypt-password your-apache-password
+   ```
+   Place the encrypted output into the `password` field in `settings.xml`
+
+#### Build and Publish Java Module
+
+```sh
+# Navigate to the Java module directory
+cd java
+
+# Execute Maven build and deploy to Nexus
+# -T10: Use 10 threads for parallel build, improving speed
+# clean: Clean the project
+# deploy: Deploy to remote repository
+# -Papache-release: Activate apache-release profile
+# -DskipTests: Skip tests
+# -Dgpg.skip=false: Enable GPG signing (required for release verification)
+mvn -T10 clean deploy -Papache-release -DskipTests -Dgpg.skip=false
+```
+
+#### Build and Publish Kotlin Module
+
+```sh
+# Return to project root and navigate to Kotlin module
+cd ../kotlin
+
+# Execute the same Maven command as Java module
+# Configuration parameters are identical to Java module
+mvn -T10 clean deploy -Papache-release -DskipTests -Dgpg.skip=false
+```
+
+#### Build and Publish Scala Module
+
+```sh
+# Return to project root and navigate to Scala module
+cd ../scala
+
+# Build and sign JARs for all Scala versions
+# +publishSigned: Execute publishSigned for all configured Scala versions
+echo "Starting to build Scala JARs..."
+sbt +publishSigned
+
+# Prepare for upload to Sonatype (Nexus)
+# sonatypePrepare: Prepare for Maven Central Repository release
+echo "Starting upload preparation..."
+sbt sonatypePrepare
+
+# Upload packaged JARs to Sonatype
+# sonatypeBundleUpload: Upload prepared bundles
+echo "Starting JAR upload..."
+sbt sonatypeBundleUpload
+
+echo "Scala JAR deployment succeeded!"
+```
+
+#### Lock the Release in Nexus
+
+After completing the publication of all modules, perform the following steps in Nexus:
+
+1. Log in to the Apache Nexus repository management interface
+2. Navigate to the "Snapshots" or "Releases" repository (depending on your release type)
+3. Locate the latest Fury project version
+4. Execute the "Close" operation to validate all uploaded artifacts
+5. After successful validation, execute the "Release" operation to finalize the deployment
+
+These steps ensure all published artifacts are verified and correctly deployed to the public repository.
+
+### build a Pre-release
+You need to build a Pre-release before voting, such as:
+https://github.com/apache/fury/releases/tag/v0.10.3-rc2
+
 ### Fury Community Vote
 
-Send an email to Fury Community: dev@fury.apache.org:
+you need send a email to Fury Community: dev@fury.apache.org:
 
 Title:
 
@@ -479,11 +597,14 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-
 
 ### Update Fury&Fury-Site content
 
-Submit a PR to https://github.com/apache/fury-site to update [Download page](https://fury.apache.org/download), like [#222](https://github.com/apache/fury-site/pull/222).
-
-Submit a PR to https://github.com/apache/fury-site to update other pages and add blog, like [#223](https://github.com/apache/fury-site/pull/223).
+Submit a PR to https://github.com/apache/fury-site to update Fury-site.
+Reference implementation: [#222](https://github.com/apache/fury-site/pull/222) and [#223](https://github.com/apache/fury-site/pull/223).
 
 Submit a PR to https://github.com/apache/fury to update [README](https://github.com/apache/fury/blob/main/README.md), like [#2207](https://github.com/apache/fury/pull/2207).
+
+### Github officially released
+You need to officially release this version in the Fury project
+Reference implementation: https://github.com/apache/fury/releases/tag/v0.10.3
 
 ### Release Maven artifacts
 
@@ -535,3 +656,6 @@ mailing list or on GitHub. We will be happy to help you get started.
 Best Regards,
 ${your_name}
 ```
+Remember to use plain text instead of rich text format, or you may be rejected when CC announce@apache.org
+
+After completing the above steps, the Fury release process comes to an end.
