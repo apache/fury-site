@@ -300,31 +300,31 @@ instructions: [Publishing Maven Artifacts](https://infra.apache.org/publishing-m
 Steps to encrypt your password:
 
 1. Generate a master password (if you haven't already):
-   
+
 2. ```sh
-   
+
    mvn --encrypt-master-password your-master-password
-   
+
    ```
-   
+
    Save the output to `~/.m2/settings-security.xml`:
-   
+
 3. ```xml
-   
+
    <settingsSecurity>
        <master>{your-encrypted-master-password}</master>
    </settingsSecurity>
-   
+
    ```
 
 2. Encrypt your Apache account password:
 
    ```sh
-   
+
    mvn --encrypt-password your-apache-password
-   
+
    ```
-   
+
    Place the encrypted output into the `password` field in `settings.xml`
 
 #### Build and Publish Java Module
