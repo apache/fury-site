@@ -626,6 +626,15 @@ Address the raised issues, then bump `rc_version` and file a new vote again.
 svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version} -m "Release fury ${release_version}"
 ```
 
+In the repository at https://dist.apache.org/repos/dist/dev/incubator/fury/, if any
+outdated ${rc_versions} are left behind when releasing the current version, please
+clear them to keep the dev repository tidy.
+
+When https://archive.apache.org/dist/incubator/fury/0.10.0/${release_version} is
+accessible (confirming that the ${release_version} has been successfully released
+and archived), we may clean up the previous release version in the release repository,
+leaving only the current version (${release_version}).
+
 ### Update Fury&Fury-Site content
 
 Submit a PR to https://github.com/apache/fury-site to update Fury-site.
