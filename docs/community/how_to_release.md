@@ -631,7 +631,7 @@ outdated ${release_candidate_version} are left behind when releasing the ${relea
 please clear them to keep the dev repository tidy.
 
 When https://archive.apache.org/dist/incubator/fury/0.10.0/${release_version} is
-accessible (confirming that the ${release_version} has been successfully released
+accessible (confirming that the \${release_version} has been successfully released
 and archived), we may clean up the previous release version in the release repository,
 leaving only the current version (${release_version}).
 
