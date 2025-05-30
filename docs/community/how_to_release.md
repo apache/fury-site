@@ -627,7 +627,7 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-
 ```
 
 In the repository at https://dist.apache.org/repos/dist/dev/incubator/fury/, if any
-outdated ${release_candidate_version} are left behind when releasing the ${release_version},
+outdated release_candidate_version are left behind when releasing the ${release_version},
 please clear them to keep the dev repository tidy.
 
 When https://archive.apache.org/dist/incubator/fury/0.10.0/${release_version} is
