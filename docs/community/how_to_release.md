@@ -25,13 +25,15 @@ This release process is operated in the Ubuntu OS, and the following tools are r
 - GnuPG 2.x
 - Git
 - SVN (apache uses svn to host project releases)
-- Pay attention to setting environment variables: if you configure gpg keys under a different directory, please `export GNUPGHOME=$(xxx)`
+- Pay attention to setting environment variables: if you configure gpg keys under a different directory,
+  please `export GNUPGHOME=$(xxx)`
 
 ### Prepare GPG Key
 
 If you are the first to become a release manager, you need to prepare a gpg key.
 
-Following is a quick setup, you can refer to [Apache openpgp doc](https://infra.apache.org/openpgp.html) for further details.
+Following is a quick setup, you can refer to [Apache openpgp doc](https://infra.apache.org/openpgp.html) for further
+details.
 
 #### Install GPG
 
@@ -130,13 +132,15 @@ Then, send your key id to key server:
 gpg --keyserver keys.openpgp.org --send-key <key-id> # e.g., 1E2CDAE4C08AD7D694D1CB139D7BE8E45E580BA4
 ```
 
-Among them, `keys.openpgp.org` is a randomly selected keyserver, you can use keyserver.ubuntu.com or any other full-featured keyserver.
+Among them, `keys.openpgp.org` is a randomly selected keyserver, you can use keyserver.ubuntu.com or any other
+full-featured keyserver.
 
 #### Check whether the key is created successfully
 
 Uploading takes about one minute; after that, you can check by email at the corresponding keyserver.
 
-Uploading keys to the keyserver is mainly for joining a [Web of Trust](https://infra.apache.org/release-signing.html#web-of-trust).
+Uploading keys to the keyserver is mainly for joining
+a [Web of Trust](https://infra.apache.org/release-signing.html#web-of-trust).
 
 #### Add your GPG public key to the project KEYS file
 
@@ -156,11 +160,13 @@ svn ci -m "add gpg key for YOUR_NAME" # Later on, if you are asked to enter a us
 #### Upload the GPG public key to your GitHub account
 
 - Enter https://github.com/settings/keys to add your GPG key.
-- Please remember to bind the email address used in the GPG key to your GitHub account (https://github.com/settings/emails) if you find "unverified" after adding it.
+- Please remember to bind the email address used in the GPG key to your GitHub
+  account (https://github.com/settings/emails) if you find "unverified" after adding it.
 
 ### Further reading
 
-It's recommended but not mandatory to read following documents before making a release to know more details about apache release:
+It's recommended but not mandatory to read following documents before making a release to know more details about apache
+release:
 
 - Release policy: https://www.apache.org/legal/release-policy.html
 - Incubator release: http://incubator.apache.org/guides/releasemanagement.html
@@ -205,7 +211,7 @@ If the discussion goes positive, you will need to prepare the release artifiacts
 ### Github branch and tag
 
 - Create a new branch named `releases-0.5.0`
-- Bump version to `$version` by executing command `python ci/release.py -l all -version $version`
+- Bump version to `$version` by executing command `python ci/release.py bump_version -l all -version $version`
 - Make a git commit and push the branch to `git@github.com:apache/fury.git`
 - Create a new tag by `git tag v0.5.0-rc1`, then push it to `git@github.com:apache/fury.git`
 
@@ -213,7 +219,8 @@ If the discussion goes positive, you will need to prepare the release artifiacts
 
 First you need to build source release artifacts by `python ci/release.py build -v $version`.
 
-Then you need to upload it to svn dist repo. The dist repo of the dev branch is: https://dist.apache.org/repos/dist/dev/incubator/fury
+Then you need to upload it to svn dist repo. The dist repo of the dev branch
+is: https://dist.apache.org/repos/dist/dev/incubator/fury
 
 ```bash
 # As this step will copy all the versions, it will take some time. If the network is broken, please use svn cleanup to delete the lock before re-execute it.
@@ -246,15 +253,157 @@ If some files are unexpected, you need to remove by `svn delete` and repeat the 
 
 ## Voting
 
+### check version
+
 As an incubating project, Fury requires votes from both the FUry Community and Incubator Community.
 
 - release_version: the version for fury, like 0.5.0.
 - release_candidate_version: the version for voting, like 0.5.0-rc1.
-- maven_artifact_number: the number for Maven staging artifacts, like 1001. Specifically, the maven_artifact_number can be found by searching "fury" on https://repository.apache.org/#stagingRepositories.
+- maven_artifact_number: the number for Maven staging artifacts, like 1001. Specifically, the maven_artifact_number can
+  be found by searching "fury" on https://repository.apache.org/#stagingRepositories.
+
+### Build the source code of fury and release it to nexus
+
+#### Configure Apache Account Passwords
+
+Before publishing Fury to Nexus, you need to securely configure your Apache account credentials. This step is critical
+as passwords must be encrypted.
+
+First, open your Maven global settings file `settings.xml`, typically located at `~/.m2/settings.xml`. Add or modify the
+following section:
+
+```xml
+
+<servers>
+    <server>
+        <id>apache.snapshots.https</id>
+        <username>your-apache-username</username>
+        <password>{your-encrypted-password}</password>
+    </server>
+    <server>
+        <id>apache.releases.https</id>
+        <username>your-apache-username</username>
+        <password>{your-encrypted-password}</password>
+    </server>
+</servers>
+```
+
+**Important Notes:**
+
+- Replace `your-apache-username` with your Apache LDAP username
+- Passwords must be encrypted using Maven's password encryption tool
+- Encrypted passwords should be enclosed in curly braces `{}`
+
+Refer to the official documentation for detailed encryption
+instructions: [Publishing Maven Artifacts](https://infra.apache.org/publishing-maven-artifacts.html)
+
+Steps to encrypt your password:
+
+1. Generate a master password (if you haven't already):
+
+2. ```sh
+
+   mvn --encrypt-master-password your-master-password
+
+   ```
+
+   Save the output to `~/.m2/settings-security.xml`:
+
+3. ```xml
+
+   <settingsSecurity>
+       <master>{your-encrypted-master-password}</master>
+   </settingsSecurity>
+
+   ```
+
+2. Encrypt your Apache account password:
+
+   ```sh
+
+   mvn --encrypt-password your-apache-password
+
+   ```
+
+   Place the encrypted output into the `password` field in `settings.xml`
+
+#### Build and Publish Java Module
+
+```sh
+
+# Navigate to the Java module directory
+cd java
+
+# Execute Maven build and deploy to Nexus
+# -T10: Use 10 threads for parallel build, improving speed
+# clean: Clean the project
+# deploy: Deploy to remote repository
+# -Papache-release: Activate apache-release profile
+# -DskipTests: Skip tests
+# -Dgpg.skip=false: Enable GPG signing (required for release verification)
+mvn -T10 clean deploy -Papache-release -DskipTests -Dgpg.skip=false
+
+```
+
+#### Build and Publish Kotlin Module
+
+```sh
+
+# Return to project root and navigate to Kotlin module
+cd ../kotlin
+
+# Execute the same Maven command as Java module
+# Configuration parameters are identical to Java module
+mvn -T10 clean deploy -Papache-release -DskipTests -Dgpg.skip=false
+
+```
+
+#### Build and Publish Scala Module
+
+```sh
+
+# Return to project root and navigate to Scala module
+cd ../scala
+
+# Build and sign JARs for all Scala versions
+# +publishSigned: Execute publishSigned for all configured Scala versions
+echo "Starting to build Scala JARs..."
+sbt +publishSigned
+
+# Prepare for upload to Sonatype (Nexus)
+# sonatypePrepare: Prepare for Maven Central Repository release
+echo "Starting upload preparation..."
+sbt sonatypePrepare
+
+# Upload packaged JARs to Sonatype
+# sonatypeBundleUpload: Upload prepared bundles
+echo "Starting JAR upload..."
+sbt sonatypeBundleUpload
+
+echo "Scala JAR deployment succeeded!"
+
+```
+
+#### Lock the Release in Nexus
+
+After completing the publication of all modules, perform the following steps in Nexus:
+
+1. Log in to the Apache Nexus repository management interface
+2. Navigate to the "Snapshots" or "Releases" repository (depending on your release type)
+3. Locate the latest Fury project version
+4. Execute the "Close" operation to validate all uploaded artifacts
+5. After successful validation, execute the "Release" operation to finalize the deployment
+
+These steps ensure all published artifacts are verified and correctly deployed to the public repository.
+
+### build a Pre-release
+
+You need to build a Pre-release before voting, such as:
+https://github.com/apache/fury/releases/tag/v0.10.3-rc2
 
 ### Fury Community Vote
 
-Send an email to Fury Community: dev@fury.apache.org:
+you need send a email to Fury Community: dev@fury.apache.org:
 
 Title:
 
@@ -273,8 +422,10 @@ version release-0.5.0-rc3.
 Apache Fury(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
-The change lists about this release:
+The discussion thread:
+https://lists.apache.org/thread/xxr3od301g6v3ndj14zqc05byp9qvclh
 
+The change lists about this release:
 https://github.com/apache/fury/compare/v0.4.1...v0.5.0-rc3
 
 The release candidates:
@@ -475,9 +626,28 @@ Address the raised issues, then bump `rc_version` and file a new vote again.
 svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version} -m "Release fury ${release_version}"
 ```
 
-### Change Fury Website download link
+In the repository at https://dist.apache.org/repos/dist/dev/incubator/fury/, if any
+outdated release_candidate_version are left behind when releasing the release_version,
+please clear them to keep the dev repository tidy.
 
-Submit a PR to https://github.com/apache/fury-site to update [Download page](https://fury.apache.org/download)
+When `https://archive.apache.org/dist/incubator/fury/0.10.0/${release_version}` is
+accessible (confirming that the release_version has been successfully released
+and archived), we may clean up the previous release version in the release repository,
+leaving only the current version.
+
+### Update Fury&Fury-Site content
+
+Submit a PR to https://github.com/apache/fury-site to update Fury-site.
+Reference implementation: [#222](https://github.com/apache/fury-site/pull/222)
+and [#223](https://github.com/apache/fury-site/pull/223).
+
+Submit a PR to https://github.com/apache/fury to update [README](https://github.com/apache/fury/blob/main/README.md),
+like [#2207](https://github.com/apache/fury/pull/2207).
+
+### Github officially released
+
+You need to officially release this version in the Fury project
+Reference implementation: https://github.com/apache/fury/releases/tag/v0.10.3
 
 ### Release Maven artifacts
 
@@ -529,3 +699,7 @@ mailing list or on GitHub. We will be happy to help you get started.
 Best Regards,
 ${your_name}
 ```
+
+Remember to use plain text instead of rich text format, or you may be rejected when CC announce@apache.org
+
+After completing the above steps, the Fury release process comes to an end.

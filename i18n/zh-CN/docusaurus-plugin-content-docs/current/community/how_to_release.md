@@ -204,7 +204,7 @@ ${name}
 ### Github 分支和标签
 
 - 创建一个名为 `releases-0.5.0`
-- 通过执行命令将版本 `$version` 升级到 `python ci/release.py -l all -version $version`
+- 通过执行命令将版本 `$version` 升级到 `python ci/release.py bump_version -l all -version $version`
 - 执行 git commit 并将分支推送到 `git@github.com:apache/fury.git`
 - 通过 `git tag v0.5.0-rc1` 创建一个新标签，然后将其推送到 `git@github.com:apache/fury.git`
 
