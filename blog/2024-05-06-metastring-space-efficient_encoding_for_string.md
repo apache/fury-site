@@ -26,7 +26,7 @@ Such a string is enumerated and limited, so the encoding performance is not impo
 Meta string encoding uses `5/6` bits instead of `8` bits in utf-8 encoding for every chars. Since it uses less bits than utf8, it can bring
 **37.5% space cost savings** compared to utf-8 and has a smaller encoded binary size, which uses less storage and makes the network transfer faster.
 
-More details about meta string spec can be found in [Fury xlang serialization specification](https://fury.apache.org/docs/specification/fury_xlang_serialization_spec/#meta-string).
+More details about meta string spec can be found in [Fury xlang serialization specification](https://fury.apache.org/docs/docs/specification/fury_xlang_serialization_spec/#meta-string).
 
 ## Encoding Algorithms
 

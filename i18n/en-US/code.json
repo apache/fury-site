@@ -273,5 +273,49 @@
   "theme.unlistedContent.message": {
     "message": "This page is unlisted. Search engines will not index it, and only users having a direct link can access it.",
     "description": "The unlisted content banner message"
+  },
+  "feature.highPerformance.title": {
+    "message": "High performance",
+    "description": "The title for the high performance feature"
+  },
+  "feature.highPerformance.description": {
+    "message": "Compared to other serialization frameworks, there is a 20~170x speed up.",
+    "description": "Description for the high performance feature"
+  },
+  "feature.easyToUse.title": {
+    "message": "Easy to use",
+    "description": "The title for the easy to use feature"
+  },
+  "feature.easyToUse.description": {
+    "message": "No need for DSL, you can use Fury effectively with your intuition.",
+    "description": "Description for the easy to use feature"
+  },
+  "feature.multiLanguages.title": {
+    "message": "Multi-languages",
+    "description": "The title for the multi-languages feature"
+  },
+  "feature.multiLanguages.description": {
+    "message": "Supports popular programming languages such as Java, Python, C++, Golang, Javascript, Rust, and more will be added in the future.",
+    "description": "Description for the multi-languages feature"
+  },
+  "homepage.githubButton": {
+    "message": "GitHub",
+    "description": "The GitHub button label on the homepage"
+  },
+  "homepage.getStartedButton": {
+    "message": "Get Started",
+    "description": "The Get Started button label on the homepage"
+  },
+  "theme.ErrorPageContent.title": {
+    "message": "This page crashed.",
+    "description": "The title of the fallback page when the page crashed"
+  },
+  "theme.blog.archive.title": {
+    "message": "Archive",
+    "description": "The page & hero title of the blog archive page"
+  },
+  "theme.blog.archive.description": {
+    "message": "Archive",
+    "description": "The page & hero description of the blog archive page"
   }
 }
