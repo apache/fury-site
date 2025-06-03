@@ -14,7 +14,7 @@
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_10_3_release</guid>
             <pubDate>Tue, 27 May 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.10.3 release. This is a minor release that includes 15 PR from 4 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.3 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.3...v0.10.3-rc2" target="_blank" rel="noopener noreferrer">15 PR</a> from 4 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.3 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.3...v0.10.3-rc2" target="_blank" rel="noopener noreferrer">15 PR</a> from 4 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/zh-CN/blog/fury_0_10_3_release#features" class="hash-link" aria-label="Features的直接链接" title="Features的直接链接">​</a></h2>
 <ul>
 <li>feat(java): add protobuf serializer for message and byte string by @chaokunyang in <a href="https://github.com/apache/fury/pull/2213" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2213</a></li>
@@ -48,7 +48,7 @@
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_10_2_release</guid>
             <pubDate>Tue, 06 May 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.10.2 release. This is a minor release that includes 6 PR from 2 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.2 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.1...v0.10.2" target="_blank" rel="noopener noreferrer">6 PR</a> from 2 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.2 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.1...v0.10.2" target="_blank" rel="noopener noreferrer">6 PR</a> from 2 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/zh-CN/blog/fury_0_10_2_release#features" class="hash-link" aria-label="Features的直接链接" title="Features的直接链接">​</a></h2>
 <ul>
 <li>feat(kotlin): add kotlin ci by @pandalee99 in <a href="https://github.com/apache/fury/pull/2176" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2176</a></li>
@@ -70,7 +70,7 @@
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_10_1_release</guid>
             <pubDate>Tue, 15 Apr 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.10.1 release. This is a minor release that includes 14 PR from 10 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.1 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.0...v0.10.1" target="_blank" rel="noopener noreferrer">14 PR</a> from 10 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.1 release. This is a minor release that includes <a href="https://github.com/apache/fury/compare/v0.10.0...v0.10.1" target="_blank" rel="noopener noreferrer">14 PR</a> from 10 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/zh-CN/blog/fury_0_10_1_release#features" class="hash-link" aria-label="Features的直接链接" title="Features的直接链接">​</a></h2>
 <ul>
 <li>feat(java): support passed tracking ref meta when building serializers by @chaokunyang in <a href="https://github.com/apache/fury/pull/2113" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/2113</a></li>
@@ -103,7 +103,7 @@
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_10_0_release</guid>
             <pubDate>Sun, 16 Feb 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.10.0 release. This is a major release that includes 27 PR from 16 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.9.0...v0.10.0" target="_blank" rel="noopener noreferrer">27 PR</a> from 16 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.10.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.9.0...v0.10.0" target="_blank" rel="noopener noreferrer">27 PR</a> from 16 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlight">Highlight<a href="https://fury.apache.org/zh-CN/blog/fury_0_10_0_release#highlight" class="hash-link" aria-label="Highlight的直接链接" title="Highlight的直接链接">​</a></h2>
 <ul>
 <li>Chunk based map serialization</li>
@@ -169,7 +169,7 @@
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_9_0_release</guid>
             <pubDate>Sun, 10 Nov 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.9.0 release. This is a major release that includes 34 PR from 14 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.9.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">34 PR</a> from 14 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.9.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">34 PR</a> from 14 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlight">Highlight<a href="https://fury.apache.org/zh-CN/blog/fury_0_9_0_release#highlight" class="hash-link" aria-label="Highlight的直接链接" title="Highlight的直接链接">​</a></h2>
 <ul>
 <li>Optimized serializers for Fury kotlin support</li>
@@ -229,7 +229,7 @@
 <li>@apupier made their first contribution in <a href="https://github.com/apache/fury/pull/1918" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1918</a></li>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fury/compare/v0.8.0...v0.9.0" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/compare/v0.8.0...v0.9.0</a></p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="acknowledgements">Acknowledgements<a href="https://fury.apache.org/zh-CN/blog/fury_0_9_0_release#acknowledgements" class="hash-link" aria-label="Acknowledgements的�直接链接" title="Acknowledgements的直接链接">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="acknowledgements">Acknowledgements<a href="https://fury.apache.org/zh-CN/blog/fury_0_9_0_release#acknowledgements" class="hash-link" aria-label="Acknowledgements的直接链接" title="Acknowledgements的直接链接">​</a></h2>
 <p>Thanks @effigies @apupier @wywen @mandrean @HuangXingBo @pjfanning @chaokunyang @penguin-wwy @An-DJ @Forchapeatl @orisgarno @zhaommmmomo @caicancai @Aliothmoon</p>
 <p>A big thank you to all our contributors who have worked hard on this release. Your contributions, whether through code,
 documentation, or issue reporting, are really appreciated.</p>]]></content:encoded>
@@ -241,7 +241,7 @@ documentation, or issue reporting, are really appreciated.</p>]]></content:encod
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_8_0_release</guid>
             <pubDate>Fri, 04 Oct 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes 23 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">23 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.8.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.1...v0.8.0" target="_blank" rel="noopener noreferrer">23 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="highlights">Highlights<a href="https://fury.apache.org/zh-CN/blog/fury_0_8_0_release#highlights" class="hash-link" aria-label="Highlights的直接链接" title="Highlights的直接链接">​</a></h2>
 <ul>
 <li>Support graalvm 17/21/22 native image</li>
@@ -297,7 +297,7 @@ documentation, or issue reporting, are really appreciated.</p>]]></content:encod
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_7_1_release</guid>
             <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.7.1 release. This is a major release that includes 20 PR from 8 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.7.1 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.0...v0.7.1" target="_blank" rel="noopener noreferrer">20 PR</a> from 8 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.7.1 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.7.0...v0.7.1" target="_blank" rel="noopener noreferrer">20 PR</a> from 8 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://fury.apache.org/zh-CN/blog/fury_0_7_1_release#features" class="hash-link" aria-label="Features的直接链接" title="Features的直接链接">​</a></h2>
 <ul>
 <li>feat(javascript): Added MetaString Class for Unicode Encoding/Decoding in Type.Object Code Generation by @Forchapeatl in <a href="https://github.com/apache/fury/pull/1774" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1774</a></li>
@@ -320,7 +320,7 @@ documentation, or issue reporting, are really appreciated.</p>]]></content:encod
 <li>fix(java): fix nested map field value serialization by private map serializer by @chaokunyang in <a href="https://github.com/apache/fury/pull/1820" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1820</a></li>
 <li>fix(rust): use iter to avoid reallocate by @jiacai2050 in <a href="https://github.com/apache/fury/pull/1821" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1821</a></li>
 </ul>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/zh-CN/blog/fury_0_7_1_release#other-improvements" class="hash-link" aria-label="Other Improvements��的直接链接" title="Other Improvements的直接链接">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="other-improvements">Other Improvements<a href="https://fury.apache.org/zh-CN/blog/fury_0_7_1_release#other-improvements" class="hash-link" aria-label="Other Improvements的直接链接" title="Other Improvements的直接链接">​</a></h2>
 <ul>
 <li>chore(java): Disallow writing meta classdef when obj is null by @LiangliangSui in <a href="https://github.com/apache/fury/pull/1686" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1686</a></li>
 <li>chore(infra): optimize github tmpl &amp; update actions/checkout version to 4.1.7 by @yuluo-yx in <a href="https://github.com/apache/fury/pull/1807" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1807</a></li>
@@ -346,7 +346,7 @@ documentation, or issue reporting, are really appreciated.</p>]]></content:encod
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_7_0_release</guid>
             <pubDate>Sun, 04 Aug 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.7.0 release. This is a major release that includes 24 PR from 7 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.7.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.6.0...v0.7.0" target="_blank" rel="noopener noreferrer">24 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.7.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.6.0...v0.7.0" target="_blank" rel="noopener noreferrer">24 PR</a> from 7 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="high-light">High Light<a href="https://fury.apache.org/zh-CN/blog/fury_0_7_0_release#high-light" class="hash-link" aria-label="High Light的直接链接" title="High Light的直接链接">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="experimental">Experimental<a href="https://fury.apache.org/zh-CN/blog/fury_0_7_0_release#experimental" class="hash-link" aria-label="Experimental的直接链接" title="Experimental的直接链接">​</a></h3>
 <p>Implement fast object deep copy framework for java:</p>
@@ -407,7 +407,7 @@ documentation, or issue reporting, are really appreciated.</p>
             <guid>https://fury.apache.org/zh-CN/blog/fury_0_6_0_release</guid>
             <pubDate>Tue, 23 Jul 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes 35 PR from 12 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.5.1...v0.6.0" target="_blank" rel="noopener noreferrer">35 PR</a> from 12 distinct contributors. See the <a href="https://fury.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
+            <content:encoded><![CDATA[<p>The Apache Fury team is pleased to announce the 0.6.0 release. This is a major release that includes <a href="https://github.com/apache/fury/compare/v0.5.1...v0.6.0" target="_blank" rel="noopener noreferrer">35 PR</a> from 12 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="high-light">High light<a href="https://fury.apache.org/zh-CN/blog/fury_0_6_0_release#high-light" class="hash-link" aria-label="High light的直接链接" title="High light的直接链接">​</a></h2>
 <p>In this release, we introduced a scoped meta share mode for schema evolution in java and enabled it by default when <code>CompatibleMode</code> is set to <code>Compatible</code>:</p>
 <ul>
@@ -558,7 +558,7 @@ framework, such meta will take considerable cost compared to actual data.</p>
 Such a string is enumerated and limited, so the encoding performance is not important since we can cache the encoding result.</p>
 <p>Meta string encoding uses <code>5/6</code> bits instead of <code>8</code> bits in utf-8 encoding for every chars. Since it uses less bits than utf8, it can bring
 <strong>37.5% space cost savings</strong> compared to utf-8 and has a smaller encoded binary size, which uses less storage and makes the network transfer faster.</p>
-<p>More details about meta string spec can be found in <a href="https://fury.apache.org/docs/specification/fury_xlang_serialization_spec/#meta-string" target="_blank" rel="noopener noreferrer">Fury xlang serialization specification</a>.</p>
+<p>More details about meta string spec can be found in <a href="https://fury.apache.org/docs/docs/specification/fury_xlang_serialization_spec/#meta-string" target="_blank" rel="noopener noreferrer">Fury xlang serialization specification</a>.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="encoding-algorithms">Encoding Algorithms<a href="https://fury.apache.org/zh-CN/blog/fury_meta_string_37_5_percent_space_efficient_encoding_than_utf8#encoding-algorithms" class="hash-link" aria-label="Encoding Algorithms的直接链接" title="Encoding Algorithms的直接链接">​</a></h2>
 <p>String binary encoding algorithm:</p>
 <table><thead><tr><th>Algorithm</th><th>Pattern</th><th>Description</th></tr></thead><tbody><tr><td>LOWER_SPECIAL</td><td><code>a-z._$|</code></td><td>every char is written using 5 bits, <code>a-z</code>: <code>0b00000~0b11001</code>, <code>._$|</code>: <code>0b11010~0b11101</code>, prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char)</td></tr><tr><td>LOWER_UPPER_DIGIT_SPECIAL</td><td><code>a-zA-Z0~9._</code></td><td>every char is written using 6 bits, <code>a-z</code>: <code>0b00000~0b11001</code>, <code>A-Z</code>: <code>0b11010~0b110011</code>, <code>0~9</code>: <code>0b110100~0b111101</code>, <code>._</code>: <code>0b111110~0b111111</code>,  prepend one bit at the start to indicate whether strip last char since last byte may have 7 redundant bits(1 indicates strip last char)</td></tr><tr><td>UTF-8</td><td>any chars</td><td>UTF-8 encoding</td></tr></tbody></table>
@@ -575,7 +575,7 @@ Such a string is enumerated and limited, so the encoding performance is not impo
 <p>For className, <code>FIRST_TO_LOWER_SPECIAL</code> will be used mostly. If there are multiple uppercase chars, then <code>ALL_TO_LOWER_SPECIAL</code> will be used instead.
 If a string contains digits, then <code>LOWER_UPPER_DIGIT_SPECIAL</code> will be used.</p>
 <p>Finally, utf8 will be the fallback encoding if the string contains some chars which is not in range <code>a-z0-9A-Z</code>.</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="encoding-flags-and-data-jointly">Encoding Flags and Data jointly<a href="https://fury.apache.org/zh-CN/blog/fury_meta_string_37_5_percent_space_efficient_encoding_than_utf8#encoding-flags-and-data-jointly" class="hash-link" aria-label="Encoding Flags and Data jointly的直接链接" title="Encoding Flags and Data jointly的直接�链接">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="encoding-flags-and-data-jointly">Encoding Flags and Data jointly<a href="https://fury.apache.org/zh-CN/blog/fury_meta_string_37_5_percent_space_efficient_encoding_than_utf8#encoding-flags-and-data-jointly" class="hash-link" aria-label="Encoding Flags and Data jointly的直接链接" title="Encoding Flags and Data jointly的��直接链接">​</a></h2>
 <ul>
 <li>Depending on the case, one can choose encoding <code>flags + data</code> jointly, using 3 bits of first byte for flags and other bytes for data. This can be useful since there are some holes remaining in last byte, adding flags in data doesn't always increase serialized bytes size.</li>
 <li>Or one can use a header to encode such flags with other meta such as encoded size, this is what Fury does in <a href="https://github.com/apache/fury/pull/1556" target="_blank" rel="noopener noreferrer">https://github.com/apache/fury/pull/1556</a></li>
