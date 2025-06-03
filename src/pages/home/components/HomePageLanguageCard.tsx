@@ -22,8 +22,8 @@ export default function HomePageLanguageCard() {
 
   const getLanguageUrl = (language) => {
     const baseUrl = locale.startsWith("zh-CN")
-      ? "https://fury.apache.org/zh-CN/docs/start/usage/#"
-      : "https://fury.apache.org/docs/start/usage/#";
+      ? "https://fury.apache.org/zh-CN/docs/docs/start/usage/#"
+      : "https://fury.apache.org/docs/docs/start/usage/#";
     return `${baseUrl}${language}`;
   };
 

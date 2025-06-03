@@ -46,7 +46,7 @@ export default function HomepageHeader() {
           {/* 开始使用按钮 */}
           <Link
             className="button button--secondary button--lg"
-            to="/docs/start/install"
+            to="/docs/docs/start/install"
             data-aos="fade-up"
             data-aos-delay="400"
           >

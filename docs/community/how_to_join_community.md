@@ -10,7 +10,7 @@ First of all, kudos to you for choosing to join the open source contribution ran
 
 The Fury team usually conducts development and issue maintenance on GitHub. Please open the [GitHub website](https://github.com/), click the `Sign up` button in the upper right corner, register your own account, and take the first step of your open source journey.
 
-In the [Fury repository](https://github.com/apache/fury), we have a [guide](https://fury.apache.org/zh-CN/docs/community/) for all open source contributors, introducing contents such as version management and branch management. **Please take a few minutes to read and understand it**.
+In the [Fury repository](https://github.com/apache/fury), we have a [guide](https://fury.apache.org/zh-CN/docs/docs/community/) for all open source contributors, introducing contents such as version management and branch management. **Please take a few minutes to read and understand it**.
 
 ## Your First Pull Request
 

@@ -25,15 +25,15 @@
   },
   "link.item.label.Install": {
     "message": "安装",
-    "description": "The label of footer link with label=Install linking to /docs/start/install"
+    "description": "The label of footer link with label=Install linking to /docs/docs/start/install"
   },
   "link.item.label.Usage": {
     "message": "使用",
-    "description": "The label of footer link with label=Usage linking to /docs/start/usage"
+    "description": "The label of footer link with label=Usage linking to /docs/docs/start/usage"
   },
   "link.item.label.Benchmark": {
     "message": "基准测试",
-    "description": "The label of footer link with label=Benchmark linking to /docs/introduction/benchmark"
+    "description": "The label of footer link with label=Benchmark linking to /docs/docs/introduction/benchmark"
   },
   "link.item.label.Fury": {
     "message": "Fury",

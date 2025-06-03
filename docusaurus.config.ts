@@ -97,21 +97,9 @@ const config: Config = {
         // },
         {
           type: 'docSidebar',
-          sidebarId: 'startSidebar',
+          sidebarId: 'docsSidebar',
           position: 'right',
-          label: 'Start',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'introductionSidebar',
-          position: 'right',
-          label: 'Introduction',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'guideSidebar',
-          position: 'right',
-          label: 'Guide',
+          label: 'Docs',
         },
         {
           type: 'docSidebar',
@@ -212,15 +200,15 @@ const config: Config = {
           items: [
             {
               label: 'Install',
-              to: '/docs/start/install',
+              to: '/docs/docs/start/install',
             },
             {
               label: 'Usage',
-              to: '/docs/start/usage',
+              to: '/docs/docs/start/usage',
             },
             {
               label: 'Benchmark',
-              to: '/docs/introduction/benchmark',
+              to: '/docs/docs/introduction/benchmark',
             },
           ],
         },
