@@ -66,5 +66,13 @@
   "item.label.Code of Conduct": {
     "message": "Code of Conduct",
     "description": "Navbar item with label Code of Conduct"
+  },
+  "item.label.Docs": {
+    "message": "Docs",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.Users": {
+    "message": "Users",
+    "description": "Navbar item with label Users"
   }
 }

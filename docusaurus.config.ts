@@ -164,6 +164,12 @@ const config: Config = {
           ]
         },
         {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          dropdownItemsAfter: [],
+          dropdownActiveClassDisabled: true,
+        },
+        {
           href: 'https://github.com/apache/fury',
           position: 'right',
           className: 'header-github-link',
