@@ -3,19 +3,18 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Apache Fury (incubating)',
+  title: 'Apache Fory (incubating)',
   tagline: 'A blazing-fast cross-language serialization framework powered by just-in-time compilation and zero-copy',
   favicon: 'img/favicon.ico',
   
   // Set the production url of your site here
-  url: 'https://fury.apache.org/',
+  url: 'https://fory.apache.org/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-
    i18n: {
     defaultLocale: 'en-US',
     locales: ['en-US', 'zh-CN'],
@@ -35,19 +34,25 @@ const config: Config = {
   },
   presets: [
     [
-      'classic',
+      '@docusaurus/preset-classic',
       {
         docs: {
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: 'dev',
+            },
+          },
           sidebarPath: './sidebars.ts',
           editUrl: ({locale, version, docPath }) => {
             var editUrl = "";
             if (locale === "en-US") {
-              editUrl = `https://github.com/apache/fury-site/tree/main/docs/${docPath}`;
+              editUrl = `https://github.com/apache/fory-site/tree/main/docs/${docPath}`;
             } else if (locale === "zh-CN") {
               version = version === "current" ? "current" : "version-" + version
-              editUrl = `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-docs/${version}/${docPath}`;
+              editUrl = `https://github.com/apache/fory-site/tree/main/i18n/${locale}/docusaurus-plugin-content-docs/${version}/${docPath}`;
             } else {
-              editUrl = `https://github.com/apache/fury-site/tree/main`
+              editUrl = `https://github.com/apache/fory-site/tree/main`
             }
             return editUrl;
           },
@@ -59,11 +64,11 @@ const config: Config = {
           editUrl: ({ blogPath, locale }) => {
             var editUrl = "";
             if (locale === "en-US") {
-              editUrl = `https://github.com/apache/fury-site/tree/main/blog/${blogPath}`;
+              editUrl = `https://github.com/apache/fory-site/tree/main/blog/${blogPath}`;
             } else if (locale === "zh-CN") {
-              editUrl = `https://github.com/apache/fury-site/tree/main/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
+              editUrl = `https://github.com/apache/fory-site/tree/main/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
             } else {
-              editUrl =  `https://github.com/apache/fury-site/tree/main`
+              editUrl =  `https://github.com/apache/fory-site/tree/main`
             }
             return editUrl;
           },
@@ -75,7 +80,8 @@ const config: Config = {
     ],
   ],
   plugins: [
-    require.resolve('docusaurus-lunr-search')
+    require.resolve('docusaurus-lunr-search'),
+    require.resolve('./src/plugin/redirect')
   ],
 
   themeConfig: {
@@ -166,11 +172,10 @@ const config: Config = {
         {
           type: 'docsVersionDropdown',
           position: 'right',
-          dropdownItemsAfter: [],
           dropdownActiveClassDisabled: true,
         },
         {
-          href: 'https://github.com/apache/fury',
+          href: 'https://github.com/apache/fory',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -222,12 +227,12 @@ const config: Config = {
           title: 'Repositories',
           items: [
             {
-              label: 'Fury',
-              href: 'https://github.com/apache/fury',
+              label: 'Fory',
+              href: 'https://github.com/apache/fory',
             },
             {
               label: 'Website',
-              href: 'https://github.com/apache/fury-site',
+              href: 'https://github.com/apache/fory-site',
             },
           ],
         },
@@ -239,7 +244,7 @@ const config: Config = {
         alt: "Apache Incubator logo"
       },
       copyright: `<div>
-      <p> Apache Fury is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF. </p>
+      <p> Apache Fory is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF. </p>
       <p>
         Copyright © ${new Date().getFullYear()} The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>
         Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
