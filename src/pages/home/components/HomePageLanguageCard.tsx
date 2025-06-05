@@ -22,8 +22,8 @@ export default function HomePageLanguageCard() {
 
   const getLanguageUrl = (language) => {
     const baseUrl = locale.startsWith("zh-CN")
-      ? "https://fury.apache.org/zh-CN/docs/docs/start/usage/#"
-      : "https://fury.apache.org/docs/docs/start/usage/#";
+      ? "https://fory.apache.org/zh-CN/docs/docs/start/usage/#"
+      : "https://fory.apache.org/docs/docs/start/usage/#";
     return `${baseUrl}${language}`;
   };
 
@@ -38,13 +38,13 @@ export default function HomePageLanguageCard() {
               key={key}
               className="flex items-center justify-center h-24 text-lg font-bold border border-gray-400 rounded-md cursor-pointer transition-transform duration-300 transform hover:scale-105 active:scale-100 hover:bg-gray-100 hover:border-gray-200"
               onClick={() =>
-                (window.location.href = getLanguageUrl(
-                  key === "java"
-                    ? "java-serialization"
-                    : key === "more"
+              (window.location.href = getLanguageUrl(
+                key === "java"
+                  ? "java-serialization"
+                  : key === "more"
                     ? "crosslanguage-serialization"
                     : key
-                ))
+              ))
               }
             >
               <img src={src} className="w-10 h-10 mr-2" alt={`${label} logo`} />

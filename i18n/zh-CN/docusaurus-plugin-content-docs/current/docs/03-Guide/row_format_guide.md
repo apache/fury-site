@@ -86,7 +86,7 @@ print(f"pickle end: {datetime.datetime.now()}")
 
 ### Apache Arrow 支持
 
-Apache Fury Format 还支持从 Arrow Table/RecordBatch 自动转换。
+Apache Fory Format 还支持从 Arrow Table/RecordBatch 自动转换。
 
 Java：
 

@@ -6,13 +6,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to point out documentation issues for Apache Fury!
+        Thanks for taking the time to point out documentation issues for Apache Fory!
   - type: textarea
     id: "current-state"
     attributes:
       label: Current State
       description: Current state of the documentation page with possible links and screenshots
-      placeholder: The "What is Apache Fury" page does not fully explain...
+      placeholder: The "What is Apache Fory" page does not fully explain...
       value: |
         **Description of the current issue**:
 

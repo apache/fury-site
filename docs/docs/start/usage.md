@@ -9,23 +9,23 @@ sidebar_position: 1
 ```java
 import java.util.List;
 import java.util.Arrays;
-import org.apache.fury.*;
+import org.apache.fory.*;
 
 public class Example {
   public static void main(String[] args) {
     SomeClass object = new SomeClass();
-    // Note that Fury instances should be reused between
+    // Note that Fory instances should be reused between
     // multiple serializations of different objects.
-    Fury fury = Fury.builder().withLanguage(Language.JAVA)
+    Fory fory = Fory.builder().withLanguage(Language.JAVA)
       // Allow to deserialize objects unknown types,
       // more flexible but less secure.
       // .requireClassRegistration(false)
       .build();
     // Registering types can reduce class name serialization overhead, but not mandatory.
     // If secure mode enabled, all custom types must be registered.
-    fury.register(SomeClass.class);
-    byte[] bytes = fury.serialize(object);
-    System.out.println(fury.deserialize(bytes));
+    fory.register(SomeClass.class);
+    byte[] bytes = fory.serialize(object);
+    System.out.println(fory.deserialize(bytes));
   }
 }
 ```
@@ -33,23 +33,23 @@ public class Example {
 ## Scala Serialization
 
 ```scala
-import org.apache.fury.Fury
-import org.apache.fury.serializer.scala.ScalaSerializers
+import org.apache.fory.Fory
+import org.apache.fory.serializer.scala.ScalaSerializers
 
 case class Person(name: String, id: Long, github: String)
 case class Point(x : Int, y : Int, z : Int)
 
 object ScalaExample {
-  val fury: Fury = Fury.builder().withScalaOptimizationEnabled(true).build()
-  // Register optimized fury serializers for scala
-  ScalaSerializers.registerSerializers(fury)
-  fury.register(classOf[Person])
-  fury.register(classOf[Point])
+  val fory: Fory = Fory.builder().withScalaOptimizationEnabled(true).build()
+  // Register optimized fory serializers for scala
+  ScalaSerializers.registerSerializers(fory)
+  fory.register(classOf[Person])
+  fory.register(classOf[Point])
 
   def main(args: Array[String]): Unit = {
     val p = Person("Shawn Yang", 1, "https://github.com/chaokunyang")
-    println(fury.deserialize(fury.serialize(p)))
-    println(fury.deserialize(fury.serialize(Point(1, 2, 3))))
+    println(fory.deserialize(fory.serialize(p)))
+    println(fory.deserialize(fory.serialize(Point(1, 2, 3))))
   }
 }
 ```
@@ -57,24 +57,24 @@ object ScalaExample {
 ## Kotlin Serialization
 
 ```kotlin
-import org.apache.fury.Fury
-import org.apache.fury.ThreadSafeFury
-import org.apache.fury.serializer.kotlin.KotlinSerializers
+import org.apache.fory.Fory
+import org.apache.fory.ThreadSafeFury
+import org.apache.fory.serializer.kotlin.KotlinSerializers
 
 data class Person(val name: String, val id: Long, val github: String)
 data class Point(val x : Int, val y : Int, val z : Int)
 
 fun main(args: Array<String>) {
-    // Note: following fury init code should be executed only once in a global scope instead
+    // Note: following fory init code should be executed only once in a global scope instead
     // of initializing it everytime when serialization.
-    val fury: ThreadSafeFury = Fury.builder().requireClassRegistration(true).buildThreadSafeFury()
-    KotlinSerializers.registerSerializers(fury)
-    fury.register(Person::class.java)
-    fury.register(Point::class.java)
+    val fory: ThreadSafeFury = Fory.builder().requireClassRegistration(true).buildThreadSafeFury()
+    KotlinSerializers.registerSerializers(fory)
+    fory.register(Person::class.java)
+    fory.register(Point::class.java)
 
     val p = Person("Shawn Yang", 1, "https://github.com/chaokunyang")
-    println(fury.deserialize(fury.serialize(p)))
-    println(fury.deserialize(fury.serialize(Point(1, 2, 3))))
+    println(fory.deserialize(fory.serialize(p)))
+    println(fory.deserialize(fory.serialize(Point(1, 2, 3))))
 }
 ```
 
@@ -84,7 +84,7 @@ fun main(args: Array<String>) {
 
 ```java
 import com.google.common.collect.ImmutableMap;
-import org.apache.fury.*;
+import org.apache.fory.*;
 
 import java.util.Map;
 
@@ -103,14 +103,14 @@ public class ReferenceExample {
     return obj;
   }
 
-  // mvn exec:java -Dexec.mainClass="io.fury.examples.ReferenceExample"
+  // mvn exec:java -Dexec.mainClass="io.fory.examples.ReferenceExample"
   public static void main(String[] args) {
-    Fury fury = Fury.builder().withLanguage(Language.XLANG)
+    Fory fory = Fory.builder().withLanguage(Language.XLANG)
       .withRefTracking(true).build();
-    fury.register(SomeClass.class, "example.SomeClass");
-    byte[] bytes = fury.serialize(createObject());
+    fory.register(SomeClass.class, "example.SomeClass");
+    byte[] bytes = fory.serialize(createObject());
     // bytes can be data serialized by other languages.
-    System.out.println(fury.deserialize(bytes));
+    System.out.println(fory.deserialize(bytes));
     ;
   }
 }
@@ -127,14 +127,14 @@ class SomeClass:
     f2: Dict[str, str]
     f3: Dict[str, str]
 
-fury = pyfury.Fury(ref_tracking=True)
-fury.register_class(SomeClass, "example.SomeClass")
+fory = pyfury.Fory(ref_tracking=True)
+fory.register_class(SomeClass, "example.SomeClass")
 obj = SomeClass()
 obj.f2 = {"k1": "v1", "k2": "v2"}
 obj.f1, obj.f3 = obj, obj.f2
-data = fury.serialize(obj)
+data = fory.serialize(obj)
 # bytes can be data serialized by other languages.
-print(fury.deserialize(data))
+print(fory.deserialize(data))
 ```
 
 ### Golang
@@ -144,7 +144,7 @@ package main
 
 import (
  "fmt"
- furygo "github.com/apache/fury/go/fury"
+ furygo "github.com/apache/fory/go/fory"
 )
 
 func main() {
@@ -153,19 +153,19 @@ func main() {
   F2 map[string]string
   F3 map[string]string
  }
- fury := furygo.NewFury(true)
- if err := fury.RegisterTagType("example.SomeClass", SomeClass{}); err != nil {
+ fory := furygo.NewFury(true)
+ if err := fory.RegisterTagType("example.SomeClass", SomeClass{}); err != nil {
   panic(err)
  }
  value := &SomeClass{F2: map[string]string{"k1": "v1", "k2": "v2"}}
  value.F3 = value.F2
  value.F1 = value
- bytes, err := fury.Marshal(value)
+ bytes, err := fory.Marshal(value)
  if err != nil {
  }
  var newValue interface{}
  // bytes can be data serialized by other languages.
- if err := fury.Unmarshal(bytes, &newValue); err != nil {
+ if err := fory.Unmarshal(bytes, &newValue); err != nil {
   panic(err)
  }
  fmt.Println(newValue)
@@ -175,7 +175,7 @@ func main() {
 ### JavaScript
 
 ```typescript
-import Fury, { Type } from '@furyjs/fury';
+import Fory, { Type } from '@furyjs/fory';
 
 /**
  * @furyjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
@@ -188,9 +188,9 @@ import hps from '@furyjs/hps';
 const description = Type.object('example.foo', {
   foo: Type.string(),
 });
-const fury = new Fury({ hps });
-const { serialize, deserialize } = fury.registerSerializer(description);
-const input = serialize({ foo: 'hello fury' });
+const fory = new Fory({ hps });
+const { serialize, deserialize } = fory.registerSerializer(description);
+const input = serialize({ foo: 'hello fory' });
 const result = deserialize(input);
 console.log(result);
 ```
@@ -198,16 +198,16 @@ console.log(result);
 ### Rust
 
 ```rust
-use fury::{from_buffer, to_buffer, Fury};
+use fory::{from_buffer, to_buffer, Fory};
 
-#[derive(Fury, Debug, PartialEq)]
+#[derive(Fory, Debug, PartialEq)]
 #[tag("example.foo")]
 struct Animal {
     name: String,
     category: String,
 }
 
-#[derive(Fury, Debug, PartialEq)]
+#[derive(Fory, Debug, PartialEq)]
 #[tag("example.bar")]
 struct Person {
     name: String,

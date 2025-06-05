@@ -4,11 +4,11 @@ title: Introduction
 sidebar_position: 1
 ---
 
-Fury is a blazing fast multi-language serialization framework powered by jit(just-in-time compilation) and zero-copy.
+Fory is a blazing fast multi-language serialization framework powered by jit(just-in-time compilation) and zero-copy.
 
 ## Protocols
 
-Different scenarios have different serialization requirements. Fury designed and implemented
+Different scenarios have different serialization requirements. Fory designed and implemented
 multiple binary protocols for those requirements:
 
 - Cross-language object graph protocol:
@@ -20,22 +20,22 @@ multiple binary protocols for those requirements:
 - Row format protocol: a cache-friendly binary random access format, supports skipping serialization and partial serialization,
   and can convert to column-format automatically.
 
-New protocols can be added easily based on fury existing buffer, encoding, meta, codegen and other capabilities. All of those share same codebase, and the optimization for one protocol
+New protocols can be added easily based on fory existing buffer, encoding, meta, codegen and other capabilities. All of those share same codebase, and the optimization for one protocol
 can be reused by another protocol.
 
 ## Compatibility
 
 ### Schema Compatibility
 
-Fury java object graph serialization support class schema forward/backward compatibility. The serialization peer and deserialization peer can add/delete fields independently.
+Fory java object graph serialization support class schema forward/backward compatibility. The serialization peer and deserialization peer can add/delete fields independently.
 
-We plan to add support cross-language serialization after [meta compression](https://github.com/apache/fury/issues/203) are finished.
+We plan to add support cross-language serialization after [meta compression](https://github.com/apache/fory/issues/203) are finished.
 
 ### Binary Compatibility
 
-We are still improving our protocols, binary compatibility are not ensured between fury releases for now. Please `shade` fury if you will upgrade fury in the future.
+We are still improving our protocols, binary compatibility are not ensured between fory releases for now. Please `shade` fory if you will upgrade fory in the future.
 
-Binary compatibility will be ensured before fury 1.0.
+Binary compatibility will be ensured before fory 1.0.
 
 ## Security
 
@@ -43,9 +43,9 @@ Static serialization such as row format are secure by nature. But dynamic object
 
 For example, the deserialization may invoke `init` constructor or `equals`/`hashCode` method, if the method body contains malicious code, the system will be at risks.
 
-Fury provides a class registration mode option and enabled by default for this protocol, which allows deserializing trusted registered types or built-in types only for security.
+Fory provides a class registration mode option and enabled by default for this protocol, which allows deserializing trusted registered types or built-in types only for security.
 
-Fury provides a class registration option and enabled by default for such protocols, which allows only deserializing trusted registered types or built-in types. **Do not disable class registration or class registration checks unless you can ensure your environment is indeed secure**. We are not responsible for security if you disabled the class registration option.
+Fory provides a class registration option and enabled by default for such protocols, which allows only deserializing trusted registered types or built-in types. **Do not disable class registration or class registration checks unless you can ensure your environment is indeed secure**. We are not responsible for security if you disabled the class registration option.
 
 ## RoadMap
 
@@ -59,4 +59,4 @@ Fury provides a class registration option and enabled by default for such protoc
 
 ## How to Contribute
 
-Please read the [CONTRIBUTING](https://github.com/apache/fury/blob/main/CONTRIBUTING.md) guide for instructions on how to contribute.
+Please read the [CONTRIBUTING](https://github.com/apache/fory/blob/main/CONTRIBUTING.md) guide for instructions on how to contribute.

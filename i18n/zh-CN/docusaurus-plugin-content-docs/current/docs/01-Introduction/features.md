@@ -13,7 +13,7 @@ sidebar_position: 3
   - 减少哈希查找；
 - 二进制协议：对象图、行格式等。
 
-除了跨语言序列化之外，Fury 还支持以下功能：
+除了跨语言序列化之外，Fory 还支持以下功能：
 
 - 直接替换 Java 序列化框架，如 JDK/Kryo/Hessian，无需修改任何代码，但速度提高 100 倍。它可以大大提高 RPC 调用性能、数据传输和对象持久化的效率；
 - JDK 序列化 100% 兼容，原生支持 java 自定义序列化 `writeObject/readObject/writeReplace/readResolve/readObjectNoData`；

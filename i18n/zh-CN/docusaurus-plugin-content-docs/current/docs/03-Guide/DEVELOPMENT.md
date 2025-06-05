@@ -4,11 +4,11 @@ sidebar_position: 7
 id: development
 ---
 
-## 本地构建 Apache Fury
+## 本地构建 Apache Fory
 
-从 [Github 代码库](https://github.com/apache/fury) 拉取最新代码。
+从 [Github 代码库](https://github.com/apache/fory) 拉取最新代码。
 
-### 构建 Apache Fury Java
+### 构建 Apache Fory Java
 
 ```bash
 cd java
@@ -20,7 +20,7 @@ mvn clean compile -DskipTests
 - java 1.8+
 - maven 3.6.3+
 
-### 构建 Apache Fury Python
+### 构建 Apache Fory Python
 
 ```bash
 cd python
@@ -32,20 +32,20 @@ pip install -v -e .
 
 - python 3.6+
 
-### 构建 Apache Fury C++
+### 构建 Apache Fory C++
 
-Build fury row format：
+Build fory row format：
 
 ```bash
 pip install pyarrow==14.0.0
-bazel build //cpp/fury/row:fury_row_format
+bazel build //cpp/fory/row:fury_row_format
 ```
 
-Build fury row format encoder:
+Build fory row format encoder:
 
 ```bash
 pip install pyarrow==14.0.0
-bazel build //cpp/fury/encoder:fury_encoder
+bazel build //cpp/fory/encoder:fury_encoder
 ```
 
 #### 本地环境要求
@@ -53,10 +53,10 @@ bazel build //cpp/fury/encoder:fury_encoder
 - compilers with C++17 support
 - bazel 6.3.2
 
-### 构建 Apache Fury GoLang
+### 构建 Apache Fory GoLang
 
 ```bash
-cd go/fury
+cd go/fory
 # run test
 go test -v
 # run xlang test
@@ -67,7 +67,7 @@ go test -v fury_xlang_test.go
 
 - go 1.13+
 
-### 构建 Apache Fury Rust
+### 构建 Apache Fory Rust
 
 ```bash
 cd rust
@@ -83,7 +83,7 @@ cargo test
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-### 构建 Apache Fury JavaScript
+### 构建 Apache Fory JavaScript
 
 ```bash
 cd javascript

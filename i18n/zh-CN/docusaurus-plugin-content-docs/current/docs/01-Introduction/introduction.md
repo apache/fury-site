@@ -1,14 +1,14 @@
 ---
 id: introduction
-title: Apache Fury 介绍
+title: Apache Fory 介绍
 sidebar_position: 1
 ---
 
-Fury 是一个由 JIT（即时编译）和零拷贝提供支持的高性能多语言序列化框架。
+Fory 是一个由 JIT（即时编译）和零拷贝提供支持的高性能多语言序列化框架。
 
 ## 协议
 
-不同的场景有不同的序列化要求。Apache Fury 为这些需求设计并实现了多个二进制协议：
+不同的场景有不同的序列化要求。Apache Fory 为这些需求设计并实现了多个二进制协议：
 
 - 跨语言对象图协议：
   - 跨语言自动序列化任何对象，无需 IDL 定义、Schema编译和对象协议转换；
@@ -17,21 +17,21 @@ Fury 是一个由 JIT（即时编译）和零拷贝提供支持的高性能多�
 - 原生 java/python 对象图协议：基于单一语言的完整类型系统进行高度优化；
 - 行格式协议：缓存友好的二进制随机访问格式，支持跳过序列化和部分序列化，并且可以自动转换为列格式。
 
-基于 fury 现有的 buffer、encoding、meta、codegen 和其他功能，可以轻松添加新协议。所有这些协议都共享相同的代码库，并且一个协议的优化可以被另一个协议重用。
+基于 fory 现有的 buffer、encoding、meta、codegen 和其他功能，可以轻松添加新协议。所有这些协议都共享相同的代码库，并且一个协议的优化可以被另一个协议重用。
 
 ## 兼容性
 
 ### Schema兼容性
 
-Apache Fury java 对象图序列化支持类架构向前/向后兼容。序列化 Peer 节点和反序列化 Peer 节点可以独立添加/删除字段。
+Apache Fory java 对象图序列化支持类架构向前/向后兼容。序列化 Peer 节点和反序列化 Peer 节点可以独立添加/删除字段。
 
-我们计划在[元数据压缩](https://github.com/apache/fury/issues/203)完成后支持跨语言序列化Schema兼容性。
+我们计划在[元数据压缩](https://github.com/apache/fory/issues/203)完成后支持跨语言序列化Schema兼容性。
 
 ### 二进制兼容性
 
-我们仍在改进我们的协议，目前无法确保 fury 版本之间的二进制兼容性。如果您将来要升级 fury，请 `shade` fury。
+我们仍在改进我们的协议，目前无法确保 fory 版本之间的二进制兼容性。如果您将来要升级 fory，请 `shade` fory。
 
-在 fury 1.0 之前将确保二进制兼容性。
+在 fory 1.0 之前将确保二进制兼容性。
 
 ## 安全
 
@@ -39,7 +39,7 @@ Apache Fury java 对象图序列化支持类架构向前/向后兼容。序列�
 
 例如：反序列化可能会调用 `init` constructor 或 `equals`/ `hashCode` 方法，如果方法体中包含恶意代码，系统将处于危险之中。
 
-Apache Fury 提供了一个类注册选项，并默认开启该选项，它只允许反序列化受信任的注册类型或内置类型。**不要禁用类注册或类注册检查，除非您可以确保您的环境确实是安全的**。如果您禁用了 class 注册选项，你需要自行负责序列化的安全性。
+Apache Fory 提供了一个类注册选项，并默认开启该选项，它只允许反序列化受信任的注册类型或内置类型。**不要禁用类注册或类注册检查，除非您可以确保您的环境确实是安全的**。如果您禁用了 class 注册选项，你需要自行负责序列化的安全性。
 
 ## 路线图
 
@@ -53,4 +53,4 @@ Apache Fury 提供了一个类注册选项，并默认开启该选项，它只�
 
 ## 如何贡献
 
-请阅读[贡献](https://github.com/apache/fury/blob/main/CONTRIBUTING.md)指南以获取有关如何贡献的说明。
+请阅读[贡献](https://github.com/apache/fory/blob/main/CONTRIBUTING.md)指南以获取有关如何贡献的说明。

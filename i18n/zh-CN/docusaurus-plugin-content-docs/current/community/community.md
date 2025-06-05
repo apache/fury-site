@@ -4,10 +4,10 @@ sidebar_position: 0
 id: community
 ---
 
-Apache Fury 是一个由社区驱动的开源项目，项目的蓬勃发展得益于社区贡献。
+Apache Fory 是一个由社区驱动的开源项目，项目的蓬勃发展得益于社区贡献。
 我们邀请您根据自己的意愿尽可能地参与项目。以下是几种贡献方式：
 
-- 使用 Apache Fury 并分享使用体验和反馈问题；
+- 使用 Apache Fory 并分享使用体验和反馈问题；
 - 为项目提供最佳实践示例；
 - 报告错误并修复；
 - 贡献代码和参与文档建设。
@@ -16,8 +16,8 @@ Apache Fury 是一个由社区驱动的开源项目，项目的蓬勃发展得�
 
 | 邮件列表                    | 描述                                        | 订阅                                             | 取消订阅                                               | 发送邮件                               | 活动                                                               |
 |-------------------------|---------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|------------------------------------|-----------------------------------------------------------------------|
-| dev@fury.apache.org     | 开发相关讨论             | [订阅](mailto:dev-subscribe@fury.apache.org)     | [取消订阅](mailto:dev-unsubscribe@fury.apache.org)     | [发送邮件](mailto:dev@fury.apache.org) | [邮件列表活动](https://lists.apache.org/list.html?dev@fury.apache.org)     |
-| commits@fury.apache.org | 仓库的所有 commits            | [订阅](mailto:commits-subscribe@fury.apache.org) | [取消订阅](mailto:commits-unsubscribe@fury.apache.org) | 只读的邮件列表                     | [邮件列表活动](https://lists.apache.org/list.html?commits@fury.apache.org) |
+| dev@fory.apache.org     | 开发相关讨论             | [订阅](mailto:dev-subscribe@fory.apache.org)     | [取消订阅](mailto:dev-unsubscribe@fory.apache.org)     | [发送邮件](mailto:dev@fory.apache.org) | [邮件列表活动](https://lists.apache.org/list.html?dev@fory.apache.org)     |
+| commits@fory.apache.org | 仓库的所有 commits            | [订阅](mailto:commits-subscribe@fory.apache.org) | [取消订阅](mailto:commits-unsubscribe@fory.apache.org) | 只读的邮件列表                     | [邮件列表活动](https://lists.apache.org/list.html?commits@fory.apache.org) |
 
 在尝试发送邮件之前，请确保订阅上述的邮件列表。
 
@@ -27,7 +27,7 @@ Apache Fury 是一个由社区驱动的开源项目，项目的蓬勃发展得�
 
 要发送邮件至邮件列表，请先通过以下方式订阅：
 
-1. 发送电子邮件至 listname-subscribe@fury.apache.org，并相应替换 `listname`；
+1. 发送电子邮件至 listname-subscribe@fory.apache.org，并相应替换 `listname`；
 2. 回复您将收到的确认电子邮件，保持邮件主题行完整；
 3. 然后您将收到一封欢迎的电子邮件，订阅成功。
 
@@ -40,7 +40,7 @@ Apache Fury 是一个由社区驱动的开源项目，项目的蓬勃发展得�
 
 ## Slack
 
-您可以加入[Slack 上的 Apache Fury™ 社区](https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)。
+您可以加入[Slack 上的 Apache Fory™ 社区](https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)。
 
 这里有一些社区规则：
 
@@ -54,32 +54,32 @@ Apache Fury 是一个由社区驱动的开源项目，项目的蓬勃发展得�
 
 我们使用 GitHub Issues 来跟踪所有 Issues：
 
-- 代码相关问题：https://github.com/apache/fury/issues
-- 网站相关问题：https://github.com/apache/fury-site/issues
+- 代码相关问题：https://github.com/apache/fory/issues
+- 网站相关问题：https://github.com/apache/fory-site/issues
 
 您需要有一个 [GitHub 帐户](https://github.com/signup) 才能创建问题。
-如果您没有 [GitHub 帐户](https://github.com/signup)，您可以发送电子邮件至 dev@fury.apache.org。
+如果您没有 [GitHub 帐户](https://github.com/signup)，您可以发送电子邮件至 dev@fory.apache.org。
 
 ### 报告 Bug
 
 您在报告 Bug 之前，应该：
 
 - 验证该 Bug 确实存在；
-- 搜索 [Issue List](https://github.com/apache/fury/issues) 以确保不存在相关 Bug。
-- 在 Issue List 中创建 [bug 报告](https://github.com/apache/fury/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml)。
-- 如果可能的话，深入研究 Apache Fury 的源代码，并针对您报告的 Bug 提交补丁，这有助于快速修复 Bug。
+- 搜索 [Issue List](https://github.com/apache/fory/issues) 以确保不存在相关 Bug。
+- 在 Issue List 中创建 [bug 报告](https://github.com/apache/fory/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml)。
+- 如果可能的话，深入研究 Apache Fory 的源代码，并针对您报告的 Bug 提交补丁，这有助于快速修复 Bug。
 
 ### 报告安全漏洞
 
-Apache Fury 是 [Apache 软件基金会](https://apache.org/) 的一个项目，遵循 [ASF 漏洞处理流程](https://apache.org/security/#vulnerability-handling)。
+Apache Fory 是 [Apache 软件基金会](https://apache.org/) 的一个项目，遵循 [ASF 漏洞处理流程](https://apache.org/security/#vulnerability-handling)。
 
 要报告您发现的新的安全漏洞，请遵循 [ASF 漏洞报告流程](https://apache.org/security/#reporting-a-vulnerability)，该流程解释了如何私下向社区维护者发送详细的漏洞信息。
 
 ### New Feature
 
-欢迎您增强功能或新功能建议。提案越具体、越合理，您在 Fury 社区的影响力就越大。它有可能在之后版本发布。
+欢迎您增强功能或新功能建议。提案越具体、越合理，您在 Fory 社区的影响力就越大。它有可能在之后版本发布。
 
 ### 项目源代码
 
-- Fury Core 存储库：https://github.com/apache/fury
-- Fury 网站存储库：https://github.com/apache/fury-site
+- Fory Core 存储库：https://github.com/apache/fory
+- Fory 网站存储库：https://github.com/apache/fory-site

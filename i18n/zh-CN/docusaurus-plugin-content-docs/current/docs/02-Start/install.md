@@ -1,71 +1,71 @@
 ---
 id: install
-title: 安装 Apache Fury
+title: 安装 Apache Fory
 sidebar_position: 0
 ---
 
-Apache Fury 源码下载请参见 Apache Fury [download](https://github.com/apache/fury/releases)页面。
+Apache Fory 源码下载请参见 Apache Fory [download](https://github.com/apache/fory/releases)页面。
 
-### Fury Java 安装
+### Fory Java 安装
 
-要使用 Maven 添加对 Apache Fury 的依赖，请使用以下配置：
+要使用 Maven 添加对 Apache Fory 的依赖，请使用以下配置：
 
 ```xml
 <dependency>
-  <groupId>org.apache.fury</groupId>
-  <artifactId>fury-core</artifactId>
+  <groupId>org.apache.fory</groupId>
+  <artifactId>fory-core</artifactId>
   <version>0.10.3</version>
 </dependency>
 <!-- row/arrow format support -->
 <!-- <dependency>
-  <groupId>org.apache.fury</groupId>
-  <artifactId>fury-format</artifactId>
+  <groupId>org.apache.fory</groupId>
+  <artifactId>fory-format</artifactId>
   <version>0.10.3</version>
 </dependency> -->
 ```
 
-### Fury Scala 安装
+### Fory Scala 安装
 
-要使用 Maven 添加 scala 2.13 的 Fury scala 依赖，请使用以下配置：
+要使用 Maven 添加 scala 2.13 的 Fory scala 依赖，请使用以下配置：
 
 ```xml
 <dependency>
-  <groupId>org.apache.fury</groupId>
-  <artifactId>fury-scala_2.13</artifactId>
+  <groupId>org.apache.fory</groupId>
+  <artifactId>fory-scala_2.13</artifactId>
   <version>0.10.3</version>
 </dependency>
 ```
 
-要使用 Maven 添加 scala 3 的 Fury scala 依赖，请使用以下配置：
+要使用 Maven 添加 scala 3 的 Fory scala 依赖，请使用以下配置：
 
 ```xml
 <dependency>
-  <groupId>org.apache.fury</groupId>
-  <artifactId>fury-scala_3</artifactId>
+  <groupId>org.apache.fory</groupId>
+  <artifactId>fory-scala_3</artifactId>
   <version>0.10.3</version>
 </dependency>
 ```
 
-要使用 sbt 添加 scala 2.13 的 Fury scala 依赖，请使用以下配置：
+要使用 sbt 添加 scala 2.13 的 Fory scala 依赖，请使用以下配置：
 
 ```sbt
-libraryDependencies += "org.apache.fury" % "fury-scala_2.13" % "0.10.3"
+libraryDependencies += "org.apache.fory" % "fory-scala_2.13" % "0.10.3"
 ```
 
-要使用 sbt 添加 scala 3 的 Fury scala 依赖，请使用以下配置：
+要使用 sbt 添加 scala 3 的 Fory scala 依赖，请使用以下配置：
 
 ```sbt
-libraryDependencies += "org.apache.fury" % "fury-scala_3" % "0.10.3"
+libraryDependencies += "org.apache.fory" % "fory-scala_3" % "0.10.3"
 ```
 
-## Fury Kotlin 安装
+## Fory Kotlin 安装
 
-To add a dependency on Fury kotlin with maven, use the following:
+To add a dependency on Fory kotlin with maven, use the following:
 
 ```xml
 <dependency>
-  <groupId>org.apache.fury</groupId>
-  <artifactId>fury-kotlin</artifactId>
+  <groupId>org.apache.fory</groupId>
+  <artifactId>fory-kotlin</artifactId>
   <version>0.10.3</version>
 </dependency>
 ```

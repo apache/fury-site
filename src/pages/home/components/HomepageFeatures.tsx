@@ -44,7 +44,7 @@ const FeatureList: FeatureItem[] = [
         id="feature.easyToUse.description"
         description="Description for the easy to use feature"
       >
-        No need for DSL, you can use Fury effectively with your intuition.
+        No need for DSL, you can use Fory effectively with your intuition.
       </Translate>
     ),
   },
