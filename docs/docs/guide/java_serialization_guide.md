@@ -70,7 +70,7 @@ public class Example {
     SomeClass object = new SomeClass();
     // Note that Fory instances should be reused between
     // multiple serializations of different objects.
-    ThreadSafeFury fory = new ThreadLocalFury(classLoader -> {
+    ThreadSafeFory fory = new ThreadLocalFory(classLoader -> {
       Fory f = Fory.builder().withLanguage(Language.JAVA)
         .withClassLoader(classLoader).build();
       f.register(SomeClass.class);
@@ -93,7 +93,7 @@ import org.apache.fory.config.*;
 
 public class Example {
   // reuse fory.
-  private static final ThreadSafeFury fory = new ThreadLocalFury(classLoader -> {
+  private static final ThreadSafeFory fory = new ThreadLocalFory(classLoader -> {
     Fory f = Fory.builder().withLanguage(Language.JAVA)
       .withClassLoader(classLoader).build();
     f.register(SomeClass.class);
@@ -108,7 +108,7 @@ public class Example {
 }
 ```
 
-## FuryBuilder  options
+## ForyBuilder  options
 
 | Option Name                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Default Value                                                  |
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
@@ -116,7 +116,7 @@ public class Example {
 | `compressInt`                       | Enables or disables int compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `true`                                                         |
 | `compressLong`                      | Enables or disables long compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `true`                                                         |
 | `compressString`                    | Enables or disables string compression for smaller size.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `false`                                                        |
-| `classLoader`                       | The classloader should not be updated; Fory caches class metadata. Use `LoaderBinding` or `ThreadSafeFury` for classloader updates.                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
+| `classLoader`                       | The classloader should not be updated; Fory caches class metadata. Use `LoaderBinding` or `ThreadSafeFory` for classloader updates.                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
 | `compatibleMode`                    | Type forward/backward compatibility config. Also Related to `checkClassVersion` config. `SCHEMA_CONSISTENT`: Class schema must be consistent between serialization peer and deserialization peer. `COMPATIBLE`: Class schema can be different between serialization peer and deserialization peer. They can add/delete fields independently. [See more](#class-inconsistency-and-class-version-check).                                                                                                                            | `CompatibleMode.SCHEMA_CONSISTENT`                             |
 | `checkClassVersion`                 | Determines whether to check the consistency of the class schema. If enabled, Fory checks, writes, and checks consistency using the `classVersionHash`. It will be automatically disabled when `CompatibleMode#COMPATIBLE` is enabled. Disabling is not recommended unless you can ensure the class won't evolve.                                                                                                                                                                                                                  | `false`                                                        |
 | `checkJdkClassSerializable`         | Enables or disables checking of `Serializable` interface for classes under `java.*`. If a class under `java.*` is not `Serializable`, Fory will throw an `UnsupportedOperationException`.                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
@@ -159,7 +159,7 @@ System.out.println(fory.deserialize(bytes));
 Thread-safe fory:
 
 ```java
-ThreadSafeFury fory = Fory.builder()
+ThreadSafeFory fory = Fory.builder()
   .withLanguage(Language.JAVA)
   // enable reference tracking for shared/circular reference.
   // Disable it will have better performance if no duplicate reference.
@@ -174,7 +174,7 @@ ThreadSafeFury fory = Fory.builder()
   // .withCompatibleMode(CompatibleMode.COMPATIBLE)
   // enable async multi-threaded compilation.
   .withAsyncCompilation(true)
-  .buildThreadSafeFury();
+  .buildThreadSafeFory();
 byte[] bytes = fory.serialize(object);
 System.out.println(fory.deserialize(bytes));
 ```
@@ -191,7 +191,7 @@ However, if there is a schema inconsistency, deserialization will fail.
 
 If the schema is expected to change, to make deserialization succeed, i.e. schema forward/backward compatibility.
 Users must configure Fory to use `CompatibleMode.COMPATIBLE`. This can be done using the
-`FuryBuilder#withCompatibleMode(CompatibleMode.COMPATIBLE)` method.
+`ForyBuilder#withCompatibleMode(CompatibleMode.COMPATIBLE)` method.
 In this compatible mode, deserialization can handle schema changes such as missing or extra fields, allowing it to
 succeed even when the serialization and deserialization processes have different class schemas.
 
@@ -216,7 +216,7 @@ section.
 
 ### Smaller size
 
-`FuryBuilder#withIntCompressed`/`FuryBuilder#withLongCompressed` can be used to compress int/long for smaller size.
+`ForyBuilder#withIntCompressed`/`ForyBuilder#withLongCompressed` can be used to compress int/long for smaller size.
 Normally compress int is enough.
 
 Both compression are enabled by default, if the serialized is not important, for example, you use flatbuffers for
@@ -303,13 +303,13 @@ class FooSerializer extends Serializer<Foo> {
 Register serializer:
 
 ```java
-Fory fory = getFury();
+Fory fory = getFory();
 fory.registerSerializer(Foo.class, new FooSerializer(fory));
 ```
 
 ### Security & Class Registration
 
-`FuryBuilder#requireClassRegistration` can be used to disable class registration, this will allow to deserialize objects
+`ForyBuilder#requireClassRegistration` can be used to disable class registration, this will allow to deserialize objects
 unknown types,
 more flexible but **may be insecure if the classes contains malicious code**.
 
@@ -330,7 +330,7 @@ fory.register(SomeClass.class);
 fory.register(SomeClass1.class, 200);
 ```
 
-If you invoke `FuryBuilder#requireClassRegistration(false)` to disable class registration check,
+If you invoke `ForyBuilder#requireClassRegistration(false)` to disable class registration check,
 you can set `org.apache.fory.resolver.ClassChecker` by `ClassResolver#setClassChecker` to control which classes are
 allowed
 for serialization. For example, you can allow classes started with `org.example.*` by:
@@ -343,7 +343,7 @@ fory.getClassResolver().setClassChecker(
 
 ```java
 AllowListChecker checker = new AllowListChecker(AllowListChecker.CheckLevel.STRICT);
-ThreadSafeFury fory = new ThreadLocalFury(classLoader -> {
+ThreadSafeFory fory = new ThreadLocalFory(classLoader -> {
   Fory f = Fory.builder().requireClassRegistration(true).withClassLoader(classLoader).build();
   f.getClassResolver().setClassChecker(checker);
   checker.addListener(f.getClassResolver());
@@ -451,7 +451,7 @@ Object newObj = fory.execute(
 ### Deserialize non-existent classes
 
 Fory support deserializing non-existent classes, this feature can be enabled
-by `FuryBuilder#deserializeNonexistentClass(true)`. When enabled, and metadata sharing enabled, Fory will store
+by `ForyBuilder#deserializeNonexistentClass(true)`. When enabled, and metadata sharing enabled, Fory will store
 the deserialized data of this type in a lazy subclass of Map. By using the lazy map implemented by Fory, the rebalance
 cost of filling map during deserialization can be avoided, which further improves performance. If this data is sent to
 another process and the class exists in this process, the data will be deserialized into the object of this type without
@@ -489,22 +489,22 @@ public class StructMappingExample {
     double f3;
   }
 
-  static ThreadSafeFury fury1 = Fory.builder()
-    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFury();
-  static ThreadSafeFury fury2 = Fory.builder()
-    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFury();
+  static ThreadSafeFory fory1 = Fory.builder()
+    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFory();
+  static ThreadSafeFory fory2 = Fory.builder()
+    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFory();
 
   static {
-    fury1.register(Struct1.class);
-    fury2.register(Struct2.class);
+    fory1.register(Struct1.class);
+    fory2.register(Struct2.class);
   }
 
   public static void main(String[] args) {
     Struct1 struct1 = new Struct1(10, "abc");
-    Struct2 struct2 = (Struct2) fury2.deserialize(fury1.serialize(struct1));
+    Struct2 struct2 = (Struct2) fory2.deserialize(fory1.serialize(struct1));
     Assert.assertEquals(struct2.f1, struct1.f1);
     Assert.assertEquals(struct2.f2, struct1.f2);
-    struct1 = (Struct1) fury1.deserialize(fury2.serialize(struct2));
+    struct1 = (Struct1) fory1.deserialize(fory2.serialize(struct2));
     Assert.assertEquals(struct1.f1, struct2.f1);
     Assert.assertEquals(struct1.f2, struct2.f2);
   }
@@ -553,12 +553,12 @@ Then for deserialization, you need:
 
 ```java
 MemoryBuffer buffer = xxx;
-int furyVersion = buffer.readVarInt32();
-Fory fory = getFury(furyVersion);
+int foryVersion = buffer.readVarInt32();
+Fory fory = getFory(foryVersion);
 fory.deserialize(buffer);
 ```
 
-`getFury` is a method to load corresponding fory, you can shade and relocate different version of fory to different
+`getFory` is a method to load corresponding fory, you can shade and relocate different version of fory to different
 package, and load fory by version.
 
 If you upgrade fory by minor version, or you won't have data serialized by older fory, you can upgrade fory directly,
@@ -572,10 +572,10 @@ If you create fory without setting `CompatibleMode` to `org.apache.fory.config.C
 strange
 serialization error, it may be caused by class inconsistency between serialization peer and deserialization peer.
 
-In such cases, you can invoke `FuryBuilder#withClassVersionCheck` to create fory to validate it, if deserialization
+In such cases, you can invoke `ForyBuilder#withClassVersionCheck` to create fory to validate it, if deserialization
 throws `org.apache.fory.exception.ClassNotCompatibleException`, it shows class are inconsistent, and you should create
 fory with
-`FuryBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)`.
+`ForyBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)`.
 
 `CompatibleMode.COMPATIBLE` has more performance and space cost, do not set it by default if your classes are always
 consistent between serialization and deserialization.
@@ -603,8 +603,8 @@ public class DeserializeIntoType {
     double f3;
   }
 
-  static ThreadSafeFury fory = Fory.builder()
-    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFury();
+  static ThreadSafeFory fory = Fory.builder()
+    .withCompatibleMode(CompatibleMode.COMPATIBLE).buildThreadSafeFory();
 
   public static void main(String[] args) {
     Struct1 struct1 = new Struct1(10, "abc");

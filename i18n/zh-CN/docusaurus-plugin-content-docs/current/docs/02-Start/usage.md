@@ -58,15 +58,15 @@ object ScalaExample {
 ## Kotlin序列化
 ```kotlin
 import org.apache.fory.Fory
-import org.apache.fory.ThreadSafeFury
+import org.apache.fory.ThreadSafeFory
 import org.apache.fory.serializer.kotlin.KotlinSerializers
 
 data class Person(val name: String, val id: Long, val github: String)
 data class Point(val x : Int, val y : Int, val z : Int)
 
 fun main(args: Array<String>) {
-    // 注意: 下面的Fury初始化代码应该只执行一次，而不是在每次序列化前都运行
-    val fory: ThreadSafeFury = Fory.builder().requireClassRegistration(true).buildThreadSafeFury()
+    // 注意: 下面的Fory初始化代码应该只执行一次，而不是在每次序列化前都运行
+    val fory: ThreadSafeFory = Fory.builder().requireClassRegistration(true).buildThreadSafeFory()
     KotlinSerializers.registerSerializers(fory)
     fory.register(Person::class.java)
     fory.register(Point::class.java)
@@ -119,14 +119,14 @@ public class ReferenceExample {
 
 ```python
 from typing import Dict
-import pyfury
+import pyfory
 
 class SomeClass:
     f1: "SomeClass"
     f2: Dict[str, str]
     f3: Dict[str, str]
 
-fory = pyfury.Fory(ref_tracking=True)
+fory = pyfory.Fory(ref_tracking=True)
 fory.register_class(SomeClass, "example.SomeClass")
 obj = SomeClass()
 obj.f2 = {"k1": "v1", "k2": "v2"}
@@ -143,7 +143,7 @@ package main
 
 import (
  "fmt"
- furygo "github.com/apache/fory/go/fory"
+ forygo "github.com/apache/fory/go/fory"
 )
 
 func main() {
@@ -152,7 +152,7 @@ func main() {
   F2 map[string]string
   F3 map[string]string
  }
- fory := furygo.NewFury(true)
+ fory := forygo.NewFory(true)
  if err := fory.RegisterTagType("example.SomeClass", SomeClass{}); err != nil {
   panic(err)
  }
@@ -174,14 +174,14 @@ func main() {
 ### JavaScript
 
 ```typescript
-import Fory, { Type } from '@furyjs/fory';
+import Fory, { Type } from '@foryjs/fory';
 
 /**
- * @furyjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
+ * @foryjs/hps use v8's fast-calls-api that can be called directly by jit, ensure that the version of Node is 20 or above.
  * Experimental feature, installation success cannot be guaranteed at this moment
  * If you are unable to install the module, replace it with `const hps = null;`
  **/
-import hps from '@furyjs/hps';
+import hps from '@foryjs/hps';
 
 // Now we describe data structures using JSON, but in the future, we will use more ways.
 const description = Type.object('example.foo', {

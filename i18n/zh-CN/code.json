@@ -303,7 +303,7 @@
     "description": "The title for the easy to use feature"
   },
   "feature.easyToUse.description": {
-    "message": "无需编写IDL定义Schema，您可以使用Fury自动序列化自定义类型对象",
+    "message": "无需编写IDL定义Schema，您可以使用Fory自动序列化自定义类型对象",
     "description": "Description for the easy to use feature"
   },
   "feature.multiLanguages.title": {

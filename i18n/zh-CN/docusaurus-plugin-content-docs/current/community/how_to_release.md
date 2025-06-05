@@ -280,7 +280,7 @@ The release candidates:
 https://dist.apache.org/repos/dist/dev/incubator/fory/0.5.0-rc3/
 
 The maven staging for this release:
-https://repository.apache.org/content/repositories/orgapachefury-1003
+https://repository.apache.org/content/repositories/orgapachefory-1003
 
 Git tag for the release:
 https://github.com/apache/fory/releases/tag/v0.5.0-rc3
@@ -394,7 +394,7 @@ Git commit for the release:
 https://github.com/apache/fory/commit/$xxx
 
 Maven staging repo:
-https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/
+https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}/
 
 How to Build and Test, please refer to:
 https://github.com/apache/fory/blob/main/docs/guide/DEVELOPMENT.md
@@ -481,7 +481,7 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-
 
 - maven_artifact_number：Maven 暂存 artifacts 的数量。如 1001。
 - 打开https://repository.apache.org/#stagingRepositories.
-- 找到 artifacts `orgapachefury-${maven_artifact_number}`，点击“发布”。
+- 找到 artifacts `orgapachefory-${maven_artifact_number}`，点击“发布”。
 
 ### 发送公告
 

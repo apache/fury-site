@@ -84,14 +84,14 @@ Depending on the object types you serialize, you may need to register some scala
 fory.register(Class.forName("scala.Enumeration.Val"))
 ```
 
-If you want to avoid such registration, you can disable class registration by `FuryBuilder#requireClassRegistration(false)`.
+If you want to avoid such registration, you can disable class registration by `ForyBuilder#requireClassRegistration(false)`.
 Note that this option allow to deserialize objects unknown types, more flexible but may be insecure if the classes contains malicious code.
 
-And circular references are common in scala, `Reference tracking` should be enabled by `FuryBuilder#withRefTracking(true)`. If you don't enable reference tracking, [StackOverflowError](https://github.com/apache/fory/issues/1032) may happen for some scala versions when serializing scala Enumeration.
+And circular references are common in scala, `Reference tracking` should be enabled by `ForyBuilder#withRefTracking(true)`. If you don't enable reference tracking, [StackOverflowError](https://github.com/apache/fory/issues/1032) may happen for some scala versions when serializing scala Enumeration.
 
 Note that fory instance should be shared between multiple serialization, the creation of fory instance is not cheap.
 
-If you use shared fory instance across multiple threads, you should create `ThreadSafeFury` instead by `FuryBuilder#buildThreadSafeFury()` instead.
+If you use shared fory instance across multiple threads, you should create `ThreadSafeFory` instead by `ForyBuilder#buildThreadSafeFory()` instead.
 
 ## Serialize case object
 

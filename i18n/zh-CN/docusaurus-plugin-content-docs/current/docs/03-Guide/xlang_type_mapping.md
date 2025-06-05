@@ -6,7 +6,7 @@ id: xlang_type_mapping
 
 注意：
 
-- 有关类型定义，请参阅 [Spec 中的类型系统](https://fory.apache.org/docs/specification/fury_xlang_serialization_spec#type-systems)
+- 有关类型定义，请参阅 [Spec 中的类型系统](https://fory.apache.org/docs/specification/fory_xlang_serialization_spec#type-systems)
 - `int16_t[n]/vector<T>` 表示 `int16_t[n]/vector<int16_t>`.
 - 跨语言序列化并不稳定，请勿在生产环境中使用。
 
@@ -15,16 +15,16 @@ id: xlang_type_mapping
 | Fory 类型          | Fory 类型 ID | Java            | Python               | Javascript      | C++                            | Golang           | Rust             |
 |--------------------|--------------|-----------------|----------------------|-----------------|--------------------------------|------------------|------------------|
 | bool               | 1            | bool/Boolean    | bool                 | Boolean         | bool                           | bool             | bool             |
-| int8               | 2            | byte/Byte       | int/pyfury.Int8      | Type.int8()     | int8_t                         | int8             | i8               |
-| int16              | 3            | short/Short     | int/pyfury.Int16     | Type.int16()    | int16_t                        | int16            | i6               |
-| int32              | 4            | int/Integer     | int/pyfury.Int32     | Type.int32()    | int32_t                        | int32            | i32              |
-| var_int32          | 5            | int/Integer     | int/pyfury.VarInt32  | Type.varint32() | fory::varint32_t               | fory.varint32    | fory::varint32   |
-| int64              | 6            | long/Long       | int/pyfury.Int64     | Type.int64()    | int64_t                        | int64            | i64              |
-| var_int64          | 7            | long/Long       | int/pyfury.VarInt64  | Type.varint64() | fory::varint64_t               | fory.varint64    | fory::varint64   |
-| sli_int64          | 8            | long/Long       | int/pyfury.SliInt64  | Type.sliint64() | fory::sliint64_t               | fory.sliint64    | fory::sliint64   |
-| float16            | 9            | float/Float     | float/pyfury.Float16 | Type.float16()  | fory::float16_t                | fory.float16     | fory::f16        |
-| float32            | 10           | float/Float     | float/pyfury.Float32 | Type.float32()  | float                          | float32          | f32              |
-| float64            | 11           | double/Double   | float/pyfury.Float64 | Type.float64()  | double                         | float64          | f64              |
+| int8               | 2            | byte/Byte       | int/pyfory.Int8      | Type.int8()     | int8_t                         | int8             | i8               |
+| int16              | 3            | short/Short     | int/pyfory.Int16     | Type.int16()    | int16_t                        | int16            | i6               |
+| int32              | 4            | int/Integer     | int/pyfory.Int32     | Type.int32()    | int32_t                        | int32            | i32              |
+| var_int32          | 5            | int/Integer     | int/pyfory.VarInt32  | Type.varint32() | fory::varint32_t               | fory.varint32    | fory::varint32   |
+| int64              | 6            | long/Long       | int/pyfory.Int64     | Type.int64()    | int64_t                        | int64            | i64              |
+| var_int64          | 7            | long/Long       | int/pyfory.VarInt64  | Type.varint64() | fory::varint64_t               | fory.varint64    | fory::varint64   |
+| sli_int64          | 8            | long/Long       | int/pyfory.SliInt64  | Type.sliint64() | fory::sliint64_t               | fory.sliint64    | fory::sliint64   |
+| float16            | 9            | float/Float     | float/pyfory.Float16 | Type.float16()  | fory::float16_t                | fory.float16     | fory::f16        |
+| float32            | 10           | float/Float     | float/pyfory.Float32 | Type.float32()  | float                          | float32          | f32              |
+| float64            | 11           | double/Double   | float/pyfory.Float64 | Type.float64()  | double                         | float64          | f64              |
 | string             | 12           | String          | str                  | String          | string                         | string           | String/str       |
 | enum               | 13           | Enum subclasses | enum subclasses      | /               | enum                           | /                | enum             |
 | list               | 14           | List/Collection | list/tuple           | array           | vector                         | slice            | Vec              |

@@ -12,7 +12,7 @@ id: java_object_graph_guide
 
 注意：Fory 对象创建的代价很高， 因此 **Fory 对象应该尽可能被复用**，而不是每次都重新创建。
 
-您应该为 Fory 创建一个全局的静态变量，或者有限的的 Fory 实例对象。Fury本身占用一定内存，请不要创建上万个Fury对象
+您应该为 Fory 创建一个全局的静态变量，或者有限的的 Fory 实例对象。Fory本身占用一定内存，请不要创建上万个Fory对象
 
 使用单线程版本 Fory:
 
@@ -54,7 +54,7 @@ public class Example {
     SomeClass object = new SomeClass();
     // Note that Fory instances should be reused between
     // multiple serializations of different objects.
-    ThreadSafeFury fory = new ThreadLocalFury(classLoader -> {
+    ThreadSafeFory fory = new ThreadLocalFory(classLoader -> {
       Fory f = Fory.builder().withLanguage(Language.JAVA)
         .withClassLoader(classLoader).build();
       f.register(SomeClass.class);
@@ -77,7 +77,7 @@ import org.apache.fory.config.*;
 
 public class Example {
   // reuse fory.
-  private static final ThreadSafeFury fory = new ThreadLocalFury(classLoader -> {
+  private static final ThreadSafeFory fory = new ThreadLocalFory(classLoader -> {
     Fory f = Fory.builder().withLanguage(Language.JAVA)
       .withClassLoader(classLoader).build();
     f.register(SomeClass.class);
@@ -92,7 +92,7 @@ public class Example {
 }
 ```
 
-## FuryBuilder 参数选项
+## ForyBuilder 参数选项
 
 | 参数选项名                         | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | 默认值                                                  |
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
@@ -100,7 +100,7 @@ public class Example {
 | `compressInt`                       | 启用或禁用 int 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`                                                         |
 | `compressLong`                      | 启用或禁用 long 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `true`                                                         |
 | `compressString`                    | 启用或禁用 String 压缩，减小数据体积。                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
-| `classLoader`                       | 关联到当前 Fory 的类加载器，每个 Fory 会关联一个不可变的类加载器，用于缓存类元数据。如果需要切换类加载器，请使用 `LoaderBinding` 或 `ThreadSafeFury` 进行更新。                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
+| `classLoader`                       | 关联到当前 Fory 的类加载器，每个 Fory 会关联一个不可变的类加载器，用于缓存类元数据。如果需要切换类加载器，请使用 `LoaderBinding` 或 `ThreadSafeFory` 进行更新。                                                                                                                                                                                                                                                                                                                                                                                               | `Thread.currentThread().getContextClassLoader()`               |
 | `compatibleMode`                    | 类型的向前/向后兼容性配置。也与 `checkClassVersion` 配置相关。`schema_consistent`： 类的Schema信息必须在序列化对等节点和反序列化对等节点之间保持一致。`COMPATIBLE`： 序列化对等节点和反序列化对等节点之间的类模式可以不同。它们可以独立添加/删除字段。                                                                                                                                                                                    | `CompatibleMode.SCHEMA_CONSISTENT`                             |
 | `checkClassVersion`                 | 决定是否检查类模式的一致性。如果启用，Fory 将写入 `classVersionHash` 和基于其检查类型一致性。当启用 `CompatibleMode#COMPATIBLE` 时，它将自动禁用。除非能确保类不会演化，否则不建议禁用。                                                                                                                                                                                                                  | `false`                                                        |
 | `checkJdkClassSerializable`         | 启用或禁用 `java.*` 下类的 `Serializable` 接口检查。如果 `java.*` 下的类不是 `Serializable`，Fory 将抛出 `UnsupportedOperationException`。                                                                                                                                                                                                                                                                                                                                         | `true`                                                         |
@@ -142,7 +142,7 @@ Fory fory=Fory.builder()
 多线程 Fory 创建:
 
 ```java
-ThreadSafeFury fory=Fory.builder()
+ThreadSafeFory fory=Fory.builder()
   .withLanguage(Language.JAVA)
   // enable reference tracking for shared/circular reference.
   // Disable it will have better performance if no duplicate reference.
@@ -157,14 +157,14 @@ ThreadSafeFury fory=Fory.builder()
   // .withCompatibleMode(CompatibleMode.COMPATIBLE)
   // enable async multi-threaded compilation.
   .withAsyncCompilation(true)
-  .buildThreadSafeFury();
+  .buildThreadSafeFory();
   byte[]bytes=fory.serialize(object);
   System.out.println(fory.deserialize(bytes));
 ```
 
-### 配置Fury生成更小的序列化体积：
+### 配置Fory生成更小的序列化体积：
 
-`FuryBuilder#withIntCompressed`/`FuryBuilder#withLongCompressed` 可用于压缩 `int/long`，使其体积更小。通常压缩 int 类型就足够了。
+`ForyBuilder#withIntCompressed`/`ForyBuilder#withLongCompressed` 可用于压缩 `int/long`，使其体积更小。通常压缩 int 类型就足够了。
 
 这两个压缩属性默认启用。如果序列化大小不重要，比如你之前使用flatbuffers进行序列化，flatbuffers不会压缩任何东西，那么这种情况下建议关闭压缩。如果数据都是数字，压缩可能会带来 80%以上的性能损耗。
 
@@ -242,13 +242,13 @@ class FooSerializer extends Serializer<Foo> {
 注册序列化器:
 
 ```java
-Fory fory=getFury();
+Fory fory=getFory();
   fory.registerSerializer(Foo.class,new FooSerializer(fory));
 ```
 
 ### 安全与类注册
 
-可以使用 `FuryBuilder#requireClassRegistration` 来禁用类注册，这将允许反序列化未知类型的对象，使用更灵活。**但如果类中包含恶意代码，就会出现安全漏洞**。
+可以使用 `ForyBuilder#requireClassRegistration` 来禁用类注册，这将允许反序列化未知类型的对象，使用更灵活。**但如果类中包含恶意代码，就会出现安全漏洞**。
 
 **除非能确保运行环境和外部交互环境安全，否则请勿禁用类注册检查**。
 
@@ -267,7 +267,7 @@ Fory fory=xxx;
   fory.register(SomeClass1.class,200);
 ```
 
-如果调用 `FuryBuilder#requireClassRegistration(false)` 来禁用类注册检查、
+如果调用 `ForyBuilder#requireClassRegistration(false)` 来禁用类注册检查、
 可以通过 `ClassResolver#setClassChecker` 设置 `org.apache.fory.resolver.ClassChecker` 来控制哪些类是允许序列化。例如，可以通过以下方式允许以 `org.example.*` 开头的类：
 
 ```java
@@ -277,7 +277,7 @@ Fory fory=xxx;
 
 ```java
 AllowListChecker checker=new AllowListChecker(AllowListChecker.CheckLevel.STRICT);
-  ThreadSafeFury fory=new ThreadLocalFury(classLoader->{
+  ThreadSafeFory fory=new ThreadLocalFory(classLoader->{
   Fory f=Fory.builder().requireClassRegistration(true).withClassLoader(classLoader).build();
   f.getClassResolver().setClassChecker(checker);
   checker.addListener(f.getClassResolver());
@@ -360,7 +360,7 @@ MetaContext context=xxx;
 
 ### 反序列化不存在的类
 
-Apache Fory 支持反序列化不存在的类，通过`FuryBuilder#deserializeNonexistentClass(true)` 选项开启。当此选项开启的时候，同时也会开启元数据共享。Apache Fory 会将该类型的反序列化数据存储在 lazy Map 子类中。通过使用 Fory 实现的 lazy Map，可以避免在反序列化过程中填充 map 时 map 内部节点的rebalance来下，从而进一步提高性能。如果这些数据被发送到另一个进程，而该进程中存在该类，那么数据将被反序列化为该类型的对象，而不会丢失任何信息。
+Apache Fory 支持反序列化不存在的类，通过`ForyBuilder#deserializeNonexistentClass(true)` 选项开启。当此选项开启的时候，同时也会开启元数据共享。Apache Fory 会将该类型的反序列化数据存储在 lazy Map 子类中。通过使用 Fory 实现的 lazy Map，可以避免在反序列化过程中填充 map 时 map 内部节点的rebalance来下，从而进一步提高性能。如果这些数据被发送到另一个进程，而该进程中存在该类，那么数据将被反序列化为该类型的对象，而不会丢失任何信息。
 
 如果未启用元数据共享，新类数据将被跳过，并返回一个 `NonexistentSkipClass` 的stub 对象。
 
@@ -389,8 +389,8 @@ if(JavaSerializer.serializedByJDK(bytes)){
 
 如果您在创建 fory 时未将 `CompatibleMode` 设置为 `org.apache.fory.config.CompatibleMode.COMPATIBLE` 而出现奇怪的序列化错误，可能是由于序列化对和反序列化对之间的类不一致造成的。
 
-在这种情况下，您可以调用 `FuryBuilder#withClassVersionCheck` 来创建 Fory 以验证它，如果反序列化时抛出`org.apache.fory.exception.ClassNotCompatibleException`，则表明类是不一致的，您应该通过
-`FuryBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)` 创建 Fory 对象。
+在这种情况下，您可以调用 `ForyBuilder#withClassVersionCheck` 来创建 Fory 以验证它，如果反序列化时抛出`org.apache.fory.exception.ClassNotCompatibleException`，则表明类是不一致的，您应该通过
+`ForyBuilder#withCompaibleMode(CompatibleMode.COMPATIBLE)` 创建 Fory 对象。
 
 `CompatibleMode.COMPATIBLE` 会带来更多的性能和空间代价，如果您的类在序列化和反序列化之间保持一致，请不要设置此选项。
 

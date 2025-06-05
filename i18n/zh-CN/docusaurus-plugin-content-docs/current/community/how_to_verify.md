@@ -112,7 +112,7 @@ apache-fory-incubating-0.5.0-src.tar.gz: OK
 
 ## 检查 fory-java 的 Maven artifacts
 
-下载 Apache Fory：https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
+下载 Apache Fory：https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}/.
 
 您可以检查以下内容：
 
