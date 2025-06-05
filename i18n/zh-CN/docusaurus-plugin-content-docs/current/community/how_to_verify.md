@@ -1,18 +1,18 @@
 ---
-title: 如何验证 Apache Fury
+title: 如何验证 Apache Fory
 sidebar_position: 0
 id: how_to_verify
 ---
 
 详细的 Check list，请参阅[Apache 检查清单](https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklist)
 
-## 下载 Apache Fury
+## 下载 Apache Fory
 
 ```bash
 # If there is svn locally, you can clone to the local
-svn co https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/
+svn co https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/
 # You can download the material file directly
-wget https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/xxx.xxx
+wget https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/xxx.xxx
 ```
 
 ## 验证 checksums 和 signatures
@@ -27,10 +27,10 @@ yum install gnupg
 brew install gnupg
 ```
 
-之后，导入 Apache Fury release manager 的公钥：
+之后，导入 Apache Fory release manager 的公钥：
 
 ```bash
-curl https://downloads.apache.org/incubator/fury/KEYS > KEYS # Download KEYS
+curl https://downloads.apache.org/incubator/fory/KEYS > KEYS # Download KEYS
 gpg --import KEYS # Import KEYS to local
 # Then, trust the public key:
 gpg --edit-key <KEY-used-in-this-version> # Edit the key(mentioned in vote email)
@@ -81,7 +81,7 @@ for i in *.tar.gz; do echo $i; gpg --verify $i.asc $i; done
 如果出现如下内容，则表示签名正确：
 
 ```bash
-apache-fury-incubating-0.5.0-src.tar.gz
+apache-fory-incubating-0.5.0-src.tar.gz
 gpg: Signature made Wed 17 Apr 2024 11:49:45 PM CST using RSA key ID 5E580BA4
 gpg: checking the trustdb
 gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
@@ -98,21 +98,21 @@ for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
 它应该输出如下内容：
 
 ```bash
-apache-fury-incubating-0.5.0-src.tar.gz
-apache-fury-incubating-0.5.0-src.tar.gz: OK
+apache-fory-incubating-0.5.0-src.tar.gz
+apache-fory-incubating-0.5.0-src.tar.gz: OK
 ```
 
 ## 检查源码包中的文件
 
-解压缩 `apache-fury-${release_version}-${rc_version}-src.tar.gz` 并检查以下内容：
+解压缩 `apache-fory-${release_version}-${rc_version}-src.tar.gz` 并检查以下内容：
 
 - 此存储库 LICENSE 和 NOTICE 文件是正确的；
 - 如有必要，所有文件都有 ASF 许可证标头；
 - 项目构建通过。
 
-## 检查 fury-java 的 Maven artifacts
+## 检查 fory-java 的 Maven artifacts
 
-下载 Apache Fury：https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
+下载 Apache Fory：https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
 
 您可以检查以下内容：
 

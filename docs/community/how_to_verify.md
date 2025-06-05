@@ -11,9 +11,9 @@ For detailed check list, please refer to the [official check list](https://cwiki
 
 ```bash
 #If there is svn locally, you can clone to the local
-svn co https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/
+svn co https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/
 # You can download the material file directly
-wget https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/xxx.xxx
+wget https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/xxx.xxx
 ```
 
 ## Verify checksums and signatures
@@ -28,10 +28,10 @@ yum install gnupg
 brew install gnupg
 ```
 
-Then import the Fury release manager's public key:
+Then import the Fory release manager's public key:
 
 ```bash
-curl https://downloads.apache.org/incubator/fury/KEYS > KEYS # Download KEYS
+curl https://downloads.apache.org/incubator/fory/KEYS > KEYS # Download KEYS
 gpg --import KEYS # Import KEYS to local
 # Then, trust the public key:
 gpg --edit-key <KEY-used-in-this-version> # Edit the key(mentioned in vote email)
@@ -82,7 +82,7 @@ for i in *.tar.gz; do echo $i; gpg --verify $i.asc $i; done
 If something like the following appears, it means the signature is correct:
 
 ```bash
-apache-fury-incubating-0.5.0-src.tar.gz
+apache-fory-incubating-0.5.0-src.tar.gz
 gpg: Signature made Wed 17 Apr 2024 11:49:45 PM CST using RSA key ID 5E580BA4
 gpg: checking the trustdb
 gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
@@ -99,19 +99,19 @@ for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
 It should output something like:
 
 ```bash
-apache-fury-incubating-0.5.0-src.tar.gz
-apache-fury-incubating-0.5.0-src.tar.gz: OK
+apache-fory-incubating-0.5.0-src.tar.gz
+apache-fory-incubating-0.5.0-src.tar.gz: OK
 ```
 
 ## Check the file content of the source package
 
-Unzip `apache-fury-${release_version}-${rc_version}-src.tar.gz` and check the follows:
+Unzip `apache-fory-${release_version}-${rc_version}-src.tar.gz` and check the follows:
 
 - LICENSE and NOTICE files are correct for the repository.
 - All files have ASF license headers if necessary.
 - Building is OK.
 
-## Check the Maven artifacts of fury-java
+## Check the Maven artifacts of fory-java
 
 Download the artifacts from https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
 

@@ -1,11 +1,11 @@
 ---
 id: download
-title: Apache Fury(incubating) Download
+title: Apache Fory(incubating) Download
 ---
 
-The official Apache Fury releases are provided as source artifacts.
+The official Apache Fory releases are provided as source artifacts.
 
-For binary install, please see Fury [install](/docs/docs/start/install/) document.
+For binary install, please see Fory [install](/docs/docs/start/install/) document.
 
 ## The latest release
 
@@ -13,17 +13,17 @@ The latest source release is 0.10.3:
 
 | Version | Date       | Source | Release Notes |
 |---------|------------|--------|---------------|
-| 0.10.3   | 2025-05-27 | [source](https://www.apache.org/dyn/closer.lua/incubator/fury/0.10.3/apache-fury-0.10.3-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fury/0.10.3/apache-fury-0.10.3-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fury/0.10.3/apache-fury-0.10.3-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fury/releases/tag/v0.10.3) |
+| 0.10.3   | 2025-05-27 | [source](https://www.apache.org/dyn/closer.lua/incubator/fory/0.10.3/apache-fory-0.10.3-incubating-src.tar.gz?action=download) [asc](https://downloads.apache.org/incubator/fory/0.10.3/apache-fory-0.10.3-incubating-src.tar.gz.asc) [sha512](https://downloads.apache.org/incubator/fory/0.10.3/apache-fory-0.10.3-incubating-src.tar.gz.sha512) | [release notes](https://github.com/apache/fory/releases/tag/v0.10.3) |
 
 ## All archived releases
 
-For older releases, please check the [archive](https://archive.apache.org/dist/incubator/fury).
+For older releases, please check the [archive](https://archive.apache.org/dist/incubator/fory).
 
 ## Verify a release
 
 It's highly recommended to verify the files that you download.
 
-Fury provides SHA digest and PGP signature files for all the files that we host on the download site.
+Fory provides SHA digest and PGP signature files for all the files that we host on the download site.
 These files are named after the files they relate to but have `.sha512/.asc` extensions.
 
 ### Verifying Checksums
@@ -31,19 +31,19 @@ These files are named after the files they relate to but have `.sha512/.asc` ext
 To verify the SHA digests, you need the `.tgz` and its associated `.tgz.sha512` file. An example command:
 
 ```bash
-sha512sum --check apache-fury-incubating-0.10.3-src.tar.gz
+sha512sum --check apache-fory-incubating-0.10.3-src.tar.gz
 ```
 
 It should output something like:
 
 ```bash
-apache-fury-incubating-0.10.3-src.tar.gz: OK
+apache-fory-incubating-0.10.3-src.tar.gz: OK
 ```
 
 ### Verifying Signatures
 
 To verify the PGP signatures, you will need to download the
-[release KEYS](https://downloads.apache.org/incubator/fury/KEYS) first.
+[release KEYS](https://downloads.apache.org/incubator/fory/KEYS) first.
 
 Then import the downloaded `KEYS`:
 
@@ -54,7 +54,7 @@ gpg --import KEYS
 Then you can verify signature:
 
 ```bash
-gpg --verify apache-fury-incubating-0.10.3-src.tar.gz.asc apache-fury-incubating-0.10.3-src.tar.gz
+gpg --verify apache-fory-incubating-0.10.3-src.tar.gz.asc apache-fory-incubating-0.10.3-src.tar.gz
 ```
 
 If something like the following appears, it means the signature is correct:

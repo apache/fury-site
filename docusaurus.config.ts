@@ -91,7 +91,7 @@ const config: Config = {
     navbar: {
       title: '',
       logo: {
-        alt: 'Fury Logo',
+        alt: 'Fory Logo',
         src: 'img/navbar-logo.svg',
       },
       items: [
@@ -194,11 +194,11 @@ const config: Config = {
           items: [
             {
               label: 'Mailing list',
-              href: 'https://lists.apache.org/list.html?dev@fury.apache.org',
+              href: 'https://lists.apache.org/list.html?dev@fory.apache.org',
             },
             {
               label: 'Slack',
-              href: 'https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A',
+              href: 'https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A',
             },
             {
               label: 'Twitter',

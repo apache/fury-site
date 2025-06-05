@@ -4,7 +4,7 @@ sidebar_position: 0
 id: how_to_release
 ---
 
-本文主要介绍如何发布新版本的 Apache Fury。
+本文主要介绍如何发布新版本的 Apache Fory。
 
 ## 介绍
 
@@ -139,14 +139,14 @@ gpg --keyserver keys.openpgp.org --send-key <key-id> # e.g., 1E2CDAE4C08AD7D694D
 
 #### 将 GPG 公钥添加到项目 KEYS 文件中
 
-发布分支的 svn 仓库是：https://dist.apache.org/repos/dist/release/incubator/fury
+发布分支的 svn 仓库是：https://dist.apache.org/repos/dist/release/incubator/fory
 
 请在发布分支的 KEYS 中添加公钥：
 
 ```bash
-svn co https://dist.apache.org/repos/dist/release/incubator/fury fury-dist
+svn co https://dist.apache.org/repos/dist/release/incubator/fory fory-dist
 # As this step will copy all the versions, it will take some time. If the network is broken, please use svn cleanup to delete the lock before re-execute it.
-cd fury-dist
+cd fory-dist
 (gpg --list-sigs YOUR_NAME@apache.org && gpg --export --armor YOUR_NAME@apache.org) >> KEYS # Append your key to the KEYS file
 svn add .   # It is not needed if the KEYS document exists before.
 svn ci -m "add gpg key for YOUR_NAME" # Later on, if you are asked to enter a username and password, just use your apache username and password.
@@ -171,24 +171,24 @@ svn ci -m "add gpg key for YOUR_NAME" # Later on, if you are asked to enter a us
 
 ## 开始有关发布的讨论
 
-通过发送电子邮件至以下地址发起有关下一个版本的讨论：dev@fury.apache.org：
+通过发送电子邮件至以下地址发起有关下一个版本的讨论：dev@fory.apache.org：
 
 标题：
 
 ```
-[DISCUSS] Release Apache Fury(incubating) ${release_version}
+[DISCUSS] Release Apache Fory(incubating) ${release_version}
 ```
 
 内容：
 
 ```
-Hello, Apache Fury(incubating) Community,
+Hello, Apache Fory(incubating) Community,
 
-This is a call for a discussion to release Apache Fury(incubating) version ${release_version}.
+This is a call for a discussion to release Apache Fory(incubating) version ${release_version}.
 
 The change lists about this release:
 
-https://github.com/apache/fury/compare/v0.4.1...v0.5.0
+https://github.com/apache/fory/compare/v0.4.1...v0.5.0
 
 Please leave your comments here about this release plan. We will bump the version in repo and start the release process after the discussion.
 
@@ -205,24 +205,24 @@ ${name}
 
 - 创建一个名为 `releases-0.5.0`
 - 通过执行命令将版本 `$version` 升级到 `python ci/release.py bump_version -l all -version $version`
-- 执行 git commit 并将分支推送到 `git@github.com:apache/fury.git`
-- 通过 `git tag v0.5.0-rc1` 创建一个新标签，然后将其推送到 `git@github.com:apache/fury.git`
+- 执行 git commit 并将分支推送到 `git@github.com:apache/fory.git`
+- 通过 `git tag v0.5.0-rc1` 创建一个新标签，然后将其推送到 `git@github.com:apache/fory.git`
 
 ### 构建 artifacts 并上传到 SVN dist/dev 仓库
 
 首先，您需要通过 `python ci/release.py build -v $version` 构建预发布 artifacts。
 
-然后您需要把它上传到 svn dist repo。dev 分支的 dist 仓库地址是：https://dist.apache.org/repos/dist/dev/incubator/fury
+然后您需要把它上传到 svn dist repo。dev 分支的 dist 仓库地址是：https://dist.apache.org/repos/dist/dev/incubator/fory
 
 ```bash
 # As this step will copy all the versions, it will take some time. If the network is broken, please use svn cleanup to delete the lock before re-execute it.
-svn co https://dist.apache.org/repos/dist/dev/incubator/fury fury-dist-dev
+svn co https://dist.apache.org/repos/dist/dev/incubator/fory fory-dist-dev
 ```
 
 然后，上传项目：
 
 ```bash
-cd fury-dist-dev
+cd fory-dist-dev
 # create a directory named by version
 mkdir ${release_version}-${rc_version}
 # copy source code and signature package to the versioned directory
@@ -234,10 +234,10 @@ svn add ${release_version}-${rc_version}
 # check svn status
 svn status
 # commit to SVN remote server
-svn commit -m "Prepare for fury ${release_version}-${rc_version}"
+svn commit -m "Prepare for fory ${release_version}-${rc_version}"
 ```
 
-访问 https://dist.apache.org/repos/dist/dev/incubator/fury/ 以检查 artifacts 是否正确上传。
+访问 https://dist.apache.org/repos/dist/dev/incubator/fory/ 以检查 artifacts 是否正确上传。
 
 ### 如果出现问题该怎么办
 
@@ -245,52 +245,52 @@ svn commit -m "Prepare for fury ${release_version}-${rc_version}"
 
 ## 投票
 
-作为一个孵化项目，新版本发布需要 Apache Fury 社区和孵化器社区的投票。
+作为一个孵化项目，新版本发布需要 Apache Fory 社区和孵化器社区的投票。
 
-- release_version：Fury 的版本，如 0.5.0。
+- release_version：Fory 的版本，如 0.5.0。
 - release_candidate_version：投票的版本，如 0.5.0-rc1。
-- maven_artifact_number：Maven 暂存 artifacts 的数量。如 1001. 具体来说，可以通过搜索 “fury” 来找到 maven_artifact_number https://repository.apache.org/#stagingRepositories.
+- maven_artifact_number：Maven 暂存 artifacts 的数量。如 1001. 具体来说，可以通过搜索 “fory” 来找到 maven_artifact_number https://repository.apache.org/#stagingRepositories.
 
-### Fury 社区投票
+### Fory 社区投票
 
-发送电子邮件至 Fury Community：dev@fury.apache.org：
+发送电子邮件至 Fory Community：dev@fory.apache.org：
 
 标题：
 
 ```
-[VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
+[VOTE] Release Apache Fory(incubating) v${release_version}-${rc_version}
 ```
 
 内容：
 
 ```
-Hello, Apache Fury(incubating) Community:
+Hello, Apache Fory(incubating) Community:
 
-This is a call for vote to release Apache Fury(Incubating)
+This is a call for vote to release Apache Fory(Incubating)
 version release-0.5.0-rc3.
 
-Apache Fury(incubating) - A blazingly fast multi-language serialization
+Apache Fory(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
 The change lists about this release:
 
-https://github.com/apache/fury/compare/v0.4.1...v0.5.0-rc3
+https://github.com/apache/fory/compare/v0.4.1...v0.5.0-rc3
 
 The release candidates:
-https://dist.apache.org/repos/dist/dev/incubator/fury/0.5.0-rc3/
+https://dist.apache.org/repos/dist/dev/incubator/fory/0.5.0-rc3/
 
 The maven staging for this release:
 https://repository.apache.org/content/repositories/orgapachefury-1003
 
 Git tag for the release:
-https://github.com/apache/fury/releases/tag/v0.5.0-rc3
+https://github.com/apache/fory/releases/tag/v0.5.0-rc3
 
 Git commit for the release:
-https://github.com/apache/fury/commit/fae06330edd049bb960536e978a45b97bca66faf
+https://github.com/apache/fory/commit/fae06330edd049bb960536e978a45b97bca66faf
 
 The artifacts signed with PGP key [5E580BA4], corresponding to
 [chaokunyang@apache.org], that can be found in keys file:
-https://downloads.apache.org/incubator/fury/KEYS
+https://downloads.apache.org/incubator/fory/KEYS
 
 The vote will be open for at least 72 hours until the necessary number of votes are reached.
 
@@ -300,11 +300,11 @@ Please vote accordingly:
 [ ] +0 no opinion
 [ ] -1 disapprove with the reason
 
-To learn more about Fury, please see https://fury.apache.org/
+To learn more about Fory, please see https://fory.apache.org/
 
 *Valid check is a requirement for a vote. *Checklist for reference:
 
-[ ] Download Fury is valid.
+[ ] Download Fory is valid.
 [ ] Checksums and PGP signatures are valid.
 [ ] Source code distributions have correct names matching the current release.
 [ ] LICENSE and NOTICE files are correct.
@@ -315,26 +315,26 @@ To learn more about Fury, please see https://fury.apache.org/
 More detail checklist please refer:
 https://cwiki.apache.org/confluence/display/INCUBATOR/Incubator+Release+Checklist
 
-How to Build and Test, please refer to: https://github.com/apache/fury/blob/main/docs/guide/DEVELOPMENT.md
+How to Build and Test, please refer to: https://github.com/apache/fory/blob/main/docs/guide/DEVELOPMENT.md
 
 Thanks,
 Chaokun Yang
 ```
 
-在至少获得 3 + 1 且具有约束力的投票（来自 Fury Podling PMC 成员和提交者）并没有收到否决票之后，发布投票结果：
+在至少获得 3 + 1 且具有约束力的投票（来自 Fory Podling PMC 成员和提交者）并没有收到否决票之后，发布投票结果：
 
 标题：
 
 ```
-[RESULT][VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
+[RESULT][VOTE] Release Apache Fory(incubating) v${release_version}-${rc_version}
 ```
 
 内容：
 
 ```
-Hello, Apache Fury(incubating) Community,
+Hello, Apache Fory(incubating) Community,
 
-The vote to release Apache Fury(Incubating) v${release_version}-${rc_version} has passed.
+The vote to release Apache Fory(Incubating) v${release_version}-${rc_version} has passed.
 
 The vote PASSED with 3 binding +1 and 0 -1 vote:
 
@@ -358,7 +358,7 @@ ${name}
 标题：
 
 ```
-[VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
+[VOTE] Release Apache Fory(incubating) v${release_version}-${rc_version}
 ```
 
 内容：
@@ -366,38 +366,38 @@ ${name}
 ```
 Hello everyone,
 
-This is a call for the vote to release Apache Fury(Incubating) v${release_version}-${rc_version}.
+This is a call for the vote to release Apache Fory(Incubating) v${release_version}-${rc_version}.
 
-The Apache Fury community has voted and approved the release of Apache
-Fury(incubating) v${release_version}-${rc_version}. We now kindly request the IPMC members
+The Apache Fory community has voted and approved the release of Apache
+Fory(incubating) v${release_version}-${rc_version}. We now kindly request the IPMC members
 review and vote for this release.
 
-Apache Fury(incubating) - A blazingly fast multi-language serialization
+Apache Fory(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
-Fury community vote thread:
+Fory community vote thread:
 ${community_vote_thread_url}
 
 Vote result thread:
 ${community_vote_result_thread_url}
 
 The release candidate:
-https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version}/
+https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/
 
 This release has been signed with a PGP available here:
-https://downloads.apache.org/incubator/fury/KEYS
+https://downloads.apache.org/incubator/fory/KEYS
 
 Git tag for the release:
-https://github.com/apache/fury/releases/tag/v${release_version}-${rc_version}/
+https://github.com/apache/fory/releases/tag/v${release_version}-${rc_version}/
 
 Git commit for the release:
-https://github.com/apache/fury/commit/$xxx
+https://github.com/apache/fory/commit/$xxx
 
 Maven staging repo:
 https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/
 
 How to Build and Test, please refer to:
-https://github.com/apache/fury/blob/main/docs/guide/DEVELOPMENT.md
+https://github.com/apache/fory/blob/main/docs/guide/DEVELOPMENT.md
 
 Please download, verify, and test.
 
@@ -407,7 +407,7 @@ The VOTE will pass after 3 binding approve.
 [ ] +0 no opinion
 [ ] -1 disapprove with the reason
 
-To learn more about apache fury, please see https://fury.apache.org/
+To learn more about apache fory, please see https://fory.apache.org/
 
 Checklist for reference:
 
@@ -428,7 +428,7 @@ ${name}
 标题：
 
 ```
-[RESULT][VOTE] Release Apache Fury(incubating) v${release_version}-${rc_version}
+[RESULT][VOTE] Release Apache Fory(incubating) v${release_version}-${rc_version}
 ```
 
 内容：
@@ -436,7 +436,7 @@ ${name}
 ```
 Hi Incubator PMC,
 
-The vote to release Apache Fury(incubating) v${release_version}-${rc_version} has passed with
+The vote to release Apache Fory(incubating) v${release_version}-${rc_version} has passed with
 4 +1 binding and 3 +1 non-binding votes, no +0 or -1 votes.
 
 Binding votes：
@@ -466,16 +466,16 @@ We will proceed with publishing the approved artifacts and sending out the annou
 
 ### 将 artifacts 发布到 SVN 发布目录
 
-- release_version：Fury 的发布版本，如 0.5.0
+- release_version：Fory 的发布版本，如 0.5.0
 - release_candidate_version：投票版本，如 0.5.0-rc1
 
 ```bash
-svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fury/${release_version} -m "Release fury ${release_version}"
+svn mv https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version} https://dist.apache.org/repos/dist/release/incubator/fory/${release_version} -m "Release fory ${release_version}"
 ```
 
-### 更改 Fury 网站下载链接
+### 更改 Fory 网站下载链接
 
-提交 PR 到 https://github.com/apache/fury-site 仓库更新 Fury 版本，[下载页面](https://fury.apache.org/download)
+提交 PR 到 https://github.com/apache/fory-site 仓库更新 Fory 版本，[下载页面](https://fory.apache.org/download)
 
 ### 发布 Maven artifacts
 
@@ -485,12 +485,12 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-
 
 ### 发送公告
 
-将发布公告发送给 dev@fury.apache.org 并且抄送给 announce@apache.org。
+将发布公告发送给 dev@fory.apache.org 并且抄送给 announce@apache.org。
 
 标题：
 
 ```
-[ANNOUNCE] Release Apache Fury(incubating) ${release_version}
+[ANNOUNCE] Release Apache Fory(incubating) ${release_version}
 ```
 
 内容：
@@ -498,29 +498,29 @@ svn mv https://dist.apache.org/repos/dist/dev/incubator/fury/${release_version}-
 ```
 Hi all,
 
-The Apache Fury(incubating) community is pleased to announce
-that Apache Fury(incubating) {release_version} has been released!
+The Apache Fory(incubating) community is pleased to announce
+that Apache Fory(incubating) {release_version} has been released!
 
-Apache Fury(incubating) - A blazingly fast multi-language serialization
+Apache Fory(incubating) - A blazingly fast multi-language serialization
 framework powered by JIT and zero-copy.
 
 The release notes are available here:
-https://github.com/apache/fury/releases/tag/v${release_version}
+https://github.com/apache/fory/releases/tag/v${release_version}
 
 For the complete list of changes:
-https://github.com/apache/fury/compare/v0.5.0...v${release_version}
+https://github.com/apache/fory/compare/v0.5.0...v${release_version}
 
-Apache Fury website: https://fury.apache.org/
+Apache Fory website: https://fory.apache.org/
 
-Download Links: https://fury.apache.org/download
+Download Links: https://fory.apache.org/download
 
-Fury Resources:
-- Fury github repo: https://github.com/apache/fury
-- Issue: https://github.com/apache/fury/issues
-- Mailing list: dev@fury.apache.org
+Fory Resources:
+- Fory github repo: https://github.com/apache/fory
+- Issue: https://github.com/apache/fory/issues
+- Mailing list: dev@fory.apache.org
 
 We are looking to grow our community and welcome new contributors. If
-you are interested in contributing to Fury, please contact us on the
+you are interested in contributing to Fory, please contact us on the
 mailing list or on GitHub. We will be happy to help you get started.
 
 ------------------

@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to raise questions and update the Apache Fury official website!
+        Thank you for taking the time to raise questions and update the Apache Fory official website!
   - type: textarea
     id: "current-state"
     attributes:

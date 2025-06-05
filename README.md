@@ -1,9 +1,9 @@
-# Apache Fury (incubating) Website
+# Apache Fory (incubating) Website
 
-The source repository of static website for Apache Fury (incubating): https://github.com/apache/fury.
+The source repository of static website for Apache Fory (incubating): https://github.com/apache/fory.
 
 > [!IMPORTANT]
-> Apache Fury (incubating) is an effort undergoing incubation at the Apache
+> Apache Fory (incubating) is an effort undergoing incubation at the Apache
 > Software Foundation (ASF), sponsored by the Apache Incubator PMC.
 >
 > Please read the [DISCLAIMER](DISCLAIMER) and a full explanation of ["incubating"](https://incubator.apache.org/policy/incubation.html).

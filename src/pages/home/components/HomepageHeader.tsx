@@ -32,7 +32,7 @@ export default function HomepageHeader() {
           {/* GitHub 按钮 */}
           <Link
             className="button button--secondary button--lg"
-            to="https://github.com/apache/fury"
+            to="https://github.com/apache/fory"
             data-aos="fade-up"
             data-aos-delay="200"
           >

@@ -13,11 +13,11 @@
   },
   "link.item.label.Mailing list": {
     "message": "Mailing list",
-    "description": "The label of footer link with label=Mailing list linking to https://lists.apache.org/list.html?dev@fury.apache.org"
+    "description": "The label of footer link with label=Mailing list linking to https://lists.apache.org/list.html?dev@fory.apache.org"
   },
   "link.item.label.Slack": {
     "message": "Slack",
-    "description": "The label of footer link with label=Slack linking to https://join.slack.com/t/fury-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A"
+    "description": "The label of footer link with label=Slack linking to https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A"
   },
   "link.item.label.Twitter": {
     "message": "Twitter",
@@ -35,16 +35,16 @@
     "message": "Benchmark",
     "description": "The label of footer link with label=Benchmark linking to /docs/docs/introduction/benchmark"
   },
-  "link.item.label.Fury": {
-    "message": "Fury",
-    "description": "The label of footer link with label=Fury linking to https://github.com/apache/fury"
+  "link.item.label.Fory": {
+    "message": "Fory",
+    "description": "The label of footer link with label=Fory linking to https://github.com/apache/fory"
   },
   "link.item.label.Website": {
     "message": "Website",
-    "description": "The label of footer link with label=Website linking to https://github.com/apache/fury-site"
+    "description": "The label of footer link with label=Website linking to https://github.com/apache/fory-site"
   },
   "copyright": {
-    "message": "<div>\n      <p> Apache Fury is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF. </p>\n      <p>\n        Copyright © 2024 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>\n        Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.\n      </p>\n      </div>",
+    "message": "<div>\n      <p> Apache Fory is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF. </p>\n      <p>\n        Copyright © 2024 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>\n        Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.\n      </p>\n      </div>",
     "description": "The footer copyright"
   },
   "logo.alt": {

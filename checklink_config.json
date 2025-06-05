@@ -8,7 +8,7 @@
     "replacementPatterns": [
         {
             "pattern": "^/",
-            "replacement": "https://fury.apache.org/"
+            "replacement": "https://fory.apache.org/"
         }
     ],
     "aliveStatusCodes": [
