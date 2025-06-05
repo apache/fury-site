@@ -202,7 +202,7 @@ const config: Config = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/ApacheFury',
+              href: 'https://twitter.com/ApacheFory',
             },
           ],
         },

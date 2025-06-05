@@ -39,15 +39,15 @@ fory.register(Class.forName("scala.collection.generic.DefaultSerializationProxy"
 fory.register(Class.forName("scala.Enumeration.Val"))
 ```
 
-如果要避免此类注册，可以通过禁用类 `FuryBuilder#requireClassRegistration(false)` 来完成。
+如果要避免此类注册，可以通过禁用类 `ForyBuilder#requireClassRegistration(false)` 来完成。
 
 > 请注意：此选项可以反序列化未知的对象类型，使用更灵活。但如果类包含任何的恶意代码，会有安全风险。
 
-循环引用在 Scala 中很常见，`Reference tracking` 应该由 `FuryBuilder#withRefTracking(true)` 配置选项开启。如果不启用 `Reference tracking`，则在序列化 Scala Enumeration 时，某些 Scala 版本可能会发生 [StackOverflowError 错误](https://github.com/apache/fory/issues/1032)。
+循环引用在 Scala 中很常见，`Reference tracking` 应该由 `ForyBuilder#withRefTracking(true)` 配置选项开启。如果不启用 `Reference tracking`，则在序列化 Scala Enumeration 时，某些 Scala 版本可能会发生 [StackOverflowError 错误](https://github.com/apache/fory/issues/1032)。
 
 > 注意：Fory 实例应该在多个序列化之间共享，创建 Fory 实例开销很大，应该尽量复用。
 
-如果您在多个线程中使用共享的 Fory 实例，您应该使用 `ThreadSafeFury` 代替 `FuryBuilder#buildThreadSafeFury()`。
+如果您在多个线程中使用共享的 Fory 实例，您应该使用 `ThreadSafeFory` 代替 `ForyBuilder#buildThreadSafeFory()`。
 
 ## 序列化 case 对象
 

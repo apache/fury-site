@@ -113,7 +113,7 @@ Unzip `apache-fory-${release_version}-${rc_version}-src.tar.gz` and check the fo
 
 ## Check the Maven artifacts of fory-java
 
-Download the artifacts from https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/.
+Download the artifacts from https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}/.
 
 You can check the follows:
 

@@ -255,7 +255,7 @@ If some files are unexpected, you need to remove by `svn delete` and repeat the 
 
 ### check version
 
-As an incubating project, Fory requires votes from both the FUry Community and Incubator Community.
+As an incubating project, Fory requires votes from both the Fory Community and Incubator Community.
 
 - release_version: the version for fory, like 0.5.0.
 - release_candidate_version: the version for voting, like 0.5.0-rc1.
@@ -432,7 +432,7 @@ The release candidates:
 https://dist.apache.org/repos/dist/dev/incubator/fory/0.5.0-rc3/
 
 The maven staging for this release:
-https://repository.apache.org/content/repositories/orgapachefury-1003
+https://repository.apache.org/content/repositories/orgapachefory-1003
 
 Git tag for the release:
 https://github.com/apache/fory/releases/tag/v0.5.0-rc3
@@ -547,7 +547,7 @@ Git commit for the release:
 https://github.com/apache/fory/commit/$xxx
 
 Maven staging repo:
-https://repository.apache.org/content/repositories/orgapachefury-${maven_artifact_number}/
+https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}/
 
 How to Build and Test, please refer to:
 https://github.com/apache/fory/blob/main/docs/guide/DEVELOPMENT.md
@@ -653,7 +653,7 @@ Reference implementation: https://github.com/apache/fory/releases/tag/v0.10.3
 
 - maven_artifact_number: the number for Maven staging artifacts, like 1001.
 - Open https://repository.apache.org/#stagingRepositories.
-- Find the artifact `orgapachefury-${maven_artifact_number}`, click "Release".
+- Find the artifact `orgapachefory-${maven_artifact_number}`, click "Release".
 
 ### Send the announcement
 

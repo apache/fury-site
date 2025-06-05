@@ -10,7 +10,7 @@ id: how_to_join_community
 
 Fory 团队通常在 github 上进行开发和 issue 维护，请打开 [Github 网站](https://github.com/)，点击右上角 `Sign up` 按钮，注册一个自己的账号，开启你开源之旅的第一步。
 
-在 [Fury仓库](https://github.com/apache/fory)中，我们有一份面向所有开源贡献者的[指南](https://fory.apache.org/zh-CN/docs/docs/community/)，介绍了有关版本管理、分支管理等内容，**请花几分钟时间阅读了解一下**。
+在 [Fory仓库](https://github.com/apache/fory)中，我们有一份面向所有开源贡献者的[指南](https://fory.apache.org/zh-CN/docs/docs/community/)，介绍了有关版本管理、分支管理等内容，**请花几分钟时间阅读了解一下**。
 
 ## 你的第一个 Pull Request
 
@@ -25,7 +25,7 @@ Git 是一种版本控制系统，用于跟踪和管理软件开发项目中的�
 
 ### Step1：Fork 项目
 
-- 首先需要 fork 这个项目，进入[Fury项目页面](https://github.com/apache/fory)，点击右上角的 Fork 按钮
+- 首先需要 fork 这个项目，进入[Fory项目页面](https://github.com/apache/fory)，点击右上角的 Fork 按钮
 - 你的 github 帐号中会出现 xxxx(你的 github 用户名)/fory 这个项目
 - 在本地电脑上使用以下命令: 得到一个 fory 文件夹
 

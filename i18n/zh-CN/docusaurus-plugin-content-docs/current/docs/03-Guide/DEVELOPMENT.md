@@ -38,14 +38,14 @@ Build fory row format：
 
 ```bash
 pip install pyarrow==14.0.0
-bazel build //cpp/fory/row:fury_row_format
+bazel build //cpp/fory/row:fory_row_format
 ```
 
 Build fory row format encoder:
 
 ```bash
 pip install pyarrow==14.0.0
-bazel build //cpp/fory/encoder:fury_encoder
+bazel build //cpp/fory/encoder:fory_encoder
 ```
 
 #### 本地环境要求
@@ -60,7 +60,7 @@ cd go/fory
 # run test
 go test -v
 # run xlang test
-go test -v fury_xlang_test.go
+go test -v fory_xlang_test.go
 ```
 
 #### 本地环境要求

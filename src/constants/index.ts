@@ -9,11 +9,11 @@ import org.apache.fory.*;
 public class Example {
   // Note that Fory instances should be reused between
   // multiple serializations of different objects.
-  static ThreadSafeFury fory = Fory.builder().withLanguage(Language.JAVA)
+  static ThreadSafeFory fory = Fory.builder().withLanguage(Language.JAVA)
     // Allow to deserialize objects unknown types,
     // more flexible but less secure.
     // .requireClassRegistration(false)
-    .buildThreadSafeFury();
+    .buildThreadSafeFory();
 
   static {
     // Registering types can reduce class name serialization
