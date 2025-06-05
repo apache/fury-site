@@ -92,7 +92,7 @@ const config: Config = {
       title: '',
       logo: {
         alt: 'Fory Logo',
-        src: 'img/navbar-logo.svg',
+        src: 'img/navbar-logo.png',
       },
       items: [
         // {
