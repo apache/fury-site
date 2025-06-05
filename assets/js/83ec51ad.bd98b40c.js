@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkfury_site=self.webpackChunkfury_site||[]).push([[2768],{85328:(e,s,t)=>{t.r(s),t.d(s,{default:()=>u});t(67294);var c=t(44996),r=t(85893);function u(){const e=(0,c.Z)("/home/cat.svg");return(0,r.jsx)("div",{className:"flex justify-center items-center w-full h-24",children:(0,r.jsx)("img",{src:e,className:"w-24 h-24"})})}}}]);

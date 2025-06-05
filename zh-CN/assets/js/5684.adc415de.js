@@ -1,0 +1,1 @@
+(self.webpackChunkfory_site=self.webpackChunkfory_site||[]).push([[5684],{29039:(s,e,t)=>{"use strict";t.d(e,{Z:()=>f});var c=t(31336);const f=c},15525:()=>{}}]);
