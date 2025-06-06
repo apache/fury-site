@@ -1,6 +1,6 @@
 ---
 slug: fury_renamed_to_fory
-title: Important Announcement: Apache Fury is Now Apache Fory
+title: Important Announcement - Apache Fury is Now Apache Fory
 authors: [chaokunyang]
 tags: [fury]
 ---
