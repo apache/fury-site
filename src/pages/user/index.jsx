@@ -7,24 +7,12 @@ import "./index.css";
 import companies from "./companies.json";
 import nologo_companies from "./nologo_companies.json";
 import Layout from "@theme/Layout";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 export default function UserPage() {
   const isBrowser = useIsBrowser();
   const language =
     isBrowser && location.pathname.indexOf("/zh-CN/") === 0 ? "zh-CN" : "en";
   const dataSource = config?.[language];
-
-  React.useEffect(() => {
-    AOS.init({
-      offset: 80,
-      duration: 500,
-      easing: "ease-out-quad",
-      once: true,
-    });
-    window.addEventListener("load", AOS.refresh);
-  }, []);
 
   const ourUsers = dataSource.common.ourUsers;
   const tip = dataSource.common.tip;
@@ -53,8 +41,6 @@ export default function UserPage() {
                 {companies.map((item, i) => (
                   <div
                     key={i}
-                    data-aos="fade-up"
-                    data-aos-delay={i * 50}
                     className="company-item"
                   >
                     <a
@@ -74,8 +60,6 @@ export default function UserPage() {
                 {nologo_companies.map((item, i) => (
                   <div
                     key={i}
-                    data-aos="fade-up"
-                    data-aos-delay={i * 50}
                     className="company-item"
                   >
                     <a className="company_name ">
