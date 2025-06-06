@@ -5,6 +5,13 @@ export default function (context, options) {
       return {
         headTags: [
           {
+            tagName: 'meta',
+            attributes: {
+              'http-equiv':  'Content-Security-Policy',
+              'content': `frame-src 'self' https://ghbtns.com/; img-src 'self' https://github.com/ data:;`
+            }
+          },
+          {
             tagName: 'script',
             attributes: {
               type: 'text/javascript',
