@@ -6,7 +6,7 @@ tags: [fury]
 ---
 
 ![Apache Fory Logo](https://fory.apache.org/img/navbar-logo.png)  
-*Our new identity - fast serialization framework for you*
+Our new identity: Fast Serialization Framework **FOR Y**ou
 
 ## Announcement
 
