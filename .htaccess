@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^fury.apache.org$
+  RewriteRule (.*)$ https://fory.apache.org/$1 [R=301,L]
+</IfModule>
