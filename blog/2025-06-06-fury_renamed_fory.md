@@ -14,7 +14,7 @@ tags: [fury]
 
 ## Why This Change Is Necessary
 
-This transition is required to resolve naming conflicts identified by ASF Brand Management. The name "Apache Fury" conflicted with the [1964 film](https://en.wikipedia.org/wiki/Apache_Fury) of the same name, which is incompatible with ASF's naming policies. Following massive discussions and a formal vote, this change ensures compliance with ASF guidelines.
+This transition is required to resolve naming conflicts identified by the ASF Brand Management. Following massive discussions and a formal vote, this change ensures compliance with ASF's guidelines.
 
 The new name "Fory" preserves phonetic similarity to "Fury" while establishing a distinct identity aligned with ASF standards.
 
