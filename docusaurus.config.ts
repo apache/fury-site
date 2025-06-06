@@ -86,6 +86,7 @@ const config: Config = {
 
   themeConfig: {
     metadata: [
+      {'http-equiv': 'Content-Security-Policy', content: "frame-src 'self' https://ghbtns.com/; img-src 'self' https://avatars.githubusercontent.com/ https://github.com/ data:;"},
     ],
     navbar: {
       title: '',
