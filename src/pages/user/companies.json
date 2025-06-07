@@ -40,6 +40,11 @@
     "imgUrl": "fliggy.png"
   },
   {
+    "name": "字节跳动",
+    "link": "https://www.bytedance.com/",
+    "imgUrl": "bytedance.png"
+  },
+  {
     "name": "携程",
     "link": "https://www.ctrip.com/",
     "imgUrl": "ctrip.png"
