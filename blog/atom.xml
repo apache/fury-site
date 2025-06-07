@@ -2,11 +2,61 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fory.apache.org/blog</id>
     <title>Apache Fory (incubating) Blog</title>
-    <updated>2025-05-27T00:00:00.000Z</updated>
+    <updated>2025-06-06T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fory.apache.org/blog"/>
     <subtitle>Apache Fory (incubating) Blog</subtitle>
     <icon>https://fory.apache.org/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Important Announcement - Apache Fury is Now Apache Fory]]></title>
+        <id>https://fory.apache.org/blog/fury_renamed_to_fory</id>
+        <link href="https://fory.apache.org/blog/fury_renamed_to_fory"/>
+        <updated>2025-06-06T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Apache Fory Logo]]></summary>
+        <content type="html"><![CDATA[<p><img loading="lazy" src="https://fory.apache.org/img/navbar-logo.png" alt="Apache Fory Logo" class="img_ev3q"><br>
+<!-- -->Our new identity: Fast Serialization Framework <strong>FOR Y</strong>ou</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="announcement">Announcement<a href="https://fory.apache.org/blog/fury_renamed_to_fory#announcement" class="hash-link" aria-label="Direct link to Announcement" title="Direct link to Announcement">​</a></h2>
+<p><strong>The Apache Fury team is now officially announcing that Apache Fury has been renamed to Apache Fory</strong>, effective immediately. This transition impacts all project components including code repositories, package names, documentation, and communication channels.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-this-change-is-necessary">Why This Change Is Necessary<a href="https://fory.apache.org/blog/fury_renamed_to_fory#why-this-change-is-necessary" class="hash-link" aria-label="Direct link to Why This Change Is Necessary" title="Direct link to Why This Change Is Necessary">​</a></h2>
+<p>This transition is required to resolve naming conflicts identified by the ASF Brand Management. Following massive discussions and a formal vote, this change ensures compliance with ASF's guidelines.</p>
+<p>The new name "Fory" preserves phonetic similarity to "Fury" while establishing a distinct identity aligned with ASF standards.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="technical-changes-and-impact">Technical Changes and Impact<a href="https://fory.apache.org/blog/fury_renamed_to_fory#technical-changes-and-impact" class="hash-link" aria-label="Direct link to Technical Changes and Impact" title="Direct link to Technical Changes and Impact">​</a></h2>
+<p>This transition requires updates across the ecosystem:</p>
+<ul>
+<li><strong>Java packages</strong> migrated from <code>org.apache.fury</code> to <code>org.apache.fory</code></li>
+<li><strong>Class names</strong> migrated from <code>XXXFury/FuryXXX</code> to <code>XXXFory/ForyXXX</code></li>
+<li><strong>GitHub repositories</strong> renamed to <code>apache/fory</code> (code) and <code>apache/fory-site</code> (website)</li>
+<li><strong>Downstream integrations</strong> (Quarkus-Fury, Camel-Fury) require dependency updates</li>
+<li><strong>Mailing lists</strong> transition to <code>@fory.apache.org</code></li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="migration-support">Migration Support<a href="https://fory.apache.org/blog/fury_renamed_to_fory#migration-support" class="hash-link" aria-label="Direct link to Migration Support" title="Direct link to Migration Support">​</a></h2>
+<p>To facilitate this transition:</p>
+<ul>
+<li>Existing Apache Fury release document remains intact at <a href="https://fory.apache.org/docs/0.10/docs/introduction/" target="_blank" rel="noopener noreferrer">v0.10 document</a></li>
+<li>Critical URL redirects in place</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-fory">Why "Fory"?<a href="https://fory.apache.org/blog/fury_renamed_to_fory#why-fory" class="hash-link" aria-label="Direct link to Why &quot;Fory&quot;?" title="Direct link to Why &quot;Fory&quot;?">​</a></h2>
+<p>The name was chosen by prioritizing:</p>
+<ul>
+<li>Phonetic similarity to "Fury"</li>
+<li>No existing trademark conflicts</li>
+<li>Preservation of our technical identity</li>
+<li>Short, memorable, and globally pronounceable</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="our-commitment">Our Commitment<a href="https://fory.apache.org/blog/fury_renamed_to_fory#our-commitment" class="hash-link" aria-label="Direct link to Our Commitment" title="Direct link to Our Commitment">​</a></h2>
+<p>We recognize the burden this places on our users, especially those with deep integrations. Please know:</p>
+<ul>
+<li>All existing issues and PRs have been migrated</li>
+<li>Performance benchmarks remain consistently superior</li>
+<li>Release cycles continue uninterrupted</li>
+</ul>
+<p>This rename represents our commitment to respecting intellectual property while maintaining technical excellence. We're grateful for your patience and continued trust as we navigate this transition together.</p>]]></content>
+        <author>
+            <name>Shawn Yang</name>
+            <uri>https://github.com/chaokunyang</uri>
+        </author>
+        <category label="fury" term="fury"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Fury v0.10.3 Released]]></title>
         <id>https://fory.apache.org/blog/fury_0_10_3_release</id>
@@ -1421,28 +1471,6 @@ Multiple scala serialization JIT optimization are included, and java serializati
 <li>@T-baby made their first contribution in <a href="https://github.com/fury-project/dubbo-serialization-fury/pull/13" target="_blank" rel="noopener noreferrer">https://github.com/fury-project/dubbo-serialization-fury/pull/13</a></li>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/alipay/fury/compare/v0.1.0...v0.2.0" target="_blank" rel="noopener noreferrer">https://github.com/alipay/fury/compare/v0.1.0...v0.2.0</a></p>]]></content>
-        <author>
-            <name>Shawn Yang</name>
-            <uri>https://github.com/chaokunyang</uri>
-        </author>
-        <category label="fury" term="fury"/>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Fury v0.1.2 released]]></title>
-        <id>https://fory.apache.org/blog/fury_0_1_2_release</id>
-        <link href="https://fory.apache.org/blog/fury_0_1_2_release"/>
-        <updated>2023-09-27T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[This release was made before Fury joined the Apache Incubator and thus it's a non-ASF release.]]></summary>
-        <content type="html"><![CDATA[<div class="theme-admonition theme-admonition-info admonition_xJq3 alert alert--info"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>info</div><div class="admonitionContent_BuS1"><p><strong>This release was made before Fury joined the Apache Incubator and thus it's a non-ASF release.</strong></p></div></div>
-<p>Author: <a href="https://github.com/chaokunyang" target="_blank" rel="noopener noreferrer">chaokunyang</a></p>
-<p>I'm pleased to announce the <code>0.1.2</code> release of Fury. This release is a enhanced verson based on fury <code>0.1.1</code>. It keeps binary compatibility with <code>0.1.0</code>/<code>0.1.1</code>.</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="whats-changed">What's Changed<a href="https://fory.apache.org/blog/fury_0_1_2_release#whats-changed" class="hash-link" aria-label="Direct link to What's Changed" title="Direct link to What's Changed">​</a></h2>
-<ul>
-<li>[Java] Skip toString in annotation invocation handler readObject (#746)</li>
-<li>[Python] Use cloudpickle for local function serialization (#914)</li>
-<li>[Python] fix row format getter (#915)</li>
-</ul>
-<p><strong>Full Changelog</strong>: <a href="https://github.com/alipay/fury/compare/v0.1.0...v0.1.1" target="_blank" rel="noopener noreferrer">https://github.com/alipay/fury/compare/v0.1.0...v0.1.1</a></p>]]></content>
         <author>
             <name>Shawn Yang</name>
             <uri>https://github.com/chaokunyang</uri>

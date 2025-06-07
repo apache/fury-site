@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfory_site=self.webpackChunkfory_site||[]).push([[3557],{86233:e=>{e.exports=JSON.parse('{"permalink":"/zh-CN/blog/tags/fury/page/3","page":3,"postsPerPage":10,"totalPages":3,"totalCount":23,"previousPage":"/zh-CN/blog/tags/fury/page/2","blogDescription":"Blog","blogTitle":"Blog"}')}}]);

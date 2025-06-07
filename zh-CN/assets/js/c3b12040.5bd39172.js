@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfory_site=self.webpackChunkfory_site||[]).push([[5225],{72204:s=>{s.exports=JSON.parse('{"label":"fury","permalink":"/zh-CN/blog/tags/fury","allTagsPath":"/zh-CN/blog/tags","count":23,"unlisted":false}')}}]);

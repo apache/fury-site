@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfory_site=self.webpackChunkfory_site||[]).push([[1713],{53457:e=>{e.exports=JSON.parse('[{"label":"fury","permalink":"/blog/tags/fury","count":23}]')}}]);
