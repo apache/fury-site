@@ -33,12 +33,6 @@ body {
   line-height: 1.5;
 }
 
-/* 重置链接样式 */
-a {
-  color: inherit;
-  text-decoration: inherit;
-}
-
 /* 重置按钮样式 */
 button {
   background-color: transparent;
