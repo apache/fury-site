@@ -33,14 +33,6 @@ body {
   line-height: 1.5;
 }
 
-/* 重置列表样式 */
-ol,
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 /* 重置链接样式 */
 a {
   color: inherit;

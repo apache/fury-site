@@ -1,12 +1,12 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Apache Fory (incubating)',
   tagline: 'A blazing-fast cross-language serialization framework powered by just-in-time compilation and zero-copy',
   favicon: 'img/favicon.ico',
-  
+
   // Set the production url of your site here
   url: 'https://fory.apache.org/',
   // Set the /<baseUrl>/ pathname under which your site is served
@@ -15,7 +15,7 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-   i18n: {
+  i18n: {
     defaultLocale: 'en-US',
     locales: ['en-US', 'zh-CN'],
     path: 'i18n',
@@ -37,6 +37,7 @@ const config: Config = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          sidebarCollapsible: false,
           lastVersion: 'current',
           versions: {
             current: {
@@ -44,7 +45,7 @@ const config: Config = {
             },
           },
           sidebarPath: './sidebars.ts',
-          editUrl: ({locale, version, docPath }) => {
+          editUrl: ({ locale, version, docPath }) => {
             var editUrl = "";
             if (locale === "en-US") {
               editUrl = `https://github.com/apache/fory-site/tree/main/docs/${docPath}`;
@@ -68,7 +69,7 @@ const config: Config = {
             } else if (locale === "zh-CN") {
               editUrl = `https://github.com/apache/fory-site/tree/main/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
             } else {
-              editUrl =  `https://github.com/apache/fory-site/tree/main`
+              editUrl = `https://github.com/apache/fory-site/tree/main`
             }
             return editUrl;
           },
@@ -86,7 +87,7 @@ const config: Config = {
 
   themeConfig: {
     metadata: [
-      {'http-equiv': 'Content-Security-Policy', content: "frame-src 'self' https://ghbtns.com/; img-src 'self' https://avatars.githubusercontent.com/ https://github.com/ data:;"},
+      { 'http-equiv': 'Content-Security-Policy', content: "frame-src 'self' https://ghbtns.com/; img-src 'self' https://avatars.githubusercontent.com/ https://github.com/ data:;" },
     ],
     navbar: {
       title: '',
@@ -129,7 +130,7 @@ const config: Config = {
           to: '/download',
           label: 'Download',
         },
-        {to: '/blog', label: 'Blog', position: 'right'},
+        { to: '/blog', label: 'Blog', position: 'right' },
         {
           type: 'dropdown',
           label: 'ASF',
