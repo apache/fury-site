@@ -10,7 +10,7 @@ id: how_to_join_community
 
 Fory 团队通常在 github 上进行开发和 issue 维护，请打开 [Github 网站](https://github.com/)，点击右上角 `Sign up` 按钮，注册一个自己的账号，开启你开源之旅的第一步。
 
-在 [Fory仓库](https://github.com/apache/fory)中，我们有一份面向所有开源贡献者的[指南](https://fory.apache.org/zh-CN/docs/docs/community/)，介绍了有关版本管理、分支管理等内容，**请花几分钟时间阅读了解一下**。
+在 [Fory仓库](https://github.com/apache/fory)中，我们有一份面向所有开源贡献者的[指南](https://fory.apache.org/zh-CN/docs/community/)，介绍了有关版本管理、分支管理等内容，**请花几分钟时间阅读了解一下**。
 
 ## 你的第一个 Pull Request
 
