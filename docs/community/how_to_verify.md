@@ -93,7 +93,7 @@ gpg: Good signature from "chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org
 Then verify checksum:
 
 ```bash
-for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
+for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512*; done
 ```
 
 It should output something like:
