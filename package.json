@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "download-avatars": "node ./scripts/download_avatars/script.js",
     "docusaurus": "docusaurus",
     "start": "docusaurus start --locale en-US --host 0.0.0.0",
     "start-zh": "docusaurus start --locale zh-CN --host 0.0.0.0",
@@ -39,7 +40,8 @@
     "postcss": "^8.5.3",
     "style-loader": "^4.0.0",
     "tailwindcss": "^4.0.17",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "yaml": "^2.8.0"
   },
   "browserslist": {
     "production": [
