@@ -129,12 +129,6 @@ type User struct {
 }
 ```
 
-3. **重新生成代码生成产物**（如果使用）：
-
-```bash
-go generate ./...
-```
-
 ### ErrKindMaxDepthExceeded
 
 **错误**：`max depth exceeded`

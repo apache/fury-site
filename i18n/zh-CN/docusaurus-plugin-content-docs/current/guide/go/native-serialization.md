@@ -32,7 +32,7 @@ Go native 序列化是通过 `fory.WithXlang(false)` 选择的 Go 专用编码�
 - 数据模型使用 Go 特有行为，例如原生 `int`/`uint`、nil slice、nil map、指针、interface，或仅 Go 使用的动态值。
 - 你需要 schema 一致的 Go 载荷，并希望同 schema 场景下的元信息面尽可能小。
 - 你希望为仅 Go 的滚动部署使用兼容的 Schema 演进，但不承诺跨语言类型映射。
-- 你正在为永远不会离开 Go 的 Go struct 使用反射或代码生成序列化器。
+- 你正在为永远不会离开 Go 的 Go struct 使用 Go 快速序列化器。
 
 ## 创建 Native 运行时
 
@@ -117,7 +117,7 @@ Native 序列化让 Go 数据保持在 Go 运行时路径上：
 - 指针和 nil 值，包括 nil slice 和 map。
 - 当已注册序列化器能够解析具体类型时支持 interface 和动态值。
 - `time.Time` 和 `time.Duration` 等时间值。
-- 基于反射和代码生成的序列化器。
+- 快速序列化器。
 
 完整类型范围和 xlang 映射细节请参见[支持的类型](supported-types.md)。
 
@@ -161,7 +161,6 @@ _ = data
 - 对同步发布的 Go 服务保持 schema 一致模式；只有在需要 Schema 演进时才启用兼容模式。
 - 使用显式数字 ID 注册 struct。
 - 除非对象图需要身份或循环，否则关闭引用跟踪。
-- 当反射开销重要时，为热点 Go struct 使用代码生成。
 - 只有当数据必须在下一次序列化调用后继续存在时，才复制返回的字节。
 
 ## Native 与 Xlang 对比
@@ -200,4 +199,3 @@ Native 序列化默认使用 schema 一致模式。当 struct 定义可能不同
 - [类型注册](type-registration.md) - Struct 和 enum 注册
 - [引用](references.md) - 共享引用和循环引用
 - [Schema 演进](schema-evolution.md) - 兼容模式
-- [代码生成](codegen.md) - 生成的序列化器
