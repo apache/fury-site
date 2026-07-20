@@ -64,7 +64,7 @@ public final class JsonExample {
 }
 ```
 
-完整的类型模型、注解与 mix-in、动态属性、自定义序列化器、安全控制，以及 Android 或 GraalVM 的配置方法，请参阅 [Fory JSON 文档](/zh-CN/docs/guide/java/json-support)。
+完整的类型模型、注解与 mix-in、动态属性、自定义序列化器、安全控制，以及 Android 或 GraalVM 的配置方法，请参阅 [Fory JSON 文档](/zh-CN/docs/guide/java/json_support)。
 
 ## 新功能
 
