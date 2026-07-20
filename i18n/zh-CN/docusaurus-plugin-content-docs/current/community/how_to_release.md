@@ -257,6 +257,28 @@ svn commit -m "Prepare for fory ${release_version}-${rc_version}"
 - release_candidate_version：投票的版本，如 1.0.0-rc1。
 - maven_artifact_number：Maven 暂存 artifacts 的数量。如 1001. 具体来说，可以通过搜索 “fory” 来找到 maven_artifact_number https://repository.apache.org/#stagingRepositories.
 
+### 构建并发布 Java、Kotlin 和 Scala 模块
+
+在仓库根目录运行 JVM 发布命令。默认情况下，脚本会依次发布 Java、Kotlin 和 Scala：
+
+```sh
+python ci/release.py publish_jvm
+```
+
+发布脚本会选择 OpenJDK 25 运行时，在正确的模块目录中执行发布命令，并校验 `fory-core` 的 multi-release
+二进制 JAR 和源码 JAR。在 macOS 以外的平台上，请先安装 OpenJDK 25，并正确设置 `JAVA_HOME` 和 `PATH`。
+
+如需重新发布或单独发布某个模块，请使用对应命令：
+
+```sh
+python ci/release.py publish_java
+python ci/release.py publish_kotlin
+python ci/release.py publish_scala
+```
+
+单独执行这些命令时，请先发布 Java，并保留 `java/fory-core/target` 下生成的 artifacts。Kotlin 和 Scala
+发布流程需要使用这些 artifacts 完成最终的 `fory-core` 发布 JAR 校验。
+
 ### Fory 社区投票
 
 发送电子邮件至 Fory Community：dev@fory.apache.org：

@@ -333,61 +333,28 @@ Steps to encrypt your password:
 
    Place the encrypted output into the `password` field in `settings.xml`
 
-#### Build and Publish Java Module
+#### Build and Publish Java, Kotlin, and Scala Modules
+
+Run the JVM release command from the repository root. By default, it publishes Java, Kotlin, and Scala in that order:
 
 ```sh
-
-# Navigate to the Java module directory
-cd java
-
-# Execute Maven build and deploy to Nexus
-# -T10: Use 10 threads for parallel build, improving speed
-# clean: Clean the project
-# deploy: Deploy to remote repository
-# -Papache-release: Activate the release profile
-# -DskipTests: Skip tests
-mvn -T10 clean deploy --no-transfer-progress -DskipTests -Papache-release
-
+python ci/release.py publish_jvm
 ```
 
-#### Build and Publish Kotlin Module
+The release script selects an OpenJDK 25 runtime, runs each module's release commands from the correct directory, and
+verifies the `fory-core` multi-release binary and source JARs. On platforms other than macOS, install OpenJDK 25 and set
+`JAVA_HOME` and `PATH` before running the command.
+
+To rerun or publish one module at a time, use the corresponding command:
 
 ```sh
-
-# Return to project root and navigate to Kotlin module
-cd ../kotlin
-
-# Execute the same Maven command as Java module
-# Configuration parameters are identical to Java module
-mvn -T10 clean deploy --no-transfer-progress -DskipTests -Papache-release
-
+python ci/release.py publish_java
+python ci/release.py publish_kotlin
+python ci/release.py publish_scala
 ```
 
-#### Build and Publish Scala Module
-
-```sh
-
-# Return to project root and navigate to Scala module
-cd ../scala
-
-# Build and sign JARs for all Scala versions
-# +publishSigned: Execute publishSigned for all configured Scala versions
-echo "Starting to build Scala JARs..."
-sbt +publishSigned
-
-# Prepare for upload to Sonatype (Nexus)
-# sonatypePrepare: Prepare for Maven Central Repository release
-echo "Starting upload preparation..."
-sbt sonatypePrepare
-
-# Upload packaged JARs to Sonatype
-# sonatypeBundleUpload: Upload prepared bundles
-echo "Starting JAR upload..."
-sbt sonatypeBundleUpload
-
-echo "Scala JAR deployment succeeded!"
-
-```
+When using the individual commands, publish Java first and keep its generated artifacts under `java/fory-core/target`.
+The Kotlin and Scala release paths rely on those artifacts for the final `fory-core` release-JAR verification.
 
 #### Close the Maven staging repository in Nexus
 
