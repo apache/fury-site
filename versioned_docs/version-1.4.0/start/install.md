@@ -26,14 +26,6 @@ Use Maven to add Apache Fory™:
   <version>1.4.0</version>
 </dependency>
 -->
-<!-- SIMD acceleration for array compression (Java 16+) -->
-<!--
-<dependency>
-  <groupId>org.apache.fory</groupId>
-  <artifactId>fory-simd</artifactId>
-  <version>1.4.0</version>
-</dependency>
--->
 ```
 
 ## Scala
@@ -146,7 +138,7 @@ dart run build_runner build --delete-conflicting-outputs
 
 ## C\#
 
-Install the `Apache.Fory` NuGet package. It includes both the runtime and the source generator for `[ForyObject]` types.
+Install the `Apache.Fory` NuGet package. It includes both the runtime and the source generator for `[ForyStruct]` types.
 
 ```bash
 dotnet add package Apache.Fory --version 1.4.0

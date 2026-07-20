@@ -26,14 +26,6 @@ Apache Fory™ 同时提供源码发布物和各语言对应的软件包。
   <version>1.4.0</version>
 </dependency>
 -->
-<!-- 用于数组压缩的 SIMD 加速（Java 16+） -->
-<!--
-<dependency>
-  <groupId>org.apache.fory</groupId>
-  <artifactId>fory-simd</artifactId>
-  <version>1.4.0</version>
-</dependency>
--->
 ```
 
 ## Scala
@@ -146,7 +138,7 @@ dart run build_runner build --delete-conflicting-outputs
 
 ## C\#
 
-安装 `Apache.Fory` NuGet 包。它同时包含运行时以及 `[ForyObject]` 类型所需的源代码生成器。
+安装 `Apache.Fory` NuGet 包。它同时包含运行时以及 `[ForyStruct]` 类型所需的源代码生成器。
 
 ```bash
 dotnet add package Apache.Fory --version 1.4.0

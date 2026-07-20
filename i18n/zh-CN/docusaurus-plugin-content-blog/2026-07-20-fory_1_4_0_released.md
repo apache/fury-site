@@ -2,7 +2,7 @@
 slug: fory_1_4_0_release
 title: Apache Fory 1.4.0 正式发布
 authors: [chaokunyang]
-tags: [fory, java, kotlin, scala, android, python, rust, c++, go, c#, swift, dart, compiler]
+tags: [fory, java, kotlin, scala, android, python, rust, cpp, go, csharp, swift, dart, compiler]
 ---
 
 Apache Fory 团队很高兴地宣布 1.4.0 版本正式发布。本次发布由 9 位贡献者共同完成，包含 [65 个 PR](https://github.com/apache/fory/compare/v1.3.0...v1.4.0)。请访问[安装](https://fory.apache.org/zh-CN/docs/start/install)页面，获取适用于您所用平台的库。

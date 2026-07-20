@@ -226,12 +226,14 @@ _ = f.Deserialize(payload, &out)`,
     id: "cpp",
     label: "C++",
     installLanguage: "cmake",
-    install: `FetchContent_Declare(
+    install: `include(FetchContent)
+FetchContent_Declare(
   fory
   GIT_REPOSITORY https://github.com/apache/fory.git
   GIT_TAG v1.4.0
   SOURCE_SUBDIR cpp
-)`,
+)
+FetchContent_MakeAvailable(fory)`,
     codeLanguage: "cpp",
     guide: "/docs/guide/cpp/",
     summary: "C++17 support covers xlang/native payloads, macro-based type registration, and row-format APIs.",
@@ -255,7 +257,7 @@ auto out = fory.deserialize<Person>(bytes).value();`,
     id: "javascript",
     label: "JavaScript",
     installLanguage: "bash",
-    install: `npm install @apache-fory/core fory-nps`,
+    install: `npm install @apache-fory/core @apache-fory/hps`,
     codeLanguage: "typescript",
     guide: "/docs/guide/javascript/",
     summary: "JavaScript/TypeScript is xlang-only, schema-driven, and runs in Node.js or browsers.",

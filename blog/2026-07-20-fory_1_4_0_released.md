@@ -2,7 +2,7 @@
 slug: fory_1_4_0_release
 title: Fory v1.4.0 Released
 authors: [chaokunyang]
-tags: [fory, java, kotlin, scala, android, python, rust, c++, go, c#, swift, dart, compiler]
+tags: [fory, java, kotlin, scala, android, python, rust, cpp, go, csharp, swift, dart, compiler]
 ---
 
 The Apache Fory team is pleased to announce the 1.4.0 release. This release includes [65 PRs](https://github.com/apache/fory/compare/v1.3.0...v1.4.0) from 9 distinct contributors. See the [Install](https://fory.apache.org/docs/start/install) page to get the libraries for your platform.
