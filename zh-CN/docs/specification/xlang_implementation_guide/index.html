@@ -1,31 +1,28 @@
-<!doctype html><html lang=zh-CN dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-1.3.0 docs-doc-page docs-doc-id-specification/xlang_implementation_guide" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Xlang Implementation Guide | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide /><meta data-rh=true property=og:locale content=zh_CN /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-CN /><meta data-rh=true name=docsearch:language content=zh-CN /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=1.3.0 /><meta data-rh=true name=docusaurus_tag content=docs-default-1.3.0 /><meta data-rh=true name=docsearch:version content=1.3.0 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-1.3.0 /><meta data-rh=true property=og:title content="Xlang Implementation Guide | Apache Fory™"/><meta data-rh=true name=description content=Overview /><meta data-rh=true property=og:description content=Overview /><link data-rh=true rel=icon href=/zh-CN/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/specification/xlang_implementation_guide hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/specification/xlang_implementation_guide hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide","name":"Xlang Implementation Guide","position":1}]}</script><link rel=alternate type=application/rss+xml href=/zh-CN/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/zh-CN/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){for(var o=window.location.pathname,a=["guide","introduction","start"],n=0;n<a.length;n++){var t=a[n],i=RegExp("^((?:/[a-z]{2}-[A-Z]{2})?/docs(?:/(?:next|[0-9]+.[0-9]+))?)/docs/"+t+"(/.*)?$"),c=o.match(i);if(c){var r=c[1]+"/"+t+(c[2]||"");window.location.replace(r+window.location.search+window.location.hash);return}}}()</script><link rel=stylesheet href=/zh-CN/assets/css/styles.3a1edaa1.css /><script src=/zh-CN/assets/js/runtime~main.a97f7ac4.js defer></script><script src=/zh-CN/assets/js/main.2be88c9e.js defer></script></head><body><svg style="display: none;"><defs>
+<!doctype html><html lang=zh-CN dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-1.4.0 docs-doc-page docs-doc-id-specification/xlang_implementation_guide" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Xlang 实现指南 | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide /><meta data-rh=true property=og:locale content=zh_CN /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-CN /><meta data-rh=true name=docsearch:language content=zh-CN /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=1.4.0 /><meta data-rh=true name=docusaurus_tag content=docs-default-1.4.0 /><meta data-rh=true name=docsearch:version content=1.4.0 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-1.4.0 /><meta data-rh=true property=og:title content="Xlang 实现指南 | Apache Fory™"/><meta data-rh=true name=description content=概览 /><meta data-rh=true property=og:description content=概览 /><link data-rh=true rel=icon href=/zh-CN/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/specification/xlang_implementation_guide hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/specification/xlang_implementation_guide hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/zh-CN/docs/specification/xlang_implementation_guide","name":"Xlang 实现指南","position":1}]}</script><link rel=alternate type=application/rss+xml href=/zh-CN/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/zh-CN/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){for(var o=window.location.pathname,a=["guide","introduction","start"],n=0;n<a.length;n++){var t=a[n],i=RegExp("^((?:/[a-z]{2}-[A-Z]{2})?/docs(?:/(?:next|[0-9]+.[0-9]+))?)/docs/"+t+"(/.*)?$"),c=o.match(i);if(c){var r=c[1]+"/"+t+(c[2]||"");window.location.replace(r+window.location.search+window.location.hash);return}}}()</script><link rel=stylesheet href=/zh-CN/assets/css/styles.3a1edaa1.css /><script src=/zh-CN/assets/js/runtime~main.1f4714fd.js defer></script><script src=/zh-CN/assets/js/main.d4e624b8.js defer></script></head><body><svg style="display: none;"><defs>
 <symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
 </defs></svg>
-<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label=跳到主要内容><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>跳到主要内容</a></div><nav aria-label=主导航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切换导航栏 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/zh-CN/><div class=navbar__logo><img src=/zh-CN/img/fory-logo-light.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/zh-CN/img/fory-logo-dark.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/zh-CN/docs/introduction/overview>文档</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/zh-CN/docs/specification/xlang_serialization_spec>规范</a><a class="navbar__item navbar__link" href=/zh-CN/docs/community/>社区</a><a class="navbar__item navbar__link" href=/zh-CN/user>用户</a><a class="navbar__item navbar__link" href=/zh-CN/download>下载</a><a class="navbar__item navbar__link" href=/zh-CN/blog>博客</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>基金会</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>许可证</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>事件</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>隐私</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>安全</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>赞助</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>感谢</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>行为准则</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/zh-CN/docs/specification/xlang_implementation_guide>1.3.0</a><ul class=dropdown__menu><li><a class=dropdown__link href=/zh-CN/docs/next/specification/xlang_implementation_guide>dev</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/zh-CN/docs/specification/xlang_implementation_guide>1.3.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.2.0/specification/xlang_implementation_guide>1.2.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.1.0/specification/xlang_implementation_guide>1.1.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.0.0/specification/xlang_implementation_guide>1.0.0</a><li><a class=dropdown__link href=/zh-CN/docs/0.17/specification/xlang_implementation_guide>0.17</a><li><a class=dropdown__link href=/zh-CN/docs/0.16/specification/xlang_implementation_guide>0.16</a><li><a class=dropdown__link href=/zh-CN/docs/0.15/specification/xlang_implementation_guide>0.15</a><li><a class=dropdown__link href=/zh-CN/docs/0.14/introduction/overview>0.14</a><li><a class=dropdown__link href=/zh-CN/docs/0.13/introduction/overview>0.13</a><li><a class=dropdown__link href=/zh-CN/docs/0.12/introduction/overview>0.12</a><li><a class=dropdown__link href=/zh-CN/docs/0.11/introduction/overview>0.11</a><li><a class=dropdown__link href=/zh-CN/docs/0.10/introduction/overview>0.10</a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>简体中文</a><ul class=dropdown__menu><li><a href=/docs/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/zh-CN/docs/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label=回到顶部 class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label=文档侧边栏 class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/xlang_serialization_spec><span title="Xlang Serialization Format" class=linkLabel_WmDU>Xlang Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/java_serialization_spec><span title="Java Serialization Format" class=linkLabel_WmDU>Java Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/row_format_spec><span title="Row Format" class=linkLabel_WmDU>Row Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/xlang_type_mapping><span title="Xlang Type Mapping" class=linkLabel_WmDU>Xlang Type Mapping</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/zh-CN/docs/specification/xlang_implementation_guide><span title="Xlang Implementation Guide" class=linkLabel_WmDU>Xlang Implementation Guide</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=页面路径><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label=主页面 class=breadcrumbs__link href=/zh-CN/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Xlang Implementation Guide</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">版本：1.3.0</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>Xlang Implementation Guide</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=overview>Overview<a href=#overview class=hash-link aria-label=Overview的直接链接 title=Overview的直接链接 translate=no>​</a></h2>
-<p>This guide describes the current xlang implementation ownership model used by
-the xlang runtimes.</p>
-<p>The wire format is defined by
-<a class="" href=/zh-CN/docs/specification/xlang_serialization_spec>Xlang Serialization Spec</a>. This document is about
-service boundaries, operation flow, and internal ownership. New language implementations do not
-need the same class names, but they should preserve the same control flow:</p>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label=跳到主要内容><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>跳到主要内容</a></div><nav aria-label=主导航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切换导航栏 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/zh-CN/><div class=navbar__logo><img src=/zh-CN/img/fory-logo-light.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/zh-CN/img/fory-logo-dark.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/zh-CN/docs/introduction/overview>文档</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/zh-CN/docs/specification/java_serialization_spec>规范</a><a class="navbar__item navbar__link" href=/zh-CN/docs/community/>社区</a><a class="navbar__item navbar__link" href=/zh-CN/user>用户</a><a class="navbar__item navbar__link" href=/zh-CN/download>下载</a><a class="navbar__item navbar__link" href=/zh-CN/blog>博客</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>基金会</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>许可证</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>事件</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>隐私</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>安全</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>赞助</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>感谢</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>行为准则</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/zh-CN/docs/specification/xlang_implementation_guide>1.4.0</a><ul class=dropdown__menu><li><a class=dropdown__link href=/zh-CN/docs/next/specification/xlang_implementation_guide>dev</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/zh-CN/docs/specification/xlang_implementation_guide>1.4.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.3.0/specification/xlang_implementation_guide>1.3.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.2.0/specification/xlang_implementation_guide>1.2.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.1.0/specification/xlang_implementation_guide>1.1.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.0.0/specification/xlang_implementation_guide>1.0.0</a><li><a class=dropdown__link href=/zh-CN/docs/0.17/specification/xlang_implementation_guide>0.17</a><li><a class=dropdown__link href=/zh-CN/docs/0.16/specification/xlang_implementation_guide>0.16</a><li><a class=dropdown__link href=/zh-CN/docs/0.15/specification/xlang_implementation_guide>0.15</a><li><a class=dropdown__link href=/zh-CN/docs/0.14/introduction/overview>0.14</a><li><a class=dropdown__link href=/zh-CN/docs/0.13/introduction/overview>0.13</a><li><a class=dropdown__link href=/zh-CN/docs/0.12/introduction/overview>0.12</a><li><a class=dropdown__link href=/zh-CN/docs/0.11/introduction/overview>0.11</a><li><a class=dropdown__link href=/zh-CN/docs/0.10/introduction/overview>0.10</a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>简体中文</a><ul class=dropdown__menu><li><a href=/docs/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/zh-CN/docs/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label=回到顶部 class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label=文档侧边栏 class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/java_serialization_spec><span title="Java 序列化格式" class=linkLabel_WmDU>Java 序列化格式</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/row_format_spec><span title="Row 格式" class=linkLabel_WmDU>Row 格式</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/xlang_serialization_spec><span title="Xlang 序列化格式" class=linkLabel_WmDU>Xlang 序列化格式</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/specification/xlang_type_mapping><span title="Xlang 类型映射" class=linkLabel_WmDU>Xlang 类型映射</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/zh-CN/docs/specification/xlang_implementation_guide><span title="Xlang 实现指南" class=linkLabel_WmDU>Xlang 实现指南</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=页面路径><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label=主页面 class=breadcrumbs__link href=/zh-CN/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Xlang 实现指南</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">版本：1.4.0</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>Xlang 实现指南</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=概览>概览<a href=#概览 class=hash-link aria-label=概览的直接链接 title=概览的直接链接 translate=no>​</a></h2>
+<p>本指南描述当前 xlang 运行时的所有权模型。该模型由参考 Java
+运行时采用，并由 Dart 运行时重写版本镜像实现。</p>
+<p>编码格式由 <a class="" href=/zh-CN/docs/specification/xlang_serialization_spec>Xlang Serialization Spec</a>
+定义。本文关注的是服务边界、操作流程与内部所有权。新运行时不必使用相同的类名，
+但应保持相同的控制流：</p>
 <ul>
-<li class="">root operations stay on the <code>Fory</code> facade</li>
-<li class="">nested payload work stays on explicit read and write contexts</li>
-<li class="">type metadata stays in the type resolver layer</li>
-<li class="">serializers stay payload-focused</li>
+<li class="">根级操作留在运行时门面上</li>
+<li class="">嵌套载荷处理留在显式的读写上下文中</li>
+<li class="">类型元信息留在类型解析层</li>
+<li class="">serializer 只关注载荷本身</li>
 </ul>
-<p>When this guide conflicts with the wire-format specification, follow
-<code>docs/specification/xlang_serialization_spec.md</code>. When it conflicts with a
-language-specific implementation detail, follow the current implementation code for
-that language.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=source-of-truth>Source Of Truth<a href=#source-of-truth class=hash-link aria-label="Source Of Truth的直接链接" title="Source Of Truth的直接链接" translate=no>​</a></h2>
-<p>Use these sources in this order:</p>
+<p>如果本指南与编码格式规范冲突，应以
+<code>docs/specification/xlang_serialization_spec.md</code> 为准；如果与某个语言运行时的实现细节冲突，则以该语言当前运行时代码为准。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=事实来源>事实来源<a href=#事实来源 class=hash-link aria-label=事实来源的直接链接 title=事实来源的直接链接 translate=no>​</a></h2>
+<p>按以下顺序使用这些来源：</p>
 <ol>
 <li class=""><code>docs/specification/xlang_serialization_spec.md</code></li>
-<li class="">the current implementation for the language</li>
-<li class="">cross-language tests under <code>integration_tests/</code></li>
+<li class="">该语言当前的运行时实现</li>
+<li class=""><code>integration_tests/</code> 下的跨语言测试</li>
 </ol>
-<p>For Dart, the implementation shape is centered on:</p>
+<p>对于 Dart，运行时形态主要围绕以下组件展开：</p>
 <ul>
 <li class=""><code>Fory</code></li>
 <li class=""><code>WriteContext</code></li>
@@ -33,519 +30,411 @@ that language.</p>
 <li class=""><code>RefWriter</code></li>
 <li class=""><code>RefReader</code></li>
 <li class=""><code>TypeResolver</code></li>
-<li class=""><code>StructSerializer</code></li>
+<li class=""><code>StructCodec</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=implementation-ownership-model>Implementation Ownership Model<a href=#implementation-ownership-model class=hash-link aria-label="Implementation Ownership Model的直接链接" title="Implementation Ownership Model的直接链接" translate=no>​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=fory-is-the-root-operation-facade><code>Fory</code> is the root-operation facade<a href=#fory-is-the-root-operation-facade class=hash-link aria-label=fory-is-the-root-operation-facade的直接链接 title=fory-is-the-root-operation-facade的直接链接 translate=no>​</a></h3>
-<p><code>Fory</code> owns the reusable services for one Fory instance.</p>
-<p>In Dart, <code>Fory</code> owns exactly four reusable members:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=运行时所有权模型>运行时所有权模型<a href=#运行时所有权模型 class=hash-link aria-label=运行时所有权模型的直接链接 title=运行时所有权模型的直接链接 translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=fory-是根操作门面><code>Fory</code> 是根操作门面<a href=#fory-是根操作门面 class=hash-link aria-label=fory-是根操作门面的直接链接 title=fory-是根操作门面的直接链接 translate=no>​</a></h3>
+<p><code>Fory</code> 持有一个运行时实例可复用的运行时服务。</p>
+<p>在 Dart 中，<code>Fory</code> 恰好持有四个运行时成员：</p>
 <ul>
 <li class=""><code>Buffer</code></li>
 <li class=""><code>WriteContext</code></li>
 <li class=""><code>ReadContext</code></li>
 <li class=""><code>TypeResolver</code></li>
 </ul>
-<p>In Java, <code>Fory</code> also owns instance-local services such as <code>JITContext</code> and
-<code>CopyContext</code>, but the ownership rule is the same: <code>Fory</code> is the root facade,
-not the place where nested serializers do their work.</p>
-<p><code>Fory</code> is responsible for:</p>
+<p>在 Java 中，<code>Fory</code> 还持有 <code>JITContext</code>、<code>CopyContext</code>
+等运行时本地服务，但所有权规则相同：<code>Fory</code>
+是根级门面，而不是嵌套 serializer 执行工作的地方。</p>
+<p><code>Fory</code> 负责：</p>
 <ul>
-<li class="">preparing the shared buffer for root operations</li>
-<li class="">writing and reading the root xlang header bitmap</li>
-<li class="">delegating nested value encoding to <code>WriteContext</code></li>
-<li class="">delegating nested value decoding to <code>ReadContext</code></li>
-<li class="">owning registration through <code>TypeResolver</code></li>
-<li class="">resetting operation-local context state in a top-level <code>finally</code></li>
+<li class="">为根级操作准备共享 buffer</li>
+<li class="">写入和读取根级 xlang 头部位图</li>
+<li class="">将嵌套值编码委托给 <code>WriteContext</code></li>
+<li class="">将嵌套值解码委托给 <code>ReadContext</code></li>
+<li class="">通过 <code>TypeResolver</code> 持有注册能力</li>
+<li class="">在顶层 <code>finally</code> 中重置操作级上下文状态</li>
 </ul>
-<p>Nested serializers must not call back into root <code>serialize(...)</code> or
-<code>deserialize(...)</code> entry points.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext-and-readcontext-hold-operation-local-state><code>WriteContext</code> and <code>ReadContext</code> hold operation-local state<a href=#writecontext-and-readcontext-hold-operation-local-state class=hash-link aria-label=writecontext-and-readcontext-hold-operation-local-state的直接链接 title=writecontext-and-readcontext-hold-operation-local-state的直接链接 translate=no>​</a></h3>
-<p><code>WriteContext</code> and <code>ReadContext</code> are prepared by <code>Fory</code> for one root operation
-and reset by <code>Fory</code> in a <code>finally</code> block before reuse.</p>
-<p><code>prepare(...)</code> should only bind the active buffer and root-operation inputs.
-<code>reset()</code> should clear operation-local mutable state.</p>
-<p>That operation-local state includes:</p>
+<p>嵌套 serializer 不得回调根级 <code>serialize(...)</code> 或 <code>deserialize(...)</code>
+入口。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext-和-readcontext-持有操作级状态><code>WriteContext</code> 和 <code>ReadContext</code> 持有操作级状态<a href=#writecontext-和-readcontext-持有操作级状态 class=hash-link aria-label=writecontext-和-readcontext-持有操作级状态的直接链接 title=writecontext-和-readcontext-持有操作级状态的直接链接 translate=no>​</a></h3>
+<p><code>WriteContext</code> 与 <code>ReadContext</code>
+由 <code>Fory</code> 为一次根级操作准备，并在复用前由 <code>Fory</code>
+在 <code>finally</code> 块中重置。</p>
+<p><code>prepare(...)</code> 应只绑定当前 buffer 和根级操作输入。<code>reset()</code>
+应清理操作级可变状态。</p>
+<p>这些操作级状态包括：</p>
 <ul>
-<li class="">the current buffer</li>
-<li class="">the active <code>RefWriter</code> or <code>RefReader</code></li>
-<li class="">meta-string state</li>
-<li class="">shared type-definition state</li>
-<li class="">operation-local scratch state keyed by identity</li>
-<li class="">logical object-graph depth</li>
+<li class="">当前 buffer</li>
+<li class="">当前活动的 <code>RefWriter</code> 或 <code>RefReader</code></li>
+<li class="">meta string 状态</li>
+<li class="">共享 TypeDef 状态</li>
+<li class="">以对象 identity 为键的操作级临时状态</li>
+<li class="">compatible struct slot 状态</li>
+<li class="">逻辑对象图深度</li>
 </ul>
-<p>Generated and hand-written serializers should treat these contexts as the only
-source of operation-local services. Serializers must not keep ambient instance
-state in thread locals, globals, or serializer instance fields.</p>
+<p>无论是生成的还是手写的 serializer，都应把这些 context
+视为操作级服务的唯一来源。serializer
+不得把环境运行时状态保存在 thread local、全局变量或 serializer
+实例字段中。</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext><code>WriteContext</code><a href=#writecontext class=hash-link aria-label=writecontext的直接链接 title=writecontext的直接链接 translate=no>​</a></h3>
-<p><code>WriteContext</code> owns all write-side per-operation state:</p>
+<p><code>WriteContext</code> 持有写侧的全部操作级状态：</p>
 <ul>
-<li class="">current <code>Buffer</code></li>
+<li class="">当前 <code>Buffer</code></li>
 <li class=""><code>RefWriter</code></li>
 <li class=""><code>MetaStringWriter</code></li>
-<li class="">shared TypeDef write state</li>
-<li class="">root <code>trackRef</code> mode</li>
-<li class="">recursion depth and limits</li>
+<li class="">共享 TypeDef 写入状态</li>
+<li class="">根级 <code>trackRef</code> 模式</li>
+<li class="">递归深度与限制</li>
+<li class="">compatible 写入使用的本地 struct slot 状态</li>
 </ul>
-<p>It exposes one-shot primitive helpers such as:</p>
+<p>它暴露一组一次性基础类型 helper，例如：</p>
 <ul>
 <li class=""><code>writeBool</code></li>
 <li class=""><code>writeInt32</code></li>
-<li class=""><code>writeVarUInt32</code></li>
+<li class=""><code>writeVarUint32</code></li>
 </ul>
-<p>These helpers are convenience methods. Serializers that perform repeated
-primitive IO should cache <code>final buffer = context.buffer;</code> and call buffer
-methods directly.</p>
+<p>这些 helper 只是便捷方法。若 serializer
+需要执行大量重复的基础类型 IO，应缓存 <code>final buffer = context.buffer;</code>
+并直接调用 buffer 方法。</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext><code>ReadContext</code><a href=#readcontext class=hash-link aria-label=readcontext的直接链接 title=readcontext的直接链接 translate=no>​</a></h3>
-<p><code>ReadContext</code> owns all read-side per-operation state:</p>
+<p><code>ReadContext</code> 持有读侧的全部操作级状态：</p>
 <ul>
-<li class="">current <code>Buffer</code></li>
+<li class="">当前 <code>Buffer</code></li>
 <li class=""><code>RefReader</code></li>
 <li class=""><code>MetaStringReader</code></li>
-<li class="">shared TypeDef read state</li>
-<li class="">recursion depth and limits</li>
+<li class="">共享 TypeDef 读取状态</li>
+<li class="">递归深度与限制</li>
+<li class="">compatible 读取使用的本地 struct slot 状态</li>
 </ul>
-<p>It exposes matching one-shot primitive helpers such as:</p>
+<p>它暴露对应的一次性基础类型 helper，例如：</p>
 <ul>
 <li class=""><code>readBool</code></li>
 <li class=""><code>readInt32</code></li>
-<li class=""><code>readVarUInt32</code></li>
+<li class=""><code>readVarUint32</code></li>
 </ul>
-<p>Generated struct serializers call <code>context.reference(value)</code> immediately after
-constructing the target instance so back-references can resolve to that object.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-tracking>Reference Tracking<a href=#reference-tracking class=hash-link aria-label="Reference Tracking的直接链接" title="Reference Tracking的直接链接" translate=no>​</a></h2>
-<p>Reference handling is split behind two explicit services:</p>
+<p>生成的 struct serializer 在构造目标实例后，应立即调用
+<code>context.reference(value)</code>，这样回引用才能解析到该对象。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=引用跟踪>引用跟踪<a href=#引用跟踪 class=hash-link aria-label=引用跟踪的直接链接 title=引用跟踪的直接链接 translate=no>​</a></h2>
+<p>引用处理被拆分到两个显式服务之后：</p>
 <ul>
-<li class=""><code>RefWriter</code> writes null, ref, and new-value markers and remembers previously
-written objects by identity.</li>
-<li class=""><code>RefReader</code> decodes those markers, reserves read reference IDs, and resolves
-previously materialized objects.</li>
+<li class=""><code>RefWriter</code> 写入 null、ref 与 new-value 标记，并按对象 identity
+记住已经写出的对象。</li>
+<li class=""><code>RefReader</code> 解码这些标记，预留读取侧引用 ID，并解析已经实例化过的对象。</li>
 </ul>
-<p>The xlang ref markers are:</p>
+<p>xlang 的引用标记如下：</p>
 <ul>
 <li class=""><code>NULL_FLAG (-3)</code></li>
 <li class=""><code>REF_FLAG (-2)</code></li>
 <li class=""><code>NOT_NULL_VALUE_FLAG (-1)</code></li>
 <li class=""><code>REF_VALUE_FLAG (0)</code></li>
 </ul>
-<p>Key behavior:</p>
+<p>关键行为：</p>
 <ul>
-<li class="">basic values never use ref tracking</li>
-<li class="">field metadata controls ref behavior inside generated structs</li>
-<li class="">root <code>trackRef</code> is only for top-level graphs and container roots with no
-field metadata</li>
-<li class="">serializers that allocate an object before all nested reads complete must bind
-that object early with <code>context.reference(...)</code></li>
+<li class="">基础值永远不使用引用跟踪</li>
+<li class="">生成的 struct 内部由字段元信息控制引用行为</li>
+<li class="">根级 <code>trackRef</code> 只用于顶层对象图以及没有字段元信息的容器根对象</li>
+<li class="">若 serializer 在所有嵌套读取完成之前就分配了对象，则必须通过
+<code>context.reference(...)</code> 尽早绑定该对象</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-resolution>Type Resolution<a href=#type-resolution class=hash-link aria-label="Type Resolution的直接链接" title="Type Resolution的直接链接" translate=no>​</a></h2>
-<p><code>TypeResolver</code> owns:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=类型解析>类型解析<a href=#类型解析 class=hash-link aria-label=类型解析的直接链接 title=类型解析的直接链接 translate=no>​</a></h2>
+<p><code>TypeResolver</code> 持有：</p>
 <ul>
-<li class="">built-in type resolution</li>
-<li class="">registration by numeric id or by <code>namespace + typeName</code></li>
-<li class="">serializer lookup</li>
-<li class="">struct metadata lookup</li>
-<li class="">type metadata encoding and decoding</li>
-<li class="">canonical encoded meta strings for package names, type names, and field names</li>
-<li class="">encoded-name lookup for named type resolution</li>
-<li class="">wire type decisions for struct, compatible struct, enum, ext, and union forms</li>
+<li class="">内建类型解析</li>
+<li class="">按数值 ID 或 <code>namespace + typeName</code> 注册</li>
+<li class="">serializer 查找</li>
+<li class="">struct 元数据查找</li>
+<li class="">类型元信息编码与解码</li>
+<li class="">包名、类型名、字段名的规范化编码 meta string</li>
+<li class="">用于 named 类型解析的已编码名称查找</li>
+<li class="">struct、compatible struct、enum、ext、union 等形式的编码类型判定</li>
 </ul>
-<p>In Java xlang mode the concrete implementation is <code>XtypeResolver</code>. In Dart the
-same ownership stays behind the internal <code>TypeResolver</code>.</p>
-<p>Serializers do not resolve class metadata themselves. They ask the current
-context to read or write nested values, and the context delegates type work to
-<code>TypeResolver</code>.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-frame-responsibilities>Root Frame Responsibilities<a href=#root-frame-responsibilities class=hash-link aria-label="Root Frame Responsibilities的直接链接" title="Root Frame Responsibilities的直接链接" translate=no>​</a></h2>
-<p>Every root payload starts with a one-byte bitmap written and read by <code>Fory</code>
-itself, not by serializers.</p>
-<p>Current xlang root bits:</p>
+<p>在 Java xlang 模式中，具体实现是 <code>XtypeResolver</code>。在 Dart 中，相同的所有权仍由内部 <code>TypeResolver</code> 持有。</p>
+<p>serializer 自身不负责解析类元数据。它们通过当前 context
+请求读写嵌套值，再由 context 将类型相关工作委托给 <code>TypeResolver</code>。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=根帧职责>根帧职责<a href=#根帧职责 class=hash-link aria-label=根帧职责的直接链接 title=根帧职责的直接链接 translate=no>​</a></h2>
+<p>每个根载荷都以一个 1-byte 位图开头，该位图由 <code>Fory</code>
+自身写入和读取，而不是由 serializer 负责。</p>
+<p>当前 xlang 根级位定义如下：</p>
 <table><thead><tr><th>Bit<th>Meaning<tbody><tr><td><code>0</code><td>null root payload<tr><td><code>1</code><td>xlang payload<tr><td><code>2</code><td>out-of-band buffers in use</table>
-<p>Keep the root bitmap separate from per-object ref markers:</p>
+<p>应将根级位图与逐对象引用标记区分开：</p>
 <ul>
-<li class="">the root bitmap describes the whole payload</li>
-<li class="">ref flags describe one nested value at a time</li>
+<li class="">根级位图描述整个载荷</li>
+<li class="">引用标记一次只描述一个嵌套值</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=serialization-flow>Serialization Flow<a href=#serialization-flow class=hash-link aria-label="Serialization Flow的直接链接" title="Serialization Flow的直接链接" translate=no>​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-write-path>Root write path<a href=#root-write-path class=hash-link aria-label="Root write path的直接链接" title="Root write path的直接链接" translate=no>​</a></h3>
-<p>The current root write flow is:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=序列化流程>序列化流程<a href=#序列化流程 class=hash-link aria-label=序列化流程的直接链接 title=序列化流程的直接链接 translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=根级写路径>根级写路径<a href=#根级写路径 class=hash-link aria-label=根级写路径的直接链接 title=根级写路径的直接链接 translate=no>​</a></h3>
+<p>当前根级写流程如下：</p>
 <ol>
-<li class=""><code>Fory.serialize(...)</code> or <code>serializeTo(...)</code> prepares the target buffer.</li>
-<li class=""><code>Fory</code> calls <code>writeContext.prepare(...)</code>.</li>
-<li class=""><code>Fory</code> writes the root bitmap.</li>
-<li class=""><code>Fory</code> delegates the root object to <code>WriteContext</code>.</li>
-<li class=""><code>writeContext.reset()</code> runs in <code>finally</code>.</li>
+<li class=""><code>Fory.serialize(...)</code> 或 <code>serializeTo(...)</code> 准备目标 buffer。</li>
+<li class=""><code>Fory</code> 调用 <code>writeContext.prepare(...)</code>。</li>
+<li class=""><code>Fory</code> 写入根级位图。</li>
+<li class=""><code>Fory</code> 将根对象委托给 <code>WriteContext</code>。</li>
+<li class=""><code>writeContext.reset()</code> 在 <code>finally</code> 中执行。</li>
 </ol>
-<p>For a non-null root value, <code>WriteContext.writeRootValue(...)</code> performs:</p>
+<p>对于非空根值，<code>WriteContext.writeRootValue(...)</code> 会执行：</p>
 <ol>
-<li class="">ref/null framing</li>
-<li class="">type metadata write</li>
-<li class="">payload write</li>
+<li class="">引用/null 包装</li>
+<li class="">类型元信息写入</li>
+<li class="">载荷写入</li>
 </ol>
-<p>Payload serializers are responsible only for the payload of their type. They do
-not write the root bitmap and they do not own registration or type-header
-encoding.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=nested-writes-use-writecontext>Nested writes use <code>WriteContext</code><a href=#nested-writes-use-writecontext class=hash-link aria-label=nested-writes-use-writecontext的直接链接 title=nested-writes-use-writecontext的直接链接 translate=no>​</a></h3>
-<p>Important rules:</p>
+<p>载荷 serializer 只负责自身类型的载荷。它们不写根级位图，也不负责注册或类型头编码。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=嵌套写入使用-writecontext>嵌套写入使用 <code>WriteContext</code><a href=#嵌套写入使用-writecontext class=hash-link aria-label=嵌套写入使用-writecontext的直接链接 title=嵌套写入使用-writecontext的直接链接 translate=no>​</a></h3>
+<p>重要规则：</p>
 <ul>
-<li class="">nested serializers must use <code>WriteContext</code> helpers such as <code>writeRef(...)</code>,
-<code>writeNonRef(...)</code>, and container helpers when they need ref handling or type
-metadata</li>
-<li class="">repeated primitive writes should go directly through the buffer</li>
-<li class="">nested serializer flow should stay straight-line; do not add internal
-<code>try/finally</code> blocks just to clean per-operation state</li>
-<li class="">top-level <code>Fory.serialize(...)</code> owns the operation reset <code>finally</code></li>
+<li class="">当嵌套 serializer 需要引用处理或类型元信息时，必须使用
+<code>WriteContext</code> 的 helper，例如 <code>writeRef(...)</code>、<code>writeNonRef(...)</code>
+以及容器 helper</li>
+<li class="">重复的基础类型写入应直接走 buffer</li>
+<li class="">嵌套 serializer 的流程应保持直线式，不要仅为了清理操作级状态而添加内部
+<code>try/finally</code></li>
+<li class="">顶层 <code>Fory.serialize(...)</code> 持有操作重置所需的 <code>finally</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=deserialization-flow>Deserialization Flow<a href=#deserialization-flow class=hash-link aria-label="Deserialization Flow的直接链接" title="Deserialization Flow的直接链接" translate=no>​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-read-path>Root read path<a href=#root-read-path class=hash-link aria-label="Root read path的直接链接" title="Root read path的直接链接" translate=no>​</a></h3>
-<p>The current root read flow mirrors the write flow:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=反序列化流程>反序列化流程<a href=#反序列化流程 class=hash-link aria-label=反序列化流程的直接链接 title=反序列化流程的直接链接 translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=根级读路径>根级读路径<a href=#根级读路径 class=hash-link aria-label=根级读路径的直接链接 title=根级读路径的直接链接 translate=no>​</a></h3>
+<p>当前根级读流程与写流程对称：</p>
 <ol>
-<li class=""><code>Fory.deserialize(...)</code> or <code>deserializeFrom(...)</code> reads the root bitmap.</li>
-<li class="">null roots return immediately.</li>
-<li class=""><code>Fory</code> validates xlang mode and other root framing requirements.</li>
-<li class=""><code>Fory</code> calls <code>readContext.prepare(...)</code>.</li>
-<li class=""><code>Fory</code> delegates to <code>ReadContext</code>.</li>
-<li class=""><code>readContext.reset()</code> runs in <code>finally</code>.</li>
+<li class=""><code>Fory.deserialize(...)</code> 或 <code>deserializeFrom(...)</code> 读取根级位图。</li>
+<li class="">若根值为 null，立即返回。</li>
+<li class=""><code>Fory</code> 校验 xlang 模式与其他根帧要求。</li>
+<li class=""><code>Fory</code> 调用 <code>readContext.prepare(...)</code>。</li>
+<li class=""><code>Fory</code> 委托给 <code>ReadContext</code>。</li>
+<li class=""><code>readContext.reset()</code> 在 <code>finally</code> 中执行。</li>
 </ol>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext-owns-ref-reservation-and-payload-materialization><code>ReadContext</code> owns ref reservation and payload materialization<a href=#readcontext-owns-ref-reservation-and-payload-materialization class=hash-link aria-label=readcontext-owns-ref-reservation-and-payload-materialization的直接链接 title=readcontext-owns-ref-reservation-and-payload-materialization的直接链接 translate=no>​</a></h3>
-<p><code>ReadContext.readRef()</code> performs the normal xlang read sequence:</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext-持有引用预留与载荷实例化><code>ReadContext</code> 持有引用预留与载荷实例化<a href=#readcontext-持有引用预留与载荷实例化 class=hash-link aria-label=readcontext-持有引用预留与载荷实例化的直接链接 title=readcontext-持有引用预留与载荷实例化的直接链接 translate=no>​</a></h3>
+<p><code>ReadContext.readRef()</code> 执行标准的 xlang 读取序列：</p>
 <ol>
-<li class="">consume the next ref marker</li>
-<li class="">return <code>null</code> or a back-reference immediately when appropriate</li>
-<li class="">reserve a fresh read ref id for new reference-tracked values</li>
-<li class="">read type metadata</li>
-<li class="">read the payload</li>
-<li class="">bind the reserved read ref id to the completed object</li>
+<li class="">消费下一个引用标记</li>
+<li class="">在适当情况下立即返回 <code>null</code> 或回引用</li>
+<li class="">为新的可引用值预留新的读取侧引用 ID</li>
+<li class="">读取类型元信息</li>
+<li class="">读取载荷</li>
+<li class="">将预留的读取侧引用 ID 绑定到完成构造的对象</li>
 </ol>
-<p>Primitive and string-like hot paths should read directly from the buffer;
-complex payloads delegate to the resolved serializer.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=stream-and-buffer-byte-reads>Stream And Buffer Byte Reads<a href=#stream-and-buffer-byte-reads class=hash-link aria-label="Stream And Buffer Byte Reads的直接链接" title="Stream And Buffer Byte Reads的直接链接" translate=no>​</a></h3>
-<p>Implementations must keep byte availability in the byte owner layer while
-keeping string, binary, primitive-array, compression, and collection semantics in
-serializers.</p>
-<p>The required byte-owner primitive for allocation-before-read checks is a
-readability check such as <code>checkReadableBytes(byteCount)</code>. Implementations do
-not need additional generic read-context methods for this design. After the
-readability check succeeds, serializers use their existing local buffer read,
-copy, or decode paths.</p>
-<p>The readability check is a byte operation only. It must not decode strings,
-primitive-array element counts, compression modes, or collection capacity
-policy.</p>
-<p>For large byte-counted values, every implementation should call the byte-owner
-readability check before allocating a variable-length result. This applies to
-binary values, strings, decimal or metadata bodies, and primitive wire arrays
-whose encoded body is measured in bytes. For multi-byte primitive wire arrays,
-compare the encoded byte count, not only the logical element count, with the
-readable bytes.</p>
+<p>基础类型和类字符串的热点路径应直接从 buffer 读取；复杂载荷则委托给解析出的 serializer。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=流与-buffer-字节读取>流与 Buffer 字节读取<a href=#流与-buffer-字节读取 class=hash-link aria-label="流与 Buffer 字节读取的直接链接" title="流与 Buffer 字节读取的直接链接" translate=no>​</a></h3>
+<p>实现必须由字节所有者层负责字节可用性，由 serializer 负责字符串、二进制、基础类型数组、
+压缩和集合语义。</p>
+<p>分配前读取检查所需的字节所有者基础操作，是类似
+<code>checkReadableBytes(byteCount)</code> 的可读性检查。该设计不要求实现额外的通用 read context
+方法。可读性检查成功后，serializer 使用现有的本地 buffer 读取、复制或解码路径。</p>
+<p>可读性检查只处理字节，不得解码字符串、基础类型数组的元素数量、压缩模式或集合容量策略。</p>
+<p>对于按字节计数的大值，每种实现都应先调用字节所有者的可读性检查，再分配变长结果。
+这适用于二进制值、字符串、decimal 或 metadata body，以及编码 body 以字节计量的基础类型编码数组。
+对于多字节基础类型编码数组，应将编码字节数（而非仅逻辑元素数）与可读字节数比较。</p>
 <ol>
-<li class="">Validate the encoded byte count in the serializer. For fixed-width primitive
-arrays, check overflow and element alignment before allocation, such as
-<code>wireByteCount % elementByteWidth == 0</code>, then derive the logical element
-count from the encoded byte count.</li>
-<li class="">Call <code>checkReadableBytes(wireByteCount)</code> unconditionally before allocating
-the variable-length result. Buffer-backed inputs normally return from this
-check with only a bounds comparison. Stream-backed inputs use the same call;
-the byte owner handles the fast path when enough bytes are already buffered
-and otherwise fills the read buffer until the requested encoded body is
-readable or an input error is recorded.</li>
-<li class="">After readability is proven, allocate the final value once and copy or decode
-from the current readable buffer into the final result.</li>
+<li class="">在 serializer 中校验编码字节数。对于定长基础类型数组，应在分配前检查溢出和元素对齐，
+例如 <code>wireByteCount % elementByteWidth == 0</code>，然后根据编码字节数计算逻辑元素数。</li>
+<li class="">分配变长结果前，无条件调用 <code>checkReadableBytes(wireByteCount)</code>。对于由 buffer
+支撑的输入，该检查通常只需一次边界比较即可返回。由 stream 支撑的输入也使用同一个调用；
+当已缓存字节足够时，字节所有者走快速路径，否则填充读取 buffer，直至请求的编码 body
+可读或记录到输入错误。</li>
+<li class="">证明可读后，只分配一次最终值，再从当前可读 buffer 复制或解码到最终结果中。</li>
 </ol>
-<p><code>checkReadableBytes</code> is not an <code>ensureCapacity(wireByteCount)</code> operation. In
-stream mode it may end with the byte owner holding the full encoded body in its
-read buffer, but it must grow that buffer as bytes are successfully read from
-the stream. It should grow from current proven buffer capacity, such as by
-doubling current capacity, and cap only when that bounded growth step reaches
-the immediate target. A byte owner may use an owner-local availability signal as
-a one-shot growth hint when the stream implementation itself is caller-owned
-trusted code; if that hint is absent or insufficient, it must fall back to
-bounded growth from already buffered bytes. It must not reserve the
-attacker-declared length before input bytes or an owner-local growth hint
-justify that intermediate buffer capacity. The stream slow path may pay one
-extra intermediate buffer copy; this is preferable to serializer-local chunk
-accumulation and repeated final-container growth.</p>
-<p>For byte-counted values, the serializer should not duplicate the byte owner's
-fast-path branch by testing <code>availableBytes()</code> before calling
-<code>checkReadableBytes</code>. Keeping that branch in the byte owner gives every language
-the same correctness rule and keeps serializer hot paths focused on their own
-wire semantics.</p>
-<p>For primitive wire arrays:</p>
+<p><code>checkReadableBytes</code> 不是 <code>ensureCapacity(wireByteCount)</code> 操作。在 stream 模式下，
+它结束时可能已经让字节所有者在读取 buffer 中持有完整的编码 body，但该 buffer 必须随着
+stream 字节成功读入而扩容。它应从当前已证明的 buffer 容量开始增长（例如容量翻倍），
+仅在有界增长步骤达到当前目标时才以目标为上限。当 stream 实现本身是调用方持有的受信任代码时，
+字节所有者可以将自身的可用性信号作为一次性增长提示；若该提示不存在或不足，则必须退回到根据
+已缓存字节进行有界增长。在输入字节或所有者自身的增长提示足以证明所需中间 buffer 容量之前，
+不得按攻击者声明的长度预留空间。stream 慢路径可以付出一次额外的中间 buffer 复制；
+这仍优于 serializer 自行累积数据块并反复扩展最终容器。</p>
+<p>对于按字节计数的值，serializer 不应在调用 <code>checkReadableBytes</code> 前先测试
+<code>availableBytes()</code>，从而重复字节所有者的快速路径分支。将该分支留在字节所有者中，
+可以让所有语言遵循相同的正确性规则，并让 serializer 热点路径专注于自身的编码语义。</p>
+<p>对于基础类型编码数组：</p>
 <ul>
-<li class="">Compare and prove the encoded wire byte count, not only the logical element
-count.</li>
-<li class="">Keep compression, bit-packing, byte-order conversion, and other primitive
-array encoding semantics in the serializer. <code>checkReadableBytes</code> only proves
-that the encoded bytes are present.</li>
-<li class="">For compressed or transformed bodies, the serializer must still validate the
-decoded length and encoding-specific metadata before allocating or returning
-the final value.</li>
+<li class="">应比较并证明编码字节数，而不仅是逻辑元素数。</li>
+<li class="">压缩、位打包、字节序转换以及其他基础类型数组编码语义仍由 serializer 负责；
+<code>checkReadableBytes</code> 仅证明编码字节存在。</li>
+<li class="">对于压缩或转换过的 body，serializer 仍须在分配或返回最终值前校验解码长度和编码特有的 metadata。</li>
 </ul>
-<p>The common serializer shape is:</p>
+<p>通用 serializer 结构如下：</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">wireByteCount = readVarUint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elementWidth = primitiveWireElementWidth(kind)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">validate wireByteCount and element alignment</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elementCount = wireByteCount / elementWidth</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">ctx.checkReadableBytes(wireByteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">result = allocatePrimitiveResult(elementCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">copy or decode wireByteCount bytes from the current readable buffer into result</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">advance the reader index by wireByteCount</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">return result</span><br/></div></code></pre></div></div>
-<p>Byte values are the <code>elementWidth == 1</code> specialization of the same policy. In
-that case the serializer shape is:</p>
+<p>字节值是同一策略在 <code>elementWidth == 1</code> 时的特例。此时 serializer 结构如下：</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">byteCount = readVarUint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">ctx.checkReadableBytes(byteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">result = allocateBytes(byteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">copy byteCount bytes from the current readable buffer into result</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">advance the reader index by byteCount</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">return result</span><br/></div></code></pre></div></div>
-<p>This policy avoids three inefficient implementation shapes:</p>
+<p>该策略避免了三种低效实现：</p>
 <ul>
-<li class="">allocating the complete final contiguous value before the encoded body is
-readable</li>
-<li class="">growing or repeatedly copying the final result container on stream slow paths</li>
-<li class="">adding serializer-local chunk buffers when the byte owner can prove
-readability once and expose a normal buffered read</li>
+<li class="">在编码 body 可读之前分配完整、连续的最终值</li>
+<li class="">在 stream 慢路径上扩展或反复复制最终结果容器</li>
+<li class="">当字节所有者能够一次性证明可读性并提供普通 buffer 读取时，仍在 serializer 中添加临时分块 buffer</li>
 </ul>
-<p>Scratch buffers remain appropriate when the target representation is not a
-direct byte target, such as string transcoding, compression, byte-order
-conversion that is not performed in place, bit-packed values, or runtimes whose
-stream API cannot read into a caller-provided target.</p>
-<p>For fixed-width primitive arrays, the final result must not become visible to
-callers until the exact encoded byte count has been read successfully.</p>
-<p>For list, set, map, and other container readers, the declared logical element
-count is not an encoded byte count, so serializers must still own all element,
-chunk, nullability, reference, and type-dispatch semantics. It is still the
-right allocation proof for count-based preallocation: after validating a
-non-empty count and reading any serializer-owned header or type metadata that
-precedes allocation, call <code>checkReadableBytes(logicalCount)</code> before allocating,
-reserving, or size-hinting from that count. The byte owner handles buffer versus
-stream readiness; the container serializer then allocates with the declared
-count and reads elements through its normal owner path.</p>
-<p>This check is not a full container-body validation. It only prevents a small or
-truncated input from causing a large count-based preallocation. Chunk sizes,
-duplicate keys, element value semantics, and protocol strictness remain owned by
-the container/map serializer and should be validated only when they protect a
-real owner invariant.</p>
-<p>For TypeDef or TypeMeta bodies, first prove that the encoded metadata body bytes
-are readable through the byte owner. Field-list allocation should happen after
-that body readability check and should not use a separate small initial-capacity
-cap as a security rule.</p>
-<p>Implementations should also bound received metadata bodies and struct field
-lists on the cold metadata parse path. <code>maxTypeMetaBytes</code> limits one encoded
-TypeDef or TypeMeta body, excluding the 8-byte header and any extended-size
-varint, and is checked before copying or decompressing that body.
-<code>maxTypeFields</code> limits the number of fields declared by one received struct
-metadata body and is checked before reserving or allocating the field list.
-These limits are runtime resource controls; they do not change wire encoding,
-type identity, dynamic loading, unknown-type behavior, deserialization policy,
-or schema-evolution semantics. Metadata cache hits and generated field readers
-remain hot paths and must not add work for these limits.</p>
-<p>Remote schema-version limits belong to the same cold metadata owner path.
-Header cache hits must skip the remaining metadata body and return cached
-metadata without schema-limit checks, hash revalidation, allocation, or policy
-work. On a header miss, keep the handling in one concrete owner path: prove and
-read the metadata body bytes, validate the body against its header, validate
-field counts, resolve the type through the existing registration and
-deserialization-policy checks, compare exact local metadata by original encoded
-bytes when applicable, check schema-version limits for non-local remote
-metadata, build the required read state, publish to the persistent metadata
-cache, and then record the schema count. Failed or incompatible metadata must
-not publish to the persistent cache and must not consume schema-version counts.</p>
-<p>Remote metadata whose encoded bytes exactly match the local registered metadata
-may use the local metadata without consuming the remote schema-version limit,
-after the existing type and deserialization-policy checks for selecting that
-local type have run. This exact-local bypass is not struct-only; it also applies
-to named enum, ext, and union metadata when those metadata bodies are present and
-match the local encoded bytes. Pure id-based enum, ext, and typed-union values
-do not carry TypeDef or TypeMeta bodies and must stay on the normal type-id plus
-user-type-id path. Compatible named enum, ext, and union metadata normally has
-one version, but it still counts against accepted remote metadata totals when it
-is sent as shared metadata and does not exactly match local metadata.
-<code>maxTypeFields</code> applies only to struct field lists.</p>
-<p>The exact-local candidate must be derived inside the metadata owner path from
-the decoded metadata identity: <code>userTypeId</code> for id-registered metadata, or
-<code>(namespace, typeName)</code> for name-registered metadata. Do not thread extra
-expected-type parameters through read callers solely for this check. This rule
-applies to every runtime. Java and Python may lazy-build the local encoded
-metadata only after this identity lookup selects a local class and the existing
-class, registration, and deserialization-policy checks for that class have run.</p>
-<p>When a statically declared compatible named enum, ext, or union field reads
-shared metadata, the decoded metadata must match the declared type id,
-namespace, and type name before the metadata owner publishes it to the
-persistent cache or records a schema count. Already accepted header or reference
-cache hits still skip the body and must not rerun body-hash, schema-limit, or
-registration checks, but the field reader must not treat metadata for a
-different declared named type as the current field's metadata.</p>
-<p>Skip paths do not need to materialize skipped values. Existing byte-skip
-operations should consume any available buffered prefix first, then skip or drop
-remaining stream bytes in bounded steps.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=nested-reads-use-readcontext>Nested reads use <code>ReadContext</code><a href=#nested-reads-use-readcontext class=hash-link aria-label=nested-reads-use-readcontext的直接链接 title=nested-reads-use-readcontext的直接链接 translate=no>​</a></h3>
-<p>Important rules:</p>
+<p>当目标表示形式不能直接接收字节时，临时 buffer 仍然适用，例如字符串转码、压缩、
+无法原地执行的字节序转换、位打包值，或者 stream API 无法读入调用方提供目标的运行时。</p>
+<p>对于定长基础类型数组，在完整编码字节数成功读取前，不得向调用方暴露最终结果。</p>
+<p>对于 list、set、map 和其他容器 reader，声明的逻辑元素数不是编码字节数，
+因此所有元素、数据块、可空性、引用和类型分派语义仍必须由 serializer 负责。
+但它仍是按数量预分配时的正确分配证明：校验非零数量并读取分配前由 serializer
+持有的 header 或类型元信息之后，应先调用 <code>checkReadableBytes(logicalCount)</code>，
+再按该数量分配、预留底层容量或提供容量提示。字节所有者处理 buffer 与 stream 的可读性；
+随后容器 serializer 按声明数量分配，并通过普通所有者路径读取元素。</p>
+<p>该检查不是对完整容器 body 的校验，只用于防止很短或截断的输入触发按较大数量预分配。
+数据块大小、重复 key、元素值语义和协议严格性仍由容器/map serializer 持有，
+且只应在保护真正的所有者不变量时进行校验。</p>
+<p>执行实例化的 reader 还应在分配或提供容量提示前，预留根操作级的对象图估算内存预算。
+预算状态属于 <code>ReadContext</code> 或等价的根读取状态，而不是环境 thread-local 状态。
+根门面只设置或重置每次操作的预算，不得预先预留根类型或根对象自身的字节。
+<code>maxGraphMemoryBytes</code> 默认固定为 <code>128 MiB</code>；正数配置会覆盖默认值；
+显式的非正数配置无效，必须在创建运行时时拒绝。不得从根输入大小推导该预算，
+也不得为其添加动态的 stream 已读字节计数。
+由于每个根值的预算固定，读取状态不应把配置的最大值复制到第二个活动限制字段中。
+应使用现有配置；若无法取得配置，则只保留一个配置最大值字段和一个可变的剩余预算。</p>
+<p>Read context 或等价读取状态只持有原始字节预留。它不得暴露带数量的算术 helper，
+也不得暴露集合、map、数组、struct 或对象的语义预留 API。具体 serializer 和生成的
+serializer 所有者负责计算其分配路径的存储常量与公式，包括按数量计算字节时的溢出检查。
+不得为了该功能给读取状态增加与内存预算无关的 API，包括引用发布控制、临时所有者控制、
+serializer 所有者控制、转换 helper，或用于编码所实例化值种类的 API。
+这些决策由具体 serializer 和生成的 serializer 负责。</p>
+<p>该预算是实例化对象图所有者的近似门槛，主要覆盖集合、map、数组、struct 和对象。
+它不衡量精确堆字节数，实际进程内存可能更高。存储或分配值的所有者应且仅应预留一次自身存储。
+根门面只重置预算，不得预留根值存储。由引用支撑的容器、map、set 和对象/引用数组，
+应预留非零的所有者自身开销和引用 slot；每个被引用的堆所有者在实例化时再预留自己的浅层自身开销。
+内联/值容器预留元素存储；内联/值 map 预留 key 与 value 存储；指针、box 和动态实例化所有者
+预留其分配的堆存储或装箱存储。值 serializer（包括根读取路径以及生成的 struct/product 读取路径）
+不预留自身存储。只有在引用对象运行时或动态/装箱实例化路径中，struct/record/POJO/tuple、
+兼容、生成和动态对象所有者才预留非零的浅层自身开销及浅层字段存储。
+父级不得递归计入子对象、集合、map、字符串、二进制或基础类型密集数组的内容。
+enum/union 不作为独立所有者计入；专用字符串、二进制、基础类型标量、基础类型数组和基础类型
+密集数组叶子所有者也不计入，但 vector 或值对象 list 等通用内联值容器仍须计入。
+若无法低成本、可靠地查询引用 slot 大小，则使用 4 字节引用 slot。原生运行时可以使用保守的
+下界估算，不应猜测不可移植的对象、容器、allocator、table、node、entry 或调试布局细节。
+在比较预算或分配前拒绝算术溢出，并在分配底层存储或预留容量前保留现有的
+<code>checkReadableBytes</code> 证明。
+未计入预算的叶子所有者仍须受剩余输入字节约束。如果未读字节不足以容纳字符串、二进制值、
+基础类型标量、基础类型数组或基础类型密集数组，运行时不得读取或创建该叶子值。</p>
+<p>对于 TypeDef 或 TypeMeta body，应先通过字节所有者证明编码 metadata body 字节可读。
+字段列表应在该 body 可读性检查之后分配，不应将单独的较小初始容量上限作为安全规则。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=嵌套读取使用-readcontext>嵌套读取使用 <code>ReadContext</code><a href=#嵌套读取使用-readcontext class=hash-link aria-label=嵌套读取使用-readcontext的直接链接 title=嵌套读取使用-readcontext的直接链接 translate=no>​</a></h3>
+<p>重要规则：</p>
 <ul>
-<li class="">serializers that allocate the result object early must call
-<code>context.reference(obj)</code> before reading nested children that may refer back to
-it</li>
-<li class="">nested serializer flow should stay straight-line; do not add internal
-<code>try/finally</code> blocks just to restore operation-local state</li>
-<li class="">top-level <code>Fory.deserialize(...)</code> owns the operation reset <code>finally</code></li>
+<li class="">若 serializer 会提前分配结果对象，则必须在读取可能回指它的嵌套子对象之前调用
+<code>context.reference(obj)</code></li>
+<li class="">嵌套 serializer 的流程应保持直线式，不要添加内部 <code>try/finally</code>
+来恢复操作级状态</li>
+<li class="">顶层 <code>Fory.deserialize(...)</code> 持有操作重置所需的 <code>finally</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=depth-tracking>Depth Tracking<a href=#depth-tracking class=hash-link aria-label="Depth Tracking的直接链接" title="Depth Tracking的直接链接" translate=no>​</a></h2>
-<p><code>WriteContext</code> and <code>ReadContext</code> track logical object depth explicitly.
-<code>increaseDepth()</code> enforces <code>Config.maxDepth</code>.</p>
-<p>Depth should stay explicit on the contexts rather than relying on the native
-call stack alone. At the same time, depth cleanup should not depend on nested
-<code>try/finally</code> blocks throughout serializer code. Top-level context reset must be
-able to recover operation-local state after failures.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=struct-compatibility>Struct Compatibility<a href=#struct-compatibility class=hash-link aria-label="Struct Compatibility的直接链接" title="Struct Compatibility的直接链接" translate=no>​</a></h2>
-<p>Struct-specific schema/version framing and compatible-field layout belong in the
-struct serializer layer, not on <code>Fory</code> and not on the public serializer API.</p>
-<p>In Dart that internal owner is <code>StructSerializer</code>.</p>
-<p><code>StructSerializer</code> is responsible for:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=深度跟踪>深度跟踪<a href=#深度跟踪 class=hash-link aria-label=深度跟踪的直接链接 title=深度跟踪的直接链接 translate=no>​</a></h2>
+<p><code>WriteContext</code> 与 <code>ReadContext</code> 会显式跟踪逻辑对象深度。<code>increaseDepth()</code>
+负责执行 <code>Config.maxDepth</code> 限制。</p>
+<p>深度应显式保存在 context 上，而不是只依赖原生调用栈。同时，深度清理也不应依赖散落在 serializer
+代码中的嵌套 <code>try/finally</code>。顶层 context reset
+必须能够在失败后恢复操作级状态。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=struct-兼容性>Struct 兼容性<a href=#struct-兼容性 class=hash-link aria-label="Struct 兼容性的直接链接" title="Struct 兼容性的直接链�接" translate=no>​</a></h2>
+<p>struct 专属的 schema/version 包装与 compatible-field staging
+应归属在 struct serializer 层，而不是 <code>Fory</code> 上，也不是公共 serializer API
+上。</p>
+<p>在 Dart 中，这个内部所有者是 <code>StructCodec</code>。</p>
+<p><code>StructCodec</code> 负责：</p>
 <ul>
-<li class="">schema-hash framing when compatibility mode is off and version checks are on</li>
-<li class="">compatible-struct field remapping when compatibility mode is on</li>
-<li class="">caching compatible read layouts</li>
-<li class="">skipping unknown compatible fields</li>
-<li class="">passing compatible read layouts explicitly to generated serializers</li>
-<li class="">classifying matched compatible fields as exact direct reads, compatible
-conversions, or remote-only skips before generated dispatch</li>
+<li class="">在兼容模式关闭且版本校验开启时写入 schema hash 包装</li>
+<li class="">在兼容模式开启时执行 compatible struct 字段重映射</li>
+<li class="">缓存 compatible 写布局与读布局</li>
+<li class="">为生成的 serializer 提供 compatible 读写 slot 状态</li>
+<li class="">在读取成功后记住远端 struct 元数据</li>
 </ul>
-<p>When <code>Config.compatible</code> is enabled and the struct is marked evolving:</p>
+<p>当 <code>Config.compatible</code> 启用且 struct 被标记为 evolving 时：</p>
 <ul>
-<li class="">the wire type uses the compatible struct form</li>
-<li class="">the writer emits shared TypeDef metadata</li>
-<li class="">reads map incoming fields by identifier and skip unknown fields</li>
-<li class="">generated serializers apply matched fields directly while preserving their own
-object construction and default-value rules</li>
-<li class="">exact matched field schemas use the same direct read shape as same-schema
-reads and must not receive remote compatible metadata</li>
-<li class="">matched scalar fields may use compatible scalar conversion only when the
-layout has classified a remote/local top-level scalar pair as lossless
-convertible and both field schemas have <code>trackingRef = false</code></li>
-<li class="">compatible scalar conversion applies only to the immediate matched field.
-Nested collection, array, map key, and map value schemas must not be accepted
-by recursively applying scalar conversion to child schemas.</li>
-<li class="">direct top-level <code>list&lt;T?></code> to dense <code>array&lt;T></code> matched fields must be
-classified as compatible when element domains match; the nullable element
-schema bit alone is not a schema-pair rejection. Actual null element payloads
-fail in the dense-array reader. Ref-tracked list-element framing is separate
-and may remain rejected when the runtime cannot materialize it without
-generic/reference paths.</li>
+<li class="">编码类型使用 compatible struct 形式</li>
+<li class="">运行时写入共享 TypeDef 元数据</li>
+<li class="">读取侧按标识符映射输入字段，并跳过未知字段</li>
 </ul>
-<p>When <code>compatible</code> is disabled and <code>checkStructVersion</code> is enabled:</p>
+<p>当 <code>compatible</code> 关闭而 <code>checkStructVersion</code> 启用时：</p>
 <ul>
-<li class="">the writer emits the schema hash for struct payloads</li>
-<li class="">the read side checks that hash before reading fields</li>
+<li class="">运行时会在 struct 载荷前写入 schema hash</li>
+<li class="">读取侧会在读字段之前检查该 hash</li>
 </ul>
-<p>Compatible scalar conversion is owned by the compatible struct field reader or
-the generated compatible layout action. Root facades, read/write contexts, type
-resolvers, class resolvers, xlang type resolvers, and raw buffer utilities must
-not expose public conversion APIs or carry conversion state. Resolvers may
-provide field schema metadata for layout classification, but the conversion
-decision and value adaptation stay with the serializer-owned compatible field
-layout. Layout classification must reject top-level scalar conversions when
-either matched schema has <code>trackingRef = true</code> and must reject same scalar type
-pairs whose top-level <code>trackingRef</code> framing differs; converters must not add a
-reference-table path for scalar mismatches. Recursive schema comparison inside
-containers must reject scalar mismatches instead of reusing the top-level scalar
-conversion matrix. Generated serializers should consume the classified layout
-decision directly:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=远端-metadata-资源限制>远端 Metadata 资源限制<a href=#远端-metadata-资源限制 class=hash-link aria-label="远端 Metadata 资源限制的直接链接" title="远端 Metadata 资源限制的直接链接" translate=no>​</a></h2>
+<p>实现应在 cold metadata parse path 上限制收到的 metadata body 和 struct 字段列表。
+<code>maxTypeMetaBytes</code> 限制一个 TypeDef 或 TypeMeta 的编码 body，不包含 8 字节 header 和扩展
+size varint，并且应在复制或解压 body 前检查。<code>maxTypeFields</code> 限制一个收到的 struct metadata
+body 声明的字段数，并应在预留或分配字段列表前检查。</p>
+<p>这些限制是运行时资源控制；它们不会改变编码格式、类型标识、动态加载、unknown-type 行为、
+反序列化策略或 Schema 演进语义。Metadata cache hit 和生成的字段 reader 仍是 hot path，不应为这些限制增加额外工作。</p>
+<p>远端 schema-version 限制属于同一个 cold metadata owner path。Header cache hit 必须跳过剩余
+metadata body，并返回已缓存 metadata；不要重新执行 schema-limit 检查、hash 复验、分配或 policy 工作。Header miss 时，应在同一个具体 owner path 中完成处理：证明并读取 metadata body bytes，按 header 校验 body，校验字段数，通过现有注册与反序列化策略检查解析类型，必要时按原始编码字节比较精确本地 metadata，对非本地远端 metadata 检查 schema-version 限制，构建所需 read state，发布到持久 metadata cache，最后记录 schema count。失败或不兼容的 metadata 不得发布到持久 cache，也不得消耗 schema-version count。</p>
+<p>编码字节与本地已注册 metadata 精确匹配的远端 metadata，在完成选择本地类型所需的现有类型与反序列化策略检查后，可以使用本地 metadata，且不消耗远端 schema-version 限制。这个 exact-local bypass 不只适用于 struct；当 named enum、ext 和 union metadata 带有 metadata body 且与本地编码字节匹配时，同样适用。纯 id-based enum、ext 和 typed-union value 不携带 TypeDef 或 TypeMeta body，必须继续走普通 type-id 加 user-type-id 路径。兼容 named enum、ext 和 union metadata 通常只有一个版本，但当它作为 shared metadata 发送且不精确匹配本地 metadata 时，仍会计入已接受远端 metadata 总数。<code>maxTypeFields</code> 只适用于 struct 字段列表。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-string-与共享类型元信息>Meta string 与共享类型元信息<a href=#meta-string-与共享类型元信息 class=hash-link aria-label="Meta string 与共享类型元信息的直接链接" title="Meta string 与共享类型元信息的直接链接" translate=no>​</a></h2>
+<p>xlang 类型元信息由两类显式状态支撑：</p>
 <ul>
-<li class="">source-generated serializers use the layout's matched-field dispatch key to
-select exact direct field code, compatible conversion code, or skip code</li>
-<li class="">regenerated serializers may instead compile a remote-schema-specific
-straight-line reader after classification, without a second outer matched-id
-switch, when the generated source still has pure direct, pure conversion, and
-explicit skip operations</li>
-<li class="">compatible scalar conversion cases must read the concrete remote wire scalar
-selected by classification and compose only the required lossless conversion;
-they must not call a generic runtime converter that redispatches by remote and
-local scalar type IDs, field descriptors, field names, or schema eligibility
-helpers</li>
+<li class=""><code>MetaStringWriter</code> 和 <code>MetaStringReader</code>
+负责去重与解码命名空间和类型名字串</li>
+<li class="">共享 TypeDef 的读写状态负责跟踪已声明的 TypeDef 元数据</li>
 </ul>
-<p>Same-schema readers with matching reference and null/optional framing must keep
-direct scalar read paths without conversion branches or per-field conversion
-objects. Same raw scalar types with different null/optional framing may still
-use the compatible nullable/optional composition path when both fields are not
-reference-tracked.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-strings-and-shared-type-metadata>Meta Strings And Shared Type Metadata<a href=#meta-strings-and-shared-type-metadata class=hash-link aria-label="Meta Strings And Shared Type Metadata的直接链接" title="Meta Strings And Shared Type Metadata的直接链接" translate=no>​</a></h2>
-<p>Two explicit pieces of state back xlang type metadata:</p>
+<p>所有权规则：</p>
 <ul>
-<li class=""><code>MetaStringWriter</code> and <code>MetaStringReader</code> deduplicate and decode namespace
-and type-name strings</li>
-<li class="">shared TypeDef write/read state tracks announced TypeDef metadata</li>
+<li class="">规范化后的编码名称由 <code>TypeResolver</code> 持有</li>
+<li class="">每次操作的动态 meta string ID 由 <code>MetaStringWriter</code> 和
+<code>MetaStringReader</code> 持有</li>
+<li class="">共享类型定义表属于操作级 context 状态</li>
 </ul>
-<p>Ownership rules:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=xlang-模式下的-enum>Xlang 模式下的 enum<a href=#xlang-模式下的-enum class=hash-link aria-label="Xlang 模式下的 enum的直接链接" title="Xlang 模式下的 enum的直接链接" translate=no>​</a></h2>
+<p>在 xlang 模式中，enum 按数值 tag 序列化，而不是按名称序列化。</p>
+<p>在 Java 中：</p>
 <ul>
-<li class="">canonical encoded names live in <code>TypeResolver</code></li>
-<li class="">per-operation dynamic meta-string ids live on <code>MetaStringWriter</code> and
-<code>MetaStringReader</code></li>
-<li class="">shared type-definition tables are operation-local context state</li>
+<li class="">默认 tag 是声明顺序对应的 ordinal</li>
+<li class=""><code>@ForyEnumId</code> 可将其覆盖为稳定的显式 tag</li>
+<li class=""><code>serializeEnumByName(true)</code> 影响的是 Java native 模式，而不是 xlang 模式</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=enums-in-xlang-mode>Enums In Xlang Mode<a href=#enums-in-xlang-mode class=hash-link aria-label="Enums In Xlang Mode的直接链接" title="Enums In Xlang Mode的直接链接" translate=no>​</a></h2>
-<p>In xlang mode, enums are serialized by numeric tag, not by name.</p>
-<p>In Java:</p>
+<p>即便配置接口或注解形式不同，其他运行时也应保持相同的编码规则。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=out-of-band-buffer-object>Out-Of-Band Buffer Object<a href=#out-of-band-buffer-object class=hash-link aria-label="Out-Of-Band Buffer Object的直接链接" title="Out-Of-Band Buffer Object的直接链接" translate=no>​</a></h2>
+<p>buffer object 的处理也遵循同样的拆分原则：</p>
 <ul>
-<li class="">the default tag is the declaration ordinal</li>
-<li class=""><code>@ForyEnumId</code> can override that with a stable explicit tag</li>
-<li class=""><code>serializeEnumByName(true)</code> affects native Java mode, not xlang mode</li>
+<li class="">一个根级 bit 声明当前是否使用 out-of-band buffer</li>
+<li class="">嵌套 buffer object 载荷仍按单个值决定是 in-band 还是 out-of-band</li>
+<li class="">serializer 应使用读写 context helper，而不是绕过运行时</li>
 </ul>
-<p>Other language implementations should preserve the same wire rule even if the configuration or
-annotation surface differs.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=out-of-band-buffer-objects>Out-Of-Band Buffer Objects<a href=#out-of-band-buffer-objects class=hash-link aria-label="Out-Of-Band Buffer Objects的直接链接" title="Out-Of-Band Buffer Objects的直接链接" translate=no>​</a></h2>
-<p>Buffer-object handling follows the same split:</p>
-<ul>
-<li class="">one root bit advertises whether out-of-band buffers are in play</li>
-<li class="">nested buffer-object payloads still decide in-band vs out-of-band one value at
-a time</li>
-<li class="">serializers use read/write context helpers rather than bypassing the context layer</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=code-generation>Code Generation<a href=#code-generation class=hash-link aria-label="Code Generation的直接链接" title="Code Generation的直接链接" translate=no>​</a></h2>
-<p>The normal Dart integration path is:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=代码生成>代码生成<a href=#代码生成 class=hash-link aria-label=代码生成的直接链接 title=代码生成的直接链接 translate=no>​</a></h2>
+<p>Dart 的常规集成路径如下：</p>
 <ol>
-<li class="">annotate structs with <code>@ForyStruct</code></li>
-<li class="">annotate field overrides with <code>@ForyField</code></li>
-<li class="">run <code>build_runner</code></li>
-<li class="">call the generated per-library helper, such as
-<code>&lt;InputFile>Fory.register(...)</code>, to bind private generated metadata and
-register generated types</li>
+<li class="">使用 <code>@ForyStruct</code> 标注 struct</li>
+<li class="">使用 <code>@ForyField</code> 标注字段覆盖</li>
+<li class="">运行 <code>build_runner</code></li>
+<li class="">在源码库中私有绑定生成的元数据，并通过 <code>Fory.register(...)</code>
+注册生成的类型</li>
 </ol>
-<p>Generated code should emit:</p>
+<p>生成代码应产出：</p>
 <ul>
-<li class="">private serializer classes</li>
-<li class="">private metadata constants</li>
-<li class="">a public per-library registration helper that users call from application code</li>
-<li class="">private generated installation helpers that keep serializer factories private</li>
+<li class="">私有 serializer 类</li>
+<li class="">私有元数据常量</li>
+<li class="">每个被标注库对应的私有生成安装 helper</li>
+<li class="">保持 serializer factory 私有的生成绑定安装逻辑</li>
 </ul>
-<p>The public helper should be a thin generated wrapper around the Fory
-registration API, not a public global registry or a second unrelated
-registration API family.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=directory-layout>Directory Layout<a href=#directory-layout class=hash-link aria-label="Directory Layout的直接链接" title="Directory Layout的直接链接" translate=no>​</a></h2>
-<p>Under each Dart package <code>lib/</code> tree, only one nested source layer is allowed.</p>
-<p>Allowed:</p>
+<p>生成代码不应创建公共全局 registry，也不应创建第二套公共 API
+族。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=目录布局>目录布局<a href=#目录布局 class=hash-link aria-label=目录布局的直接链接 title=目录布局的直接链接 translate=no>​</a></h2>
+<p>在每个 Dart package 的 <code>lib/</code> 树下，只允许一层嵌套源码目录。</p>
+<p>允许：</p>
 <ul>
 <li class=""><code>lib/fory.dart</code></li>
 <li class=""><code>lib/src/&lt;file>.dart</code></li>
 <li class=""><code>lib/src/&lt;area>/&lt;file>.dart</code></li>
 </ul>
-<p>Not allowed:</p>
+<p>不允许：</p>
 <ul>
 <li class=""><code>lib/src/&lt;area>/&lt;subarea>/&lt;file>.dart</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=serializer-design-rules-for-new-implementations>Serializer Design Rules For New Implementations<a href=#serializer-design-rules-for-new-implementations class=hash-link aria-label="Serializer Design Rules For New Implementations��的直接链接" title="Serializer Design Rules For New Implementations的直接链接" translate=no>​</a></h2>
-<p>Any new xlang implementation should follow these rules even if its surface API looks
-different:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=新运行时的-serializer-设计规则>新运行时的 serializer 设计规则<a href=#新运行时的-serializer-设计规则 class=hash-link aria-label="新运行时的 serializer 设计规则的直接链接" title="新运行时的 serializer 设计规则的直接链接" translate=no>​</a></h2>
+<p>任何新的 xlang 运行时都应遵循以下规则，即便其表面 API
+有所不同：</p>
 <ol>
-<li class="">Keep root operations on the <code>Fory</code> facade and nested payload work on
-explicit read and write contexts.</li>
-<li class="">Keep reference tracking behind dedicated read-side and write-side services
-so the disabled path stays cheap.</li>
-<li class="">Make serializers payload-only. Type metadata, registration, and root
-framing belong to the <code>Fory</code> and type resolver layers.</li>
-<li class="">Track per-operation state explicitly. Do not rely on ambient thread-local
-instance state.</li>
-<li class="">Reserve read reference IDs before materializing new objects, and bind
-partially built objects as soon as a nested child may refer back to them.</li>
-<li class="">Keep operation setup and operation cleanup separate. <code>prepare(...)</code> binds
-the current operation inputs, and <code>reset()</code> clears operation-local state.</li>
-<li class="">Preserve the separation between the root bitmap, per-object ref flags, type
-headers, and payload bytes.</li>
-<li class="">Keep internal naming in the serialization domain. Prefer words like
-<code>serializer</code>, <code>binding</code>, and <code>layout</code>; avoid RPC-style terms such as
-<code>session</code> or vague control-flow terms such as <code>plan</code>.</li>
-<li class="">After any xlang protocol or ownership change, run the cross-language test
-matrix and update both this guide and
-<a class="" href=/zh-CN/docs/specification/xlang_serialization_spec>Xlang Serialization Spec</a>.</li>
+<li class="">根级操作保留在运行时门面上，嵌套载荷处理放在显式读写 context 中。</li>
+<li class="">引用跟踪放在专门的读侧/写侧服务之后，使禁用引用跟踪的路径保持低成本。</li>
+<li class="">让 serializer 只负责载荷。类型元信息、注册与根帧包装属于运行时与类型解析层。</li>
+<li class="">显式跟踪操作级状态。不要依赖隐式 thread-local 运行时状态。</li>
+<li class="">在实例化新对象之前预留读取侧引用 ID，并在嵌套子对象可能回指它时尽早绑定部分构造对象。</li>
+<li class="">将操作准备与操作清理分离。<code>prepare(...)</code> 负责绑定当前操作输入，<code>reset()</code>
+负责清理操作级状态。</li>
+<li class="">保持根级位图、逐对象引用标记、类型头与载荷字节之间的边界清晰。</li>
+<li class="">内部命名应停留在序列化领域。优先使用 <code>codec</code>、<code>binding</code>、<code>layout</code>、
+<code>slots</code> 这类词，避免使用 <code>session</code> 这类 RPC 风格术语，或 <code>plan</code>
+这类含义模糊的控制流词汇。</li>
+<li class="">每次 xlang 协议或所有权模型变更后，都要运行跨语言测试矩阵，并同时更新本指南与
+<a class="" href=/zh-CN/docs/specification/xlang_serialization_spec>Xlang Serialization Spec</a>。</li>
 </ol>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=validation>Validation<a href=#validation class=hash-link aria-label=Validation的直接链接 title=Validation的直接链接 translate=no>​</a></h2>
-<p>For Dart implementation changes, run at minimum:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=验证>验证<a href=#验证 class=hash-link aria-label=验证的直接链接 title=验证的直接链接 translate=no>​</a></h2>
+<p>对于 Dart 运行时改动，至少运行：</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build --delete-conflicting-outputs</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart analyze</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div>
-<p>For generated consumer coverage, also run:</p>
-<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart/packages/fory-test</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build --delete-conflicting-outputs</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/i18n/zh-CN/docusaurus-plugin-content-docs/version-1.3.0/specification/xlang_implementation_guide.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label=文件选项卡><a class="pagination-nav__link pagination-nav__link--prev" href=/zh-CN/docs/specification/xlang_type_mapping><div class=pagination-nav__sublabel>上一页</div><div class=pagination-nav__label>Xlang Type Mapping</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#overview class="table-of-contents__link toc-highlight">Overview</a><li><a href=#source-of-truth class="table-of-contents__link toc-highlight">Source Of Truth</a><li><a href=#implementation-ownership-model class="table-of-contents__link toc-highlight">Implementation Ownership Model</a><ul><li><a href=#fory-is-the-root-operation-facade class="table-of-contents__link toc-highlight"><code>Fory</code> is the root-operation facade</a><li><a href=#writecontext-and-readcontext-hold-operation-local-state class="table-of-contents__link toc-highlight"><code>WriteContext</code> and <code>ReadContext</code> hold operation-local state</a><li><a href=#writecontext class="table-of-contents__link toc-highlight"><code>WriteContext</code></a><li><a href=#readcontext class="table-of-contents__link toc-highlight"><code>ReadContext</code></a></ul><li><a href=#reference-tracking class="table-of-contents__link toc-highlight">Reference Tracking</a><li><a href=#type-resolution class="table-of-contents__link toc-highlight">Type Resolution</a><li><a href=#root-frame-responsibilities class="table-of-contents__link toc-highlight">Root Frame Responsibilities</a><li><a href=#serialization-flow class="table-of-contents__link toc-highlight">Serialization Flow</a><ul><li><a href=#root-write-path class="table-of-contents__link toc-highlight">Root write path</a><li><a href=#nested-writes-use-writecontext class="table-of-contents__link toc-highlight">Nested writes use <code>WriteContext</code></a></ul><li><a href=#deserialization-flow class="table-of-contents__link toc-highlight">Deserialization Flow</a><ul><li><a href=#root-read-path class="table-of-contents__link toc-highlight">Root read path</a><li><a href=#readcontext-owns-ref-reservation-and-payload-materialization class="table-of-contents__link toc-highlight"><code>ReadContext</code> owns ref reservation and payload materialization</a><li><a href=#stream-and-buffer-byte-reads class="table-of-contents__link toc-highlight">Stream And Buffer Byte Reads</a><li><a href=#nested-reads-use-readcontext class="table-of-contents__link toc-highlight">Nested reads use <code>ReadContext</code></a></ul><li><a href=#depth-tracking class="table-of-contents__link toc-highlight">Depth Tracking</a><li><a href=#struct-compatibility class="table-of-contents__link toc-highlight">Struct Compatibility</a><li><a href=#meta-strings-and-shared-type-metadata class="table-of-contents__link toc-highlight">Meta Strings And Shared Type Metadata</a><li><a href=#enums-in-xlang-mode class="table-of-contents__link toc-highlight">Enums In Xlang Mode</a><li><a href=#out-of-band-buffer-objects class="table-of-contents__link toc-highlight">Out-Of-Band Buffer Objects</a><li><a href=#code-generation class="table-of-contents__link toc-highlight">Code Generation</a><li><a href=#directory-layout class="table-of-contents__link toc-highlight">Directory Layout</a><li><a href=#serializer-design-rules-for-new-implementations class="table-of-contents__link toc-highlight">Serializer Design Rules For New Implementations</a><li><a href=#validation class="table-of-contents__link toc-highlight">Validation</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>社区</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>邮件列表<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>文档</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/install>安装</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/usage>使用</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/introduction/benchmark>基准测试</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>代码库</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>网站<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+<p>若要覆盖生成代码的使用方，也应运行：</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart/packages/fory-test</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build --delete-conflicting-outputs</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/i18n/zh-CN/docusaurus-plugin-content-docs/version-1.4.0/specification/xlang_implementation_guide.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label=文件选项卡><a class="pagination-nav__link pagination-nav__link--prev" href=/zh-CN/docs/specification/xlang_type_mapping><div class=pagination-nav__sublabel>上一页</div><div class=pagination-nav__label>Xlang 类型映射</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#概览 class="table-of-contents__link toc-highlight">概览</a><li><a href=#事实来源 class="table-of-contents__link toc-highlight">事实来源</a><li><a href=#运行时所有权模型 class="table-of-contents__link toc-highlight">运行时所有权模型</a><ul><li><a href=#fory-是根操作门面 class="table-of-contents__link toc-highlight"><code>Fory</code> 是根操作门面</a><li><a href=#writecontext-和-readcontext-持有操作级状态 class="table-of-contents__link toc-highlight"><code>WriteContext</code> 和 <code>ReadContext</code> 持有操作级状态</a><li><a href=#writecontext class="table-of-contents__link toc-highlight"><code>WriteContext</code></a><li><a href=#readcontext class="table-of-contents__link toc-highlight"><code>ReadContext</code></a></ul><li><a href=#引用跟踪 class="table-of-contents__link toc-highlight">引用跟踪</a><li><a href=#类型解析 class="table-of-contents__link toc-highlight">类型解析</a><li><a href=#根帧职责 class="table-of-contents__link toc-highlight">根帧职责</a><li><a href=#序列化流程 class="table-of-contents__link toc-highlight">序列化流程</a><ul><li><a href=#根级写路径 class="table-of-contents__link toc-highlight">根级写路径</a><li><a href=#嵌套写入使用-writecontext class="table-of-contents__link toc-highlight">嵌套写入使用 <code>WriteContext</code></a></ul><li><a href=#反序列化流程 class="table-of-contents__link toc-highlight">反序列化流程</a><ul><li><a href=#根级读路径 class="table-of-contents__link toc-highlight">根级读路径</a><li><a href=#readcontext-持有引用预留与载荷实例化 class="table-of-contents__link toc-highlight"><code>ReadContext</code> 持有引用预留与载荷实例化</a><li><a href=#流与-buffer-字节读取 class="table-of-contents__link toc-highlight">流与 Buffer 字节读取</a><li><a href=#嵌套读取使用-readcontext class="table-of-contents__link toc-highlight">嵌套读取使用 <code>ReadContext</code></a></ul><li><a href=#深度跟踪 class="table-of-contents__link toc-highlight">深度跟踪</a><li><a href=#struct-兼容性 class="table-of-contents__link toc-highlight">Struct 兼容性</a><li><a href=#远端-metadata-资源限制 class="table-of-contents__link toc-highlight">远端 Metadata 资源限制</a><li><a href=#meta-string-与共享类型元信息 class="table-of-contents__link toc-highlight">Meta string 与共享类型元信息</a><li><a href=#xlang-模式下的-enum class="table-of-contents__link toc-highlight">Xlang 模式下的 enum</a><li><a href=#out-of-band-buffer-object class="table-of-contents__link toc-highlight">Out-Of-Band Buffer Object</a><li><a href=#代码生成 class="table-of-contents__link toc-highlight">代码生成</a><li><a href=#目录布局 class="table-of-contents__link toc-highlight">目录布局</a><li><a href=#新运行时的-serializer-设计规则 class="table-of-contents__link toc-highlight">新运行时的 serializer 设计规则</a><li><a href=#验证 class="table-of-contents__link toc-highlight">验证</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>社区</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>邮件列表<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>文档</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/install>安装</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/usage>使用</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/introduction/benchmark>基准测试</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>代码库</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>网站<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
       <p> 版权所有 © 2025 The Apache Software Foundation，许可证：Apache License, Version 2.0。 <br/>
         Apache Fory、Fory、Apache、Apache Logo、Apache Fory Logo 是 Apache 软件基金会在美国和/或其他国家的注册商标或商标。
       </p>

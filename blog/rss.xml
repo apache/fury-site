@@ -4,10 +4,132 @@
         <title>Apache Fory™ Blog</title>
         <link>https://fory.apache.org/blog</link>
         <description>Apache Fory™ Blog</description>
-        <lastBuildDate>Thu, 25 Jun 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 20 Jul 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en-US</language>
+        <item>
+            <title><![CDATA[Fory v1.4.0 Released]]></title>
+            <link>https://fory.apache.org/blog/fory_1_4_0_release</link>
+            <guid>https://fory.apache.org/blog/fory_1_4_0_release</guid>
+            <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Apache Fory team is pleased to announce the 1.4.0 release. This release includes 65 PRs from 9 distinct contributors. See the Install page to get the libraries for your platform.]]></description>
+            <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.4.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.3.0...v1.4.0" target="_blank" rel="noopener noreferrer" class="">65 PRs</a> from 9 distinct contributors. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_4_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
+<ul>
+<li class="">Introduced Fory JSON for Java, featuring high-performance code generation, rich annotations and mix-ins, dynamic properties, and support for Android and GraalVM native images.</li>
+<li class="">Improved performance, safety, and compatibility with a configurable container memory budget, more efficient stream deserialization, Python 3.14 support, and numerous cross-runtime fixes.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="fory-json-for-java">Fory JSON for Java<a href="https://fory.apache.org/blog/fory_1_4_0_release#fory-json-for-java" class="hash-link" aria-label="Direct link to Fory JSON for Java" title="Direct link to Fory JSON for Java" translate="no">​</a></h2>
+<p>Fory 1.4.0 introduces Fory JSON, a high-performance, thread-safe JSON serialization framework for Java applications. It provides direct mapping between standard JSON and idiomatic Java domain objects, making it suitable for HTTP APIs, browser traffic, logs, configuration, and other interoperable text payloads.</p>
+<p>Its main capabilities include:</p>
+<ul>
+<li class=""><strong>High-performance serialization:</strong> optimized readers and writers work with interpreted and runtime-generated serializers to accelerate both JSON encoding and decoding.</li>
+<li class=""><strong>Rich Java object mapping:</strong> ordinary classes, Java records, immutable creator-based classes, common JDK types, and generic containers are supported.</li>
+<li class=""><strong>Flexible customization:</strong> annotations, mix-ins, and custom codecs adapt application types to JSON, covering property names, order, inclusion, creators, polymorphism, unwrapped values, dynamic properties, and specialized representations.</li>
+<li class=""><strong>Broad platform support:</strong> supports JDK 8 and later, Android, and GraalVM native images.</li>
+</ul>
+<p>Add the <code>fory-json</code> artifact to your application:</p>
+<div class="language-xml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-xml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">dependency</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">groupId</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain">org.apache.fory</span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">groupId</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">artifactId</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain">fory-json</span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">artifactId</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">version</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain">1.4.0</span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">version</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">dependency</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><br></div></code></pre></div></div>
+<p><code>ForyJson</code> is immutable and thread-safe after construction, so one instance can be reused across threads:</p>
+<div class="language-java codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-java codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token keyword" style="color:#00009f">import</span><span class="token plain"> </span><span class="token import namespace" style="opacity:0.7">org</span><span class="token import namespace punctuation" style="opacity:0.7;color:#393A34">.</span><span class="token import namespace" style="opacity:0.7">apache</span><span class="token import namespace punctuation" style="opacity:0.7;color:#393A34">.</span><span class="token import namespace" style="opacity:0.7">fory</span><span class="token import namespace punctuation" style="opacity:0.7;color:#393A34">.</span><span class="token import namespace" style="opacity:0.7">json</span><span class="token import namespace punctuation" style="opacity:0.7;color:#393A34">.</span><span class="token import class-name">ForyJson</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">public</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">final</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">class</span><span class="token plain"> </span><span class="token class-name">JsonExample</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token keyword" style="color:#00009f">private</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">static</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">final</span><span class="token plain"> </span><span class="token class-name">ForyJson</span><span class="token plain"> </span><span class="token constant" style="color:#36acaa">JSON</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token class-name">ForyJson</span><span class="token punctuation" style="color:#393A34">.</span><span class="token function" style="color:#d73a49">builder</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">.</span><span class="token function" style="color:#d73a49">build</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token keyword" style="color:#00009f">public</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">static</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">final</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">class</span><span class="token plain"> </span><span class="token class-name">User</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">public</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">long</span><span class="token plain"> id</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">public</span><span class="token plain"> </span><span class="token class-name">String</span><span class="token plain"> name</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">public</span><span class="token plain"> </span><span class="token class-name">User</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token keyword" style="color:#00009f">public</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">static</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">void</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">main</span><span class="token punctuation" style="color:#393A34">(</span><span class="token class-name">String</span><span class="token punctuation" style="color:#393A34">[</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"> args</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token class-name">User</span><span class="token plain"> user </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">new</span><span class="token plain"> </span><span class="token class-name">User</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    user</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">id </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">7</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    user</span><span class="token punctuation" style="color:#393A34">.</span><span class="token plain">name </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"Alice"</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token comment" style="color:#999988;font-style:italic">// Serialize to JSON text and deserialize from text.</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token class-name">String</span><span class="token plain"> text </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token constant" style="color:#36acaa">JSON</span><span class="token punctuation" style="color:#393A34">.</span><span class="token function" style="color:#d73a49">toJson</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">user</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token class-name">User</span><span class="token plain"> fromText </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token constant" style="color:#36acaa">JSON</span><span class="token punctuation" style="color:#393A34">.</span><span class="token function" style="color:#d73a49">fromJson</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">text</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token class-name">User</span><span class="token punctuation" style="color:#393A34">.</span><span class="token keyword" style="color:#00009f">class</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token comment" style="color:#999988;font-style:italic">// Serialize directly to UTF-8 bytes and deserialize without an intermediate String.</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token keyword" style="color:#00009f">byte</span><span class="token punctuation" style="color:#393A34">[</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"> utf8 </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token constant" style="color:#36acaa">JSON</span><span class="token punctuation" style="color:#393A34">.</span><span class="token function" style="color:#d73a49">toJsonBytes</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">user</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token class-name">User</span><span class="token plain"> fromUtf8 </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token constant" style="color:#36acaa">JSON</span><span class="token punctuation" style="color:#393A34">.</span><span class="token function" style="color:#d73a49">fromJson</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">utf8</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token class-name">User</span><span class="token punctuation" style="color:#393A34">.</span><span class="token keyword" style="color:#00009f">class</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></div></code></pre></div></div>
+<p>See the <a class="" href="https://fory.apache.org/docs/guide/java/json_support">Fory JSON documentation</a> for the complete type model, annotations and mix-ins, dynamic properties, custom serializers, security controls, and Android or GraalVM setup.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://fory.apache.org/blog/fory_1_4_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h2>
+<ul>
+<li class="">feat(java): direct static varhandle field accessors by @chaokunyang in <a href="https://github.com/apache/fory/pull/3778" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3778</a></li>
+<li class="">feat(python): add Python 3.14 CI and wheels by @chaokunyang in <a href="https://github.com/apache/fory/pull/3781" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3781</a></li>
+<li class="">feat(java): add fory json serialization by @chaokunyang in <a href="https://github.com/apache/fory/pull/3784" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3784</a></li>
+<li class="">feat(java): optimize java serialization perf by @chaokunyang in <a href="https://github.com/apache/fory/pull/3794" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3794</a></li>
+<li class="">feat(format): support custom codecs keyed on Optional by @stevenschlansker in <a href="https://github.com/apache/fory/pull/3800" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3800</a></li>
+<li class="">feat(java): refine java json serde by @chaokunyang in <a href="https://github.com/apache/fory/pull/3806" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3806</a></li>
+<li class="">perf(java): avoid quadratic buffer growth in stream deserialization by @temni in <a href="https://github.com/apache/fory/pull/3809" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3809</a></li>
+<li class="">ci(swift): enforce swift-format by @chaokunyang in <a href="https://github.com/apache/fory/pull/3812" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3812</a></li>
+<li class="">ci: reuse cached Swift build artifacts by @chaokunyang in <a href="https://github.com/apache/fory/pull/3811" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3811</a></li>
+<li class="">refactor(go): remove static codegen by @chaokunyang in <a href="https://github.com/apache/fory/pull/3815" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3815</a></li>
+<li class="">feat: add container memory budget by @chaokunyang in <a href="https://github.com/apache/fory/pull/3795" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3795</a></li>
+<li class="">feat(java): add once logging APIs by @chaokunyang in <a href="https://github.com/apache/fory/pull/3821" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3821</a></li>
+<li class="">perf(java): optimize java json serde performance by @chaokunyang in <a href="https://github.com/apache/fory/pull/3808" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3808</a></li>
+<li class="">feat(java): add async codegen for Fory JSON by @chaokunyang in <a href="https://github.com/apache/fory/pull/3825" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3825</a></li>
+<li class="">feat(java): add json type checker by @chaokunyang in <a href="https://github.com/apache/fory/pull/3829" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3829</a></li>
+<li class="">feat(java): refactor json codec api by @chaokunyang in <a href="https://github.com/apache/fory/pull/3830" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3830</a></li>
+<li class="">perf(java): optimize json serialize perf by @chaokunyang in <a href="https://github.com/apache/fory/pull/3834" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3834</a></li>
+<li class="">feat(java): add fory json annotations by @chaokunyang in <a href="https://github.com/apache/fory/pull/3835" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3835</a></li>
+<li class="">feat(compiler): handle C++ identifier escaping and name collisions by @BaldDemian in <a href="https://github.com/apache/fory/pull/3839" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3839</a></li>
+<li class="">feat(java): enhance class check by @chaokunyang in <a href="https://github.com/apache/fory/pull/3837" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3837</a></li>
+<li class="">feat(java): add json property order annotation by @chaokunyang in <a href="https://github.com/apache/fory/pull/3840" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3840</a></li>
+<li class="">feat(json): support dynamic object properties by @chaokunyang in <a href="https://github.com/apache/fory/pull/3841" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3841</a></li>
+<li class="">refactor(java): simplify JSON subtype member writing by @chaokunyang in <a href="https://github.com/apache/fory/pull/3842" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3842</a></li>
+<li class="">feat(java): add JSON codec annotation by @chaokunyang in <a href="https://github.com/apache/fory/pull/3844" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3844</a></li>
+<li class="">refactor(java): embed GraalVM feature in core by @chaokunyang in <a href="https://github.com/apache/fory/pull/3845" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3845</a></li>
+<li class="">feat(java): support Fory JSON in GraalVM native image by @chaokunyang in <a href="https://github.com/apache/fory/pull/3846" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3846</a></li>
+<li class="">feat(java): make DefaultJdkClassAllowList public by @eryanwcp in <a href="https://github.com/apache/fory/pull/3849" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3849</a></li>
+<li class="">feat(java): update AllowListChecker to include checks against disallowed and allowed class lists by @eryanwcp in <a href="https://github.com/apache/fory/pull/3850" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3850</a></li>
+<li class="">feat(java): support Fory JSON on Android by @chaokunyang in <a href="https://github.com/apache/fory/pull/3852" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3852</a></li>
+<li class="">refactor(java): simplify json codec annotations by @chaokunyang in <a href="https://github.com/apache/fory/pull/3854" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3854</a></li>
+<li class="">feat(java): add json value annotations by @chaokunyang in <a href="https://github.com/apache/fory/pull/3855" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3855</a></li>
+<li class="">feat(java): generate JSON object/record codecs helper for android by @chaokunyang in <a href="https://github.com/apache/fory/pull/3857" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3857</a></li>
+<li class="">feat(java): support JSON unwrapped properties by @chaokunyang in <a href="https://github.com/apache/fory/pull/3856" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3856</a></li>
+<li class="">feat(java): add Json object field cache by @chaokunyang in <a href="https://github.com/apache/fory/pull/3862" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3862</a></li>
+<li class="">feat(java): add json mixin support by @chaokunyang in <a href="https://github.com/apache/fory/pull/3863" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3863</a></li>
+<li class="">feat(java): add abstract json value codec by @chaokunyang in <a href="https://github.com/apache/fory/pull/3865" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3865</a></li>
+<li class="">perf(java): fix json perf regression by @chaokunyang in <a href="https://github.com/apache/fory/pull/3866" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3866</a></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://fory.apache.org/blog/fory_1_4_0_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix" translate="no">​</a></h2>
+<ul>
+<li class="">fix(java): log ForyBuilder advisories at info level by @chaokunyang in <a href="https://github.com/apache/fory/pull/3777" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3777</a></li>
+<li class="">fix(java): fix unbounded LinkedBlockingQueue deserialization by @00sense in <a href="https://github.com/apache/fory/pull/3786" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3786</a></li>
+<li class="">fix(ci): checkstyle CI error output by @stevenschlansker in <a href="https://github.com/apache/fory/pull/3796" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3796</a></li>
+<li class="">fix(c++): replace deprecated std::aligned_storage by @RisinT96 in <a href="https://github.com/apache/fory/pull/3793" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3793</a></li>
+<li class="">fix(c++): make temporal types hashable by @BaldDemian in <a href="https://github.com/apache/fory/pull/3789" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3789</a></li>
+<li class="">fix(java): add JDK25 trusted lookup Unsafe fallback by @chaokunyang in <a href="https://github.com/apache/fory/pull/3802" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3802</a></li>
+<li class="">fix(compiler): reject any, message and union as map key types by @BaldDemian in <a href="https://github.com/apache/fory/pull/3804" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3804</a></li>
+<li class="">fix(java): fix collection get element type bug by @Pigsy-Monk in <a href="https://github.com/apache/fory/pull/3803" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3803</a></li>
+<li class="">fix(compiler): reject optional any in IDL validation by @BaldDemian in <a href="https://github.com/apache/fory/pull/3807" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3807</a></li>
+<li class="">fix(compiler): never generate C++ equality methods for message and union containing any by @BaldDemian in <a href="https://github.com/apache/fory/pull/3810" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3810</a></li>
+<li class="">fix(Java): prevent StackOverflow in normalizeIterableTypeArguments for self-referential collections by @Pigsy-Monk in <a href="https://github.com/apache/fory/pull/3817" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3817</a></li>
+<li class="">fix(compiler): alias C++ union case types in metadata macros by @BaldDemian in <a href="https://github.com/apache/fory/pull/3814" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3814</a></li>
+<li class="">fix(compiler): use protobuf syntax highlighter in docs by @ayush00git in <a href="https://github.com/apache/fory/pull/3819" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3819</a></li>
+<li class="">fix(C++): add unordered_map type info hooks by @BaldDemian in <a href="https://github.com/apache/fory/pull/3820" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3820</a></li>
+<li class="">fix(rust): stabilize meta string dynamic cache by @chaokunyang in <a href="https://github.com/apache/fory/pull/3822" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3822</a></li>
+<li class="">fix: keep skip reference ids aligned by @chaokunyang in <a href="https://github.com/apache/fory/pull/3823" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3823</a></li>
+<li class="">fix(rust): fix mulmurhash compute by @chaokunyang in <a href="https://github.com/apache/fory/pull/3824" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3824</a></li>
+<li class="">fix(java): preserve collection TypeDef serializer family by @chaokunyang in <a href="https://github.com/apache/fory/pull/3827" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3827</a></li>
+<li class="">fix(java): stabilize readResolve type metadata by @chaokunyang in <a href="https://github.com/apache/fory/pull/3831" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3831</a></li>
+<li class="">fix(java): skip missing compatible struct fields by @chaokunyang in <a href="https://github.com/apache/fory/pull/3833" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3833</a></li>
+<li class="">fix(java): support inherited fields in xlang by @chaokunyang in <a href="https://github.com/apache/fory/pull/3838" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3838</a></li>
+<li class="">fix(java): support guava android collections by @chaokunyang in <a href="https://github.com/apache/fory/pull/3851" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3851</a></li>
+<li class="">fix(java): stabilize GraalVM field offsets by @chaokunyang in <a href="https://github.com/apache/fory/pull/3853" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3853</a></li>
+<li class="">fix(java): restore inherited container field types by @chaokunyang in <a href="https://github.com/apache/fory/pull/3864" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3864</a></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="other-improvements">Other Improvements<a href="https://fory.apache.org/blog/fory_1_4_0_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements" translate="no">​</a></h2>
+<ul>
+<li class="">chore: fold Fory review skill into agent guidance by @chaokunyang in <a href="https://github.com/apache/fory/pull/3779" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3779</a></li>
+<li class="">chore(release): bump versions to 1.3.0 by @chaokunyang in <a href="https://github.com/apache/fory/pull/3792" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3792</a></li>
+<li class="">chore(javascript): add javascript code format by @chaokunyang in <a href="https://github.com/apache/fory/pull/3813" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3813</a></li>
+<li class="">docs(compiler): documented grpc service stubs by @ayush00git in <a href="https://github.com/apache/fory/pull/3818" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3818</a></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="new-contributors">New Contributors<a href="https://fory.apache.org/blog/fory_1_4_0_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors" translate="no">​</a></h2>
+<ul>
+<li class="">@00sense made their first contribution in <a href="https://github.com/apache/fory/pull/3786" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3786</a></li>
+<li class="">@RisinT96 made their first contribution in <a href="https://github.com/apache/fory/pull/3793" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3793</a></li>
+<li class="">@temni made their first contribution in <a href="https://github.com/apache/fory/pull/3809" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3809</a></li>
+<li class="">@eryanwcp made their first contribution in <a href="https://github.com/apache/fory/pull/3849" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/3849</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v1.3.0...v1.4.0" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v1.3.0...v1.4.0</a></p>]]></content:encoded>
+            <category>fory</category>
+            <category>java</category>
+            <category>kotlin</category>
+            <category>scala</category>
+            <category>android</category>
+            <category>python</category>
+            <category>rust</category>
+            <category>cpp</category>
+            <category>go</category>
+            <category>csharp</category>
+            <category>swift</category>
+            <category>dart</category>
+            <category>compiler</category>
+        </item>
         <item>
             <title><![CDATA[Fory v1.3.0 Released]]></title>
             <link>https://fory.apache.org/blog/fory_1_3_0_release</link>
@@ -94,9 +216,9 @@ bidirectional streaming RPC shapes following grpc-dart conventions.</p>
             <category>android</category>
             <category>python</category>
             <category>rust</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>go</category>
-            <category>c#</category>
+            <category>csharp</category>
             <category>swift</category>
             <category>dart</category>
             <category>compiler</category>
@@ -256,9 +378,9 @@ they use: grpc-java for Java and Scala, <code>grpcio</code> for Python, grpc-go 
             <category>android</category>
             <category>python</category>
             <category>rust</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>go</category>
-            <category>c#</category>
+            <category>csharp</category>
             <category>swift</category>
             <category>dart</category>
             <category>compiler</category>
@@ -315,9 +437,9 @@ they use: grpc-java for Java and Scala, <code>grpcio</code> for Python, grpc-go 
             <category>android</category>
             <category>python</category>
             <category>rust</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>go</category>
-            <category>c#</category>
+            <category>csharp</category>
             <category>swift</category>
             <category>dart</category>
             <category>compiler</category>
@@ -447,9 +569,9 @@ they use: grpc-java for Java and Scala, <code>grpcio</code> for Python, grpc-go 
             <category>android</category>
             <category>python</category>
             <category>rust</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>go</category>
-            <category>c#</category>
+            <category>csharp</category>
             <category>swift</category>
             <category>dart</category>
             <category>compiler</category>
@@ -625,9 +747,9 @@ Protocol Buffers across representative data structures.</p>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v0.16.0...v0.17.0" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v0.16.0...v0.17.0</a></p>]]></content:encoded>
             <category>fory</category>
-            <category>c#</category>
+            <category>csharp</category>
             <category>swift</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>java</category>
             <category>python</category>
             <category>compiler</category>
@@ -826,9 +948,9 @@ Protobuf and Msgpack across representative data structures.</p>
 <strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v0.15.0...v0.16.0" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v0.15.0...v0.16.0</a></li>
 </ul>]]></content:encoded>
             <category>fory</category>
-            <category>c#</category>
+            <category>csharp</category>
             <category>swift</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>java</category>
             <category>python</category>
             <category>compiler</category>
@@ -1567,7 +1689,7 @@ schema above, generated code looks like:</p>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v0.14.1...v0.15.0" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v0.14.1...v0.15.0</a></p>]]></content:encoded>
             <category>fory</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>rust</category>
             <category>java</category>
             <category>python</category>
@@ -1754,7 +1876,7 @@ schema above, generated code looks like:</p>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v0.13.2...v0.14.0" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v0.13.2...v0.14.0</a></p>]]></content:encoded>
             <category>fory</category>
-            <category>c++</category>
+            <category>cpp</category>
             <category>rust</category>
             <category>java</category>
             <category>python</category>
@@ -2499,96 +2621,6 @@ schema above, generated code looks like:</p>
 <li class="">@open-snail made their first contribution in <a href="https://github.com/apache/fory/pull/2500" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2500</a></li>
 </ul>
 <p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v0.12.0...v0.12.1" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v0.12.0...v0.12.1</a></p>]]></content:encoded>
-            <category>fory</category>
-        </item>
-        <item>
-            <title><![CDATA[Fory v0.12.0 Released]]></title>
-            <link>https://fory.apache.org/blog/fory_0_12_0_release</link>
-            <guid>https://fory.apache.org/blog/fory_0_12_0_release</guid>
-            <pubDate>Mon, 18 Aug 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.12.0 release. This is a major release that includes 64 PR from 9 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
-            <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.12.0 release. This is a major release that includes <a href="https://github.com/apache/fory/compare/v0.11.2...v0.12.0" target="_blank" rel="noopener noreferrer" class="">64 PR</a> from 9 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_12_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
-<ul>
-<li class="">[Python] Support Python <code>__getstate__/__setstate__/__reduce__</code> serialization protocol</li>
-<li class="">[Python] Support serialize python function</li>
-<li class="">[Java] Use JDK11 for fory-format module</li>
-<li class="">[Scala]Support default value for scala case/pojo classes when deseralizing</li>
-<li class="">[Kotlin] Support default value for kotlin data classes when deserializing</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://fory.apache.org/blog/fory_0_12_0_release#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h2>
-<ul>
-<li class="">refactor(python): replace Black and Flake8 with Ruff by @esafak in <a href="https://github.com/apache/fory/pull/2388" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2388</a></li>
-<li class="">refactor(python): Unify DataClassSerializer and ComplexObjectSerializer by @esafak in <a href="https://github.com/apache/fory/pull/2389" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2389</a></li>
-<li class="">refactor(python): Simplify require_pyarrow, remove undefined pytest.mark by @esafak in <a href="https://github.com/apache/fory/pull/2396" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2396</a></li>
-<li class="">feat(python): Replace usage of ComplexObjectSerializer with DataClassSerializer by @esafak in <a href="https://github.com/apache/fory/pull/2395" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2395</a></li>
-<li class="">feat(python): Add StatefulSerializer using <strong>getstate</strong>, <strong>setstate</strong> by @esafak in <a href="https://github.com/apache/fory/pull/2400" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2400</a></li>
-<li class="">feat(python): Implement ReduceSerializer for <strong>reduce</strong> support by @esafak in <a href="https://github.com/apache/fory/pull/2401" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2401</a></li>
-<li class="">feat(python): Support codegen with XLANG in DataClassSerializer by @esafak in <a href="https://github.com/apache/fory/pull/2405" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2405</a></li>
-<li class="">perf(Go/python): Type system compatibility upgrade by @pandalee99 in <a href="https://github.com/apache/fory/pull/2339" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2339</a></li>
-<li class="">feat(python): Add FunctionSerializer for function serialization by @esafak in <a href="https://github.com/apache/fory/pull/2404" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2404</a></li>
-<li class="">feat: Implement ObjectSerializer for custom objects by @esafak in <a href="https://github.com/apache/fory/pull/2413" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2413</a></li>
-<li class="">feat(scala): support scala object with default values by @chaokunyang in <a href="https://github.com/apache/fory/pull/2412" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2412</a></li>
-<li class="">refactor(java): refactor java default value support for scala/kotlin by @chaokunyang in <a href="https://github.com/apache/fory/pull/2415" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2415</a></li>
-<li class="">feat(kotlin): support default value for kotlin data class by @chaokunyang in <a href="https://github.com/apache/fory/pull/2416" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2416</a></li>
-<li class="">feat(kotlin): add cache to kotlin default value support by @chaokunyang in <a href="https://github.com/apache/fory/pull/2419" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2419</a></li>
-<li class="">refactor(ci): Migrate CI runner to Python scripts by @esafak in <a href="https://github.com/apache/fory/pull/2406" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2406</a></li>
-<li class="">feat(java): use java11 for fory-format module by @chaokunyang in <a href="https://github.com/apache/fory/pull/2448" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2448</a></li>
-<li class="">feat(python): add register api for python by @chaokunyang in <a href="https://github.com/apache/fory/pull/2451" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2451</a></li>
-<li class="">feat(java): add graalvm 23 ci by @chaokunyang in <a href="https://github.com/apache/fory/pull/2463" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2463</a></li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://fory.apache.org/blog/fory_0_12_0_release#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix" translate="no">​</a></h2>
-<ul>
-<li class="">fix: tidy up issues in scala_guide.md by @pjfanning in <a href="https://github.com/apache/fory/pull/2374" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2374</a></li>
-<li class="">fix(java): ClassDef header calculation error by @LiangliangSui in <a href="https://github.com/apache/fory/pull/2382" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2382</a></li>
-<li class="">ci(python): Build manylinux_2_28 wheels using auditwheel by @esafak in <a href="https://github.com/apache/fory/pull/2381" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2381</a></li>
-<li class="">fix: Correct pyarrow installation check and add bazel troubleshooting by @esafak in <a href="https://github.com/apache/fory/pull/2418" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2418</a></li>
-<li class="">fix(go): fix type writing and reading logic in slice by @lzaeh in <a href="https://github.com/apache/fory/pull/2427" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2427</a></li>
-<li class="">fix(rust): fix rust lint error by @chaokunyang in <a href="https://github.com/apache/fory/pull/2447" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2447</a></li>
-<li class="">fix(java): crash when map only contains null value by @LouisLou2 in <a href="https://github.com/apache/fory/pull/2444" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2444</a></li>
-<li class="">fix(java): MemoryBuffer::readChars by @LouisLou2 in <a href="https://github.com/apache/fory/pull/2438" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2438</a></li>
-<li class="">fix(java): fix java deploy with different java versions by @chaokunyang in <a href="https://github.com/apache/fory/pull/2449" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2449</a></li>
-<li class="">fix(java): fix install jdks by @chaokunyang in <a href="https://github.com/apache/fory/pull/2450" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2450</a></li>
-<li class="">fix(java): fix maven deploy by @chaokunyang in <a href="https://github.com/apache/fory/pull/2452" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2452</a></li>
-<li class="">fix(java): fix shade janino duplciate entry by @chaokunyang in <a href="https://github.com/apache/fory/pull/2453" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2453</a></li>
-<li class="">fix(java): fix extension java module conflict by @chaokunyang in <a href="https://github.com/apache/fory/pull/2455" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2455</a></li>
-<li class="">fix(java): fix extension java module conflict by @chaokunyang in <a href="https://github.com/apache/fory/pull/2456" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2456</a></li>
-<li class="">fix(java): fix decode classdef for abstract classes by @chaokunyang in <a href="https://github.com/apache/fory/pull/2462" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2462</a></li>
-<li class="">fix(python): fix pyfory pypi release (#2473) by @chaokunyang in <a href="https://github.com/apache/fory/pull/2474" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2474</a></li>
-<li class="">fix(python): fix py releases macos13 by @chaokunyang in <a href="https://github.com/apache/fory/pull/2479" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2479</a></li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="other-improvements">Other Improvements<a href="https://fory.apache.org/blog/fory_0_12_0_release#other-improvements" class="hash-link" aria-label="Direct link to Other Improvements" title="Direct link to Other Improvements" translate="no">​</a></h2>
-<ul>
-<li class="">chore(Scala): upgrade sbt and plugins by @pjfanning in <a href="https://github.com/apache/fory/pull/2379" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2379</a></li>
-<li class="">chore(python): add more comprehensive test parameters by @pandalee99 in <a href="https://github.com/apache/fory/pull/2377" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2377</a></li>
-<li class="">chore(Scala): remove var that can be mutated by @pjfanning in <a href="https://github.com/apache/fory/pull/2385" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2385</a></li>
-<li class="">chore(Scala): add test for Scala 3 enum by @pjfanning in <a href="https://github.com/apache/fory/pull/2386" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2386</a></li>
-<li class="">chore(Scala): use setup-sbt CI action by @pjfanning in <a href="https://github.com/apache/fory/pull/2387" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2387</a></li>
-<li class="">chore(Scala): refactor scala test so it asserts something by @pjfanning in <a href="https://github.com/apache/fory/pull/2390" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2390</a></li>
-<li class="">chore(Scala): Create DurationTest.scala by @pjfanning in <a href="https://github.com/apache/fory/pull/2394" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2394</a></li>
-<li class="">chore(Java): handle deserialization scenario that currently throws an IndexOutOfBoundsException by @pjfanning in <a href="https://github.com/apache/fory/pull/2399" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2399</a></li>
-<li class="">chore: bump release version to 0.11.2 by @pandalee99 in <a href="https://github.com/apache/fory/pull/2403" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2403</a></li>
-<li class="">chore(deps): bump org.apache.commons<!-- -->:commons-lang3<!-- --> from 3.12.0 to 3.18.0 in /java/fory-test-core by @dependabot[bot] in <a href="https://github.com/apache/fory/pull/2408" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2408</a></li>
-<li class="">chore(docs): Fix the names of some documents by @pandalee99 in <a href="https://github.com/apache/fory/pull/2411" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2411</a></li>
-<li class="">chore(cpp): fix duplicate copyright by @co63oc in <a href="https://github.com/apache/fory/pull/2426" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2426</a></li>
-<li class="">docs: fix ruff command by @co63oc in <a href="https://github.com/apache/fory/pull/2425" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2425</a></li>
-<li class="">chore: fix typos by @co63oc in <a href="https://github.com/apache/fory/pull/2424" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2424</a></li>
-<li class="">chore(dart): fix typos by @co63oc in <a href="https://github.com/apache/fory/pull/2428" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2428</a></li>
-<li class="">chore: fix typos by @co63oc in <a href="https://github.com/apache/fory/pull/2429" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2429</a></li>
-<li class="">chore: remove incubating by @chaokunyang in <a href="https://github.com/apache/fory/pull/2431" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2431</a></li>
-<li class="">chore: fix typos by @co63oc in <a href="https://github.com/apache/fory/pull/2433" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2433</a></li>
-<li class="">chore: fix typos by @co63oc in <a href="https://github.com/apache/fory/pull/2436" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2436</a></li>
-<li class="">chore: translate comments by @co63oc in <a href="https://github.com/apache/fory/pull/2442" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2442</a></li>
-<li class="">chore(python): add execute doc for cross langauge tests in python by @chaokunyang in <a href="https://github.com/apache/fory/pull/2420" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2420</a></li>
-<li class="">chore(java): arrow 18.3.0 by @stevenschlansker in <a href="https://github.com/apache/fory/pull/2458" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2458</a></li>
-<li class="">chore: prepare commits for releases-0.12 by @chaokunyang in <a href="https://github.com/apache/fory/pull/2470" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2470</a></li>
-<li class="">chore(python): disable import format warning by @chaokunyang in <a href="https://github.com/apache/fory/pull/2477" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2477</a></li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="new-contributors">New Contributors<a href="https://fory.apache.org/blog/fory_0_12_0_release#new-contributors" class="hash-link" aria-label="Direct link to New Contributors" title="Direct link to New Contributors" translate="no">​</a></h2>
-<ul>
-<li class="">@co63oc made their first contribution in <a href="https://github.com/apache/fory/pull/2426" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/pull/2426</a></li>
-</ul>
-<p><strong>Full Changelog</strong>: <a href="https://github.com/apache/fory/compare/v0.11.2...v0.12.0" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory/compare/v0.11.2...v0.12.0</a></p>]]></content:encoded>
             <category>fory</category>
         </item>
     </channel>
