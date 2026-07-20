@@ -99,7 +99,7 @@ union Animal [id=106] {
 - Go：带 struct tag 的结构体
 - Rust：带 `#[derive(ForyObject)]` 的结构体
 - C++：带 `FORY_STRUCT` 宏的结构体
-- C#：带 `[ForyObject]` 的类及注册辅助函数
+- C#：带 `[ForyStruct]` 的类、`[ForyEnum]` 枚举、`[ForyUnion]` 联合类型及注册辅助函数
 - JavaScript：带注册函数的接口
 - Swift：带 `@ForyObject` 模型、`@ForyField` 元数据和注册辅助函数
 - Dart：带 `@ForyStruct` 类、`@ForyField` 注解和注册辅助函数

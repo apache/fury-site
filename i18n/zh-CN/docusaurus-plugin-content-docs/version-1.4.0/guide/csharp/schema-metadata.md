@@ -21,15 +21,15 @@ license: |
 
 本页介绍 C# 生成序列化器的字段级序列化器配置。
 
-## `[ForyObject]` 和 `[ForyField]` {#foryobject-and-foryfield}
+## `[ForyStruct]` 和 `[ForyField]` {#forystruct-and-foryfield}
 
-使用 `[ForyObject]` 启用源码生成的序列化器。使用 `[ForyField]` 分配一个可选、稳定、非负的字段 ID，或覆盖字段使用的 Fory schema 类型。
+使用 `[ForyStruct]` 启用源码生成的序列化器。使用 `[ForyField]` 分配一个可选、稳定、非负的字段 ID，或覆盖字段使用的 Fory schema 类型。
 
 ```csharp
 using Apache.Fory;
 using S = Apache.Fory.Schema.Types;
 
-[ForyObject]
+[ForyStruct]
 public sealed class Metrics
 {
     [ForyField(Type = typeof(S.UInt32))]
@@ -48,7 +48,7 @@ public sealed class Metrics
 using Apache.Fory;
 using S = Apache.Fory.Schema.Types;
 
-[ForyObject]
+[ForyStruct]
 public sealed class NestedMetrics
 {
     [ForyField(Type = typeof(S.Map<S.Fixed<S.UInt32>, S.List<S.Tagged<S.UInt64>>>))]

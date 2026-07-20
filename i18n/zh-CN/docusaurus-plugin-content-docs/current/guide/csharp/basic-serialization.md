@@ -23,19 +23,19 @@ license: |
 
 ## 对象图序列化
 
-在类或结构体上使用 `[ForyObject]`，并在使用前完成注册。
+在类或结构体上使用 `[ForyStruct]`，并在使用前完成注册。
 
 ```csharp
 using Apache.Fory;
 
-[ForyObject]
+[ForyStruct]
 public sealed class Address
 {
     public string Street { get; set; } = string.Empty;
     public int Zip { get; set; }
 }
 
-[ForyObject]
+[ForyStruct]
 public sealed class Person
 {
     public long Id { get; set; }
@@ -124,7 +124,7 @@ fory.Serialize<object?>(dynamicWriter, value);
 
 - 复用同一个 `Fory` 或 `ThreadSafeFory` 实例可以获得更好的性能。
 - 基础类型和集合类型不需要用户手动注册。
-- 用户自定义的 `[ForyObject]` 类型和自定义序列化器类型应显式注册。
+- 用户自定义的 `[ForyStruct]`、`[ForyEnum]`、`[ForyUnion]` 类型和自定义序列化器类型应显式注册。
 
 ## 相关主题
 

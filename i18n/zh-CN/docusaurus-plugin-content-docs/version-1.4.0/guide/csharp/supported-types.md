@@ -73,7 +73,7 @@ license: |
 
 ## 用户类型
 
-- 通过 source generator 生成序列化器的 `[ForyObject]` 类、结构体、枚举
+- 通过 source generator 生成序列化器的 `[ForyStruct]` 类和结构体、`[ForyEnum]` 枚举以及 `[ForyUnion]` ADT 记录
 - 通过 `Register<T, TSerializer>(...)` 注册的自定义序列化器类型
 - `Union` / `Union2<...>` 强类型联合支持
 

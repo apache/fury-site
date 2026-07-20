@@ -185,7 +185,7 @@ message Event {
 | `int64 [(fory).type = "tagged_int64"]`   | `tagged_int64` 编码           |
 | `uint64 [(fory).type = "tagged_uint64"]` | `tagged_uint64` 编码          |
 
-## Fory 扩展选项（Protobuf）
+## Fory 扩展选项（Protobuf） {#fory-extension-options-protobuf}
 
 `.proto` 文件中的 Fory 专用选项使用 `(fory).` 前缀。
 
@@ -219,7 +219,7 @@ message TreeNode {
 | `(fory).deprecated`          | message, enum | bool   | 标记类型为弃用                |
 | `(fory).namespace`           | message       | string | 覆盖默认 package 命名空间     |
 
-### 字段级选项
+### 字段级选项 {#field-level-options}
 
 | 选项                         | 类型   | 说明                                                                  |
 | ---------------------------- | ------ | --------------------------------------------------------------------- |

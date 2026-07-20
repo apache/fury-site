@@ -25,7 +25,7 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化运行时。它�
 
 - 面向 .NET 8+ 的高性能二进制序列化
 - 与 Java、Python、C++、Go、Rust 和 JavaScript 中的 Fory 实现保持跨语言兼容
-- 基于 source generator 的 `[ForyObject]` 类型序列化器
+- 基于 source generator 的 `[ForyStruct]` 类型序列化器，以及 `[ForyEnum]` 和 `[ForyUnion]` 类型注册
 - 可选引用跟踪，支持共享对象图和循环对象图
 - 面向 Schema 演进的兼容模式
 - 面向多线程服务的线程安全运行时 `ThreadSafeFory`
@@ -39,7 +39,7 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化运行时。它�
 
 ### 从 NuGet 安装
 
-引用单个 `Apache.Fory` 包即可。它同时包含运行时和 `[ForyObject]` 类型所需的 source generator。
+引用单个 `Apache.Fory` 包即可。它同时包含 Fory 库，以及用于 `[ForyStruct]`、`[ForyEnum]` 和 `[ForyUnion]` 类型的 source generator。
 
 ```xml
 <ItemGroup>
@@ -52,7 +52,7 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化运行时。它�
 ```csharp
 using Apache.Fory;
 
-[ForyObject]
+[ForyStruct]
 public sealed class User
 {
     public long Id { get; set; }

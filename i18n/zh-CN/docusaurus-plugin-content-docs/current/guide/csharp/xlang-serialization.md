@@ -34,7 +34,7 @@ Fory fory = Fory.Builder()
 ## 使用稳定 ID 注册
 
 ```csharp
-[ForyObject]
+[ForyStruct]
 public sealed class Person
 {
     public string Name { get; set; } = string.Empty;

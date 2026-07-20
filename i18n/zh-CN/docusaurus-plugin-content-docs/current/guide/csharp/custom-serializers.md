@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-当某个类型不是通过 `[ForyObject]` 生成，或者需要专门的编码方式时，可以使用自定义序列化器。
+当某个类型不是通过 `[ForyStruct]` 生成，或者需要专门的编码方式时，可以使用自定义序列化器。
 
 ## 实现 `Serializer<T>`
 
@@ -75,7 +75,7 @@ Point decoded = fory.Deserialize<Point>(payload);
 1. 保持序列化器逻辑确定且读写对称。
 2. 对整数密集型载荷要有意识地选择 varint、fixed 或 tagged 编码。
 3. 在所有读写端都注册自定义序列化器。
-4. 对常规领域模型优先使用 `[ForyObject]` 生成的序列化器。
+4. 对常规领域模型优先使用 `[ForyStruct]` 生成的序列化器。
 
 ## 相关主题
 
