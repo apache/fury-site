@@ -16,6 +16,8 @@ i18n/zh-CN/docusaurus-plugin-content-docs/*/specification/
 !i18n/zh-CN/docusaurus-plugin-content-docs/current/specification/*.md
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-0.15/specification/
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-0.15/specification/*.md
+!i18n/zh-CN/docusaurus-plugin-content-docs/version-1.4.0/specification/
+!i18n/zh-CN/docusaurus-plugin-content-docs/version-1.4.0/specification/*.md
 
 # Misc
 .DS_Store

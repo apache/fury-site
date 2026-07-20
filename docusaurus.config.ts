@@ -48,7 +48,7 @@ const config: Config = {
       {
         docs: {
           sidebarCollapsible: true,
-          lastVersion: '1.3.0',
+          lastVersion: '1.4.0',
           versions: {
             current: {
               label: 'dev',
