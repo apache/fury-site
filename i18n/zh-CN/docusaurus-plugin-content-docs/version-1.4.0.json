@@ -1,0 +1,26 @@
+{
+  "version.label": {
+    "message": "1.4.0",
+    "description": "The label for version 1.4.0"
+  },
+  "sidebar.docsSidebar.category.Introduction": {
+    "message": "介绍",
+    "description": "The label for category Introduction in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Start": {
+    "message": "快速开始",
+    "description": "The label for category Start in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Schema IDL & Compiler": {
+    "message": "Schema IDL 与编译器",
+    "description": "The label for category Schema IDL & Compiler in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Guide": {
+    "message": "用户指南",
+    "description": "The label for category Guide in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Cross Language": {
+    "message": "跨语言",
+    "description": "The label for category Cross Language in sidebar docsSidebar"
+  }
+}
