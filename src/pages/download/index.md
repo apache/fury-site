@@ -60,22 +60,22 @@ gpg --verify apache-fory-1.4.0-src.tar.gz.asc apache-fory-1.4.0-src.tar.gz
 If something like the following appears, it means the signature is correct:
 
 ```bash
-gpg: Signature made Sun Feb  9 12:09:36 2025 CST
-gpg:                using RSA key F4796001336453FDE7BB45709C0212E28DD7828C
-gpg: Good signature from "Weipeng Wang (CODE SIGNING KEY) <wangweipeng@apache.org>"
+gpg: Signature made Fri Jul 17 00:41:13 2026 CST
+gpg:                using RSA key 1E2CDAE4C08AD7D694D1CB139D7BE8E45E580BA4
+gpg: Good signature from "chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org>" [unknown]
 ```
 
 You should also verify the key using a command like:
 
 ```bash
-gpg --fingerprint F4796001336453FDE7BB45709C0212E28DD7828C
+gpg --fingerprint 1E2CDAE4C08AD7D694D1CB139D7BE8E45E580BA4
 ```
 
 It should output something like:
 
 ```bash
-pub   rsa4096 2025-03-17 [SC]
-      F479 6001 3364 53FD E7BB  4570 9C02 12E2 8DD7 828C
-uid           [ultimate] Weipeng Wang (CODE SIGNING KEY) <wangweipeng@apache.org>
-sub   rsa4096 2025-03-17
+pub   rsa4096 2024-03-27 [SC]
+      1E2C DAE4 C08A D7D6 94D1  CB13 9D7B E8E4 5E58 0BA4
+uid           [ unknown] chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org>
+sub   rsa4096 2024-03-27 [E]
 ```
