@@ -28,29 +28,31 @@ Fory Go 使用函数式选项模式进行配置。你可以在保持合理默认
 ```go
 import "github.com/apache/fory/go/fory"
 
-f := fory.New()
+f := fory.New(fory.WithXlang(true))
 ```
 
 默认设置：
 
-| Option                          | Default | Description                            |
-| ------------------------------- | ------- | -------------------------------------- |
-| TrackRef                        | false   | 关闭引用跟踪                           |
-| MaxDepth                        | 20      | 最大嵌套深度                           |
-| IsXlang                         | false   | 关闭跨语言模式                         |
-| Compatible                      | false   | 关闭 Schema 演进兼容模式               |
-| MaxTypeFields                   | 512     | 一个收到的 struct metadata body 最大字段数 |
-| MaxTypeMetaBytes                | 4096    | 一个收到的 metadata body 最大编码字节数 |
-| MaxSchemaVersionsPerType        | 10      | 一个逻辑类型最大远端 metadata 版本数   |
-| MaxAverageSchemaVersionsPerType | 3       | 所有远端类型的平均 metadata 版本数     |
+| 选项                            | 默认值    | 说明                                           |
+| ------------------------------- | --------- | ---------------------------------------------- |
+| TrackRef                        | false     | 关闭引用跟踪                                   |
+| MaxDepth                        | 20        | 最大嵌套深度                                   |
+| IsXlang                         | true      | 启用跨语言模式                                 |
+| Compatible                      | true      | 启用兼容的 Schema 演进元数据                   |
+| MaxGraphMemoryBytes             | 134217728 | 每次读取根对象时的近似对象图内存限制           |
+| MaxTypeFields                   | 512       | 一个收到的 struct metadata body 最大字段数     |
+| MaxTypeMetaBytes                | 4096      | 一个收到的 metadata body 最大编码字节数        |
+| MaxSchemaVersionsPerType        | 10        | 一个逻辑类型最大远端 metadata 版本数            |
+| MaxAverageSchemaVersionsPerType | 3         | 所有远端类型的平均 metadata 版本数              |
 
 ### 通过选项配置
 
 ```go
 f := fory.New(
+    fory.WithXlang(true),
     fory.WithTrackRef(true),
-    fory.WithCompatible(true),
     fory.WithMaxDepth(10),
+    fory.WithMaxGraphMemoryBytes(128 * 1024 * 1024),
     fory.WithMaxTypeFields(512),
     fory.WithMaxTypeMetaBytes(4096),
     fory.WithMaxSchemaVersionsPerType(10),
@@ -92,10 +94,10 @@ f := fory.New(fory.WithTrackRef(true))
 
 ### WithCompatible
 
-启用 schema 演进兼容模式：
+在 xlang 和 native 模式中，兼容模式都默认启用。只有每个读写端始终使用相同 Schema，并且需要更快的序列化速度和更小的体积时，才设置 `WithCompatible(false)`：
 
 ```go
-f := fory.New(fory.WithCompatible(true))
+f := fory.New(fory.WithCompatible(false))
 ```
 
 **开启后：**
@@ -105,14 +107,13 @@ f := fory.New(fory.WithCompatible(true))
 - 按字段名或字段 ID 匹配（与顺序无关）
 - 因元信息导致输出更大
 
-**关闭（默认）时：**
+**关闭时：**
 
-- 不写字段元信息，序列化更紧凑
 - 序列化更快、输出更小
 - 字段按排序顺序匹配
 - 要求各服务间结构体定义保持一致
 
-详见 [Schema 演进](schema-evolution.md)。
+对于 xlang 载荷，只有确认每种语言都使用相同 Schema，或 native 类型由 Fory schema IDL 生成后，才使用 `WithCompatible(false)`。详见 [Schema 演进](schema-evolution.md)。
 
 ### WithMaxDepth
 
@@ -125,6 +126,18 @@ f := fory.New(fory.WithMaxDepth(30))
 - 默认值：20
 - 防护深层递归结构或恶意数据
 - 超过限制会返回错误
+
+### WithMaxGraphMemoryBytes
+
+为单次根对象反序列化设置近似的对象图内存限制：
+
+```go
+f := fory.New(fory.WithMaxGraphMemoryBytes(256 * 1024 * 1024))
+```
+
+该估算主要涵盖实例化后的 slice、map、set、array、struct 和 object。string、binary、基础标量和基础类型稠密数组等叶子值不计入其中，因此实际进程内存可能高于该值。
+
+所有根输入形式的默认限制均固定为 `128 MiB`。正数值会覆盖默认值；显式传入非正数时，运行时创建会失败。对象图内存预留是对可用字节数检查的补充，而非替代。不计入该限制的叶子值仍受剩余输入字节数约束：如果未读取的输入没有足够字节，Fory 就不会读取或创建该叶子值。
 
 ### WithMaxTypeFields
 
@@ -160,19 +173,20 @@ f := fory.New(fory.WithMaxAverageSchemaVersionsPerType(3))
 
 ### WithXlang
 
-启用跨语言序列化模式：
+选择编码模式：
 
 ```go
-f := fory.New(fory.WithXlang(true))
+native := fory.New(fory.WithXlang(false))
+xlang := fory.New(fory.WithXlang(true))
 ```
 
 **开启后：**
 
 - 使用跨语言类型系统
-- 与 Java、Python、C++、Rust、JavaScript 兼容
+- 与 Java、Python、C++、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 兼容
 - 类型 ID 遵循 xlang 规范
 
-**关闭（默认）时：**
+**关闭时：**
 
 - 使用 Go 原生序列化模式
 - 支持更多 Go 原生类型
@@ -187,8 +201,8 @@ import "github.com/apache/fory/go/fory/threadsafe"
 
 // Create thread-safe Fory with same options
 f := threadsafe.New(
+    fory.WithXlang(true),
     fory.WithTrackRef(true),
-    fory.WithCompatible(true),
 )
 
 // Safe for concurrent use from multiple goroutines

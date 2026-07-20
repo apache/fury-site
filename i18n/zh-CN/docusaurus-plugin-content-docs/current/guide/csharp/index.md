@@ -43,7 +43,7 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化运行时。它�
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.3.0" />
+  <PackageReference Include="Apache.Fory" Version="1.4.0" />
 </ItemGroup>
 ```
 

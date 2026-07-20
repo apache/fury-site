@@ -61,7 +61,7 @@ include(FetchContent)
 FetchContent_Declare(
     fory
     GIT_REPOSITORY https://github.com/apache/fory.git
-    GIT_TAG        v1.3.0
+    GIT_TAG        v1.4.0
     SOURCE_SUBDIR  cpp
 )
 FetchContent_MakeAvailable(fory)
@@ -91,11 +91,11 @@ module(
 
 bazel_dep(name = "rules_cc", version = "0.1.1")
 
-bazel_dep(name = "fory", version = "1.3.0")
+bazel_dep(name = "fory", version = "1.4.0")
 git_override(
     module_name = "fory",
     remote = "https://github.com/apache/fory.git",
-    commit = "v1.3.0",  # 或使用特定 commit hash 以确保可复现性
+    commit = "v1.4.0",  # 或使用特定 commit hash 以确保可复现性
 )
 ```
 
@@ -126,7 +126,7 @@ bazel run //:my_app
 对于本地开发，也可以改用 `local_path_override`：
 
 ```bazel
-bazel_dep(name = "fory", version = "1.3.0")
+bazel_dep(name = "fory", version = "1.4.0")
 local_path_override(
     module_name = "fory",
     path = "/path/to/fory",

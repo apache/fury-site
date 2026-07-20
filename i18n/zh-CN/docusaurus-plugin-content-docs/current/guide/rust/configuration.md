@@ -92,6 +92,24 @@ let fory = Fory::builder()
 - `max_schema_versions_per_type` 默认值为 `10`，限制一个逻辑类型可接受的远端 metadata 版本数。
 - `max_average_schema_versions_per_type` 默认值为 `3`，限制所有已接受远端类型的平均版本数；有效全局下限为 `8192` 个 schema。
 
+### 对象图内存预算
+
+`max_graph_memory_bytes(...)` 为单次根对象读取设置近似的对象图内存阈值。估算主要
+涵盖实际创建的 collection、map、array、struct 和 object；它不是精确的进程 heap
+上限。它不包含 string、binary data、primitive scalar 和紧凑 primitive array 等
+叶子值，因此实际的进程内存可能高于这个值。叶子值仍受可用字节数检查保护：如果
+未读输入没有足够的字节，Fory 就不会读取或创建该叶子值。对于所有根输入形式，
+默认值固定为 `128 MiB`。可信载荷需要更大或更小的阈值时，可以设置正数形式的
+字节值：
+
+```rust
+let fory = Fory::builder()
+    .max_graph_memory_bytes(256 * 1024 * 1024)
+    .build();
+```
+
+创建运行时时会拒绝零值。
+
 ### 跨语言模式
 
 启用跨语言序列化：
@@ -121,6 +139,11 @@ let fory = Fory::default()
 // 自定义深度限制
 let fory = Fory::default().max_dyn_depth(10);
 
+// 自定义对象图内存预算
+let fory = Fory::builder()
+    .max_graph_memory_bytes(256 * 1024 * 1024)
+    .build();
+
 // 组合配置
 let fory = Fory::default()
     .compatible(true)
@@ -135,6 +158,7 @@ let fory = Fory::default()
 | `compatible(bool)`                            | 启用 schema 演化                  | `false` |
 | `xlang(bool)`                                 | 启用跨语言模式                    | `false` |
 | `max_dyn_depth(u32)`                          | 动态类型的最大嵌套深度            | `5`     |
+| `max_graph_memory_bytes(usize)`               | 每次根对象读取的近似对象图内存阈值 | `128 MiB` |
 | `max_type_fields(usize)`                      | 一个收到的 struct metadata body 最大字段数 | `512`   |
 | `max_type_meta_bytes(usize)`                  | 一个收到的 metadata body 最大编码字节数 | `4096`  |
 | `max_schema_versions_per_type(usize)`         | 一个逻辑类型最大远端 metadata 版本数 | `10`    |
@@ -144,6 +168,8 @@ let fory = Fory::default()
 
 - 反序列化不可信 payload 前，先注册应用 struct 和 trait-object 实现。
 - 使用 `max_dyn_depth(...)` 拒绝异常深的动态对象图。
+- 对于大多数输入，保持 `max_graph_memory_bytes(...)` 固定的 `128 MiB` 默认值；如果
+  可信工作负载具有不同且合理的 collection、map 或 struct 大小，请设置正数形式的字节阈值。
 - 除非数据不是恶意输入，且可信 peer 会发送更大的 metadata 或大量 schema 版本，否则保持远端 schema metadata 限制的默认值。
 - 对不可信输入，优先使用具体类型字段，避免宽泛的 `dyn Any` 或 trait-object 字段。
 

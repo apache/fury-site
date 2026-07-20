@@ -37,9 +37,9 @@ Rust 实现提供灵活而高性能的序列化能力，具备自动内存管理
 
 | Crate                                                                       | 说明                           | 版本                                                                                                  |
 | --------------------------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| [`fory`](https://github.com/apache/fory/blob/main/rust/fory)                | 带 derive macro 的高级 API     | [![crates.io](https://img.shields.io/crates/v/fory.svg)](https://crates.io/crates/fory)               |
-| [`fory-core`](https://github.com/apache/fory/blob/main/rust/fory-core/)     | 核心序列化引擎                 | [![crates.io](https://img.shields.io/crates/v/fory-core.svg)](https://crates.io/crates/fory-core)     |
-| [`fory-derive`](https://github.com/apache/fory/blob/main/rust/fory-derive/) | 过程宏                         | [![crates.io](https://img.shields.io/crates/v/fory-derive.svg)](https://crates.io/crates/fory-derive) |
+| [`fory`](https://github.com/apache/fory/blob/main/rust/fory)                | 面向用户的 API、运行时类型和 derive macro         | [1.4.0](https://crates.io/crates/fory)        |
+| [`fory-core`](https://github.com/apache/fory/blob/main/rust/fory-core/)     | 面向高级集成的底层运行时 crate                   | [1.4.0](https://crates.io/crates/fory-core)   |
+| [`fory-derive`](https://github.com/apache/fory/blob/main/rust/fory-derive/) | 供直接使用运行时的底层 procedural macro crate    | [1.4.0](https://crates.io/crates/fory-derive) |
 
 ## 快速开始
 
@@ -47,7 +47,7 @@ Rust 实现提供灵活而高性能的序列化能力，具备自动内存管理
 
 ```toml
 [dependencies]
-fory = "1.3.0"
+fory = "1.4.0"
 ```
 
 ### 基础示例

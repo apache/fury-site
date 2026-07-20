@@ -104,6 +104,8 @@ byte[] payload = fory.Serialize<object?>(value);
 object? decoded = fory.Deserialize<object?>(payload);
 ```
 
+如果动态 map 不含 null 键，通常会解码为 `Dictionary<object, object?>`。如果载荷对动态 map 本身启用了引用跟踪，C# 会返回 `NullableKeyDictionary<object, object?>`，以便嵌套引用和 null 键指向解码后的 map 所有者。
+
 ## Buffer Writer API
 
 直接序列化到 `IBufferWriter<byte>` 目标。

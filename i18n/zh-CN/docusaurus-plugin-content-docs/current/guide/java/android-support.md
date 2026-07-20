@@ -38,6 +38,103 @@ Android 上会禁用运行时序列化器代码生成。如果设置了 `withCod
 
 需要生成序列化器的 Android 应用应改用构建时静态生成序列化器。
 
+## Fory JSON
+
+Fory JSON 通过常规的 `fory-json` 构件支持 Android API level 26 及以上版本中的普通类。运行时 JSON 代码生成和异步编译会自动禁用，因此 `ForyJson.builder().build()` 使用解释执行的对象映射器。
+
+在应用中添加 Fory JSON：
+
+```kotlin
+dependencies {
+  implementation("org.apache.fory:fory-json:${foryVersion}")
+}
+```
+
+`@JsonCodec` 在 Android 和 JVM 上具有相同的声明行为。它支持完整值、直接的 collection 和数组元素、`Optional` 和 `AtomicReference` 的内容、Map 的 key 和 value、普通 getter、setter 的 value 参数，以及 `JsonCreator` 参数：
+
+```java
+import java.util.List;
+import org.apache.fory.json.annotation.JsonCodec;
+
+public final class Invoice {
+  @JsonCodec(elementCodec = MoneyCodec.class)
+  public List<Money> items;
+  private Money primary;
+
+  public void setPrimary(@JsonCodec(MoneyCodec.class) Money primary) {
+    this.primary = primary;
+  }
+
+  public Invoice() {}
+}
+```
+
+子 codec 只作用于直接的一层。例如，`Money[][]` 上的 `elementCodec` 会处理每个 `Money[]`，而 `AtomicReferenceArray<Money>` 上的 `elementCodec` 会处理每个 `Money`。如果需要更深层的自定义行为，请使用完整的 `value` codec。
+
+添加注解处理器，并使用 `JsonType` 标注应用的对象模型，以生成直接的字段、getter、setter、Record 构造函数和 `JsonCreator` 操作，以及精确的 R8 规则：
+
+```kotlin
+dependencies {
+  annotationProcessor("org.apache.fory:fory-annotation-processor:${foryVersion}")
+}
+```
+
+```java
+import org.apache.fory.json.annotation.JsonType;
+
+@JsonType
+public final class Invoice {
+  // ...
+}
+```
+
+同一个处理器也支持 Fory JSON Mixin。Mixin 声明一个确定的目标，并注册到要使用它的运行时：
+
+```java
+import org.apache.fory.json.ForyJson;
+import org.apache.fory.json.annotation.JsonBase64;
+import org.apache.fory.json.annotation.JsonMixin;
+
+@JsonMixin(target = ThirdPartyInvoice.class)
+public abstract class ThirdPartyInvoiceMixin {
+  @JsonBase64 byte[] signature;
+}
+
+ForyJson json =
+    ForyJson.builder().registerMixin(ThirdPartyInvoiceMixin.class).build();
+```
+
+每个非空 Mixin 源都必须使用 `fory-annotation-processor` 编译。处理器会生成精确的 R8 规则，以及运行时可以使用的配对专用目标操作。已注册的 codec、有效类型 codec 和内置映射仍遵循常规的运行时优先级。空 Mixin 不会生成任何输出。
+
+目标不必仅仅因为拥有 Mixin 就添加 `JsonType`；`JsonMixin` 本身就是该配对的处理器入口。如果目标同时使用 `JsonType`，运行时会为已注册的非空 Mixin 选择配对专用 companion，而不会把 overlay 与目标自身的 companion 合并。
+
+在一个构建完成的运行时中，一个确定的目标只能启用一个源。在 builder 上，后续针对同一目标的注册会替换之前的注册，`build()` 会对所选映射建立快照。处理器可以为多个候选源生成构件，但运行时只使用最后注册的源。
+
+对于非空 Mixin，应使用处理器生成的 R8 规则，而不是宽泛的 package keep 规则。
+
+未使用 `JsonType` 的普通非 Record 类可以自行提供等效的精确规则。请保留 Fory JSON 使用的每个模型构造函数、字段、方法、泛型签名、声明注解和参数注解，以及每个通过注解选择的 codec 的 public 无参构造函数。对于前面的 `Invoice` 示例：
+
+```proguard
+-keepattributes Signature,RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations
+-keepattributes AnnotationDefault,MethodParameters,InnerClasses,EnclosingMethod
+-keep,allowoptimization class com.example.Invoice {
+  public <init>();
+  public java.util.List items;
+  public void setPrimary(com.example.Money);
+}
+-keep,allowoptimization,allowobfuscation class com.example.MoneyCodec {
+  public <init>();
+}
+```
+
+同一套精确规则适用于每一种 `JsonCodec` 成员，并不限于完整值 codec。普通类无需使用 `JsonType` 即可完成 codec 选择。
+
+对于 `@JsonType` 模型，生成的 R8 规则还会保留 `JsonValue` 字段和有效方法、固定的 `JsonRawValue` 和 `JsonBase64` 字段与 getter、它们的运行时注解，以及 Base64 codec 构造函数。如果没有 `@JsonType`，这些注解仍可通过反射工作，但经过 release 混淆压缩的应用必须自行保留对应的注解成员、注解属性和 codec 构造函数。`JsonValue` 方法可能使用非 JavaBean 名称，因此手写规则必须显式写出该方法名。
+
+Android Fory JSON 要求保留普通可变类的无参构造函数；只要 Android 反射能够使其可访问，该构造函数可以不是 public。由 `JsonCreator` 构造函数支持的类则遵循常规的 creator 规则。请保留反射使用的每个字段和方法；如果模型无法满足这些要求，请使用应用提供的 codec。`JsonUnwrapped` 通过各自常规的属性与构造路径支持可变类、creator-backed 类和 Record。当外层模型及其 unwrapped 子对象使用 `JsonType` 时，生成的 companion 会提供这些操作。
+
+经 Android desugar 的 Record 必须使用处理器生成的操作，这些操作可以来自直接的 `@JsonType` 声明，也可以来自已编译的确定 `@JsonMixin` 配对。仅靠手写 R8 规则无法还原 Record component 的顺序，因为 Android 不提供 Java Record 反射 API。对于完整表示为 `JsonValue` String 的 Record 也是如此：生成的 companion 会识别传播后的 component accessor，并直接调用带注解的单 String canonical 构造函数。生成的子 codec 与 JVM 上一样，只作用于一层。`JsonUnwrapped` 路径中的每个 Record 都需要自身直接声明 `JsonType`，或拥有已编译的确定 `JsonMixin` 配对。如需处理更深的嵌套行为，请使用完整值 codec。
+
 ## 静态生成序列化器
 
 Android 应用类应使用 `@ForyStruct` 静态生成序列化器。它们由 javac 在应用构建期间生成，无需运行时字节码生成即可工作。

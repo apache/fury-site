@@ -41,6 +41,7 @@ const fory = new Fory({
   ref: true,
   compatible: true,
   maxDepth: 100,
+  maxGraphMemoryBytes: 128 * 1024 * 1024,
   maxTypeFields: 512,
   maxTypeMetaBytes: 4096,
   maxSchemaVersionsPerType: 10,
@@ -56,6 +57,7 @@ const fory = new Fory({
 | `ref`                             | `false`     | 为共享或循环对象图启用引用跟踪                                   |
 | `compatible`                      | `true`      | 允许新增或删除字段而不破坏现有消息                               |
 | `maxDepth`                        | `50`        | 最大嵌套深度。必须 `>= 2`。对于深度嵌套结构可以调大              |
+| `maxGraphMemoryBytes`             | 128 MiB     | 单次根对象反序列化可接受的近似对象图内存阈值                     |
 | `maxTypeFields`                   | `512`       | 一个收到的远端 struct metadata body 最大字段数                   |
 | `maxTypeMetaBytes`                | `4096`      | 一个收到的 TypeMeta body 最大编码字节数                          |
 | `maxSchemaVersionsPerType`        | `10`        | 一个逻辑类型最大远端 metadata 版本数                             |
@@ -86,6 +88,28 @@ const fory = new Fory();
 
 对于滚动升级、独立部署的服务以及跨语言载荷，请使用该默认设置。你可以通过 `evolving: false` 为某个稳定 struct 关闭它；参见 [Schema 演进](schema-evolution.md)。
 
+## 对象图内存预算
+
+`maxGraphMemoryBytes` 为单次根对象反序列化设置近似的对象图内存阈值。
+估算主要涵盖实际创建的 array、set、map、struct 和 object；它不包含 string、
+binary data、primitive scalar 和紧凑 primitive array 等叶子值，因此实际的
+JavaScript heap 使用量可能高于这个值。叶子值仍受可用字节数检查保护：如果未读
+输入没有足够的字节，Fory 就不会读取或创建该叶子值。默认值固定为 `128 MiB`，
+不会根据输入大小推导。
+
+可以用一个正数形式的字节值显式设置更低或更高的限制：
+
+```ts
+const fory = new Fory({
+  maxGraphMemoryBytes: 32 * 1024 * 1024,
+});
+```
+
+创建运行时时，显式传入非正数值会被拒绝。
+
+string、binary 以及专用的紧凑 primitive array 载荷仍使用常规的字节大小检查，
+不占用这项对象图预算。只有可信工作负载确实包含非常紧凑的对象图时才应提高限制。
+
 ## 可选 HPS 字符串路径
 
 `@apache-fory/hps` 提供可选的 Node.js 字符串快速路径：
@@ -103,7 +127,9 @@ const fory = new Fory({ hps });
 安全相关配置：
 
 - 在反序列化不可信载荷前，只注册预期的 schema。
-- 根据服务可接受的最大载荷形状设置 `maxDepth`、`maxBinarySize` 和 `maxCollectionSize`。
+- 根据服务可接受的最大嵌套深度设置 `maxDepth`。
+- 将 `maxGraphMemoryBytes` 用作 collection、map、array、struct 和 object 密集型载荷的
+  近似阈值。它不是精确的 heap 上限；叶子值受剩余输入字节数限制。
 - 除非数据不是恶意输入，且可信 peer 会发送更大的远端 metadata，否则保持 `maxTypeFields` 和 `maxTypeMetaBytes` 的默认值。
 - 除非数据不是恶意输入，且可信 peer 会发送大量远端 schema 版本，否则保持 `maxSchemaVersionsPerType` 和 `maxAverageSchemaVersionsPerType` 的默认值。
 - 对不可信输入，优先使用显式的 `Type.struct(...)` schema，而不是 `Type.any()`。

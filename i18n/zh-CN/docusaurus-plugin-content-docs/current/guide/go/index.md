@@ -19,13 +19,13 @@ license: |
   limitations under the License.
 ---
 
-Apache Fory Go 是一个面向 Go 的高性能跨语言序列化库。它支持自动对象图序列化，并具备循环引用、多态和跨语言兼容能力。
+Apache Fory Go 是一个面向 Go 的高性能序列化库。它支持用于跨语言载荷的 xlang 模式和用于仅 Go 载荷的 native 模式，并提供快速对象图序列化、循环引用、多态及具备 Schema 感知能力的 struct 处理。
 
 ## 为什么选择 Fory Go？
 
 - **高性能**：序列化速度快，二进制协议经过优化
-- **跨语言**：可与 Java、Python、C++、Rust、JavaScript 无缝交换数据
-- **自动序列化**：无需 IDL 定义或 schema 编译
+- **跨语言**：可与 Java、Python、C++、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 无缝交换数据
+- **自动序列化**：使用快速序列化器序列化 Go struct
 - **引用跟踪**：内置循环引用和共享对象支持
 - **类型安全**：具备基于 schema 感知序列化器的强类型能力
 - **Schema 演进**：兼容模式支持前向/后向兼容

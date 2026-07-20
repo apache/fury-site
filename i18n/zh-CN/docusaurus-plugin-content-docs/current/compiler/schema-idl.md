@@ -475,6 +475,11 @@ ref Node parent = 3;
 list<int32> scores = 4;
 ```
 
+`list` 前的 `optional` 作用于集合字段。不能将 `optional` 直接用于 `any`；
+应使用 `any`、`list<any>` 或 `map<K, any>`，不要使用 `optional any`、
+`list<optional any>` 或 `map<K, optional any>`。`ref` 只适用于具名的 message/union
+字段；集合内容应使用 `list<ref T>` 或 `map<K, ref V>`。`repeated` 是 `list` 的别名。
+
 ### 字段修饰符
 
 #### `optional`
@@ -486,6 +491,10 @@ message User {
     optional string email = 1;
 }
 ```
+
+不要将 `optional` 或 `[nullable = true]` 直接用于 `any`。编译器会拒绝
+`optional any`、`any [nullable = true]`、`list<optional any>` 和
+`map<K, optional any>`；请改用 `any`、`list<any>` 或 `map<K, any>`。
 
 建议在跨语言场景显式使用，以避免默认值差异。
 
@@ -688,33 +697,51 @@ Fory IDL 类型系统包括基础类型、命名类型和集合类型。
 
 `date` 表示日期（不含时区时间部分）。
 
-| 语言       | 类型                        | 说明                    |
-| ---------- | --------------------------- | ----------------------- |
-| Java       | `java.time.LocalDate`       |                         |
-| Python     | `datetime.date`             |                         |
-| Go         | `time.Time`                 | 会忽略时间部分          |
-| Rust       | `chrono::NaiveDate`         | 需依赖 `chrono` crate   |
-| C++        | `fory::serialization::Date` |                         |
-| JavaScript | `Date`                      |                         |
-| Dart       | `LocalDate`                 | Fory package 提供的类型 |
+| 语言       | 类型                  | 说明                                                                 |
+| ---------- | --------------------- | -------------------------------------------------------------------- |
+| Java       | `java.time.LocalDate` |                                                                      |
+| Python     | `datetime.date`       |                                                                      |
+| Go         | `time.Time`           | 会忽略时间部分                                                       |
+| Rust       | `fory::Date`          | 设置 `rust_use_chrono_temporal_types = true` 可生成 `chrono::NaiveDate` |
+| C++        | `fory::Date`          |                                                                      |
+| JavaScript | `Date`                |                                                                      |
+| Dart       | `LocalDate`           | Fory package 提供的类型                                              |
 
 ##### Timestamp
 
 `timestamp` 表示时间点（跨语言应统一时间语义与精度预期）。
 
-| 语言       | 类型                             | 说明                    |
-| ---------- | -------------------------------- | ----------------------- |
-| Java       | `java.time.Instant`              | 基于 UTC                |
-| Python     | `datetime.datetime`              |                         |
-| Go         | `time.Time`                      |                         |
-| Rust       | `chrono::NaiveDateTime`          | 需依赖 `chrono` crate   |
-| C++        | `fory::serialization::Timestamp` |                         |
-| JavaScript | `Date`                           |                         |
-| Dart       | `Timestamp`                      | Fory package 提供的类型 |
+| 语言       | 类型                  | 说明                                                                     |
+| ---------- | --------------------- | ------------------------------------------------------------------------ |
+| Java       | `java.time.Instant`   | 基于 UTC                                                                 |
+| Python     | `datetime.datetime`   |                                                                          |
+| Go         | `time.Time`           |                                                                          |
+| Rust       | `fory::Timestamp`     | 设置 `rust_use_chrono_temporal_types = true` 可生成 `chrono::NaiveDateTime` |
+| C++        | `fory::Timestamp`     |                                                                          |
+| JavaScript | `Date`                |                                                                          |
+| Dart       | `Timestamp`           | Fory package 提供的类型                                                  |
+
+##### Duration
+
+`duration` 表示一段时间长度。
+
+| 语言   | 类型                 | 说明                                                                  |
+| ------ | -------------------- | --------------------------------------------------------------------- |
+| Java   | `java.time.Duration` |                                                                       |
+| Python | `datetime.timedelta` |                                                                       |
+| Go     | `time.Duration`      |                                                                       |
+| Rust   | `fory::Duration`     | 设置 `rust_use_chrono_temporal_types = true` 可生成 `chrono::Duration` |
+| C++    | `fory::Duration`     |                                                                       |
+| Dart   | `Duration`           |                                                                       |
 
 #### Any
 
 `any` 允许存储动态类型值。使用 `any` 时建议配合清晰的业务约束，避免滥用导致模型不稳定。
+
+- `any` 始终写入 null 标记（与 `nullable` 相同），因为值可能为空。
+- 不支持将 `optional` 和 `[nullable = true]` 直接用于 `any`；请使用
+  `any`、`list<any>` 或 `map<K, any>`，不要使用 `optional any`、
+  `list<optional any>` 或 `map<K, optional any>`。
 
 | 语言       | 类型           | 说明           |
 | ---------- | -------------- | -------------- |
@@ -754,7 +781,10 @@ map<K, V>
 
 约束：
 
-- `K` 一般应为可稳定比较的标量类型
+- `K` 支持字符串、布尔、整数、时间标量和 enum 类型
+- map key 不支持 `any`、二进制 `bytes`、浮点类型、`decimal`、message、union、
+  `list<T>`、`array<T>` 或嵌套 `map<K, V>`；请将这些类型放在 map value 中，
+  或封装到使用可移植标量或 enum 作为 key 的 message 中
 - `V` 可为任意支持类型
 
 | Fory IDL             | Java                   | Python            | Go                 | Rust                    | C++                              | JavaScript            | Dart                 |

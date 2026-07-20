@@ -87,9 +87,9 @@ license: |
 | named_ext               | 32           | pojo/record     | data class               | object              | struct/class                   | struct           | struct            |
 | union                   | 33           | Union           | typing.Union             | /                   | `std::variant<Ts...>`          | /                | tagged union enum |
 | none                    | 36           | null            | None                     | null                | `std::monostate`               | nil              | `()`              |
-| duration                | 37           | Duration        | timedelta                | Number              | duration                       | Duration         | Duration          |
-| timestamp               | 38           | Instant         | datetime                 | Number              | std::chrono::nanoseconds       | Time             | DateTime          |
-| date                    | 39           | Date            | datetime                 | Number              | fory::serialization::Date      | Time             | DateTime          |
+| duration                | 37           | Duration        | timedelta                | Number              | fory::Duration                 | Duration         | Duration          |
+| timestamp               | 38           | Instant         | datetime                 | Number              | fory::Timestamp                | Time             | DateTime          |
+| date                    | 39           | Date            | datetime                 | Number              | fory::Date                     | Time             | DateTime          |
 | decimal                 | 40           | BigDecimal      | Decimal                  | bigint              | /                              | /                | /                 |
 | binary                  | 41           | byte[]          | bytes                    | /                   | `uint8_t[n]/vector<T>`         | `[n]uint8/[]T`   | `Vec<uint8_t>`    |
 | array                   | 42           | array           | np.ndarray               | /                   | /                              | array/slice      | Vec               |
@@ -107,6 +107,12 @@ license: |
 | bfloat16_array          | 54           | /               | /                        | /                   | /                              | /                | /                 |
 | float32_array           | 55           | float[]         | ndarray(float32)         | /                   | `float[n]/vector<T>`           | `[n]float32/[]T` | `Vec<f32>`        |
 | float64_array           | 56           | double[]        | ndarray(float64)         | /                   | `double[n]/vector<T>`          | `[n]float64/[]T` | `Vec<f64>`        |
+
+说明：
+
+- C++ xlang 的 `date`、`timestamp` 和 `duration` 在生成的 schema 以及动态
+  `std::any` 值中分别映射为 `fory::Date`、`fory::Timestamp` 和
+  `fory::Duration`。`std::chrono` 时间类型仅作为显式的 C++ 序列化和反序列化目标。
 
 ## 类型信息（当前尚未完整实现）
 

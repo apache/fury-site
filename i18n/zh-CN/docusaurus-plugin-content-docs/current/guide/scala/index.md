@@ -48,7 +48,7 @@ Fory Scala 继承了 Fory Java 的全部特性，并增加了 Scala 特定优化
 使用 sbt 添加依赖：
 
 ```sbt
-libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.3.0"
+libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.4.0"
 ```
 
 ## 快速开始

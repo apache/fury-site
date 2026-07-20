@@ -1,6 +1,6 @@
 ---
 title: 压缩
-sidebar_position: 7
+sidebar_position: 10
 id: compression
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -49,7 +49,7 @@ license: |
 
 ## 数组压缩
 
-当原始数组（`int[]` 和 `long[]`）中的值可以放入更小的数据类型时，Fory 支持使用 SIMD 加速的数组压缩。该特性要求 Java 16+，并借助 Vector API 获得最佳性能。
+当原始数组（`int[]` 和 `long[]`）中的每个值都能放入范围更窄的基本类型时，Fory 可以压缩这些数组。JDK 8 至 15 使用标量范围分析；在 JDK 16 及更高版本上，多版本 `fory-core` JAR 会自动选择 Vector API 实现。
 
 ### 数组压缩如何工作
 
@@ -65,7 +65,7 @@ license: |
 
 ```java
 Fory fory = Fory.builder()
-  .withLanguage(Language.JAVA)
+  .withXlang(false)
   // 启用 int 数组压缩
   .withIntArrayCompressed(true)
   // 启用 long 数组压缩
@@ -76,17 +76,13 @@ Fory fory = Fory.builder()
 CompressedArraySerializers.registerSerializers(fory);
 ```
 
-**注意**：要让压缩数组序列化器可用，依赖中必须包含 `fory-simd` 模块。
+压缩数组序列化器已包含在 `fory-core` 中。在 JDK 16 或更高版本上运行时，请在启动应用时解析孵化阶段的 Vector API 模块：
 
-### Maven 依赖
-
-```xml
-<dependency>
-  <groupId>org.apache.fory</groupId>
-  <artifactId>fory-simd</artifactId>
-  <version>1.3.0</version>
-</dependency>
+```bash
+java --add-modules=jdk.incubator.vector ...
 ```
+
+在标量实现与 Vector 实现之间切换不需要更改注册或配置。两者采用相同的压缩判断，并使用相同的序列化格式。
 
 ## 字符串压缩
 
@@ -94,18 +90,18 @@ CompressedArraySerializers.registerSerializers(fory);
 
 ## 配置摘要
 
-| 选项                | 描述                                | 默认值  |
-| ------------------- | ----------------------------------- | ------- |
-| `compressInt`       | 启用 int 压缩                       | `true`  |
-| `compressLong`      | 启用 long 压缩                      | `true`  |
-| `compressIntArray`  | 启用 SIMD int 数组压缩（Java 16+）  | `false` |
-| `compressLongArray` | 启用 SIMD long 数组压缩（Java 16+） | `false` |
-| `compressString`    | 启用字符串压缩                      | `false` |
+| 选项                | 描述                      | 默认值  |
+| ------------------- | ------------------------- | ------- |
+| `compressInt`       | 启用 int 压缩             | `true`  |
+| `compressLong`      | 启用 long 压缩            | `true`  |
+| `compressIntArray`  | 启用 int 数组宽度压缩     | `false` |
+| `compressLongArray` | 启用 long 数组宽度压缩    | `false` |
+| `compressString`    | 启用字符串压缩            | `false` |
 
 ## 性能注意事项
 
 1. **数字密集型数据建议关闭压缩**：如果你的数据大多是数字，压缩开销可能并不划算。
-2. **数组压缩要求 Java 16+**：它依赖 Vector API 实现 SIMD 加速。
+2. **数组压缩实现取决于 JDK**：JDK 8 至 15 使用标量范围分析；JDK 16 及更高版本会自动选择 Vector API 实现。
 3. **Long 压缩未必适合大数值**：如果多数 long 无法放进更小表示，请关闭它。
 4. **字符串压缩存在开销**：仅在字符串高度可压缩时启用。
 
@@ -114,14 +110,14 @@ CompressedArraySerializers.registerSerializers(fory);
 ```java
 // 主要是数字的数据：关闭压缩
 Fory fory = Fory.builder()
-  .withLanguage(Language.JAVA)
+  .withXlang(false)
   .withIntCompressed(false)
   .withLongCompressed(false)
   .build();
 
 // 包含数组的混合数据：启用数组压缩
 Fory fory = Fory.builder()
-  .withLanguage(Language.JAVA)
+  .withXlang(false)
   .withIntCompressed(true)
   .withLongCompressed(true)
   .withIntArrayCompressed(true)

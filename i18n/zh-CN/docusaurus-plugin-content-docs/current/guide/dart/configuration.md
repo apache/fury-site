@@ -28,17 +28,17 @@ license: |
 ```dart
 import 'package:fory/fory.dart';
 
-// 默认配置，适合大多数单服务场景
+// 默认配置：xlang 编码格式并启用兼容的 Schema 演进
 final fory = Fory();
 
-// 需要 Schema 演进的跨语言服务
+// 自定义限制，同时保留默认兼容模式
 final fory = Fory(
-  compatible: true,
   maxDepth: 512,
   maxTypeFields: 512,
   maxTypeMetaBytes: 4096,
   maxSchemaVersionsPerType: 10,
   maxAverageSchemaVersionsPerType: 3,
+  maxGraphMemoryBytes: 64 * 1024 * 1024,
 );
 ```
 
@@ -48,20 +48,20 @@ final fory = Fory(
 
 ### `compatible`
 
-当你的服务需要处理来自另一份模型版本代码的载荷时，请设置为 `true`。例如各服务独立发布，无法保证通信双方同时升级。
-
-```dart
-final fory = Fory(compatible: true);
-```
+兼容模式默认启用。当服务需要处理同一模型不同版本产生的载荷时，例如滚动部署或客户端与服务端版本不一致时，请保持启用。
 
 当 `compatible: true` 时：
 
 - 一侧新增或删除字段不会破坏另一侧。
-- 各端仍然必须使用相同的 `namespace` + `typeName`，或者相同的数字 `id` 来标识类型。
+- 各端仍然必须使用相同的 `name` 或数字 `id` 来标识类型。
 
-当 `compatible: false`（默认）时：
+当 `compatible: false` 时：
 
-- 双方必须拥有完全相同的 Schema。这样会略快一些，适合仅有 Dart 服务或始终一起升级的场景。
+- 双方必须拥有完全相同的 Schema。只有每个读写端始终使用该 Schema，并且需要更快的序列化速度和更小的体积时，才这样设置。对于跨语言载荷，只有确认每种语言都使用相同 Schema，或 native 类型由 Fory schema IDL 生成后，才设置 `compatible: false`。
+
+```dart
+final fory = Fory(compatible: false);
+```
 
 ### `checkStructVersion`
 
@@ -70,7 +70,7 @@ final fory = Fory(compatible: true);
 ```dart
 final fory = Fory(
   compatible: false,
-  checkStructVersion: true, // default
+  checkStructVersion: true,
 );
 ```
 
@@ -102,6 +102,20 @@ final fory = Fory(
 - `maxSchemaVersionsPerType` 限制一个逻辑类型可接受的远端 metadata 版本数。
 - `maxAverageSchemaVersionsPerType` 限制所有已接受远端类型的平均版本数；有效全局下限为 `8192` 个 schema。
 
+### `maxGraphMemoryBytes`
+
+为单次根对象反序列化设置近似的对象图内存限制。该估算主要涵盖实例化后的 list、set、map、array、struct 和 object。string、binary、基础标量和稠密 typed-array 载荷等叶子值不计入其中，因此实际进程内存可能高于该值。叶子值仍受可用字节数检查保护：如果未读取的输入没有足够字节，Fory 就不会读取或创建该叶子值。
+
+默认值固定为 `128 MiB`，不会根据输入大小推导。
+
+可信工作负载确实需要更大或更小的 collection、map 或 struct 限制时，请设置正数值：
+
+```dart
+final fory = Fory(maxGraphMemoryBytes: 256 * 1024 * 1024);
+```
+
+显式传入非正数时，运行时创建会失败。
+
 ### `maxCollectionSize`
 
 任意单个 list、set 或 map 字段可接受的最大元素数。用于防止畸形消息触发失控的内存分配。
@@ -122,13 +136,14 @@ final fory = Fory(maxBinarySize: 8 * 1024 * 1024);
 
 | 选项                              | 默认值    |
 | --------------------------------- | --------- |
-| `compatible`                      | `false`   |
-| `checkStructVersion`              | `true`    |
+| `compatible`                      | `true`    |
+| `checkStructVersion`              | `false`   |
 | `maxDepth`                        | 256       |
 | `maxTypeFields`                   | 512       |
 | `maxTypeMetaBytes`                | 4096      |
 | `maxSchemaVersionsPerType`        | 10        |
 | `maxAverageSchemaVersionsPerType` | 3         |
+| `maxGraphMemoryBytes`             | 134217728 |
 | `maxCollectionSize`               | 1 048 576 |
 | `maxBinarySize`                   | 64 MiB    |
 
@@ -139,6 +154,7 @@ final fory = Fory(maxBinarySize: 8 * 1024 * 1024);
 - 如果任意一端需要 Schema 演进，则**所有**端都应设置 `compatible: true`。
 - 每一端都要使用相同的数字 ID，或者相同的 `namespace + typeName` 组合。
 - 写端和读端的 `compatible` 设置必须一致，模式不匹配会直接失败。
+- 对大多数输入保留 `maxGraphMemoryBytes` 的默认值；只有已知可信的载荷确实包含大量 collection、map 或 struct 时，才显式设置其他正数的字节限制。
 - 除非数据不是恶意输入，且可信 peer 会发送更大的 metadata 或大量 schema 版本，否则保持远端 schema metadata 限制的默认值。
 
 ## 相关主题

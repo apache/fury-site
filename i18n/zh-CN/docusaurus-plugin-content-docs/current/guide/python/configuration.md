@@ -37,7 +37,8 @@ class Fory:
         max_type_fields: int = 512,
         max_type_meta_bytes: int = 4096,
         max_schema_versions_per_type: int = 10,
-        max_average_schema_versions_per_type: int = 3
+        max_average_schema_versions_per_type: int = 3,
+        max_graph_memory_bytes: int = 128 * 1024 * 1024,
     )
 ```
 
@@ -57,7 +58,8 @@ class ThreadSafeFory:
         max_type_fields: int = 512,
         max_type_meta_bytes: int = 4096,
         max_schema_versions_per_type: int = 10,
-        max_average_schema_versions_per_type: int = 3
+        max_average_schema_versions_per_type: int = 3,
+        max_graph_memory_bytes: int = 128 * 1024 * 1024,
     )
 ```
 
@@ -74,6 +76,7 @@ class ThreadSafeFory:
 | `max_type_meta_bytes`                  | `int`  | `4096`  | 一个收到的 TypeDef body 可接受的最大编码 body 字节数，不包含 8 字节 header 和扩展 size varint。                                         |
 | `max_schema_versions_per_type`         | `int`  | `10`    | 一个逻辑类型可接受的最大远端 metadata 版本数。                                                                                          |
 | `max_average_schema_versions_per_type` | `int`  | `3`     | 所有已接受远端类型的平均 metadata 版本数限制；有效全局下限为 `8192` 个 schema。                                                         |
+| `max_graph_memory_bytes`               | `int`  | `134217728` | 单次根对象反序列化的近似对象图内存阈值。显式传入非正数值会被拒绝。                                                                   |
 
 ## 核心方法
 
@@ -168,6 +171,7 @@ fory = pyfory.Fory(
     max_type_meta_bytes=4096,
     max_schema_versions_per_type=10,
     max_average_schema_versions_per_type=3,
+    max_graph_memory_bytes=128 * 1024 * 1024,
 )
 
 # 预先注册所有类型
@@ -182,6 +186,12 @@ fory.register(ProductModel, type_id=102)
 - `max_type_meta_bytes` 限制一个收到的 TypeDef body 可接受的编码 body 字节数。
 - `max_schema_versions_per_type` 限制一个逻辑类型可接受的远端 metadata 版本数。
 - `max_average_schema_versions_per_type` 限制所有已接受远端类型的平均版本数。
+- `max_graph_memory_bytes` 为单次根对象反序列化期间实际创建的对象图内存设置近似阈值。
+  估算主要涵盖 list、tuple、set、dict、object array、struct 和 Python object；它不包含
+  string、binary data、primitive scalar 和紧凑 primitive array 等叶子值，因此实际的
+  进程内存可能高于这个值。叶子值仍受可用字节数检查保护：如果未读输入没有足够的
+  字节，Fory 就不会读取或创建该叶子值。对于所有根输入形式，默认值固定为 `128 MiB`。
+  对于确实需要更大或更小阈值的可信载荷，可以设置一个正数形式的字节值。
 
 这些限制不会改变 `strict`、policy、动态加载、unknown-class handling 或 Schema 演进语义。
 
@@ -198,6 +208,16 @@ fory = pyfory.Fory(
     max_depth=1000   # 开发时更高的限制
 )
 ```
+
+## 安全
+
+- 对不可信数据保持 `strict=True`。
+- 在反序列化之前注册所有预期的应用类型。
+- 必须使用 `strict=False` 时，请使用 `DeserializationPolicy`。
+- 将 `max_depth` 保持在足以拒绝异常深载荷的较低值。
+- 对于大多数输入，保持 `max_graph_memory_bytes` 固定的 `128 MiB` 默认值；如果可信
+  工作负载具有不同且合理的 collection、map 或 struct 大小，请设置显式的正数阈值。
+- 不要把 xlang/native 模式的选择视为安全控制。
 
 ## 相关主题
 

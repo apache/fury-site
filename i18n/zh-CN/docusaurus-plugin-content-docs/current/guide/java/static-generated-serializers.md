@@ -76,7 +76,7 @@ public class Order {
 - xlang 模式使用 `Order_ForySerializer`。
 - Java native 模式使用 `Order_ForyNativeSerializer`。
 
-对于 `Outer.Inner` 这样的静态嵌套类型，生成的顶层类为 `Outer_Inner_ForySerializer` 和 `Outer_Inner_ForyNativeSerializer`。
+对于 `Outer.Inner` 这样的静态嵌套类型，生成的顶层类为 `Outer_d_Inner_ForySerializer` 和 `Outer_d_Inner_ForyNativeSerializer`。
 
 ## 字段调试跟踪
 

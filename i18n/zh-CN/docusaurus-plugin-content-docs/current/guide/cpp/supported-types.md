@@ -186,40 +186,51 @@ OptionalInt value = 42;
 
 ## 时间类型
 
+`fory::Duration`、`fory::Timestamp` 和 `fory::Date` 是由 Fory 提供、声明在 `fory/type/temporal.h` 中的载体类型。它们支持 `std::hash`，可用作 `std::unordered_map` 的键。
+
+默认情况下，FDL/代码生成字段和动态 `std::any` 值使用这些 Fory 载体类型。调用方显式指定 C++ `std::chrono` 时间类型时，也可以将其作为序列化和反序列化目标。
+
 ### Duration
 
-`std::chrono::nanoseconds`：
+有符号时长，以纳秒存储。可使用任何能够转换为 `std::chrono::nanoseconds` 的 `std::chrono` duration 构造，并通过 `to_chrono()` 取回底层值：
 
 ```cpp
-using Duration = std::chrono::nanoseconds;
-
-Duration d = std::chrono::seconds(30);
+fory::Duration d(std::chrono::seconds(30));
 auto bytes = fory.serialize(d).value();
-auto decoded = fory.deserialize<Duration>(bytes).value();
+auto decoded = fory.deserialize<fory::Duration>(bytes).value();
+
+// 与 std::chrono 相互转换
+std::chrono::nanoseconds ns = decoded.to_chrono();
+int64_t count = decoded.count();  // 总纳秒数
 ```
 
 ### Timestamp
 
-自 Unix 纪元以来的时间点：
+自 Unix 纪元以来的时间点。可使用 `fory::Timestamp::ChronoType` 时间点或自纪元起的纳秒数构造，并通过 `to_chrono()` 取回底层值：
 
 ```cpp
-using Timestamp = std::chrono::time_point<std::chrono::system_clock,
-                                          std::chrono::nanoseconds>;
+using ChronoTs = fory::Timestamp::ChronoType;
+auto now = std::chrono::time_point_cast<std::chrono::nanoseconds>(
+    std::chrono::system_clock::now());
 
-Timestamp now = std::chrono::system_clock::now();
-auto bytes = fory.serialize(now).value();
-auto decoded = fory.deserialize<Timestamp>(bytes).value();
+fory::Timestamp ts(now);
+auto bytes = fory.serialize(ts).value();
+auto decoded = fory.deserialize<fory::Timestamp>(bytes).value();
+
+// 与 std::chrono 相互转换
+ChronoTs tp = decoded.to_chrono();
+std::chrono::nanoseconds since_epoch = decoded.time_since_epoch();
 ```
 
-### LocalDate
+### Date
 
 自 Unix 纪元以来的天数：
 
 ```cpp
-LocalDate date{18628};  // 自 1970-01-01 以来的天数
+fory::Date date{18628};  // 自 1970-01-01 以来的天数
 
 auto bytes = fory.serialize(date).value();
-auto decoded = fory.deserialize<LocalDate>(bytes).value();
+auto decoded = fory.deserialize<fory::Date>(bytes).value();
 ```
 
 ## 用户定义结构体

@@ -5,15 +5,15 @@ title: 下载
 
 Apache Fory™ 的官方发布以源码制品形式提供。
 
-如需二进制安装，请参见 Apache Fory™ [install](/docs/start/install/) 文档。
+如需二进制安装，请参见 Apache Fory™ [安装](/zh-CN/docs/start/install/) 文档。
 
 ## 最新版本
 
-当前最新源码版本为 1.3.0：
+当前最新源码版本为 1.4.0：
 
 | 版本   | 日期       | 源码                                                                                                                                                                                                                                                                                 | 发布说明                                                        |
 | ------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| 1.3.0  | 2026-06-25 | [source](https://www.apache.org/dyn/closer.lua/fory/1.3.0/apache-fory-1.3.0-src.tar.gz?action=download) [asc](https://downloads.apache.org/fory/1.3.0/apache-fory-1.3.0-src.tar.gz.asc) [sha512](https://downloads.apache.org/fory/1.3.0/apache-fory-1.3.0-src.tar.gz.sha512) | [release notes](https://github.com/apache/fory/releases/tag/v1.3.0) |
+| 1.4.0  | 2026-07-20 | [source](https://www.apache.org/dyn/closer.lua/fory/1.4.0/apache-fory-1.4.0-src.tar.gz?action=download) [asc](https://downloads.apache.org/fory/1.4.0/apache-fory-1.4.0-src.tar.gz.asc) [sha512](https://downloads.apache.org/fory/1.4.0/apache-fory-1.4.0-src.tar.gz.sha512) | [release notes](https://github.com/apache/fory/releases/tag/v1.4.0) |
 
 ## 所有归档版本
 
@@ -31,13 +31,13 @@ Fory 为下载站点上的所有文件提供 SHA 摘要和 PGP 签名文件。
 要验证 SHA 摘要，你需要 `.tar.gz` 文件及其对应的 `.tar.gz.sha512` 文件。示例命令如下：
 
 ```bash
-sha512sum --check apache-fory-1.3.0-src.tar.gz.sha512
+sha512sum --check apache-fory-1.4.0-src.tar.gz.sha512
 ```
 
 输出类似下面这样即表示校验通过：
 
 ```bash
-apache-fory-1.3.0-src.tar.gz: OK
+apache-fory-1.4.0-src.tar.gz: OK
 ```
 
 ### 校验签名
@@ -53,7 +53,7 @@ gpg --import KEYS
 之后可以校验签名：
 
 ```bash
-gpg --verify apache-fory-1.3.0-src.tar.gz.asc apache-fory-1.3.0-src.tar.gz
+gpg --verify apache-fory-1.4.0-src.tar.gz.asc apache-fory-1.4.0-src.tar.gz
 ```
 
 如果出现如下输出，即表示签名正确：

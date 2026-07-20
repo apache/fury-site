@@ -36,7 +36,7 @@ protobuf client、reflection 工具或期望 protobuf message bytes 的组件消
 
 ```yaml
 dependencies:
-  fory: ^1.3.0
+  fory: ^1.4.0
   grpc: ^4.0.0
 
 dev_dependencies:

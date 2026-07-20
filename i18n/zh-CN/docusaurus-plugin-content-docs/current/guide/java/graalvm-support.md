@@ -1,6 +1,6 @@
 ---
 title: GraalVM 支持
-sidebar_position: 13
+sidebar_position: 14
 id: graalvm_support
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,64 +21,128 @@ license: |
 
 ## GraalVM Native Image
 
-GraalVM `native image` 提前将 Java 代码编译为本地可执行文件，从而实现更快的启动速度和更低的内存使用。但是，本地镜像不支持运行时 JIT 编译或反射，除非进行显式配置。
+GraalVM Native Image 提前编译 Java 应用。由于原生镜像无法发现所有反射访问，也无法在运行时生成序列化器，Fory 会在镜像构建期间准备序列化器及所需的元数据。
 
-Apache Fory™ 通过**使用代码生成而非反射**，可以完美地与 GraalVM native image 配合使用。所有序列化器代码都在构建时生成，在大多数情况下无需反射配置文件。
+`fory-core` 已包含 Fory 的 GraalVM Feature，并会自动激活它。应用不需要额外的 Fory 构件，也不需要指定 `--features` 选项。
 
 ## 工作原理
 
-当您执行以下操作时，Fory 会在 GraalVM 构建时生成序列化代码：
+在构建时类初始化期间准备每个 Fory 实例：
 
-1. 将 Fory 创建为**静态**字段
-2. 在静态初始化器中**注册**所有类
-3. 调用 `fory.ensureSerializersCompiled()` 来编译序列化器
-4. 通过 `native-image.properties` 配置该类在构建时初始化
+1. 将 Fory 实例保存在静态字段中。
+2. 注册原生可执行文件将要序列化的所有应用类。
+3. 完成注册后调用 `fory.ensureSerializersCompiled()`。
+4. 将持有该实例的类配置为在构建时初始化。
 
-**主要优势**：对于大多数可序列化的类，您无需配置[反射 json](https://www.graalvm.org/latest/reference-manual/native-image/metadata/#specifying-reflection-metadata-in-json) 或[序列化 json](https://www.graalvm.org/latest/reference-manual/native-image/metadata/#serialization)。
+Feature 会根据这些注册信息提供 Fory 所需的 Native Image 元数据，包括私有构造函数、Record、序列化器构造函数和已注册代理形状的元数据。在编译序列化器之前，应用类仍需先注册到 Fory。
 
-注意：Fory 的 `asyncCompilationEnabled` 选项在 GraalVM native image 中会自动禁用，因为不支持运行时 JIT。
+由于原生镜像无法使用运行时即时编译，Fory 会在其中禁用异步序列化器编译。
+
+## Fory JSON
+
+Fory JSON 使用独立的 Native Image 工作流。请将 Fory 注解处理器添加到应用的编译器路径：
+
+```xml
+<annotationProcessorPaths>
+  <path>
+    <groupId>org.apache.fory</groupId>
+    <artifactId>fory-annotation-processor</artifactId>
+    <version>${fory.version}</version>
+  </path>
+</annotationProcessorPaths>
+```
+
+然后为原生可执行文件读写的每个具体对象模型添加 `@JsonType`：
+
+```java
+import org.apache.fory.json.ForyJson;
+import org.apache.fory.json.annotation.JsonType;
+
+@JsonType
+public final class User {
+  public long id;
+  public String name;
+}
+
+public class JsonExample {
+  public static void main(String[] args) {
+    ForyJson json = ForyJson.builder().build();
+    User user = json.fromJson("{\"id\":1,\"name\":\"Ada\"}", User.class);
+    System.out.println(json.toJson(user));
+  }
+}
+```
+
+该处理器也支持为无法修改的模型使用 Fory JSON Mixin：
+
+```java
+import org.apache.fory.json.ForyJson;
+import org.apache.fory.json.annotation.JsonMixin;
+import org.apache.fory.json.annotation.JsonProperty;
+
+@JsonMixin(target = ThirdPartyUser.class)
+public abstract class ThirdPartyUserMixin {
+  @JsonProperty("user_id")
+  long id;
+}
+
+public class JsonExample {
+  public static void main(String[] args) {
+    ForyJson json =
+        ForyJson.builder().registerMixin(ThirdPartyUserMixin.class).build();
+    ThirdPartyUser user = json.fromJson("{\"user_id\":1}", ThirdPartyUser.class);
+    System.out.println(json.toJson(user));
+  }
+}
+```
+
+`JsonMixin` 是其确定声明目标的构建时入口，因此目标不必仅仅为了使用 Mixin 而添加 `JsonType`。已注册的 Mixin class literal 必须对应用可达。处理器会为每个非空 Mixin 生成可用的目标操作，Fory JSON Native Image Feature 则保留有效的运行时元数据。表示形式仍由常规的运行时 codec 优先级决定。空 Mixin 不会生成任何输出。
+
+在一个构建完成的 `ForyJson` 中，一个确定的目标只能启用一个源。后续注册会替换之前的源，并作用于之后的 `build()` 调用；已构建的运行时则保留其不可变快照。如果目标还有直接的 `JsonType` companion，注册非空 Mixin 后会选择配对专用构件，而不会将 overlay 与直接 companion 合并。
+
+不要添加应用反射配置来替代生成的配置。原生可执行文件会解析与 JVM 相同的有效注解。
+
+处理器会生成直接的属性和 creator 操作。`fory-json` 构件会自动激活其 Native Image Feature，并保留生成的 factory 和必要的模型元数据。`@JsonType` 不会被继承，因此请标注每个具体运行时模型。带注解的基类如果通过 class literal 形式的 `@JsonSubTypes` 表列出子类型，会自动注册这些子类型；但每个具体对象子类型仍需直接添加 `@JsonType`，才能获得生成的操作。可达的具体 `Collection` 和 `Map` 根类型也受支持，但它们必须具有 Fory JSON 所需的 public 无参构造函数。可达的 `@JsonCodec` 声明即使并非位于对象模型上，也会注册其 codec 构造函数。仅由运行时字符串引用的类不可达，因此原生镜像不支持 `JsonSubTypes.Type.className`。
+
+原生执行使用 Fory JSON 的解释执行 reader 和 writer，以及生成的属性和 creator 操作。`ForyJson.builder()` 会在原生可执行文件中自动禁用运行时代码生成和异步编译，其他所有 builder 选项仍保持常规行为。应用可以在运行时创建采用不同配置的 `ForyJson` 实例，无需构建时初始化或反射配置。
+
+支持在类型、字段、有效的普通 getter、setter value 参数和 `JsonCreator` 参数上声明 `@JsonCodec`。Feature 会注册每个被选中的完整值、element、content、Map key 和 Map value codec 构造函数。这与 JVM 和 Android 使用的是同一套注解模型。
+
+支持 `JsonValue` 字段和有效的 public 无参方法，包括匹配的单 String `JsonCreator` 构造函数和 public static factory。固定的 `JsonRawValue` 字段和 getter 支持受信任的原始 String 值；固定的 `JsonBase64` 字段和 getter 与 JVM 一样支持 Base64 `byte[]` 值。对于直接标注在目标上的注解，请为每个可达的所属模型添加 `JsonType`，使 Native Image 保留这些成员和 Base64 codec 构造函数。直接标注的 `JsonValue` Record 会使用生成的 component accessor 和 canonical 构造函数操作。由 Mixin 提供的有效声明则使用上述 Mixin 工作流。
+
+`JsonAnyProperty` 和 `JsonAnyGetter` 会将其 Map 展开到外层对象中。可以在该字段或 getter 上使用 `@JsonCodec(valueCodec = ...)` 来自定义每个动态 value。`JsonAnySetter` 的第二个参数可以按常规方式配置自己的 value 形状。
+
+`JsonUnwrapped` 使用与 JVM 相同的解释执行行为。对于直接标注在目标上的注解，请为外层模型以及每个 unwrapped 子对象或中间对象添加 `JsonType`，使每个模型获得生成的属性和 creator 操作。Mixin 会保留由其有效 Schema 触达的 unwrapped 模型；只有当子对象的注解也需要 overlay 时，才需为该子对象另行注册确定的 Mixin。
+
+子 codec 只作用于直接的一层。`elementCodec` 支持 `Collection`、Java 数组和 `AtomicReferenceArray`；`contentCodec` 支持 `Optional` 和 `AtomicReference`；`keyCodec` 与 `valueCodec` 分别支持 Map 的 key 和 value。完整的 `value` codec 不能与子 codec 组合使用。
+
+注解 codec 必须具有与 JVM 上相同的 public 无参构造函数。在具名模块中，请将其 package export 或 open 给 `org.apache.fory.json`。通过 `registerCodec` 提供的 codec 实例由应用自行构造，不需要注解构造函数元数据。
 
 ## 基础用法
 
-### 步骤 0：添加 GraalVM 支持依赖
-
-在构建 native image 时，请将 `fory-graalvm-feature` 添加到应用依赖中：
-
-```xml
-<dependency>
-  <groupId>org.apache.fory</groupId>
-  <artifactId>fory-graalvm-feature</artifactId>
-  <version>${fory.version}</version>
-</dependency>
-```
-
-该依赖已经在 `META-INF/native-image` 中携带 GraalVM feature 元数据，因此只要将它加入依赖，就会在 `native-image` 构建期间自动启用 `org.apache.fory.graalvm.feature.ForyGraalVMFeature`。
-
-### 步骤 1：创建 Fory 并注册类
+### 创建 Fory 并注册类
 
 ```java
 import org.apache.fory.Fory;
 
 public class Example {
-  // 必须是静态字段
-  static Fory fory;
+  private static final Fory FORY;
 
   static {
-    fory = Fory.builder().build();
-    fory.register(MyClass.class);
-    fory.register(AnotherClass.class);
-    // 在构建时编译所有序列化器
-    fory.ensureSerializersCompiled();
+    FORY = Fory.builder().withXlang(false).build();
+    FORY.register(MyClass.class);
+    FORY.register(AnotherClass.class);
+    FORY.ensureSerializersCompiled();
   }
 
   public static void main(String[] args) {
-    byte[] bytes = fory.serialize(new MyClass());
-    MyClass obj = (MyClass) fory.deserialize(bytes);
+    byte[] bytes = FORY.serialize(new MyClass());
+    MyClass obj = (MyClass) FORY.deserialize(bytes);
   }
 }
 ```
 
-### 步骤 2：配置构建时初始化
+### 配置构建时初始化
 
 创建 `resources/META-INF/native-image/your-group/your-artifact/native-image.properties`：
 
@@ -86,40 +150,35 @@ public class Example {
 Args = --initialize-at-build-time=com.example.Example
 ```
 
-## `fory-graalvm-feature` 会处理什么
+## 已注册的类
 
-加入 `fory-graalvm-feature` 依赖后，Fory 会自动注册这些高级场景所需的额外 GraalVM 元数据：
+在 native-image 构建期间，Fory 会自动注册已注册类所需的元数据，包括：
 
-- **私有构造函数**（没有可访问的无参构造函数的类）
-- **私有内部类/记录**
-- **动态代理序列化**
+- 具有私有构造函数的类
+- 私有嵌套类和 Record
+- 序列化器构造函数
+- 通过 `GraalvmSupport` 注册的动态代理形状
 
-这意味着在大多数应用中都不再需要手工维护 `reflect-config.json`。您自己的 `native-image.properties` 仍只需要配置在构建时初始化的引导类，例如：
+对 Fory 而言，应用元数据只需配置在构建时初始化的引导类，例如：
 
 ```properties
 Args = --initialize-at-build-time=com.example.Example
 ```
 
-| 场景                     | 不使用 Feature              | 使用 Feature |
-| ------------------------ | --------------------------- | ------------ |
-| 具有无参构造函数的公共类 | ✅ 可工作                   | ✅ 可工作    |
-| 私有构造函数             | ❌ 需要 reflect-config.json | ✅ 自动注册  |
-| 私有内部记录             | ❌ 需要 reflect-config.json | ✅ 自动注册  |
-| 动态代理                 | ❌ 需要手动配置             | ✅ 自动注册  |
-
-### 私有记录示例
+### 私有 Record 示例
 
 ```java
+import org.apache.fory.Fory;
+
 public class Example {
-  // 私有内部记录 - 需要 ForyGraalVMFeature
   private record PrivateRecord(int id, String name) {}
 
-  static Fory fory;
+  private static final Fory FORY;
 
   static {
-    fory = Fory.builder().build();
-    fory.register(PrivateRecord.class);
-    fory.ensureSerializersCompiled();
+    FORY = Fory.builder().withXlang(false).build();
+    FORY.register(PrivateRecord.class);
+    FORY.ensureSerializersCompiled();
   }
 }
 ```
@@ -127,7 +186,8 @@ public class Example {
 ### 动态代理示例
 
 ```java
-import org.apache.fory.util.GraalvmSupport;
+import org.apache.fory.Fory;
+import org.apache.fory.platform.GraalvmSupport;
 
 public class ProxyExample {
   public interface MyService {
@@ -138,24 +198,24 @@ public class ProxyExample {
     String traceId();
   }
 
-  static Fory fory;
+  private static final Fory FORY;
 
   static {
-    fory = Fory.builder().build();
-    // 按照 Proxy.newProxyInstance(...) 的接口顺序精确注册
+    FORY = Fory.builder().withXlang(false).build();
     GraalvmSupport.registerProxySupport(MyService.class, Audited.class);
-    fory.ensureSerializersCompiled();
+    FORY.ensureSerializersCompiled();
   }
 }
 ```
 
-对于只实现单个接口的代理，可以使用 `registerProxySupport(MyService.class)`。如果代理实现了多个接口，则应按创建代理时使用的相同顺序传入完整接口列表。只要 classpath 中包含 `fory-graalvm-feature`，这就可以替代这些代理形状对应的手工 `proxy-config.json` 配置。
+对于单接口代理，请使用 `registerProxySupport(MyService.class)`。如果代理实现多个接口，请按照创建代理时的相同顺序传入完整接口列表。请在 `ensureSerializersCompiled()` 之前调用此方法。
 
 ## 线程安全的 Fory
 
 对于多线程应用程序，使用 `ThreadLocalFory`：
 
 ```java
+import java.util.List;
 import org.apache.fory.Fory;
 import org.apache.fory.ThreadLocalFory;
 import org.apache.fory.ThreadSafeFory;
@@ -163,21 +223,23 @@ import org.apache.fory.ThreadSafeFory;
 public class ThreadSafeExample {
   public record Foo(int f1, String f2, List<String> f3) {}
 
-  static ThreadSafeFory fory;
+  private static final ThreadSafeFory FORY;
 
   static {
-    fory = new ThreadLocalFory(builder -> {
-      Fory f = builder.build();
-      f.register(Foo.class);
-      f.ensureSerializersCompiled();
-      return f;
-    });
+    FORY =
+        new ThreadLocalFory(
+            builder -> {
+              Fory f = builder.build();
+              f.register(Foo.class);
+              f.ensureSerializersCompiled();
+              return f;
+            });
   }
 
   public static void main(String[] args) {
     Foo foo = new Foo(10, "abc", List.of("str1", "str2"));
-    byte[] bytes = fory.serialize(foo);
-    Foo result = (Foo) fory.deserialize(bytes);
+    byte[] bytes = FORY.serialize(foo);
+    Foo result = (Foo) FORY.deserialize(bytes);
   }
 }
 ```
@@ -192,26 +254,23 @@ public class ThreadSafeExample {
 Type com.example.MyClass is instantiated reflectively but was never registered
 ```
 
-**解决方案**：使用 Fory 注册该类（不要添加到 reflect-config.json）：
+请在编译序列化器之前注册该类：
 
 ```java
 fory.register(MyClass.class);
 fory.ensureSerializersCompiled();
 ```
 
-如果该类具有私有构造函数，可以：
-
-1. 确保 `fory-graalvm-feature` 已经位于 native-image classpath 中，或
-2. 为该特定类创建 `reflect-config.json`
+如果注册是条件性的，请确保构建时初始化期间会执行相同的分支。
 
 ## 框架集成
 
 对于集成 Fory 的框架开发者：
 
-1. 为用户提供配置文件以列出可序列化的类
-2. 加载这些类并为每个类调用 `fory.register(Class<?>)`
-3. 完成所有注册后调用 `fory.ensureSerializersCompiled()`
-4. 配置您的集成类以在构建时初始化
+1. 为用户提供配置文件，用于列出可序列化的类。
+2. 加载这些类，并为每个类调用 `fory.register(Class<?>)`。
+3. 完成所有注册后调用 `fory.ensureSerializersCompiled()`。
+4. 将集成类配置为在构建时初始化。
 
 ## 基准测试
 

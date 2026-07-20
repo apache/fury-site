@@ -21,7 +21,7 @@ license: |
 
 本文介绍如何使用 `Fory#copy(Object)` 在内存中复制 Java 对象图。
 
-`Fory.copy` 是面向 Java 对象图的深拷贝操作。它不会先序列化为字节，而是使用同一套运行时类型系统和序列化器，在内存中创建复制后的对象图。
+`Fory.copy` 会在内存中创建 Java 对象图的深拷贝，不会生成序列化输出。
 
 ## 何时使用对象复制
 
@@ -36,13 +36,13 @@ license: |
 
 当你需要用于传输、存储或跨进程交换的字节时，应改用序列化。
 
-| 操作             | `Fory.copy`      | `serialize` / `deserialize` |
-| ---------------- | ---------------- | --------------------------- |
-| 结果             | Java 对象图      | 二进制载荷及重建后的对象    |
-| 主要用途         | 内存深拷贝       | 传输、持久化、互操作        |
-| 复制引用选项     | `withRefCopy(...)` | `withRefTracking(...)`      |
-| 跨语言载荷       | 否               | 是，在 xlang 模式下         |
-| 中间字节缓冲区   | 否               | 是                          |
+| 操作         | `Fory.copy`        | `serialize` / `deserialize` |
+| ------------ | ------------------ | --------------------------- |
+| 结果         | Java 对象图        | 二进制数据或重建后的对象    |
+| 主要用途     | 内存深拷贝         | 传输、持久化、互操作        |
+| 引用选项     | `withRefCopy(...)` | `withRefTracking(...)`      |
+| 跨语言支持   | 否                 | 是，在 xlang 模式下         |
+| 使用序列化数据 | 否               | 是                          |
 
 ## 快速开始
 
@@ -72,7 +72,7 @@ public class Example {
 
 ### `withRefCopy(true)`
 
-这是通用对象图的安全默认值。共享引用在复制后的对象图中仍保持共享，循环引用也可以被正确复制。
+这是通用对象图的推荐设置。共享引用在复制后的对象图中仍保持共享，循环引用也可以被正确复制。
 
 ```java
 import org.apache.fory.Fory;
@@ -171,7 +171,7 @@ Fory fory = Fory.builder().withXlang(false)
 
 ## 类注册
 
-如果要求类注册，请在调用 `copy` 前注册要复制的类。
+启用类注册时，请在复制应用类的对象图之前注册这些类。
 
 ```java
 import org.apache.fory.Fory;
@@ -188,8 +188,6 @@ public class Example {
   }
 }
 ```
-
-这遵循与运行时其他部分相同的注册规则：如果运行时要求类注册，复制过程中出现的运行时类型必须先完成注册。
 
 ## 线程安全复制
 
@@ -225,7 +223,7 @@ Fory 已经为许多常见 Java 运行时类型提供复制支持，包括：
 - Java time 以及日期/时间值
 - bean、record 和嵌套对象图
 
-如果运行时已经知道如何序列化某个可变类型，该序列化器仍可能需要显式的复制实现。对于可变序列化器，默认的 `Serializer.copy(...)` 会抛出 `UnsupportedOperationException`，除非该序列化器重写了它。
+可变类型的自定义序列化器必须实现 `Serializer.copy(...)` 才能支持对象复制。
 
 ## 使用 `ForyCopyable` 自定义复制
 
@@ -307,7 +305,7 @@ public final class EnvelopeSerializer extends Serializer<Envelope> {
 - 除非你确定对象图无环且不依赖共享引用，否则启用 `withRefCopy(true)`
 - 将 `withRefCopy(false)` 视为面向树形数据的性能优化，而不是默认配置
 - 使用共享引用和循环对象图同时测试自定义复制实现
-- 让可变自定义序列化器的复制路径保持显式，不要依赖回退行为
+- 为使用自定义序列化器的每个可变类型实现 `Serializer.copy(...)`
 
 ## 故障排查
 
@@ -337,16 +335,12 @@ Fory fory = Fory.builder().withXlang(false)
 
 ### `Copy for ... is not supported`
 
-这表示该类型的可变序列化器没有实现 `copy(...)`。
+这表示该类型尚未实现对象复制。
 
 可以通过以下方式修复：
 
 - 在类上实现 `ForyCopyable<T>`，或
 - 在已注册的序列化器中重写 `Serializer.copy(CopyContext, T)`
-
-### 注册错误
-
-如果运行时使用 `requireClassRegistration(true)`，请确保复制过程中出现的运行时类型已在调用 `copy(...)` 前注册。
 
 ## 相关主题
 

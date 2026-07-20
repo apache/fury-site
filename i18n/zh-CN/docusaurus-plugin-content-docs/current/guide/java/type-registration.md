@@ -1,6 +1,6 @@
 ---
-title: 类型注册与安全
-sidebar_position: 3
+title: 类型注册
+sidebar_position: 5
 id: type_registration
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,92 +19,84 @@ license: |
   limitations under the License.
 ---
 
-本页介绍类注册机制与安全配置。
+本页介绍如何注册 Java 类，以及禁用类注册时如何限制允许使用的类。
 
 ## 类注册
 
-`ForyBuilder#requireClassRegistration` 可用于关闭类注册要求。这会允许反序列化未知类型的对象，灵活性更高，但**如果这些类包含恶意代码，就可能不安全**。
+类注册默认启用。它可以阻止输入选择未注册的应用类；按 ID 注册还能减小类元数据的体积。
 
-**除非你能确保运行环境安全，否则不要关闭类注册。** 当这个选项被关闭时，反序列化未知或不受信任的类型时，`init/equals/hashCode` 中的恶意代码可能被执行。
-
-类注册不仅可以降低安全风险，也能避免写入类名带来的额外开销。
+反序列化不受信任的数据时，请保持类注册启用。如果需要禁用，请按下文所述配置 `TypeChecker`。
 
 ### 按 ID 注册
 
-你可以通过 `Fory#register` 注册类：
+使用 `Fory#register` 时，可以让 Fory 自动分配 ID，也可以显式指定 ID：
 
 ```java
-Fory fory = xxx;
-fory.register(SomeClass.class);
-fory.register(SomeClass1.class, 1);
+Fory fory = Fory.builder().withXlang(false).build();
+fory.register(Order.class);        // 自动分配 ID
+fory.register(Customer.class, 10); // 显式指定 ID
 ```
 
-注意，类注册顺序很重要。序列化端和反序列化端应该保持相同的注册顺序。
+自动分配的 ID 取决于注册顺序，因此读取端和写入端必须按相同顺序注册相同的类。使用显式 ID 时，注册顺序可以不同，但两端的每个 ID 都必须映射到相同的类。
 
-内部类型 ID 的 `0-32` 预留给内置 xlang 类型。Java 原生内建类型从 `Types.NONE + 1` 开始，用户 ID 的编码形式是 `(user_id << 8) | internal_type_id`。
+请在首次调用 `serialize`、`deserialize` 或 `copy` 之前完成类和序列化器注册。之后尝试注册会被拒绝。
+
+启用类注册时，`registerSerializer(Foo.class, ...)` 足以让 `Foo` 可用。如果还希望 Fory 为其分配数字类型 ID，请使用 `registerSerializerAndType(Foo.class, ...)`。一组固定的常见 JDK 接口不需要显式注册，包括 `Serializable`、`CharSequence`、`Comparable`、`Cloneable`、`Runnable`、`Callable`、常见时间和集合接口、`Comparator`、`Spliterator`、`Stream`、`Collector`，以及 `java.util.function` 包中的类型。具体实现类仍遵循普通注册规则。
 
 ### 按名称注册
 
-按 ID 注册有更好的性能和更小的空间开销。但在某些场景下，维护大量 type ID 也很复杂。这时，推荐使用 `register(Class<?> cls, String namespace, String typeName)` 按名称注册类：
+数字 ID 生成的类元数据最紧凑。如果协调数字 ID 不方便，可以按名称注册：
 
 ```java
-fory.register(Foo.class, "demo", "Foo");
+fory.register(Foo.class, "demo.Foo");
 ```
 
-如果类型名称不会冲突，可以将 `namespace` 留空以减小序列化体积。
+如果类型名称不会重复，可以使用不带命名空间前缀的名称，以减小序列化体积。
 
-**不要在应追求紧凑编码的场景中优先使用这个 API，因为它相比按 ID 注册会显著增加序列化体积。**
+读取端和写入端必须为每个类注册相同的名称。按名称注册会比数字 ID 使用更多字节，但不依赖注册顺序。
 
 ## 安全配置
 
 ### Type Checker
 
-如果你调用 `ForyBuilder#requireClassRegistration(false)` 来关闭类注册检查，就可以通过 `ForyBuilder#withTypeChecker` 或 `TypeResolver#setTypeChecker` 配置 `org.apache.fory.resolver.TypeChecker`，从而控制哪些类允许被序列化。
-
-例如，你可以允许所有以 `org.example.*` 开头的类：
-
-```java
-Fory fory = Fory.builder()
-  .requireClassRegistration(false)
-  .withTypeChecker((typeResolver, className) -> className.startsWith("org.example."))
-  .build();
-```
+禁用类注册时，请使用 `ForyBuilder#withTypeChecker` 限制 Fory 可以序列化和反序列化的类。只有需要自定义匹配逻辑时才应实现 `TypeChecker`。数组类会以 `Class#getName()` 格式传给自定义检查器，例如 `[[Lorg.example.Foo;`。自定义检查器必须显式处理此格式；`AllowListChecker` 会自动处理数组组件名称。
 
 ### AllowListChecker
 
-Fory 提供了 `org.apache.fory.resolver.AllowListChecker`，这是一个基于允许/禁止列表的检查器，可简化类检查机制的定制：
+`AllowListChecker` 支持按完整名称或包前缀配置允许和禁止规则：
 
 ```java
 AllowListChecker checker = new AllowListChecker(AllowListChecker.CheckLevel.STRICT);
 checker.allowClass("org.example.*");
-ThreadSafeFory fory = Fory.builder()
+checker.disallowClass("org.example.internal.*");
+Fory fory = Fory.builder().withXlang(false)
   .requireClassRegistration(false)
   .withTypeChecker(checker)
-  .buildThreadSafeFory();
+  .build();
 ```
 
-`withTypeChecker` 会在每个新建运行时上立即安装检查器，这也能避免在关闭类注册却没有配置检查器时产生通用启动警告。如果你需要在构建之后替换检查器，仍然可以继续使用 `TypeResolver#setTypeChecker` 或 `ThreadSafeFory#setTypeChecker`。
+`STRICT` 会拒绝允许列表之外的所有类；`WARN` 会拒绝禁止的类，并对允许列表之外的类记录警告；`DISABLE` 会跳过允许列表检查。
+
+请在首次调用 `serialize`、`deserialize` 或 `copy` 之前配置禁止规则。如需改用其他禁止规则，请创建新的 Fory 实例。
 
 ## 限制最大反序列化深度
 
-Fory 提供 `ForyBuilder#withMaxDepth` 用于限制最大反序列化深度。默认最大深度为 50。
-
-当达到最大深度时，Fory 会抛出 `ForyException`。这可用于防止恶意数据导致的栈溢出等问题。
+`ForyBuilder#withMaxDepth` 用于限制嵌套反序列化深度，默认值为 50。当输入超过所配置的深度时，Fory 会抛出 `ForyException`。
 
 ```java
 Fory fory = Fory.builder()
-  .withLanguage(Language.JAVA)
-  .withMaxDepth(100)  // 设置自定义最大深度
+  .withXlang(false)
+  .withMaxDepth(100)
   .build();
 ```
 
 ## 最佳实践
 
-1. **生产环境始终启用类注册**：使用 `requireClassRegistration(true)`。
-2. **优先使用按 ID 注册**：数字 ID 比字符串名称更快。
-3. **保持注册顺序一致**：序列化端和反序列化端必须相同。
-4. **设置合适的最大深度**：防止栈溢出攻击。
-5. **需要细粒度控制时使用 AllowListChecker**：适合灵活的类过滤场景。
+1. 处理不受信任的输入时，保持类注册启用。
+2. 当读取端和写入端能够共享稳定的 ID 映射时，优先使用显式数字 ID。
+3. 自动分配 ID 时，确保两端使用相同的注册顺序。
+4. 在首次操作之前配置所有类、序列化器和禁止规则。
+5. 禁用类注册时配置 `AllowListChecker`。
 
 ## 相关主题
 

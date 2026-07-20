@@ -163,11 +163,11 @@ print(f"Timestamp: {msg.timestamp}")
 
 ### 时间类型
 
-| C++ 类型    | Java 类型   | Python 类型     | Go 类型         |
-| ----------- | ----------- | --------------- | --------------- |
-| `Timestamp` | `Instant`   | `datetime`      | `time.Time`     |
-| `Duration`  | `Duration`  | `timedelta`     | `time.Duration` |
-| `LocalDate` | `LocalDate` | `datetime.date` | `time.Time`     |
+| C++ 类型          | Java 类型   | Python 类型     | Go 类型         |
+| ----------------- | ----------- | --------------- | --------------- |
+| `fory::Timestamp` | `Instant`   | `datetime`      | `time.Time`     |
+| `fory::Duration`  | `Duration`  | `timedelta`     | `time.Duration` |
+| `fory::Date`      | `LocalDate` | `datetime.date` | `time.Time`     |
 
 ## 字段顺序要求
 

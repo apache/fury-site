@@ -266,6 +266,135 @@ serializer 自身不负责解析类元数据。它们通过当前 context
 
 基础类型和类字符串的热点路径应直接从 buffer 读取；复杂载荷则委托给解析出的 serializer。
 
+### 流与 Buffer 字节读取
+
+实现必须由字节所有者层负责字节可用性，由 serializer 负责字符串、二进制、基础类型数组、
+压缩和集合语义。
+
+分配前读取检查所需的字节所有者基础操作，是类似
+`checkReadableBytes(byteCount)` 的可读性检查。该设计不要求实现额外的通用 read context
+方法。可读性检查成功后，serializer 使用现有的本地 buffer 读取、复制或解码路径。
+
+可读性检查只处理字节，不得解码字符串、基础类型数组的元素数量、压缩模式或集合容量策略。
+
+对于按字节计数的大值，每种实现都应先调用字节所有者的可读性检查，再分配变长结果。
+这适用于二进制值、字符串、decimal 或 metadata body，以及编码 body 以字节计量的基础类型编码数组。
+对于多字节基础类型编码数组，应将编码字节数（而非仅逻辑元素数）与可读字节数比较。
+
+1. 在 serializer 中校验编码字节数。对于定长基础类型数组，应在分配前检查溢出和元素对齐，
+   例如 `wireByteCount % elementByteWidth == 0`，然后根据编码字节数计算逻辑元素数。
+2. 分配变长结果前，无条件调用 `checkReadableBytes(wireByteCount)`。对于由 buffer
+   支撑的输入，该检查通常只需一次边界比较即可返回。由 stream 支撑的输入也使用同一个调用；
+   当已缓存字节足够时，字节所有者走快速路径，否则填充读取 buffer，直至请求的编码 body
+   可读或记录到输入错误。
+3. 证明可读后，只分配一次最终值，再从当前可读 buffer 复制或解码到最终结果中。
+
+`checkReadableBytes` 不是 `ensureCapacity(wireByteCount)` 操作。在 stream 模式下，
+它结束时可能已经让字节所有者在读取 buffer 中持有完整的编码 body，但该 buffer 必须随着
+stream 字节成功读入而扩容。它应从当前已证明的 buffer 容量开始增长（例如容量翻倍），
+仅在有界增长步骤达到当前目标时才以目标为上限。当 stream 实现本身是调用方持有的受信任代码时，
+字节所有者可以将自身的可用性信号作为一次性增长提示；若该提示不存在或不足，则必须退回到根据
+已缓存字节进行有界增长。在输入字节或所有者自身的增长提示足以证明所需中间 buffer 容量之前，
+不得按攻击者声明的长度预留空间。stream 慢路径可以付出一次额外的中间 buffer 复制；
+这仍优于 serializer 自行累积数据块并反复扩展最终容器。
+
+对于按字节计数的值，serializer 不应在调用 `checkReadableBytes` 前先测试
+`availableBytes()`，从而重复字节所有者的快速路径分支。将该分支留在字节所有者中，
+可以让所有语言遵循相同的正确性规则，并让 serializer 热点路径专注于自身的编码语义。
+
+对于基础类型编码数组：
+
+- 应比较并证明编码字节数，而不仅是逻辑元素数。
+- 压缩、位打包、字节序转换以及其他基础类型数组编码语义仍由 serializer 负责；
+  `checkReadableBytes` 仅证明编码字节存在。
+- 对于压缩或转换过的 body，serializer 仍须在分配或返回最终值前校验解码长度和编码特有的 metadata。
+
+通用 serializer 结构如下：
+
+```text
+wireByteCount = readVarUint32()
+elementWidth = primitiveWireElementWidth(kind)
+validate wireByteCount and element alignment
+elementCount = wireByteCount / elementWidth
+
+ctx.checkReadableBytes(wireByteCount)
+result = allocatePrimitiveResult(elementCount)
+copy or decode wireByteCount bytes from the current readable buffer into result
+advance the reader index by wireByteCount
+return result
+```
+
+字节值是同一策略在 `elementWidth == 1` 时的特例。此时 serializer 结构如下：
+
+```text
+byteCount = readVarUint32()
+
+ctx.checkReadableBytes(byteCount)
+result = allocateBytes(byteCount)
+copy byteCount bytes from the current readable buffer into result
+advance the reader index by byteCount
+return result
+```
+
+该策略避免了三种低效实现：
+
+- 在编码 body 可读之前分配完整、连续的最终值
+- 在 stream 慢路径上扩展或反复复制最终结果容器
+- 当字节所有者能够一次性证明可读性并提供普通 buffer 读取时，仍在 serializer 中添加临时分块 buffer
+
+当目标表示形式不能直接接收字节时，临时 buffer 仍然适用，例如字符串转码、压缩、
+无法原地执行的字节序转换、位打包值，或者 stream API 无法读入调用方提供目标的运行时。
+
+对于定长基础类型数组，在完整编码字节数成功读取前，不得向调用方暴露最终结果。
+
+对于 list、set、map 和其他容器 reader，声明的逻辑元素数不是编码字节数，
+因此所有元素、数据块、可空性、引用和类型分派语义仍必须由 serializer 负责。
+但它仍是按数量预分配时的正确分配证明：校验非零数量并读取分配前由 serializer
+持有的 header 或类型元信息之后，应先调用 `checkReadableBytes(logicalCount)`，
+再按该数量分配、预留底层容量或提供容量提示。字节所有者处理 buffer 与 stream 的可读性；
+随后容器 serializer 按声明数量分配，并通过普通所有者路径读取元素。
+
+该检查不是对完整容器 body 的校验，只用于防止很短或截断的输入触发按较大数量预分配。
+数据块大小、重复 key、元素值语义和协议严格性仍由容器/map serializer 持有，
+且只应在保护真正的所有者不变量时进行校验。
+
+执行实例化的 reader 还应在分配或提供容量提示前，预留根操作级的对象图估算内存预算。
+预算状态属于 `ReadContext` 或等价的根读取状态，而不是环境 thread-local 状态。
+根门面只设置或重置每次操作的预算，不得预先预留根类型或根对象自身的字节。
+`maxGraphMemoryBytes` 默认固定为 `128 MiB`；正数配置会覆盖默认值；
+显式的非正数配置无效，必须在创建运行时时拒绝。不得从根输入大小推导该预算，
+也不得为其添加动态的 stream 已读字节计数。
+由于每个根值的预算固定，读取状态不应把配置的最大值复制到第二个活动限制字段中。
+应使用现有配置；若无法取得配置，则只保留一个配置最大值字段和一个可变的剩余预算。
+
+Read context 或等价读取状态只持有原始字节预留。它不得暴露带数量的算术 helper，
+也不得暴露集合、map、数组、struct 或对象的语义预留 API。具体 serializer 和生成的
+serializer 所有者负责计算其分配路径的存储常量与公式，包括按数量计算字节时的溢出检查。
+不得为了该功能给读取状态增加与内存预算无关的 API，包括引用发布控制、临时所有者控制、
+serializer 所有者控制、转换 helper，或用于编码所实例化值种类的 API。
+这些决策由具体 serializer 和生成的 serializer 负责。
+
+该预算是实例化对象图所有者的近似门槛，主要覆盖集合、map、数组、struct 和对象。
+它不衡量精确堆字节数，实际进程内存可能更高。存储或分配值的所有者应且仅应预留一次自身存储。
+根门面只重置预算，不得预留根值存储。由引用支撑的容器、map、set 和对象/引用数组，
+应预留非零的所有者自身开销和引用 slot；每个被引用的堆所有者在实例化时再预留自己的浅层自身开销。
+内联/值容器预留元素存储；内联/值 map 预留 key 与 value 存储；指针、box 和动态实例化所有者
+预留其分配的堆存储或装箱存储。值 serializer（包括根读取路径以及生成的 struct/product 读取路径）
+不预留自身存储。只有在引用对象运行时或动态/装箱实例化路径中，struct/record/POJO/tuple、
+兼容、生成和动态对象所有者才预留非零的浅层自身开销及浅层字段存储。
+父级不得递归计入子对象、集合、map、字符串、二进制或基础类型密集数组的内容。
+enum/union 不作为独立所有者计入；专用字符串、二进制、基础类型标量、基础类型数组和基础类型
+密集数组叶子所有者也不计入，但 vector 或值对象 list 等通用内联值容器仍须计入。
+若无法低成本、可靠地查询引用 slot 大小，则使用 4 字节引用 slot。原生运行时可以使用保守的
+下界估算，不应猜测不可移植的对象、容器、allocator、table、node、entry 或调试布局细节。
+在比较预算或分配前拒绝算术溢出，并在分配底层存储或预留容量前保留现有的
+`checkReadableBytes` 证明。
+未计入预算的叶子所有者仍须受剩余输入字节约束。如果未读字节不足以容纳字符串、二进制值、
+基础类型标量、基础类型数组或基础类型密集数组，运行时不得读取或创建该叶子值。
+
+对于 TypeDef 或 TypeMeta body，应先通过字节所有者证明编码 metadata body 字节可读。
+字段列表应在该 body 可读性检查之后分配，不应将单独的较小初始容量上限作为安全规则。
+
 ### 嵌套读取使用 `ReadContext`
 
 重要规则：

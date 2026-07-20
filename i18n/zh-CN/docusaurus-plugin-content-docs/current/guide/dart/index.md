@@ -42,7 +42,7 @@ Apache Fory™ Dart 可以把 Dart 对象序列化为字节，再从字节反序
 
 ```yaml
 dependencies:
-  fory: ^1.3.0
+  fory: ^1.4.0
 
 dev_dependencies:
   build_runner: ^2.4.0

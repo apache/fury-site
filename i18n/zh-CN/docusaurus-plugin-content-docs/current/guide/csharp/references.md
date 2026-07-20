@@ -65,6 +65,8 @@ System.Diagnostics.Debug.Assert(object.ReferenceEquals(decoded, decoded.Next));
 
 对于树状、无环且不关心引用身份的数据，`TrackRef(false)` 往往更快。
 
+C# union 包装器是不可变对象，要在读取 case 载荷后才能创建。不支持从 union case 载荷反向引用其所属 union 的引用循环；Fory 会拒绝未解析的引用，而不会返回不完整的 union。
+
 ## 相关主题
 
 - [配置](configuration.md)

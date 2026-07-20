@@ -1,6 +1,6 @@
 ---
 title: 线程安全
-sidebar_position: 12
+sidebar_position: 11
 id: thread_safety
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more

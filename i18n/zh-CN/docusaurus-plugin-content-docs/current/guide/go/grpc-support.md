@@ -1,6 +1,6 @@
 ---
 title: gRPC 支持
-sidebar_position: 13
+sidebar_position: 12
 id: grpc_support
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more

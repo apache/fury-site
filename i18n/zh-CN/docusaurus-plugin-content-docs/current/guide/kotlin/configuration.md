@@ -118,6 +118,20 @@ val fory = ForyKotlin.builder().withXlang(false)
     .build()
 ```
 
+### 对象图内存预算
+
+Kotlin 使用 Java 的 `withMaxGraphMemoryBytes(...)` 选项。它为单次根对象反序列化
+设置近似的对象图内存阈值，主要涵盖实际创建的 collection、map、array、struct 和
+object。它不包含 string、binary data、primitive scalar 和紧凑 primitive array 等
+叶子值，因此实际的进程内存可能高于这个值。叶子值仍受剩余输入字节数限制：如果
+未读输入没有足够的字节，Fory 就不会读取或创建该叶子值。
+
+```kotlin
+val fory = ForyKotlin.builder()
+    .withMaxGraphMemoryBytes(128L * 1024 * 1024)
+    .build()
+```
+
 ## 安全
 
 生产环境以及任何不受信任的 payload 来源都应保持启用类注册：
@@ -126,6 +140,7 @@ val fory = ForyKotlin.builder().withXlang(false)
 val fory = ForyKotlin.builder()
     .requireClassRegistration(true)
     .withMaxDepth(50)
+    .withMaxGraphMemoryBytes(128L * 1024 * 1024)
     .withMaxTypeFields(512)
     .withMaxTypeMetaBytes(4096)
     .build()
@@ -135,5 +150,7 @@ val fory = ForyKotlin.builder()
 
 - 保持 `requireClassRegistration(true)`，并注册应用类或生成的 module。
 - 使用 `withMaxDepth(...)` 拒绝异常深的对象图。
+- 将 `withMaxGraphMemoryBytes(...)` 用作 collection、map、array、struct 和 object
+  密集型载荷的近似阈值。它不是精确的 heap 上限；叶子值受剩余输入字节数限制。
 - 除非数据不是恶意输入，且可信 peer 会发送更大的 metadata 或大量 schema 版本，否则保持 `withMaxTypeFields(...)`、`withMaxTypeMetaBytes(...)` 以及远端 schema-version 限制的默认值。
 - Allow-listing 和 unknown-class 控制请遵循 [Java 配置](../java/configuration.md#forybuilder-选项)。
