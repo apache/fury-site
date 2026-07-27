@@ -1,7 +1,7 @@
 ---
-title: Custom Serializers
+title: Manual Serializers
 sidebar_position: 11
-id: custom_serializers
+id: manual_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,7 +19,13 @@ license: |
   limitations under the License.
 ---
 
-Use custom serializers when a type is not generated with `[ForyStruct]` or requires specialized encoding.
+Use a manual serializer when a type is not generated with `[ForyStruct]` or
+requires specialized encoding.
+
+[External-type serialization](external-types.md) generates serializers for
+accessible mutable third-party targets. Use a manual serializer for immutable,
+constructor-only, factory-only, inaccessible, renamed, converted, or
+custom-wire targets.
 
 ## Implement `Serializer<T>`
 
@@ -80,7 +86,7 @@ fory.Register<Point, PointSerializer>("com.example.Point");
 
 1. Keep serializers deterministic and symmetric.
 2. Use varint/fixed/tagged encoding intentionally for integer-heavy payloads.
-3. Register custom serializers on all reader/writer peers.
+3. Register manual serializers on all reader/writer peers.
 4. Prefer generated `[ForyStruct]` serializers for normal domain models.
 
 ## Related Topics

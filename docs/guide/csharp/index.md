@@ -26,7 +26,9 @@ Apache Fory™ C# is a high-performance, cross-language serialization library fo
 - High performance binary serialization for .NET 8+
 - Xlang compatibility with Fory implementations in Java, Python, C++, Go, Rust,
   JavaScript/TypeScript, Swift, Dart, Scala, and Kotlin
-- Source-generator-based serializers for `[ForyStruct]` types, plus `[ForyEnum]` and `[ForyUnion]` registration
+- Source-generator-based serializers for `[ForyStruct]` types, plus
+  `[ForyEnum]` and `[ForyUnion]` registration
+- Generated serializers for external class, struct, and enum targets
 - Optional reference tracking for shared and circular object graphs
 - Compatible mode for schema evolution
 - Thread-safe wrapper (`ThreadSafeFory`) for multi-threaded services
@@ -80,7 +82,7 @@ User decoded = fory.Deserialize<User>(payload);
 - `Serialize<T>(in T value)` / `Deserialize<T>(...)`
 - `Serialize<object?>(...)` / `Deserialize<object?>(...)` for dynamic payloads
 - `Register<T>(uint typeId)` and name registration APIs
-- `Register<T, TSerializer>(...)` for custom serializers
+- `Register<T, TSerializer>(...)` for manual serializers
 
 ## Documentation
 
@@ -90,8 +92,9 @@ User decoded = fory.Deserialize<User>(payload);
 | [Basic Serialization](basic-serialization.md) | Typed and dynamic serialization APIs          |
 | [Xlang Serialization](xlang-serialization.md) | Interoperability guidance                     |
 | [Schema Metadata](schema-metadata.md)         | `[ForyField]` ids and schema type descriptors |
-| [Type Registration](type-registration.md)     | Registering user types and custom serializers |
-| [Custom Serializers](custom-serializers.md)   | Implementing `Serializer<T>`                  |
+| [Type Registration](type-registration.md)     | Registering user types and manual serializers |
+| [External Types](external-types.md)           | Serializers for third-party types             |
+| [Manual Serializers](manual-serializers.md)   | Implementing `Serializer<T>`                  |
 | [References](references.md)                   | Shared/circular reference handling            |
 | [Schema Evolution](schema-evolution.md)       | Compatible mode behavior                      |
 | [Supported Types](supported-types.md)         | Built-in and generated type support           |

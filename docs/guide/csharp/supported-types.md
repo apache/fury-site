@@ -76,8 +76,10 @@ This page summarizes built-in and generated type support in Apache Fory™ C#.
 
 ## User Types
 
-- `[ForyStruct]` classes/structs via source-generated serializers, plus `[ForyEnum]` enums and `[ForyUnion]` ADT records
-- Custom serializer types registered through `Register<T, TSerializer>(...)`
+- `[ForyStruct]` classes/structs via source-generated serializers
+- `[ForyEnum]` enums and `[ForyUnion]` ADT records
+- External class, struct, and enum targets through serializer declarations
+- Manual serializer types registered through `Register<T, TSerializer>(...)`
 - `Union` / `Union2<...>` typed union support
 
 ## Dynamic Types
@@ -96,5 +98,6 @@ Dynamic object payloads via `Serialize<object?>` / `Deserialize<object?>` suppor
 ## Related Topics
 
 - [Basic Serialization](basic-serialization.md)
+- [External Types](external-types.md)
 - [Type Registration](type-registration.md)
 - [Xlang Serialization](xlang-serialization.md)

@@ -25,6 +25,20 @@ This page covers schema metadata for C# generated serializers.
 
 Use `[ForyStruct]` to enable source-generated serializers. Use `[ForyField]` to assign an optional stable non-negative field id or to override the Fory schema type used for a field.
 
+External-type serialization puts `Target` on a local abstract serializer
+declaration. Its properties own the field names, IDs, schema descriptors,
+nullability, and `Evolving` setting. The target supplies the runtime values and
+directly accessed members.
+
+```csharp
+[ForyStruct(Target = typeof(ThirdParty.User))]
+internal abstract class UserSerializer
+{
+    [ForyField(1)]
+    public abstract string Name { get; }
+}
+```
+
 ```csharp
 using Apache.Fory;
 using S = Apache.Fory.Schema.Types;
@@ -119,5 +133,6 @@ public abstract partial record Shape
 ## Related Topics
 
 - [Configuration](configuration.md)
+- [External Types](external-types.md)
 - [Schema Evolution](schema-evolution.md)
 - [Supported Types](supported-types.md)

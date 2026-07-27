@@ -54,14 +54,14 @@ separately:
 fory.Register<User>("com.example", "User");
 ```
 
-## Register a Custom Serializer
+## Register a Manual Serializer
 
 ```csharp
 Fory fory = Fory.Builder().Build();
 fory.Register<MyType, MyTypeSerializer>(200);
 ```
 
-Name-based custom serializer registration is also supported:
+Name-based manual serializer registration is also supported:
 
 ```csharp
 fory.Register<MyType, MyTypeSerializer>("com.example.MyType");
@@ -81,11 +81,14 @@ fory.Register<Order>(101);
 
 - Register user-defined types on both writer and reader sides.
 - Keep ID/name mappings consistent across services and languages.
+- For external-type serialization, register the third-party target, such as
+  `fory.Register<ThirdParty.User>(100)`, not the local serializer declaration.
 - For the split overloads, `typeName` must be non-empty and must not contain dots.
 - Register before high-volume serialization workloads to avoid missing type metadata.
 
 ## Related Topics
 
 - [Basic Serialization](basic-serialization.md)
-- [Custom Serializers](custom-serializers.md)
+- [External Types](external-types.md)
+- [Manual Serializers](manual-serializers.md)
 - [Xlang Serialization](xlang-serialization.md)

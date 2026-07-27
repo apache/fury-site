@@ -34,6 +34,10 @@ When enabled:
 - Shared object identity is preserved.
 - Circular object graphs can be serialized/deserialized safely.
 
+Mutable classes handled by
+[external-type serialization](external-types.md) use the same reference
+tracking. External structs remain inline values.
+
 ## Circular Reference Example
 
 ```csharp
@@ -73,4 +77,5 @@ supported; Fory rejects unresolved refs instead of returning a partial union.
 
 - [Configuration](configuration.md)
 - [Basic Serialization](basic-serialization.md)
+- [External Types](external-types.md)
 - [Thread Safety](thread-safety.md)

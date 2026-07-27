@@ -30,6 +30,11 @@ Fory fory = Fory.Builder()
 
 Compatible mode writes type metadata that allows readers and writers with different struct definitions to interoperate.
 
+For an [external structural serializer](external-types.md), field names, field
+IDs, schema descriptors, and the `Evolving` setting come from the local
+serializer declaration. Register the third-party target with the same stable
+wire identity on every version.
+
 Compatible readers also tolerate selected scalar field type changes when the value is lossless. A
 matched field can read between `bool`, `string`, numeric scalars, and `decimal` when the converted
 value has the same logical value. Boolean strings must be exactly `"0"`, `"1"`, `"true"`, or
@@ -95,5 +100,6 @@ Because C# uses the xlang wire format only, use `Compatible(false)` only after v
 ## Related Topics
 
 - [Configuration](configuration.md)
+- [External Types](external-types.md)
 - [Type Registration](type-registration.md)
 - [Troubleshooting](troubleshooting.md)

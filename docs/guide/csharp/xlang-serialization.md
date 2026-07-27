@@ -50,6 +50,11 @@ fory.Register<Person>(100);
 
 Use the same ID mapping on all languages.
 
+Third-party classes, structs, and enums can use
+[external-type serialization](external-types.md). Register the target type,
+not its local serializer declaration, with the same ID or name used by the
+other language peers.
+
 ## Register by Name
 
 ```csharp
@@ -125,5 +130,6 @@ C# `List<T>` maps to Fory `list<T>`. Use the schema marker
 ## Related Topics
 
 - [Type Registration](type-registration.md)
+- [External Types](external-types.md)
 - [Schema Evolution](schema-evolution.md)
 - [Supported Types](supported-types.md)
