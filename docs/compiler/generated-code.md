@@ -1172,7 +1172,8 @@ public enum Addressbook {
         @ForyField(id: 1)
         public var name: String = ""
         @ForyField(id: 8)
-        public var pet: Addressbook.Animal = .foryDefault()
+        public var pet: Addressbook.Animal =
+            Addressbook.Animal.dog(Addressbook.Dog())
     }
 }
 ```
@@ -1187,7 +1188,12 @@ public struct Addressbook_Person: Equatable { ... }
 The CLI flag `--swift_namespace_style` overrides schema option `swift_namespace_style` when both are set.
 
 Unions are generated as tagged Swift enums with associated payload values.
+Recursive unions are emitted as `indirect` enums. The first known union case
+must have a finite recursively constructible default; the compiler rejects a
+first-case default cycle instead of emitting a non-terminating initializer.
 Messages with `ref`/`weak_ref` fields are generated as `final class` models to preserve reference semantics.
+A directly stored message cycle must mark at least one cycle edge `ref`; otherwise
+the compiler rejects the schema because Swift value types cannot represent it.
 Fixed or tagged integer encodings inside list/map fields are emitted as Swift
 field type hints, for example `@ListField(element: .encoding(.fixed))` or
 `@MapField(value: .encoding(.tagged))`.
@@ -1203,8 +1209,8 @@ Each schema includes a `ForyModule` owner with transitive import installation:
 public enum ForyModule {
     public static func install(_ fory: Fory) throws {
         try ComplexPb.ForyModule.install(fory)
-        fory.register(Addressbook.Person.self, id: 100)
-        fory.register(Addressbook.Animal.self, id: 106)
+        try fory.register(Addressbook.Person.self, id: 100)
+        try fory.register(Addressbook.Animal.self, id: 106)
     }
 }
 ```
