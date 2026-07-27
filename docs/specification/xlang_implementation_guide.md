@@ -367,6 +367,251 @@ feature must not invent `CellSerializer<S>` or treat `Cell` as `RefCell`.
 Likewise, standard-library weak pointers are not aliases for Fory's weak
 carriers.
 
+For Swift, `Serializer` follows the same exact-target ownership boundary with
+an associated `Target`. A self-provided structural or manual serializer uses
+`Target == Self`; a separately provided structural or manual serializer names
+another target type. Serializer operations are static and accept or return
+`Target`. Fory never instantiates a serializer object, and generated external
+structural code reads target properties and constructs the target directly.
+
+Static selection follows provider ownership uniformly. A target that itself
+conforms to `Serializer` with `Target == Self` is selected implicitly at roots,
+generated fields, optionals, arrays, sets, and dictionaries. This includes an
+external type with an intentional retroactive conformance. A serializer type
+whose `Target` is another type must be selected explicitly at every static node
+where it is required. Registration does not infer that serializer, even if it
+is the only registered provider for the target, because Swift cannot
+reverse-infer a unique `S: Serializer` from `S.Target == T`.
+
+A retroactive conformance is process-global. `@retroactive` acknowledges
+Swift's ownership warning but does not make duplicate `(Target, Protocol)`
+conformances safe. Applications may use it when they intentionally own the
+single global binding; public libraries should generally use a separate
+serializer so applications can choose the implementation explicitly.
+
+Swift `StructSerializer` covers every structural registration category.
+Ordinary and external `@ForyStruct`, `@ForyEnum`, and `@ForyUnion` expansions
+all conform; manual EXT serializers do not.
+
+Swift's doc-hidden `FieldCodec` extends value serialization for the same exact
+target. It owns `FieldType`, recursive field generics, field null/reference
+policy, compatible-field reads, scalar conversion, and annotation-selected
+field encodings. `Serializer` has no `FieldType`, compatible-field hook, or
+declared-generics argument. `FieldCodec` alone carries the
+`hasDeclaredChildren` mode that preserves canonical collection and map header
+decisions when enclosing field metadata owns the recursive child schema.
+`SerializerCodec<S>` is the generated leaf adapter and has target `S.Target`.
+Because `FieldCodec` extends `Serializer`, its value-level half must remain a
+valid root serializer, but root code cannot observe any field-only operation.
+In non-compatible mode, exact nonoptional selected leaves with no
+type-information envelope call `S.readData` when no reference envelope is
+required; tracked reference targets continue through `S.read`. Compatible or
+recursively retained metadata remains owned by `SerializerCodec<S>` and enters
+the selected serializer with that scope intact.
+Numeric field codecs delegate that value-level half to the canonical numeric
+serializer, and packed-array field codecs delegate it to the canonical LIST
+carrier. Only their field operations use fixed, tagged, or packed field
+representations. Root eligibility therefore adds no alternate numeric or
+packed-array wire mapping.
+
+Swift `Serializer.isWrapper` is a doc-hidden value-level property used only to
+reject Fory-owned transparent wrappers as independent EXT registrations.
+`OptionalSerializer` sets it; collection carriers do not. A manual serializer
+does not acquire wrapper status from target spelling and may own an independent
+opaque carrier body. Target-identity conflicts prevent it from replacing a
+seeded canonical dynamic builtin.
+
+The exhaustive Swift recursive carrier serializer surface is:
+
+- `OptionalSerializer<S>` with target `S.Target?`;
+- `ArraySerializer<S>` with target `[S.Target]` and LIST wire shape;
+- `SetSerializer<S>` with target `Set<S.Target>` where `S.Target: Hashable`;
+- `DictionarySerializer<KS, VS>` with target
+  `[KS.Target: VS.Target]` where `KS.Target: Hashable`.
+
+Each carrier serializer conditionally provides field-codec behavior when its
+children are field codecs. Root composition therefore contains serializers,
+while field composition contains recursively lowered field codecs, and both
+call the same carrier body, allocation, insertion, reference, and compatible
+implementation. Ordinary `Optional`, `Array`, `Set`, and `Dictionary`
+conformances delegate to the same owners under exact self-target constraints.
+Those constraints apply equally to user-declared and retroactively conforming
+external children. Carrier serializers are zero-state and unregistered.
+
+The transparent Swift `OptionalSerializer` has no independent field-metadata
+identity. Its field-codec metadata scope delegates recursively to the wrapped
+field codec, including nonnull reads, so accepted remote child metadata remains
+owned by the selected leaf or nested carrier.
+
+Swift `Array` is LIST for statically selected roots and carrier roots, including
+`[Int32]`. `@ArrayField` is a separate field-only dense bool/numeric selection,
+and exact primitive arrays hidden in dynamic `Any` use their canonical dynamic
+packed-array mapping. Only a canonical primitive field codec can select
+the packed form; a noncanonical selected child is rejected rather than gaining
+a mapping from its target syntax. `Data` remains the BINARY leaf.
+
+Swift has no supported generic tuple, fixed-length array, cell, box, weak,
+reference-holder, `ContiguousArray`, `ArraySlice`, result, range, deque,
+`NSSet`, or `NSDictionary` serializer. External-child composition must not
+invent those carriers. `AnyHashable`, `UnknownCase`, and `ByteBuffer` are a
+dynamic key holder, union value holder, and transport owner respectively, not
+recursive static carriers.
+
+Swift external structural declarations use the structural macros:
+
+```swift
+@ForyStruct(target: ThirdParty.User.self)
+struct UserSerializer {
+    var name: String
+    var age: UInt32
+}
+```
+
+Generated ordinary value declarations use `Target = Self`. Because Swift
+rejects a nested `Target = Self` type alias in a class, an ordinary generated
+class names the declaring class explicitly; both forms express the same exact
+self-target relationship.
+
+Equivalent target selection applies to `@ForyEnum` and `@ForyUnion`. A value
+schema declaration targets a value type and uses direct labeled construction.
+A class schema declaration targets a class, allocates the final target through
+an accessible zero-argument initializer, publishes it before reading child
+fields, and assigns accessible mutable properties. Generated Swift enforces
+the class target's `AnyObject` constraint. Swift has no negative generic
+constraint for the inverse case, so cold registration validation rejects a
+value-schema declaration that targets a class before publishing metadata. An
+inaccessible, immutable, invariant-bearing, or non-exhaustive target requires a
+manual serializer; the implementation must not use reflection, unsafe layout
+access, unavailable-overload tricks, schema mirror values, conversion wrappers,
+or builders as a fallback.
+
+An external structural union requires the target to expose a lossless
+`unknown(UnknownCase)` case. A dependency-free target module may expose a
+generic unknown payload and let the application select its `UnknownCase`
+specialization; a target may also use Fory's carrier directly. Fory does not
+convert another module's unknown representation. A third-party union without
+this shape requires a manual serializer and does not claim structural-union
+wire equivalence.
+
+An ordinary Swift generated field recursively selects a self-provided declared
+type without annotation. Swift field selection uses
+`@ForyField(with: S.self)` for one exact declared node and `.with(S.self)`
+inside `ForyFieldType` list, set, map, and union payload nodes when selecting a
+separate serializer or another deliberate override. A selected optional or
+whole collection node names its exact carrier serializer. Canonical
+whole-carrier syntax is recursively lowered to the same field-codec tree as the
+structural field DSL. The compiler enforces that the selected serializer target
+equals the declared field node.
+
+Swift root selection uses a serializer metatype:
+
+```swift
+fory.serialize(user, with: UserSerializer.self)
+fory.deserialize(bytes, with: UserSerializer.self)
+fory.serialize(users, with: ArraySerializer<UserSerializer>.self)
+```
+
+The `Data`, append-to-`Data`, and `ByteBuffer` forms share one root framing and
+the reusable contexts. Ordinary roots require `T.Target == T` and
+delegate to the same selected-serializer helper. This admits every
+self-provider, including an intentional retroactive external conformance, but
+does not infer a separate serializer from registration. There are no parallel
+serializer-selection aliases or application-declared structural container
+schemas. The root facade retains its existing module boundary and inlining
+policy; static specialization belongs to serializer, generated-code, and
+carrier owners below it. Do not expose resolver or reusable-context state as
+`@usableFromInline` merely to force the complete root flow into clients.
+Selected Swift read roots carry an inferred result generic constrained by
+`S.Target == T`. The call remains `deserialize(..., with: S.self)`, but the
+same-type generic lets the caller provide concrete target metadata and avoids
+an associated-target lookup and dynamic result-storage setup in every
+unspecialized root call.
+
+Generated value-struct `readData` owns target construction directly. When an
+external structural serializer has recursively selected carrier fields, that
+owner may be out of line to control code size, but a private large-value
+returning helper must not sit between `readData` and the final target result
+buffer. Generated class readers retain a private helper because the class
+allocation owner must publish a reserved reference before reading children.
+
+Swift `TypeResolver` indexes one immutable `TypeInfo` by both serializer
+identity and concrete target identity. Static schema and explicit selection use
+serializer identity; dynamic writes use target identity; wire reads use the
+numeric ID or name. All directions share one writer, exact reader, compatible
+reader, metadata, and registration owner. Public registration accepts the
+selected structural or manual serializer through the ID or name API. It rejects
+carrier, dynamic, builtin, and field codec identities before publication.
+
+Swift arbitrary application protocol existentials use a zero-state
+`DynamicSerializer<T>`. Dynamic writes resolve the registered concrete target,
+downcast once to its serializer's exact target, and invoke the shared
+`TypeInfo` harness. Dynamic reads materialize the final concrete target once
+and cast it to the requested existential. Normal target registration is the
+allowlist, so Swift needs no marker protocol, protocol-specific registry,
+closed target-list macro, protocol wire identity, serializer value, or wrapper
+collection. Protocol roots and root carriers select the dynamic serializer
+explicitly, for example `DynamicSerializer<any Animal>` and
+`ArraySerializer<DynamicSerializer<any Animal>>`. Swift retains direct `Any`
+and `AnyObject` root overloads for source compatibility. Those overloads
+forward to the same selected-serializer roots with `DynamicSerializer<Any>` or
+`DynamicSerializer<AnyObject>` and add no parallel codec, framing, lookup, or
+allocation path. Their append-to-Data and ByteBuffer forms follow the same
+rule. Because Swift permits every value to convert to `Any`, a concrete
+non-self-serializing value may enter registered dynamic-target lookup through
+the `Any` overload. Explicit `with:` selection names a separate static
+serializer when required. Swift exposes no unconstrained generic dynamic root,
+`any Serializer` root, or specialized heterogeneous-container root overload.
+
+`DynamicSerializer<T>` overrides complete-value reference handling. It resolves
+the concrete `TypeInfo` before deciding whether the target is a reference and
+uses conservative `isRefType == true` only for the outer dynamic field shape.
+The outer dynamic serializer owns nullability and type information. Its
+`TypeInfo` harness invokes body serialization for a value target and the
+concrete complete-value reference envelope for a class target. Dynamic slot
+accounting uses the declared existential layout rather than treating every
+value as a reference. `AnyObject` reads reject value-typed metadata before the
+cast so Swift cannot allocate a bridge object. An arbitrary nonoptional
+protocol has no synthetic default; optional protocol values compose through
+`OptionalSerializer`.
+
+An exact generated field whose selected codec has UNKNOWN static identity
+still writes and reads the concrete `TypeInfo`; carrier headers own this
+information for dynamic children and do not duplicate it. Dynamic map chunks
+retain the established key-type/value-type/key-body/value-body order and reuse
+the two resolved `TypeInfo` entries without another target lookup. A retained
+dynamic `TypeInfo` is scoped by the serializer that selected it, so
+`AnyHashable` and `DynamicSerializer<T>` share one implementation without
+substituting each other's scope identity.
+
+Swift rejects zero-sized non-null MAP chunks because they cannot advance the
+decoded entry count. A one-null entry encodes its non-null side as a complete
+field value: its reference envelope when present, then undeclared `TypeInfo`,
+then its body. The MAP writer, reader, and compatible-field skipper use that
+complete-field order rather than the shared type-prefix order of non-null
+chunks. Static and dynamic MAP branches use the same ordering and validation.
+
+Dynamic Any and protocol paths operate directly on final target values and
+containers. Static composition never enters target lookup; dynamic lookup
+occurs only at an explicit dynamic boundary.
+
+Swift heterogeneous dynamic collections use their exact supported target
+shapes: `[Any]`, `[String: Any]`, `[Int32: Any]`, and `[AnyHashable: Any]`.
+Assigning a homogeneous list or map to `Any` does not erase its concrete target
+identity and must not trigger a converted collection or a second collection
+codec. Homogeneous lists and maps use their ordinary or explicitly selected
+carrier serializer. Preseeded exact primitive arrays retain their packed
+dynamic mapping. A null dynamic key in `[AnyHashable: Any]` materializes as
+`AnyHashable(ForyAnyNullValue())`.
+
+When a carrier retains remote child metadata for a user-type field codec, the
+leaf codec enters the selected serializer without another envelope so its exact
+or compatible reader sees that retained `TypeInfo`. Builtin leaf codecs read
+their field bodies directly.
+
+Swift supports only the xlang wire mode. A known `@ForyUnion` case has zero or
+one associated value, and multiple logical fields use an explicit struct
+payload. There is no Swift-native multi-field enum encoding to preserve.
+
 Rust tuple field metadata selects sparse zero-based positions, while
 unmentioned positions use ordinary serializers. It lowers to the
 arity-specific tuple codec, while the root carrier recursively composes tuple
@@ -422,8 +667,10 @@ required child registration through its ordinary per-position type-metadata
 operation. A binding must not add an eager recursive root validation pass,
 reached-body check, selector tree, composed-target lookup, per-element
 serializer dispatch, allocation, callback, or hot-path branch to change that
-behavior. An exact manual serializer for the whole container remains a separate
-opaque EXT/NAMED_EXT choice.
+behavior. An exact manual serializer for a whole container remains a separate
+opaque EXT/NAMED_EXT choice. It owns registered dynamic target identity, while
+unregistered carrier serializers continue to own explicit static structural
+composition.
 
 Carrier serializers have no independent registered identity. Structural
 registration requires the existing structural serializer contract and matching

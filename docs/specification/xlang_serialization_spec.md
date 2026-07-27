@@ -127,6 +127,11 @@ wire identity.
   MUST preserve the selected child type ID and recursive `FieldType`; serializer
   composition
   MUST NOT replace a canonical primitive-array or binary mapping with LIST.
+  Conversely, a Swift `Array` carrier serializer MUST remain LIST because that
+  is Swift's canonical statically selected `Array` mapping. Swift dense
+  `@ArrayField` and dynamic exact primitive-array mappings are separate
+  canonical selections; a serializer whose target happens to be numeric does
+  not acquire either mapping.
 - A heterogeneous tuple/product carrier serializer MUST preserve the binding's
   existing direct tuple encoding and its existing xlang LIST encoding. Selected
   child positions MUST NOT add a serializer name, position index, generic schema node,
@@ -1533,8 +1538,9 @@ The KV header is a single byte encoding metadata for both keys and values:
 
 #### Chunk Size
 
-- Maximum chunk size: 255 pairs (fits in 1 byte)
+- A non-null chunk size is from 1 through 255 pairs (fits in 1 byte); zero is invalid
 - When key or value is null, that entry is serialized as a separate chunk with implicit size 1 (chunk size byte is skipped)
+- For an entry with exactly one null side, the non-null side uses complete-field order: its reference envelope when present, then any type information not declared by the header, then its body
 - Reader tracks accumulated count against total map size to know when to stop reading chunks
 
 #### Why Chunk-Based Format?
