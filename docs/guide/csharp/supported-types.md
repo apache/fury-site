@@ -82,6 +82,9 @@ This page summarizes built-in and generated type support in Apache Fory™ C#.
 - Manual serializer types registered through `Register<T, TSerializer>(...)`
 - `Union` / `Union2<...>` typed union support
 
+`[ForyEnum]` numeric values are unsigned 32-bit wire tags and must be in the
+range `0..uint.MaxValue`.
+
 ## Dynamic Types
 
 Dynamic object payloads via `Serialize<object?>` / `Deserialize<object?>` support:

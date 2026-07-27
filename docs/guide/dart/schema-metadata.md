@@ -28,7 +28,7 @@ The same annotations apply to fields in an
 
 ```dart
 @ForyField(
-  skip: false,      // include the field; set true to exclude it
+  ignore: false,    // include the field; set true to exclude it
   id: 10,           // stable field ID for schema evolution
   nullable: true,   // override nullability detection
   ref: true,        // enable reference tracking for this field
@@ -36,12 +36,15 @@ The same annotations apply to fields in an
 )
 ```
 
-## `skip`
+## `ignore`
 
-Exclude a field from serialization entirely. Useful for cached, computed, or UI-only values that should not land in a persisted or transmitted message.
+Exclude a field from serialization entirely. Useful for cached, computed, or
+UI-only values that should not land in a persisted or transmitted message. The
+field still contributes to graph-memory accounting; because it has no wire
+representation, do not combine `ignore` with other `ForyField` options.
 
 ```dart
-@ForyField(skip: true)
+@ForyField(ignore: true)
 String cachedDisplayName = '';
 ```
 

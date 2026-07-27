@@ -84,6 +84,10 @@ The target class must have an accessible zero-argument initializer and writable
 serialized properties. These requirements allow Fory to preserve shared and
 circular references.
 
+Swift budgets only fields listed in this declaration. Add
+`@ForyField(ignore: true)` fields for substantial omitted storage; they count
+toward the graph budget but are not serialized.
+
 Use a manual serializer if the class is immutable, requires constructor
 arguments, or cannot be safely observed before all fields are assigned.
 

@@ -91,7 +91,8 @@ internal static class StatusSerializer
 
 The target enum's numeric values are authoritative. Do not copy its constants
 into the declaration. Every serialized numeric value must fit in the unsigned
-32-bit Fory enum tag range.
+32-bit Fory enum tag range. Cross-language peers must use matching explicit
+enum tags, such as Java's `@ForyEnumId`.
 
 ## Registration and Root Values
 
@@ -102,6 +103,7 @@ Fory fory = Fory.Builder().Build();
 fory.Register<ThirdParty.User>(100);
 fory.Register<ThirdParty.Status>("example.Status");
 
+ThirdParty.User user = new() { Name = "Alice", Age = 30 };
 byte[] bytes = fory.Serialize(user);
 ThirdParty.User decoded = fory.Deserialize<ThirdParty.User>(bytes);
 ```
@@ -128,6 +130,7 @@ public sealed class Group
 Root carrier composition also uses the ordinary typed API:
 
 ```csharp
+ThirdParty.User user = new() { Name = "Alice", Age = 30 };
 byte[] bytes = fory.Serialize(new List<ThirdParty.User> { user });
 
 List<ThirdParty.User> decoded =
@@ -151,7 +154,8 @@ typed roots.
 ## Declaration and Target Requirements
 
 An external structural serializer declaration must be a non-generic abstract
-class containing only abstract get-only schema properties. Each property:
+class containing only abstract get-only schema properties. Each serialized
+property:
 
 - matches an accessible target field or property with the same case-sensitive
   name;
@@ -165,13 +169,17 @@ nullability. Only members declared by the serializer are serialized; other
 target state keeps its normal default or derived behavior after
 deserialization.
 
+Use `[ForyField(Ignore = true)]` on an additional declaration property when
+non-serialized target storage still needs to contribute to the graph-memory
+estimate. Public target fields are included automatically.
+
 The target must be an accessible concrete class or struct with a legal
 parameterless construction path and writable state. Closed generic targets,
 such as `ThirdParty.Box<string>`, are supported; open generic targets are not.
 
-Targets that require private access, readonly or init-only assignment,
-constructor arguments, factories, member renaming, or value conversion require
-a [manual serializer](manual-serializers.md).
+Serialized members that require private access, readonly or init-only
+assignment, constructor arguments, factories, member renaming, or value
+conversion require a [manual serializer](manual-serializers.md).
 
 ## Schema Evolution
 

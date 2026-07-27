@@ -59,8 +59,12 @@ abstract final class UserSerializer {
 
 The declaration must be `abstract final`, cannot have type parameters, and
 must declare each schema field as `late final` without an initializer. Each
-field name and Dart type, including nullability and generic arguments, must
-exactly match an accessible getter on the target.
+serialized field name and Dart type, including nullability and generic
+arguments, must exactly match an accessible getter on the target.
+
+Public target fields count toward the graph-memory budget automatically. Use
+`@ForyField(ignore: true)` on an extra declaration field to count other storage
+without serializing it.
 
 Run the generator as usual:
 
