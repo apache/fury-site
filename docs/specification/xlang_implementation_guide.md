@@ -260,7 +260,13 @@ targets. Runtime type positions, construction, member access, `TypeInfo`,
 compatible metadata, graph-memory ownership, reference publication, generated
 factory keys, root lookup, and dynamic lookup use the target. The declaration
 supplies only field names, IDs, schema descriptors, nullability, and the
-structural `Evolving` setting.
+structural `Evolving` setting for wire fields. An ignored declaration field
+supplies only graph-memory storage and has no wire metadata or target access.
+For external classes, the shallow graph estimate includes declared wire
+fields, ignored declaration fields, and discoverable public instance target
+fields. An ignored declaration does not require its target storage to be
+visible to the generator. When it resolves to the same public field, the field
+symbol is used only to avoid counting that storage twice.
 
 Every generated ordinary or external struct uses
 `TypeResolver.RegisterGeneratedStruct<T, TSerializer>(bool evolving)` to carry
@@ -276,14 +282,15 @@ uses the resolver's target replacement rules.
 
 External structural targets require an accessible concrete class or struct,
 legal parameterless construction, and directly readable and assignable
-members. Schema properties match target fields or properties by case-sensitive
-name and exact CLR/generic type. Explicit nullability must match; when target
-metadata is nullable-oblivious, the declaration supplies schema nullability.
-Immutable, constructor-only, factory-only, init-only, readonly, renamed,
-converted, or inaccessible shapes use a manual `Serializer<T>`. Generated
-class reads allocate and publish the final target before recursive children;
-target structs are inline values. The declaration is never a temporary graph
-owner.
+wire members. Schema properties match target fields or properties by
+case-sensitive name and exact CLR/generic type. Explicit nullability must
+match; when target metadata is nullable-oblivious, the declaration supplies
+schema nullability. Ignored properties are declaration-owned budget hints and
+do not bind or access target members. Immutable, constructor-only,
+factory-only, init-only, readonly, renamed, converted, or inaccessible wire
+shapes use a manual `Serializer<T>`. Generated class reads allocate and
+publish the final target before recursive children; target structs are inline
+values. The declaration is never a temporary graph owner.
 
 C# carrier composition is target-based. The resolver recursively
 binds `Nullable<T>`, one-dimensional `T[]`, `List<T>`, `LinkedList<T>`,
@@ -574,6 +581,12 @@ inaccessible, immutable, invariant-bearing, or non-exhaustive target requires a
 manual serializer; the implementation must not use reflection, unsafe layout
 access, unavailable-overload tricks, schema mirror values, conversion wrappers,
 or builders as a fallback.
+
+Swift macros cannot inspect another type's stored layout. An external class's
+shallow graph-memory formula therefore uses its declaration fields only.
+`@ForyField(ignore: true)` adds a budget-only declaration field without schema,
+target access, construction, or wire code. Applications must use this form for
+substantial omitted storage.
 
 An external structural union requires the target to expose a lossless
 `unknown(UnknownCase)` case. A dependency-free target module may expose a
@@ -1278,6 +1291,10 @@ In Java:
 - `@ForyEnumId` can override that with a stable explicit tag
 - `serializeEnumByName(true)` affects native Java mode, not xlang mode
 
+In C#, the enum's underlying numeric value is the xlang tag. Java peers for
+sparse C# enums must declare matching `@ForyEnumId` values instead of relying
+on declaration ordinals.
+
 Other language implementations should preserve the same wire rule even if the configuration or
 annotation surface differs.
 
@@ -1334,14 +1351,20 @@ name. Every runtime type position uses the target type: `Serializer<Target>`,
 `GeneratedStructSchema<Target>`, read and write signatures, constructor calls,
 schema `type`, and generated-module dispatch.
 
-For each declaration field, resolve an accessible target getter with the same
-name and exact instantiated Dart type. Constructor parameters and any
-post-construction setter must also match exactly. A public named generative
-constructor is selected only when the annotation names it. Factory
+For each serialized declaration field, resolve an accessible target getter
+with the same name and exact instantiated Dart type. Constructor parameters
+and any post-construction setter must also match exactly. A public named
+generative constructor is selected only when the annotation names it. Factory
 constructors, abstract targets, open target types, and constructor-based
 reference-tracked paths back to the target are rejected during generation.
 The recursive check includes target elements, keys, and values nested in the
 supported list, set, and map field metadata.
+
+An external object's shallow graph-memory formula is the union of declaration
+fields and public instance fields discovered on the target, its superclasses,
+and applied mixins. A public target field represented by a declaration is
+counted once. `@ForyField(ignore: true)` adds budget-only declaration storage
+without target access, construction, metadata, or wire code.
 
 Generated code reads getters and invokes target constructors or setters
 directly. It must not allocate the declaration, copy values through an
