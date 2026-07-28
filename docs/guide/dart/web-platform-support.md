@@ -1,6 +1,6 @@
 ---
 title: Web Platform Support
-sidebar_position: 11
+sidebar_position: 12
 id: web_platform_support
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -84,12 +84,10 @@ The registration call is the same on VM/AOT, Flutter, and web. Manual
 serializers use `registerSerializer(...)`; generated structs use the generated
 `register` wrapper.
 
-Inherited fields use the same statically generated code on every platform.
-Public and same-library private fields are accessed directly. A provider
-library annotated with `@ForyStruct(exposePrivateFields: true)` emits typed
-static access methods for its own private state; it does not use mirrors,
-callbacks, runtime member lookup, or a parent serializer. Generate a dependency
-provider before compiling its consumer.
+Included inherited fields use the same statically generated code on every
+platform. `ignoreInheritedPrivateFields` is applied during generation and adds
+no runtime branch. See [Struct Inheritance](inheritance.md) for cross-library
+provider setup.
 
 ## 64-Bit Integer Rules
 
@@ -234,6 +232,7 @@ JS-safe non-negative range.
 
 ## Related Topics
 
+- [Struct Inheritance](inheritance.md)
 - [Supported Types](supported-types.md)
 - [Schema Metadata](schema-metadata.md)
 - [Code Generation](code-generation.md)

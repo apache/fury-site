@@ -1,6 +1,6 @@
 ---
 title: Type Registration
-sidebar_position: 7
+sidebar_position: 8
 id: type_registration
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -73,7 +73,8 @@ it contributes fields.
 Register an independently annotated concrete parent only when values whose
 runtime type is that parent are also serialized. A provider-only
 `@ForyStruct(exposePrivateFields: true)` boundary supplies generated field
-access and has no registration entry of its own.
+access and has no registration entry of its own. See
+[Struct Inheritance](inheritance.md) for boundary and child-schema options.
 
 External structural serializers use the same generated registration API. Pass
 the external target type:
@@ -118,6 +119,7 @@ The same numeric ID or name must be used in every peer that reads or writes the 
 
 ## Related Topics
 
+- [Struct Inheritance](inheritance.md)
 - [Code Generation](code-generation.md)
 - [External-Type Serialization](external-types.md)
 - [Xlang Serialization](xlang-serialization.md)

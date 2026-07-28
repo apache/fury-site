@@ -1,6 +1,6 @@
 ---
 title: External-Type Serialization
-sidebar_position: 4
+sidebar_position: 5
 id: external_types
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -65,8 +65,9 @@ arguments, must exactly match an accessible getter on the target.
 The declaration's field list is the complete external schema. Fory does not
 automatically add fields from the target, its superclass, or its mixins. You
 may explicitly declare an accessible inherited target property just like any
-other schema field. `exposePrivateFields` applies only to ordinary Dart
-hierarchies and is invalid with `ForyStruct.target`.
+other schema field. `exposePrivateFields` and
+`ignoreInheritedPrivateFields` apply only to ordinary Dart hierarchies and are
+invalid with `ForyStruct.target`.
 
 Public target fields count toward the graph-memory budget automatically, but
 that accounting does not add them to the serialized schema. Use
@@ -314,6 +315,7 @@ setters.
 
 ## Related Topics
 
+- [Struct Inheritance](inheritance.md)
 - [Code Generation](code-generation.md)
 - [Type Registration](type-registration.md)
 - [Schema Metadata](schema-metadata.md)

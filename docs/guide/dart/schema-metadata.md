@@ -1,6 +1,6 @@
 ---
 title: Schema Metadata
-sidebar_position: 6
+sidebar_position: 7
 id: schema_metadata
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -23,7 +23,8 @@ Add `@ForyField(...)` to a field inside a `@ForyStruct()` class to change how th
 
 For ordinary inheritance, metadata stays with the storage declaration and is
 applied when any concrete annotated child discovers that field. A child
-redeclaration does not replace or merge the ancestor field's metadata.
+redeclaration does not replace or merge the ancestor field's metadata. See
+[Struct Inheritance](inheritance.md) for inherited-field inclusion rules.
 
 The same annotations apply to fields in an
 [external structural serializer declaration](external-types.md).
@@ -43,10 +44,14 @@ The same annotations apply to fields in an
 ## `ignore`
 
 Exclude the declaring field from serialization entirely. This is the only
-supported way to omit ordinary instance storage, including inherited storage.
-Useful examples include cached, computed, or UI-only values that should not
-land in a persisted or transmitted message. The field still contributes to
-graph-memory accounting; because it has no wire representation, do not combine
+per-field, declaration-owned omission and applies to every concrete child that
+discovers the field. Useful examples include cached, computed, or UI-only
+values that should not land in a persisted or transmitted message.
+
+For child-specific omission of all private ancestor fields, see
+[`ignoreInheritedPrivateFields`](inheritance.md#ignoring-inherited-private-fields).
+Omitted physical storage still contributes to shallow graph-memory accounting.
+Because a declaration-ignored field has no wire representation, do not combine
 `ignore` with other `ForyField` options.
 
 ```dart
@@ -66,7 +71,8 @@ String name = '';
 Once a payload is shared across services, never reuse an `id` for a different field.
 
 An ordinary child has one flattened field namespace. IDs must therefore be
-unique across its child, superclass, and applied-mixin declarations.
+unique across all fields included from its child, superclass, and
+applied-mixin declarations.
 
 ## `nullable`
 
@@ -90,9 +96,9 @@ List<Object?> sharedNodes = <Object?>[];
 
 Note: scalar types like `int`, `double`, and `bool` never benefit from reference tracking even if `ref: true` is set.
 
-An inherited `ref` annotation behaves exactly like the same annotation on a
-field declared directly by the concrete child. Inheritance does not introduce
-another reference-tracking mode or owner.
+An included inherited `ref` annotation behaves exactly like the same
+annotation on a field declared directly by the concrete child. See
+[Struct Inheritance](inheritance.md#references-and-graph-memory).
 
 ## `dynamic`
 
@@ -159,6 +165,7 @@ When the same model is defined in multiple languages:
 
 ## Related Topics
 
+- [Struct Inheritance](inheritance.md)
 - [Code Generation](code-generation.md)
 - [External-Type Serialization](external-types.md)
 - [Schema Evolution](schema-evolution.md)

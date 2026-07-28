@@ -1,6 +1,6 @@
 ---
 title: Xlang Serialization
-sidebar_position: 5
+sidebar_position: 6
 id: xlang_serialization
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -194,12 +194,14 @@ Fory matches fields by name or by stable field ID. For robust cross-language int
 For an ordinary Dart class, Fory flattens concrete superclass and applied-mixin
 storage into the annotated child's one struct schema. Parent and child fields
 share one field-ID namespace and one canonical ordering, so the peer language
-should define the equivalent flat field set. A parent is not encoded as a
-nested object.
+should define the equivalent included flat field set. Fields omitted by
+`@ForyField(ignore: true)` or the concrete child's
+`ignoreInheritedPrivateFields` option are absent from that peer schema. A
+parent is not encoded as a nested object.
 
-Inherited `@ForyField(ref: true)` and nested container reference metadata use
-the same reference behavior as fields declared directly on the child.
-Inheritance does not change xlang reference framing or add parent-level
+Included inherited `@ForyField(ref: true)` and nested container reference
+metadata use the same reference behavior as fields declared directly on the
+child. Inheritance does not change xlang reference framing or add parent-level
 reference state.
 
 ## Type Mapping Notes for Dart
@@ -253,6 +255,7 @@ dart test
 
 ## Related Topics
 
+- [Struct Inheritance](inheritance.md)
 - [Type Registration](type-registration.md)
 - [External-Type Serialization](external-types.md)
 - [Schema Evolution](schema-evolution.md)

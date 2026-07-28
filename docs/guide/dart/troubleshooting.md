@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 12
+sidebar_position: 13
 id: troubleshooting
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -57,24 +57,19 @@ Ordinary hierarchy discovery includes private storage even when it is declared
 in another Dart library. Privacy affects generated access, not whether the
 field exists in the schema.
 
-- A private field declared in the same library as the child needs no parent
-  annotation.
-- For a private field declared in another library, annotate a public hierarchy
-  boundary in that declaring library with
-  `@ForyStruct(exposePrivateFields: true)`.
-- Import that provider directly, or use a barrel that re-exports both the
-  public boundary and its generated `$<Boundary>ForyFieldAccess` companion.
-- If several libraries declare private fields in the hierarchy, each library
-  must provide its own boundary.
+Same-library private fields need no parent annotation. For a cross-library
+field, expose it from its declaring library with `exposePrivateFields: true` and
+make the generated companion visible to the child. If the child intentionally
+excludes all private ancestor state, set
+`ignoreInheritedPrivateFields: true` on that child instead.
 
-Putting `exposePrivateFields: true` only on the consumer child cannot authorize
-another library's private state. To omit a field intentionally, place
-`@ForyField(ignore: true)` on its declaration. Fory does not silently omit an
-inaccessible inherited field.
+See [Struct Inheritance](inheritance.md) for complete access, omission, and
+multi-library rules.
 
 ## Final inherited field cannot be reconstructed
 
-A non-ignored `final` or `late final` field must receive its decoded value
+A final or `late final` field that remains in the schema must receive its
+decoded value
 unchanged from a parameter of the concrete child's selected generative
 constructor. Fory can follow initializing formals, super formals, redirects,
 and direct constructor initializers across the hierarchy.
@@ -82,15 +77,20 @@ and direct constructor initializers across the hierarchy.
 A parameter with the same name and type is insufficient if it is unused or its
 value is cast, transformed, or passed through a function. Forward the decoded
 value directly to the exact field, mark the field declaration with
-`@ForyField(ignore: true)`, or use a manual serializer.
+`@ForyField(ignore: true)`, or use a manual serializer. If
+`ignoreInheritedPrivateFields` removes the only serialized source for a
+required constructor parameter, Fory still reports this error rather than
+inventing a value. See
+[Constructors and Final Fields](inheritance.md#constructors-and-final-fields).
 
 ## Inherited field is hidden
 
-A subclass field or accessor can hide an ancestor storage slot while both
-physical slots remain on the object. Fory rejects this shape instead of
+A subclass field or accessor can hide an included ancestor storage slot while
+both physical slots remain on the object. Fory rejects this shape instead of
 choosing one slot and losing the other. Rename or remove the hiding member,
-ignore the ancestor field at its declaration when omission is intentional, or
-use a manual serializer.
+ignore the ancestor field at its declaration, or use a manual serializer. For
+private ancestor state, setting `ignoreInheritedPrivateFields: true` omits all
+private ancestor storage from that child schema.
 
 ## External target generation fails
 
@@ -216,6 +216,7 @@ separate protobuf service endpoint for generic protobuf clients.
 
 ## Related Topics
 
+- [Struct Inheritance](inheritance.md)
 - [Xlang Serialization](xlang-serialization.md)
 - [Code Generation](code-generation.md)
 - [Manual Serializers](custom-serializers.md)

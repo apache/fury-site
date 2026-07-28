@@ -114,8 +114,8 @@ dart run build_runner build
 
 An ordinary annotated class includes its concrete superclass and applied-mixin
 storage. Public and same-library private inherited fields need no parent
-annotation. See [Code Generation](code-generation.md) for cross-library private
-fields and constructor requirements.
+annotation. See [Struct Inheritance](inheritance.md) for private fields,
+constructors, mixins, and field inclusion options.
 
 ## API Overview
 
@@ -125,6 +125,8 @@ fields and constructor requirements.
 - `@ForyStruct()` — marks a class for code generation
 - `@ForyStruct(exposePrivateFields: true)` — lets another library's generated
   child serializer access private state owned by this library
+- `@ForyStruct(ignoreInheritedPrivateFields: true)` — omits all private
+  superclass and applied-mixin storage from this concrete child's schema
 - `@ForyStruct(target: Type)` — generates an external structural serializer
 - `@ForyField(...)` — per-field options and canonical `type:` overrides
 - `@ListField(...)`, `@SetField(...)`, `@MapField(...)` — container sugar for nested `type:` trees
@@ -140,6 +142,7 @@ fields and constructor requirements.
 | [Configuration](configuration.md)                | Fory options, compatible mode, and safety limits                |
 | [Basic Serialization](basic-serialization.md)    | `serialize`, `deserialize`, generated registration, root graphs |
 | [Code Generation](code-generation.md)            | `@ForyStruct`, build runner, and generated modules              |
+| [Struct Inheritance](inheritance.md)             | Superclasses, mixins, private fields, and constructors          |
 | [External-Type Serialization](external-types.md) | Generated serializers for classes owned by another package      |
 | [Xlang Serialization](xlang-serialization.md)    | Interoperability rules and field alignment                      |
 | [Schema Metadata](schema-metadata.md)            | `@ForyField`, field IDs, nullability, references, polymorphism  |
