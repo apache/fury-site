@@ -1412,17 +1412,22 @@ Every discovered storage field follows one pipeline:
 ```text
 complete hierarchy discovery
   -> declaration-owned @ForyField(ignore: true)
+  -> concrete-child ignoreInheritedPrivateFields policy
   -> concrete generic substitution
   -> direct or companion access resolution
   -> constructor validation
   -> one globally sorted child schema
 ```
 
-`@ForyField(ignore: true)` on the declaring field is the only stage that may
-remove real ordinary storage. Ignored fields bypass type, access, construction,
-wire identity, and codec work but remain in the concrete object's shallow
-graph-memory field count. An inaccessible, private, final, hidden, unsupported,
-or otherwise unresolved non-ignored field is a generation error.
+`@ForyField(ignore: true)` is the declaration-owned, per-field omission.
+After that check, a concrete child with
+`ignoreInheritedPrivateFields: true` removes every private field declared by a
+superclass or applied mixin, including same-library, cross-library, direct, and
+transitive ancestors. It does not remove child-declared private fields or
+inherited public fields. Both omission forms bypass substitution, access,
+construction, wire identity, reference analysis, and codec work while their
+physical slots remain in the concrete object's shallow graph-memory field
+count. Any unresolved field that remains included is a generation error.
 
 Ownership is fixed:
 
@@ -1430,6 +1435,7 @@ Ownership is fixed:
 | -------------------------------- | ------------------------------------------------ |
 | Field identity and annotations   | Declaring storage field                          |
 | Hierarchy discovery/substitution | Concrete-child generator                         |
+| Inherited-private omission       | Concrete annotated child                         |
 | Cross-library private permission | Public boundary in the field's declaring library |
 | Schema, sort, and codec          | Concrete annotated child                         |
 | Construction                     | Selected concrete-child generative constructor   |
@@ -1437,14 +1443,22 @@ Ownership is fixed:
 | Graph-memory self charge         | One concrete child object                        |
 | External target field list       | Explicit external serializer declaration         |
 
-Public inherited fields and private inherited fields declared in the child's
-library use direct generated access and require no parent annotation. A private
-field declared in another library remains discovered, but requires
+The concrete-child omission option defaults to `false`, is not inherited from
+ancestor annotations, and is valid only on an ordinary concrete declaration
+that owns a flattened schema. It is invalid on external target declarations
+and provider-only abstract, open-generic, or mixin boundaries. It is applied
+after complete storage discovery and before generic substitution or access
+resolution, so a matching field needs no direct access or companion even when
+a companion exists.
+
+For fields that remain included, public inherited fields and private inherited
+fields declared in the child's library use direct generated access and require
+no parent annotation. A private field declared in another library requires
 `ForyStruct(exposePrivateFields: true)` on a public hierarchy boundary in that
-field's declaring library. The option defaults to `false`, is invalid with
-`ForyStruct.target`, and authorizes only provider-library access generation. It
-does not enable discovery, alter same-library access, change field inclusion,
-or let a consumer authorize another library's private state.
+field's declaring library. `exposePrivateFields` defaults to `false`, is
+invalid with `ForyStruct.target`, and authorizes only provider-library access
+generation. It does not enable discovery, alter same-library access, change
+field inclusion, or let a consumer authorize another library's private state.
 
 A public boundary may expose same-library private storage inherited from a
 private class or mixin. If private fields come from several Dart libraries,
@@ -1459,7 +1473,10 @@ storage. The receiver is the public boundary type. Generic bounds and every
 type nested in a public signature must be nameable outside the provider
 library. The companion must not use `dynamic`, `Object?` bridge casts,
 reflection, callbacks, runtime lookup, a parent serializer, or stored runtime
-state.
+state. Companion generation is independent of every consumer child's
+`ignoreInheritedPrivateFields` value. A concrete boundary may enable both
+options: its own serializer applies the omission, while its provider companion
+continues to expose the declaring library's eligible private storage.
 
 The child source must have a direct import or re-export namespace that exposes
 the public boundary and companion. Provider output must be generated and
@@ -1469,7 +1486,7 @@ longer reaches the exact storage slot is a generation error. A child must also
 validate the complete concrete hierarchy so field hiding below the boundary
 cannot redirect a generated getter or setter to another slot.
 
-Every non-ignored `final` or `late final` field must be initialized by a
+Every included `final` or `late final` field must be initialized by a
 statically proven identity flow:
 
 ```text
@@ -1484,8 +1501,8 @@ in redirecting or super-constructor arguments. Types must remain identical
 after concrete generic substitution, including nullability. Calls, operators,
 casts, null assertions, constants, constructor-body assignment, and matching
 names without element identity are not proof. A declaration initializer on a
-non-ignored final field is unsupported because the decoded value cannot own
-that slot. There is no post-construction final write, reflection, or fallback.
+included final field is unsupported because the decoded value cannot own that
+slot. There is no post-construction final write, reflection, or fallback.
 
 Mutable fields connected to selected constructor parameters are initialized
 once through the same exact identity flow. Remaining mutable fields require an
@@ -1493,7 +1510,10 @@ exact setter and are restored after construction. Required constructor
 parameters must have one unambiguous field source. Optional named parameters
 may be omitted; an omitted optional positional parameter cannot be followed by
 a passed positional parameter. Constructor arguments and assignments are
-matched by resolved storage-field identity rather than field-name strings.
+matched by resolved storage-field identity rather than field-name strings. If
+omission removes the only serialized source for a required parameter,
+generation fails; the generator must not invent a value or relax identity
+proof.
 
 The concrete child owns one `GeneratedStructSchema`, one canonical field sort,
 one serializer and descriptor cache, one reconstruction, one reference
@@ -1502,13 +1522,14 @@ nested nor invoked, and parent runtime registration is not required. A
 separately annotated concrete parent has its own independently flattened
 schema only for values of that exact type.
 
-Direct and inherited fields feed one normalized list into the existing
-recursive reference analysis and `needsRootRef` calculation. Inherited
-`ref: true` and nested container metadata behave like equivalent direct child
-fields. Inheritance adds no reference state, `ReadContext` API, serializer
-signature, call-contract change, runtime branch, slot, sentinel, callback,
-wrapper, compatible-layout state, or parent reference owner. A failure shared
-by the equivalent flat model is a separate reference-subsystem issue.
+Included direct and inherited fields feed one normalized list into the
+existing recursive reference analysis and `needsRootRef` calculation.
+Included inherited `ref: true` and nested container metadata behave like
+equivalent direct child fields; omitted fields do not enter that list.
+Inheritance adds no reference state, `ReadContext` API, serializer signature,
+call-contract change, runtime branch, slot, sentinel, callback, wrapper,
+compatible-layout state, or parent reference owner. A failure shared by the
+equivalent flat model is a separate reference-subsystem issue.
 
 Java provides only the flattened-model comparison for this feature: its object
 serializer extends one field-descriptor list across inheritance and adds no
@@ -1522,9 +1543,10 @@ own equivalent flat model.
 Hierarchy traversal, substitution, access validation, and constructor proofs
 run during generation. Existing flat serializers gain no runtime work, public
 and same-library inherited fields emit the same direct operations as equivalent
-flat fields, and cross-library private fields add only an inlineable typed
-static companion call. Generation must not introduce runtime hierarchy
-traversal, allocation, callbacks, reflection, or parent dispatch.
+flat fields, policy filtering emits no runtime check, and included
+cross-library private fields add only an inlineable typed static companion
+call. Generation must not introduce runtime hierarchy traversal, allocation,
+callbacks, reflection, or parent dispatch.
 
 The child's shallow graph-memory formula is:
 
@@ -1540,21 +1562,23 @@ declaring library, and failed access or constructor path, then give an
 actionable remedy. Typical remedies are adding
 `exposePrivateFields: true` to a public owner-library boundary, importing its
 generated companion, forwarding a constructor value unchanged, placing
-`@ForyField(ignore: true)` on the field declaration, or using a manual
-serializer. Diagnostics must state that hierarchy discovery is independent of
-cross-library access.
+`@ForyField(ignore: true)` on the field declaration, setting
+`ignoreInheritedPrivateFields: true` on the concrete child when all private
+ancestor state should be omitted, or using a manual serializer. Diagnostics
+must state that hierarchy discovery is independent of cross-library access.
 
-This correction changes generated schemas for ordinary children that inherit
-storage. All affected `.fory.dart` files must be regenerated. Compatible mode
-uses normal missing/unknown-field handling; fixed schemas written while
-inherited fields were absent have no legacy reader. Implementations must not
-retain an alternative path limited to child declarations, constructor binding
-based only on names, a late-final setter path, compatibility shim, fallback
-access, or parent serializer delegation.
+Changes to hierarchy storage, exposure boundaries, or
+`ignoreInheritedPrivateFields` require regeneration of every affected
+`.fory.dart` file. Compatible mode uses normal missing/unknown-field handling;
+fixed-schema peers must change together. Implementations must not add a
+special legacy reader, retain an alternative path limited to child
+declarations, bind constructors only by name, use a late-final setter path,
+fall back to another access model, or delegate to a parent serializer.
 
-Acceptance requires that every hierarchy storage slot is either explicitly
-ignored or represented exactly once with a valid type, access path, wire
-identity, and reconstruction path. Equivalent flat and inherited models must
+Acceptance requires that every hierarchy storage slot is either omitted by its
+declaration, omitted by the concrete-child inherited-private policy, or
+represented exactly once with a valid type, access path, wire identity, and
+reconstruction path. Equivalent included flat and inherited models must
 produce the same canonical schema, wire bytes, reference IDs, and round-trip
 behavior. External target declarations remain explicit and unaffected.
 
@@ -1583,7 +1607,8 @@ supported list, set, and map field metadata.
 The external declaration's fields are the complete schema. It may explicitly
 name an accessible property inherited by the target, but the generator does
 not automatically scan the external target hierarchy for schema fields.
-`exposePrivateFields` is invalid on an external declaration.
+`exposePrivateFields` and `ignoreInheritedPrivateFields` are invalid on an
+external declaration.
 
 An external object's shallow graph-memory formula is the union of declaration
 fields and public instance fields discovered on the target, its superclasses,
