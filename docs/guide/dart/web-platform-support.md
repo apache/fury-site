@@ -36,6 +36,8 @@ Fory Dart supports:
 - Flutter web applications.
 - Generated `@ForyStruct` serializers and manually registered serializers on
   all supported targets.
+- Ordinary generated inheritance, including typed cross-library private-field
+  companions.
 - External structural serializers generated with `@ForyStruct(target: ...)`.
 
 ## Code Generation Is Required
@@ -75,12 +77,19 @@ Generate the companion file before building or testing:
 
 ```bash
 cd dart/packages/fory
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 The registration call is the same on VM/AOT, Flutter, and web. Manual
 serializers use `registerSerializer(...)`; generated structs use the generated
 `register` wrapper.
+
+Inherited fields use the same statically generated code on every platform.
+Public and same-library private fields are accessed directly. A provider
+library annotated with `@ForyStruct(exposePrivateFields: true)` emits typed
+static access methods for its own private state; it does not use mirrors,
+callbacks, runtime member lookup, or a parent serializer. Generate a dependency
+provider before compiling its consumer.
 
 ## 64-Bit Integer Rules
 
@@ -182,10 +191,22 @@ web:
 
 ```bash
 cd dart/packages/fory
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart test
 dart test -p chrome
 ```
+
+For an application smoke test, also compile and execute the actual generated
+entry point:
+
+```bash
+dart compile js --fatal-warnings bin/app.dart -o build/app.js
+node build/app.js
+```
+
+Use a model with the same hierarchy and imports as the production application
+when validating cross-library private fields. Compilation alone does not prove
+that registration and round-trip execution work.
 
 If Chrome tests fail with a stale generated file or missing part file, rerun
 `build_runner` and then retry the test command from `dart/packages/fory`.

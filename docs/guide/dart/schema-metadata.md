@@ -21,6 +21,10 @@ license: |
 
 Add `@ForyField(...)` to a field inside a `@ForyStruct()` class to change how that field is serialized.
 
+For ordinary inheritance, metadata stays with the storage declaration and is
+applied when any concrete annotated child discovers that field. A child
+redeclaration does not replace or merge the ancestor field's metadata.
+
 The same annotations apply to fields in an
 [external structural serializer declaration](external-types.md).
 
@@ -38,10 +42,12 @@ The same annotations apply to fields in an
 
 ## `ignore`
 
-Exclude a field from serialization entirely. Useful for cached, computed, or
-UI-only values that should not land in a persisted or transmitted message. The
-field still contributes to graph-memory accounting; because it has no wire
-representation, do not combine `ignore` with other `ForyField` options.
+Exclude the declaring field from serialization entirely. This is the only
+supported way to omit ordinary instance storage, including inherited storage.
+Useful examples include cached, computed, or UI-only values that should not
+land in a persisted or transmitted message. The field still contributes to
+graph-memory accounting; because it has no wire representation, do not combine
+`ignore` with other `ForyField` options.
 
 ```dart
 @ForyField(ignore: true)
@@ -58,6 +64,9 @@ String name = '';
 ```
 
 Once a payload is shared across services, never reuse an `id` for a different field.
+
+An ordinary child has one flattened field namespace. IDs must therefore be
+unique across its child, superclass, and applied-mixin declarations.
 
 ## `nullable`
 
@@ -80,6 +89,10 @@ List<Object?> sharedNodes = <Object?>[];
 ```
 
 Note: scalar types like `int`, `double`, and `bool` never benefit from reference tracking even if `ref: true` is set.
+
+An inherited `ref` annotation behaves exactly like the same annotation on a
+field declared directly by the concrete child. Inheritance does not introduce
+another reference-tracking mode or owner.
 
 ## `dynamic`
 

@@ -78,7 +78,7 @@ Then run `build_runner` once to emit the Fory serializer part file for the
 generated models (this step is required before the code can run):
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 For this schema, the Dart generator emits (the model file and module are named
@@ -281,7 +281,7 @@ grpc-dart APIs, but `fory` intentionally does not depend on gRPC.
 
 ### Generated Code References a Missing `.fory.dart` Part
 
-Run `dart run build_runner build --delete-conflicting-outputs` after generating
+Run `dart run build_runner build` after generating
 or regenerating the Dart sources. The serializer part file is produced by
 `build_runner`, not by `foryc`.
 

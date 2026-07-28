@@ -130,11 +130,27 @@ class User {
 }
 ```
 
+Ordinary annotated classes may extend classes and apply mixins. Fory includes
+every concrete instance storage field from that hierarchy in one child schema,
+including inherited generic fields after specialization. Public fields and
+private fields in the child's Dart library are accessed directly.
+Cross-library private storage is supported only when its declaring library
+provides a public boundary annotated with
+`@ForyStruct(exposePrivateFields: true)`.
+
+Abstract getters, interfaces, static members, and other declarations without
+instance storage are not fields. A real non-ignored storage field must have a
+supported type, an unambiguous access path, and a valid reconstruction path;
+otherwise generation fails. In particular, each `final` or `late final` field
+must receive the decoded value unchanged through the concrete child's
+constructor chain.
+
 See [Code Generation](code-generation.md).
 
 Classes owned by another library can use an
 [external structural serializer](external-types.md) when their public fields
-and construction match a local Fory schema declaration.
+and construction match a local Fory schema declaration. External declarations
+list their schema fields explicitly and do not scan the target hierarchy.
 
 ## Collections
 

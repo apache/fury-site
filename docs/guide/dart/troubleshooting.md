@@ -33,7 +33,7 @@ The writer is sending a native-mode payload. Make sure every peer writes the xla
 
 Fory does not know how to serialize or deserialize this type. Fix it by:
 
-1. Running code generation if you haven't: `dart run build_runner build --delete-conflicting-outputs`
+1. Running code generation if you haven't: `dart run build_runner build`
 2. Calling the generated `register` function (or `registerSerializer`) for the type **before** calling `serialize` or `deserialize`.
 3. Registering **all** types that appear in a message, not just the root type. For example, if `Order` contains an `Address`, register both.
 
@@ -42,11 +42,55 @@ Fory does not know how to serialize or deserialize this type. Fix it by:
 Regenerate code:
 
 ```bash
-cd dart/packages/fory
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
-If you moved files or renamed types, rebuild before re-running analysis or tests.
+Run the command from the package that owns the source. If a dependency exposes
+private hierarchy fields, generate that provider package first and ensure its
+published source contains the generated `.fory.dart` part, then regenerate the
+consumer. If you moved files, renamed types, or changed a hierarchy, rebuild
+before re-running analysis or tests.
+
+## Inherited private field is not accessible
+
+Ordinary hierarchy discovery includes private storage even when it is declared
+in another Dart library. Privacy affects generated access, not whether the
+field exists in the schema.
+
+- A private field declared in the same library as the child needs no parent
+  annotation.
+- For a private field declared in another library, annotate a public hierarchy
+  boundary in that declaring library with
+  `@ForyStruct(exposePrivateFields: true)`.
+- Import that provider directly, or use a barrel that re-exports both the
+  public boundary and its generated `$<Boundary>ForyFieldAccess` companion.
+- If several libraries declare private fields in the hierarchy, each library
+  must provide its own boundary.
+
+Putting `exposePrivateFields: true` only on the consumer child cannot authorize
+another library's private state. To omit a field intentionally, place
+`@ForyField(ignore: true)` on its declaration. Fory does not silently omit an
+inaccessible inherited field.
+
+## Final inherited field cannot be reconstructed
+
+A non-ignored `final` or `late final` field must receive its decoded value
+unchanged from a parameter of the concrete child's selected generative
+constructor. Fory can follow initializing formals, super formals, redirects,
+and direct constructor initializers across the hierarchy.
+
+A parameter with the same name and type is insufficient if it is unused or its
+value is cast, transformed, or passed through a function. Forward the decoded
+value directly to the exact field, mark the field declaration with
+`@ForyField(ignore: true)`, or use a manual serializer.
+
+## Inherited field is hidden
+
+A subclass field or accessor can hide an ancestor storage slot while both
+physical slots remain on the object. Fory rejects this shape instead of
+choosing one slot and losing the other. Rename or remove the hiding member,
+ignore the ancestor field at its declaration when omission is intentional, or
+use a manual serializer.
 
 ## External target generation fails
 
@@ -141,7 +185,7 @@ matrix and platform guidance.
 Main Dart package:
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart analyze
 dart test
 ```
@@ -150,7 +194,7 @@ Integration test package:
 
 ```bash
 cd dart/packages/fory-test
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart test
 ```
 

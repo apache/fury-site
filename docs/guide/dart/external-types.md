@@ -62,14 +62,21 @@ must declare each schema field as `late final` without an initializer. Each
 serialized field name and Dart type, including nullability and generic
 arguments, must exactly match an accessible getter on the target.
 
-Public target fields count toward the graph-memory budget automatically. Use
+The declaration's field list is the complete external schema. Fory does not
+automatically add fields from the target, its superclass, or its mixins. You
+may explicitly declare an accessible inherited target property just like any
+other schema field. `exposePrivateFields` applies only to ordinary Dart
+hierarchies and is invalid with `ForyStruct.target`.
+
+Public target fields count toward the graph-memory budget automatically, but
+that accounting does not add them to the serialized schema. Use
 `@ForyField(ignore: true)` on an extra declaration field to count other storage
 without serializing it.
 
 Run the generator as usual:
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 ## Register and Use the Target

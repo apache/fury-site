@@ -83,7 +83,9 @@ ExternalSerializersForyModule.register(
 ```
 
 The declaration's field IDs, names, nullability, and wire-width annotations
-define the Dart-side xlang schema.
+define the Dart-side xlang schema. An external declaration may explicitly list
+an accessible inherited target property, but Fory does not automatically scan
+the external target hierarchy.
 
 ## Dart to Java Example
 
@@ -189,6 +191,17 @@ Fory matches fields by name or by stable field ID. For robust cross-language int
 5. Use `Timestamp`, `LocalDate`, and `Duration` for temporal fields rather than raw `DateTime`.
 6. Validate real round trips across all languages before shipping.
 
+For an ordinary Dart class, Fory flattens concrete superclass and applied-mixin
+storage into the annotated child's one struct schema. Parent and child fields
+share one field-ID namespace and one canonical ordering, so the peer language
+should define the equivalent flat field set. A parent is not encoded as a
+nested object.
+
+Inherited `@ForyField(ref: true)` and nested container reference metadata use
+the same reference behavior as fields declared directly on the child.
+Inheritance does not change xlang reference framing or add parent-level
+reference state.
+
 ## Type Mapping Notes for Dart
 
 Because Dart `int` is not itself a promise about the exact xlang wire width, prefer explicit field metadata when exact cross-language interpretation matters:
@@ -233,7 +246,7 @@ Before relying on a cross-language contract in production, test a payload end-to
 Run the Dart side:
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart analyze
 dart test
 ```

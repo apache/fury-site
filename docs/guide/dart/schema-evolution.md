@@ -62,6 +62,11 @@ class UserProfile {
 
 If you add field IDs after payloads are already in production, existing stored messages won't have them and evolution won't work correctly.
 
+For an ordinary inherited struct, the concrete child's schema contains every
+non-ignored field from its superclass and applied-mixin storage chain. Assign
+IDs across that complete flattened hierarchy; an ID used by a parent or mixin
+cannot be reused by the child.
+
 For an [external structural serializer](external-types.md), the local
 serializer declaration supplies the evolving schema and each declaration field
 must match the corresponding target property.
@@ -83,6 +88,9 @@ must match the corresponding target property.
   values exactly.
 - Change the registration identity (`id` or `name`) of a type after messages are in production.
 - Change a field's logical meaning without changing its ID.
+- Introduce field hiding that leaves both an ancestor and child storage slot;
+  generation rejects this shape because both slots cannot be addressed
+  faithfully.
 
 ## Xlang Notes
 
@@ -101,6 +109,21 @@ Use `compatible: false` only when every reader and writer always uses the same s
 ```dart
 final fory = Fory(compatible: false);
 ```
+
+## Regenerating Inherited Schemas
+
+Regenerate every affected `.fory.dart` part after adding inherited storage,
+changing a superclass or mixin, or changing `exposePrivateFields`. Generate a
+dependency package's provider part before building its consumers.
+
+Older Dart generated code did not include ordinary inherited fields. After
+regeneration, compatible schemas use their normal missing-field and
+unknown-field behavior. Fixed schemas written without the inherited fields are
+not compatible with the corrected flattened schema; Fory does not add a
+special legacy reader for those payloads.
+
+This migration changes generated field discovery only. It does not change the
+runtime reference protocol.
 
 ## Related Topics
 
