@@ -1,5 +1,7 @@
 # Java Benchmarks
 
+See the [Java JSON benchmark report](json/) for fory-json, Jackson, and Gson results.
+
 ## System Environment
 
 - Operation System：4.9.151-015.x86_64
