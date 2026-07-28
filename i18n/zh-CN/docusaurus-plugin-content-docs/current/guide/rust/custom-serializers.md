@@ -1,6 +1,6 @@
 ---
 title: 自定义序列化器
-sidebar_position: 4
+sidebar_position: 10
 id: custom_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,129 +19,165 @@ license: |
   limitations under the License.
 ---
 
-对于不支持 `#[derive(ForyObject)]` 的类型，可以手动实现 `Serializer` trait。
+当派生宏无法表达类型的序列化表示，或者需要特意使用不透明编码时，请使用自定义序列化器。序列化器是一种类型级实现，通过 `Target` 指定其处理的值类型。
 
-## 何时使用自定义序列化器
+对于需要保持结构化 Schema 的公开第三方结构体或枚举，优先使用[外部类型序列化](external_types)。
 
-- 来自其他 crate 的外部类型
-- 具有特殊序列化要求的类型
-- 旧数据格式兼容性
-- 性能关键的自定义编码
+## 实现自定义序列化器
 
-## 实现 Serializer Trait
+以下示例使用本地类型自身作为序列化器：
 
 ```rust
-use fory::{Fory, ReadContext, WriteContext, Serializer, ForyDefault, Error};
-use std::any::Any;
+use fory::{Error, Fory, ReadContext, Serializer, WriteContext};
 
 #[derive(Debug, PartialEq)]
-struct CustomType {
+struct Point {
     value: i32,
-    name: String,
 }
 
-impl Serializer for CustomType {
-    fn fory_write_data(&self, context: &mut WriteContext, is_field: bool) {
-        context.writer.write_i32(self.value);
-        context.writer.write_varuint32(self.name.len() as u32);
-        context.writer.write_utf8_string(&self.name);
+impl Serializer for Point {
+    type Target = Self;
+
+    fn write_data(value: &Self, context: &mut WriteContext) -> Result<(), Error> {
+        context.writer.write_i32(value.value);
+        Ok(())
     }
 
-    fn fory_read_data(context: &mut ReadContext, is_field: bool) -> Result<Self, Error> {
-        let value = context.reader.read_i32();
-        let len = context.reader.read_varuint32() as usize;
-        let name = context.reader.read_utf8_string(len);
-        Ok(Self { value, name })
+    fn read_data(context: &mut ReadContext) -> Result<Self, Error> {
+        Ok(Self {
+            value: context.reader.read_i32()?,
+        })
     }
 
-    fn fory_type_id_dyn(&self, type_resolver: &TypeResolver) -> u32 {
-        Self::fory_get_type_id(type_resolver)
-    }
-
-    fn as_any(&self) -> &dyn Any {
-        self
+    fn default_value(_context: &mut ReadContext) -> Result<Self, Error> {
+        Ok(Self { value: 0 })
     }
 }
 
-impl ForyDefault for CustomType {
-    fn fory_default() -> Self {
-        Self::default()
+let mut fory = Fory::builder().xlang(false).build();
+fory.register_serializer::<Point>(100)?;
+
+let value = Point { value: 42 };
+let bytes = fory.serialize(&value)?;
+let decoded: Point = fory.deserialize(&bytes)?;
+assert_eq!(decoded, value);
+# Ok::<(), Error>(())
+```
+
+`write_data` 和 `read_data` 处理 EXT 主体。Fory 的完整值 `write` 和 `read` 操作会为根值或字段补充引用帧和类型信息帧。
+
+`default_value` 是可选的。仅当兼容字段为空或缺失时存在有意义的取值，才实现此方法。它会接收当前的 `ReadContext`，因此需要分配内存的默认值可以应用与普通读取相同的反序列化限制。
+
+## 序列化第三方不透明类型
+
+可以用独立的序列化器处理其他 crate 中的类型：
+
+```rust
+use fory::{Error, ReadContext, Serializer, WriteContext};
+
+struct UuidSerializer;
+
+#[cold]
+#[inline(never)]
+fn invalid_uuid(error: uuid::Error) -> Error {
+    Error::invalid_data(error.to_string())
+}
+
+impl Serializer for UuidSerializer {
+    type Target = uuid::Uuid;
+
+    fn write_data(
+        value: &uuid::Uuid,
+        context: &mut WriteContext,
+    ) -> Result<(), Error> {
+        context.writer.write_bytes(value.as_bytes());
+        Ok(())
+    }
+
+    fn read_data(context: &mut ReadContext) -> Result<uuid::Uuid, Error> {
+        let bytes = context.reader.read_bytes(16)?;
+        uuid::Uuid::from_slice(bytes).map_err(invalid_uuid)
     }
 }
 ```
 
-## 注册自定义序列化器
+注册序列化器，然后在根值或字段上选择使用它：
 
 ```rust
-let mut fory = Fory::default();
-fory.register_serializer::<CustomType>(100);
+fory.register_serializer::<UuidSerializer>(101)?;
 
-let custom = CustomType {
-    value: 42,
-    name: "test".to_string(),
-};
-let bytes = fory.serialize(&custom);
-let decoded: CustomType = fory.deserialize(&bytes)?;
-assert_eq!(custom, decoded);
+let bytes = fory.serialize_with::<UuidSerializer>(&uuid)?;
+let decoded =
+    fory.deserialize_with::<UuidSerializer>(&bytes)?;
 ```
 
-## WriteContext 和 ReadContext
+```rust
+#[derive(ForyStruct)]
+struct Request {
+    #[fory(with = UuidSerializer)]
+    id: uuid::Uuid,
+}
+```
 
-`WriteContext` 和 `ReadContext` 提供对以下内容的访问：
+自定义序列化器的主体是不透明的。兼容模式不会映射其中的字段。
 
-- **writer/reader**：二进制缓冲区操作
-- **type_resolver**：类型注册信息
-- **ref_resolver**：引用跟踪（用于共享/循环引用）
+## 支持 `Arc<dyn Any + Send + Sync>`
 
-### 常用 Writer 方法
+如果必须将自定义序列化器的目标具体化为 `Arc<dyn Any + Send + Sync>`，或具体化为某种同步的应用程序 trait，请实现 `read_arc_any`：
 
 ```rust
-// 原始类型
+use std::any::Any;
+use std::sync::Arc;
+
+impl Serializer for Point {
+    type Target = Self;
+
+    // 按照上面的方式实现 write_data、read_data 和所需的默认值。
+
+    fn read_arc_any(
+        context: &mut ReadContext,
+    ) -> Result<Arc<dyn Any + Send + Sync>, Error> {
+        Ok(Arc::new(Self::read_data(context)?))
+    }
+}
+```
+
+目标必须实现 `Send + Sync`。如果省略此方法，带具体类型的操作以及 `Box`、`Rc` 操作仍然可用，而将值具体化为同步 `Arc` 时会返回错误。
+
+## 按名称注册
+
+当序列化后的标识是限定名称时，请使用名称注册：
+
+```rust
+fory.register_serializer_by_name::<UuidSerializer>(
+    "example.Uuid",
+)?;
+```
+
+对于同一个目标，一个 `Fory` 实例最多只能注册一个序列化器。
+
+## 上下文访问
+
+`WriteContext` 和 `ReadContext` 会公开二进制 writer 和 reader：
+
+```rust
 context.writer.write_i8(value);
-context.writer.write_i16(value);
 context.writer.write_i32(value);
-context.writer.write_i64(value);
-context.writer.write_f32(value);
+context.writer.write_var_u32(value);
 context.writer.write_f64(value);
-context.writer.write_bool(value);
 
-// 变长整数
-context.writer.write_varint32(value);
-context.writer.write_varuint32(value);
-
-// 字符串
-context.writer.write_utf8_string(&string);
+let value = context.reader.read_i8()?;
+let value = context.reader.read_i32()?;
+let value = context.reader.read_var_u32()?;
+let value = context.reader.read_f64()?;
 ```
 
-### 常用 Reader 方法
+对于大小可变的主体，请先验证可读字节数和对象图内存限制，再根据编码后的长度分配内存。
 
-```rust
-// 原始类型
-let value = context.reader.read_i8();
-let value = context.reader.read_i16();
-let value = context.reader.read_i32();
-let value = context.reader.read_i64();
-let value = context.reader.read_f32();
-let value = context.reader.read_f64();
-let value = context.reader.read_bool();
-
-// 变长整数
-let value = context.reader.read_varint32();
-let value = context.reader.read_varuint32();
-
-// 字符串
-let string = context.reader.read_utf8_string(len);
-```
-
-## 最佳实践
-
-1. **使用变长编码**：对可能较小的整数使用变长编码
-2. **首先写入长度**：对变长数据先写入长度
-3. **正确处理错误**：在 read 方法中正确处理错误
-4. **实现 ForyDefault**：以支持 schema 演化
+当自定义序列化器被用作大小可变容器的子项时，容器必须在元素数或映射条目数之后，按总量计算为每个已声明的元素或映射条目至少写入一个字节。如果容器的完整头部、元数据、帧和子项主体的总长度小于该计数，Fory 会拒绝序列化，从而绝不会写出与之配对的分配安全检查无法读取的字节。定长数组不受此限制，因为其经过验证的计数不控制内存分配；`Vec`、`VecDeque` 和 `BinaryHeap` 中的零大小元素也不受此限制，因为这些容器不会为它们分配后备存储空间。
 
 ## 相关主题
 
-- [类型注册](type-registration.md) - 注册序列化器
-- [基础序列化](basic-serialization.md) - 使用 ForyObject derive
-- [Schema 演化](schema-evolution.md) - Compatible 模式
+- [外部类型序列化](external_types)
+- [类型注册](type-registration.md)
+- [Schema 演进](schema-evolution.md)
