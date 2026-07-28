@@ -219,19 +219,75 @@ The ownership split is:
 - `Fory` owns root framing and operation setup/reset
 - `TypeResolver` owns registration and dynamic lookup
 
-#### C# target-keyed external serializers
+#### C# generated structural serializers
 
-C# external-type serialization uses the target-keyed serializer resolver.
+C# uses one target-keyed source-generation path for ordinary and external
+structural serializers. `ForyStructAttribute` is non-inherited: every
+first-party class that participates in a serializable hierarchy carries a
+direct annotation. An external declaration supplies the equivalent contract
+for an unmodifiable target.
+
+For one concrete ordinary class, compilation-level hierarchy discovery
+produces two independent immutable outputs:
+
+- one flattened wire-member set, used by field ordering, schema hashes,
+  `TypeMeta`, and generated reads and writes; and
+- one shallow-storage model, used only by graph-memory accounting.
+
+The wire set is assembled base-first from declaration-owned generated
+descriptors. Property override chains collapse to one logical slot before the
+complete set is validated and sorted by the protocol comparator. Hidden
+members retain their exact declaring type. A generated child never calls a
+parent serializer body and never encodes a base object as a nested value.
+
+Each inheritable ordinary class publishes a target-keyed compiler contract
+containing:
+
+- its exact target;
+- its exact directly declared wire-member count;
+- one descriptor on each deterministic accessor for a directly declared wire
+  member: fields use a writable `ref` accessor, while properties use a getter
+  plus a matching setter; and
+- a public static readonly cumulative `HierarchyShallowBytes` value.
+
+The provider's shallow value is the immediate parent provider value plus only
+the current class's directly declared physical instance fields. A sealed
+concrete serializer uses the same cumulative expression privately and does not
+publish a provider marker, descriptors, or hierarchy value. The concrete
+serializer adds object self storage once. Properties never directly add
+storage, while private, readonly, compiler-generated, and non-wire instance
+fields do. Referenced child compilations consume only an accessible provider
+contract; they do not import, enumerate, or reconstruct private parent fields.
+Provider-only targets emit a static provider; a concrete non-sealed
+serializer carries the same contract without a second type or forwarding path.
+An internal provider is available only to assemblies granted normal C#
+accessibility, such as through `InternalsVisibleTo`; an inaccessible or
+extern-alias-only contract does not own another compilation's hierarchy.
+
+The generator emits ordinary direct member access whenever C# accessibility
+allows it. A provider publishes an accessor when a referenced child must reach
+declaration-owned state. The accessor signature preserves the member's CLR
+type and nullability metadata. Missing or ambiguous providers fail generation.
+
+An abstract ordinary class emits only its generated hierarchy provider and does not
+create a serializer instance or registration. Its property descriptors may
+publish unresolved abstract override slots; a concrete descendant must supply
+the callable implementation. Concrete classes require legal parameterless
+construction and retain the existing allocate-before-children and reference
+publication order.
 
 `ForyStructAttribute` and `ForyEnumAttribute` carry an optional `Target` type.
-A local non-generic abstract class supplies an external struct schema, while an
-empty non-generic static class selects an external enum target:
+A local non-generic abstract class supplies an external structural declaration,
+while an empty non-generic static class selects an external enum target:
 
 ```csharp
 [ForyStruct(Target = typeof(ThirdParty.User))]
 internal abstract class UserSerializer
 {
-    [ForyField(1)]
+    [ForyField(
+        1,
+        TargetDeclaringType = typeof(ThirdParty.User),
+        TargetMemberName = "<Name>k__BackingField")]
     public abstract string Name { get; }
 }
 
@@ -241,80 +297,68 @@ internal static class StatusSerializer
 }
 ```
 
-These declarations are compile-time generator input only. They are never
+External declarations are compile-time generator input only. They are never
 instantiated, reflected over by the runtime, registered, reference-published,
-or used as wire identities. The generator emits the canonical
-`Serializer<ThirdParty.User>` structural form and registers its generated
-factory under `ThirdParty.User`. External enums reuse
-`EnumSerializer<ThirdParty.Status>`. Application registration uses the target
-APIs:
+or used as wire identities. Runtime type positions, construction, `TypeInfo`,
+metadata, reference publication, generated factory keys, roots, fields,
+dynamic values, and carriers use the target type.
 
-```csharp
-fory.Register<ThirdParty.User>(100);
-fory.Register<ThirdParty.Status>("example.Status");
-```
+An external member may bind a visible same-name field or property. For external
+class targets, setting `TargetDeclaringType` and `TargetMemberName` instead
+declares one exact field on the target or a non-`object` ancestor. An exact wire mapping
+also supplies physical storage; `Ignore = true` supplies only shallow storage.
+External struct targets support visible member mappings only. Unmapped visible
+public instance fields are added to external class shallow storage once. The
+generator never discovers private fields from a referenced assembly.
 
-The C# generator model must separate declaration identity from target identity,
-then reuse one structural serializer emitter for both ordinary and external
-targets. Runtime type positions, construction, member access, `TypeInfo`,
-compatible metadata, graph-memory ownership, reference publication, generated
-factory keys, root lookup, and dynamic lookup use the target. The declaration
-supplies only field names, IDs, schema descriptors, nullability, and the
-structural `Evolving` setting for wire fields. An ignored declaration field
-supplies only graph-memory storage and has no wire metadata or target access.
-For external classes, the shallow graph estimate includes declared wire
-fields, ignored declaration fields, and discoverable public instance target
-fields. An ignored declaration does not require its target storage to be
-visible to the generator. When it resolves to the same public field, the field
-symbol is used only to avoid counting that storage twice.
+`BaseOnly = true` makes an external class declaration the terminal provider for
+a complete third-party hierarchy prefix. It may list exact target and
+target-ancestor fields and publishes no standalone factory or registration. An
+ordinary child consumes this provider exactly as it consumes an ordinary
+parent provider. A `BaseOnly` target may be abstract or nonconstructible
+because only the concrete ordinary child is materialized.
+
+Exact private mappings are version-pinned package ABI declarations. Wire
+accessors fail with the CLR missing-field error if the target ABI changes;
+there is no reflection or alternate-member fallback. On .NET 8, the generator
+rejects private wire access whose declaring owner or signature is generic.
+Visible closed-generic members and explicit storage-only field mappings remain
+supported for class targets. An inaccessible pointer field cannot be
+distinguished from fixed-buffer storage without importing private layout, so an
+exact private pointer mapping is rejected.
+
+Standalone external structural targets require an accessible concrete class
+or struct, legal parameterless construction, and writable declared wire state.
+Constructor-only, factory-only, readonly, init-only, converted, and
+custom-wire shapes use a manual `Serializer<T>`. Explicit nullability must
+match when target metadata is annotated; otherwise the declaration supplies
+schema nullability.
 
 Every generated ordinary or external struct uses
 `TypeResolver.RegisterGeneratedStruct<T, TSerializer>(bool evolving)` to carry
-generator-owned `Evolving` into the target `TypeInfo`. Generated enums and
-unions use `TypeResolver.RegisterGenerated<T, TSerializer>()`. `TypeInfo` does
-not recover structural metadata by reflecting a target attribute. The runtime
-must not reflect the external declaration, add a serializer capability
-interface, or create a second metadata registry. Multiple generated
-declarations for one target are rejected during generation when visible in one
-compilation and fail deterministically on the cold generated-factory
-registration path across assemblies. Explicit manual serializer registration
-uses the resolver's target replacement rules.
+generator-owned `Evolving` into target `TypeInfo`. Generated enums and unions
+use `TypeResolver.RegisterGenerated<T, TSerializer>()`. Abstract ordinary and
+`BaseOnly` providers do not register. Multiple generated owners for one target
+are rejected during generation or deterministically on the cold
+cross-assembly factory-registration path. Manual serializer replacement keeps
+the resolver's normal target rules.
 
-External structural targets require an accessible concrete class or struct,
-legal parameterless construction, and directly readable and assignable
-wire members. Schema properties match target fields or properties by
-case-sensitive name and exact CLR/generic type. Explicit nullability must
-match; when target metadata is nullable-oblivious, the declaration supplies
-schema nullability. Ignored properties are declaration-owned budget hints and
-do not bind or access target members. Immutable, constructor-only,
-factory-only, init-only, readonly, renamed, converted, or inaccessible wire
-shapes use a manual `Serializer<T>`. Generated class reads allocate and
-publish the final target before recursive children; target structs are inline
-values. The declaration is never a temporary graph owner.
-
-C# carrier composition is target-based. The resolver recursively
-binds `Nullable<T>`, one-dimensional `T[]`, `List<T>`, `LinkedList<T>`,
-`Queue<T>`, `Stack<T>`, `HashSet<T>`, `SortedSet<T>`,
-`ImmutableHashSet<T>`, `Dictionary<TKey, TValue>`,
-`SortedDictionary<TKey, TValue>`, `SortedList<TKey, TValue>`,
-`ConcurrentDictionary<TKey, TValue>`, and
-`NullableKeyDictionary<TKey, TValue>`. Ordinary generated targets, external
-structural serializers, manual serializers, fields, and roots use the same
-carrier bodies. External-type serialization has no carrier-provider family,
-field selector, root selector, callback, schema tree, per-element external
-dispatch, or additional allocation. Collection-interface, tuple, fixed-array,
-multidimensional-array, memory, and reference-wrapper families are unsupported.
+C# carrier composition remains target-based. The resolver recursively binds
+`Nullable<T>`, one-dimensional `T[]`, `List<T>`, `LinkedList<T>`, `Queue<T>`,
+`Stack<T>`, `HashSet<T>`, `SortedSet<T>`, `ImmutableHashSet<T>`,
+`Dictionary<TKey, TValue>`, `SortedDictionary<TKey, TValue>`,
+`SortedList<TKey, TValue>`, `ConcurrentDictionary<TKey, TValue>`, and
+`NullableKeyDictionary<TKey, TValue>`. Ordinary, external, and manual
+serializers use the same carrier bodies. There is no hierarchy runtime lookup,
+provider object, callback, schema tree, per-element dispatch, or additional
+value allocation.
 
 Dynamic `object` values and unions resolve concrete target types through
-`TypeResolver`. Arbitrary statically typed interface or base-class polymorphism
-is unsupported.
-
-External and equivalent ordinary generated hot bodies must be
-instruction-shape equivalent apart from target/member metadata tokens. Target
-selection is compile-time only. Cold duplicate-target error construction must
-stay out of successful hot-path inlining, and any dedicated cold error entrance
-must be marked no-inline. Successful serializer dispatch must not be marked
-cold.
+`TypeResolver`. Arbitrary statically typed interface or base-class
+polymorphism remains unsupported. Flat ordinary and external generated hot
+bodies retain the same work and allocation shape apart from target/member
+metadata tokens; hierarchy composition is static initialization and
+compile-time metadata work.
 
 Rust names these serializer operation boundaries explicitly:
 
