@@ -1368,7 +1368,7 @@ The normal Dart integration path is:
 2. annotate field overrides with `@ForyField`
 3. run `build_runner`
 4. call the generated per-library helper, such as
-   `<InputFile>Fory.register(...)`, to bind private generated metadata and
+   `<InputFile>ForyModule.register(...)`, to bind private generated metadata and
    register generated types
 
 Generated code should emit:
@@ -1381,6 +1381,182 @@ Generated code should emit:
 The public helper should be a thin generated wrapper around the Fory
 registration API, not a public global registry or a second unrelated
 registration API family.
+
+### Dart Ordinary Struct Inheritance
+
+Ordinary Dart `ForyStruct` inheritance is a code-generation-time field
+discovery, normalization, access, construction, and flattening change. It does
+not redesign the runtime reference protocol.
+
+For a concrete annotated child, the generator walks the instantiated
+superclass and applied-mixin storage chain rather than only the child's direct
+`element.fields`. Each layer's `InterfaceType.element.fields` exposes its
+declared elements, including private declarations in another library. Dart
+privacy controls which generated expression can access an element; it does not
+control whether the element is discovered.
+
+The storage collector:
+
+1. visits the instantiated superclass;
+2. visits actually applied mixins in application order;
+3. visits the current class;
+4. collects concrete instance storage declared by each layer exactly once.
+
+It excludes `Object`, interfaces, mixin `on` constraints, abstract accessors,
+static fields, external fields, and synthetic members that do not own storage.
+A mixin slot is identified by its application site and declaring field, so
+multiple applications cannot be collapsed by spelling or `baseElement`.
+
+Every discovered storage field follows one pipeline:
+
+```text
+complete hierarchy discovery
+  -> declaration-owned @ForyField(ignore: true)
+  -> concrete generic substitution
+  -> direct or companion access resolution
+  -> constructor validation
+  -> one globally sorted child schema
+```
+
+`@ForyField(ignore: true)` on the declaring field is the only stage that may
+remove real ordinary storage. Ignored fields bypass type, access, construction,
+wire identity, and codec work but remain in the concrete object's shallow
+graph-memory field count. An inaccessible, private, final, hidden, unsupported,
+or otherwise unresolved non-ignored field is a generation error.
+
+Ownership is fixed:
+
+| Concern                          | Owner                                            |
+| -------------------------------- | ------------------------------------------------ |
+| Field identity and annotations   | Declaring storage field                          |
+| Hierarchy discovery/substitution | Concrete-child generator                         |
+| Cross-library private permission | Public boundary in the field's declaring library |
+| Schema, sort, and codec          | Concrete annotated child                         |
+| Construction                     | Selected concrete-child generative constructor   |
+| Reference analysis/publication   | Existing concrete-child serializer path          |
+| Graph-memory self charge         | One concrete child object                        |
+| External target field list       | Explicit external serializer declaration         |
+
+Public inherited fields and private inherited fields declared in the child's
+library use direct generated access and require no parent annotation. A private
+field declared in another library remains discovered, but requires
+`ForyStruct(exposePrivateFields: true)` on a public hierarchy boundary in that
+field's declaring library. The option defaults to `false`, is invalid with
+`ForyStruct.target`, and authorizes only provider-library access generation. It
+does not enable discovery, alter same-library access, change field inclusion,
+or let a consumer authorize another library's private state.
+
+A public boundary may expose same-library private storage inherited from a
+private class or mixin. If private fields come from several Dart libraries,
+each declaring library must independently provide an opted-in public boundary
+and visible companion. The nearest qualifying child-visible boundary in the
+declaring library is selected.
+
+The provider's `.fory.dart` part emits a public `@nodoc` typed static access
+companion. It emits an exact getter for each exposed non-ignored private field,
+a setter only for mutable storage, and no setter for `final` or `late final`
+storage. The receiver is the public boundary type. Generic bounds and every
+type nested in a public signature must be nameable outside the provider
+library. The companion must not use `dynamic`, `Object?` bridge casts,
+reflection, callbacks, runtime lookup, a parent serializer, or stored runtime
+state.
+
+The child source must have a direct import or re-export namespace that exposes
+the public boundary and companion. Provider output must be generated and
+published before a dependent package is built. Missing permission, a hidden or
+ambiguous companion namespace, an unnameable signature, or dispatch that no
+longer reaches the exact storage slot is a generation error. A child must also
+validate the complete concrete hierarchy so field hiding below the boundary
+cannot redirect a generated getter or setter to another slot.
+
+Every non-ignored `final` or `late final` field must be initialized by a
+statically proven identity flow:
+
+```text
+selected concrete-child constructor parameter
+  -> redirect or super parameter
+  -> exact storage field
+```
+
+Accepted edges are exact field formals, super formals, direct parameter
+references in constructor field initializers, and direct parameter references
+in redirecting or super-constructor arguments. Types must remain identical
+after concrete generic substitution, including nullability. Calls, operators,
+casts, null assertions, constants, constructor-body assignment, and matching
+names without element identity are not proof. A declaration initializer on a
+non-ignored final field is unsupported because the decoded value cannot own
+that slot. There is no post-construction final write, reflection, or fallback.
+
+Mutable fields connected to selected constructor parameters are initialized
+once through the same exact identity flow. Remaining mutable fields require an
+exact setter and are restored after construction. Required constructor
+parameters must have one unambiguous field source. Optional named parameters
+may be omitted; an omitted optional positional parameter cannot be followed by
+a passed positional parameter. Constructor arguments and assignments are
+matched by resolved storage-field identity rather than field-name strings.
+
+The concrete child owns one `GeneratedStructSchema`, one canonical field sort,
+one serializer and descriptor cache, one reconstruction, one reference
+publication path, and one graph-memory owner. Parent serializers are neither
+nested nor invoked, and parent runtime registration is not required. A
+separately annotated concrete parent has its own independently flattened
+schema only for values of that exact type.
+
+Direct and inherited fields feed one normalized list into the existing
+recursive reference analysis and `needsRootRef` calculation. Inherited
+`ref: true` and nested container metadata behave like equivalent direct child
+fields. Inheritance adds no reference state, `ReadContext` API, serializer
+signature, call-contract change, runtime branch, slot, sentinel, callback,
+wrapper, compatible-layout state, or parent reference owner. A failure shared
+by the equivalent flat model is a separate reference-subsystem issue.
+
+Java provides only the flattened-model comparison for this feature: its object
+serializer extends one field-descriptor list across inheritance and adds no
+inheritance-specific reference state. Java's existing reference contract uses
+the `readRefIds` stack, real reference IDs, and its `-1` sentinel to associate
+`reference(obj)` with the current serializer invocation. That contract differs
+from Dart's current reference subsystem and is not a design to transplant as
+part of Dart hierarchy support. Dart inheritance is required only to match its
+own equivalent flat model.
+
+Hierarchy traversal, substitution, access validation, and constructor proofs
+run during generation. Existing flat serializers gain no runtime work, public
+and same-library inherited fields emit the same direct operations as equivalent
+flat fields, and cross-library private fields add only an inlineable typed
+static companion call. Generation must not introduce runtime hierarchy
+traversal, allocation, callbacks, reflection, or parent dispatch.
+
+The child's shallow graph-memory formula is:
+
+```text
+24 + 4 * actualConcreteStorageFieldCount
+```
+
+It counts every real inherited and ignored storage slot once and adds no parent
+self charge.
+
+Generated diagnostics must identify the concrete child, declaring field,
+declaring library, and failed access or constructor path, then give an
+actionable remedy. Typical remedies are adding
+`exposePrivateFields: true` to a public owner-library boundary, importing its
+generated companion, forwarding a constructor value unchanged, placing
+`@ForyField(ignore: true)` on the field declaration, or using a manual
+serializer. Diagnostics must state that hierarchy discovery is independent of
+cross-library access.
+
+This correction changes generated schemas for ordinary children that inherit
+storage. All affected `.fory.dart` files must be regenerated. Compatible mode
+uses normal missing/unknown-field handling; fixed schemas written while
+inherited fields were absent have no legacy reader. Implementations must not
+retain an alternative path limited to child declarations, constructor binding
+based only on names, a late-final setter path, compatibility shim, fallback
+access, or parent serializer delegation.
+
+Acceptance requires that every hierarchy storage slot is either explicitly
+ignored or represented exactly once with a valid type, access path, wire
+identity, and reconstruction path. Equivalent flat and inherited models must
+produce the same canonical schema, wire bytes, reference IDs, and round-trip
+behavior. External target declarations remain explicit and unaffected.
 
 ### Dart External Structural Serializers
 
@@ -1403,6 +1579,11 @@ constructors, abstract targets, open target types, and constructor-based
 reference-tracked paths back to the target are rejected during generation.
 The recursive check includes target elements, keys, and values nested in the
 supported list, set, and map field metadata.
+
+The external declaration's fields are the complete schema. It may explicitly
+name an accessible property inherited by the target, but the generator does
+not automatically scan the external target hierarchy for schema fields.
+`exposePrivateFields` is invalid on an external declaration.
 
 An external object's shallow graph-memory formula is the union of declaration
 fields and public instance fields discovered on the target, its superclasses,
@@ -1472,7 +1653,7 @@ For Dart implementation changes, run at minimum:
 
 ```bash
 cd dart
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart analyze
 dart test
 ```
@@ -1481,6 +1662,6 @@ For generated consumer coverage, also run:
 
 ```bash
 cd dart/packages/fory-test
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart test
 ```
