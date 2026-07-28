@@ -77,6 +77,11 @@ This page summarizes built-in and generated type support in Apache Fory™ C#.
 ## User Types
 
 - `[ForyStruct]` classes/structs via source-generated serializers
+- Ordinary class hierarchies when every first-party class is directly
+  annotated; the concrete serializer uses one flattened schema
+- Private or protected ordinary base members selected with `[ForyField]`
+- Unmodified third-party base hierarchies described by one explicit external
+  declaration
 - `[ForyEnum]` enums and `[ForyUnion]` ADT records
 - External class, struct, and enum targets through serializer declarations
 - Manual serializer types registered through `Register<T, TSerializer>(...)`
@@ -84,6 +89,12 @@ This page summarizes built-in and generated type support in Apache Fory™ C#.
 
 `[ForyEnum]` numeric values are unsigned 32-bit wire tags and must be in the
 range `0..uint.MaxValue`.
+
+Open generic generated targets are unsupported. A non-generic ordinary class
+may derive from a closed third-party generic base when an external declaration
+describes that exact closed base. On .NET 8, private wire members whose
+declaring type or signature is generic are unsupported; visible members and
+explicit storage-only field declarations remain supported.
 
 ## Dynamic Types
 

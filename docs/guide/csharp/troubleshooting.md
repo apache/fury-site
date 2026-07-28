@@ -78,6 +78,35 @@ same-schema payloads.
 Fory fory = Fory.Builder().TrackRef(true).Build();
 ```
 
+## Derived Class Reports `FORY019`
+
+**Cause**: A non-`object` base class does not expose exactly one compatible
+generated hierarchy declaration. This usually means a first-party base is
+missing its own direct `[ForyStruct]`, the base package was built with an older
+generator, or two referenced schema assemblies declare the same third-party
+base.
+
+**Fix**:
+
+- Add `[ForyStruct]` directly to every modifiable base class and rebuild the
+  base assembly.
+- For an unmodifiable base, reference exactly one external declaration with
+  `Target` set to the derived type's immediate third-party base.
+- Remove duplicate provider assemblies and rebuild descendants.
+
+Fory does not inspect a referenced package's private fields to replace a
+missing declaration.
+
+## Private External Field Throws `MissingFieldException`
+
+**Cause**: An exact external field declaration no longer matches the installed
+package version. `TargetDeclaringType`, `TargetMemberName`, or the declared CLR
+type differs from the package's private application binary interface.
+
+**Fix**: Check the member metadata against the exact package version, update
+the external declaration and its storage-only field entries, then rebuild.
+There is no reflection or alternate-member fallback.
+
 ## Concurrency Issues
 
 **Cause**: Sharing a single `Fory` instance across threads.

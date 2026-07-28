@@ -27,17 +27,37 @@ Use `[ForyStruct]` to enable source-generated serializers. Use `[ForyField]` to 
 
 External-type serialization puts `Target` on a local abstract serializer
 declaration. Its properties own the field names, IDs, schema descriptors,
-nullability, and `Evolving` setting. The target supplies the runtime values and
+and nullability. A standalone declaration also owns its `Evolving` setting.
+An external `BaseOnly` declaration cannot set `Evolving`; each concrete
+descendant owns that setting. The target supplies the runtime values and
 directly accessed members.
 
 ```csharp
 [ForyStruct(Target = typeof(ThirdParty.User))]
 internal abstract class UserSerializer
 {
-    [ForyField(1)]
+    [ForyField(
+        1,
+        TargetDeclaringType = typeof(ThirdParty.User),
+        TargetMemberName = "<Name>k__BackingField")]
     public abstract string Name { get; }
 }
 ```
+
+## Inherited Fields
+
+The concrete class serializer has one field list containing its own fields and
+the selected fields from every annotated base class. That same flattened list
+drives field ordering, schema hashes, and compatible metadata.
+
+Property overrides contribute one logical field. The nearest override carrying
+`[ForyField]` supplies the ID and schema descriptor. Fields and members hidden
+with `new` remain distinct and must use unique IDs or unique normalized names.
+Duplicate IDs and duplicate name-based identities are generation errors.
+
+Changing a wire member on an annotated base changes every derived schema.
+Rebuild assemblies containing derived serializers after updating the base
+package.
 
 ```csharp
 using Apache.Fory;

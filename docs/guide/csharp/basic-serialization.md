@@ -62,6 +62,45 @@ byte[] payload = fory.Serialize(person);
 Person decoded = fory.Deserialize<Person>(payload);
 ```
 
+## Class Inheritance
+
+An annotated class includes the supported members declared by its annotated
+base classes in one flattened schema. Annotate every class in the hierarchy
+directly; `[ForyStruct]` is not inherited.
+
+```csharp
+[ForyStruct]
+public abstract class Entity
+{
+    [ForyField(1)]
+    private long _id;
+
+    public long Id => _id;
+}
+
+[ForyStruct]
+public sealed class User : Entity
+{
+    [ForyField(2)]
+    public string Name { get; set; } = string.Empty;
+}
+```
+
+Public and assembly-accessible mutable members are included automatically.
+Private, protected-only, and otherwise inaccessible fields or properties must
+carry `[ForyField]` on the class that declares them. Abstract annotated bases
+publish schema information for concrete descendants but are not registered or
+serialized as roots.
+
+The concrete derived type is still registered once:
+
+```csharp
+fory.Register<User>(102);
+```
+
+For a base class from an unmodifiable package, declare its fields explicitly as
+described in [External Types](external-types.md).
+
 ## Typed API
 
 ### Serialize / Deserialize with byte arrays
