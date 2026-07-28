@@ -167,7 +167,7 @@ fory.Serialize<object?>(dynamicWriter, value);
 - Reuse the same `Fory` or `ThreadSafeFory` instance for better performance.
 - Primitive types and collections do not require user registration.
 - Register user types handled by `[ForyStruct]`, `[ForyEnum]`, `[ForyUnion]`,
-  external structural serializers, or manual serializers explicitly.
+  external structural serializers, or custom serializers explicitly.
 
 ## Related Topics
 

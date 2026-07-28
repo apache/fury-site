@@ -77,7 +77,7 @@ and direct constructor initializers across the hierarchy.
 A parameter with the same name and type is insufficient if it is unused or its
 value is cast, transformed, or passed through a function. Forward the decoded
 value directly to the exact field, mark the field declaration with
-`@ForyField(ignore: true)`, or use a manual serializer. If
+`@ForyField(ignore: true)`, or use a custom serializer. If
 `ignoreInheritedPrivateFields` removes the only serialized source for a
 required constructor parameter, Fory still reports this error rather than
 inventing a value. See
@@ -88,7 +88,7 @@ inventing a value. See
 A subclass field or accessor can hide an included ancestor storage slot while
 both physical slots remain on the object. Fory rejects this shape instead of
 choosing one slot and losing the other. Rename or remove the hiding member,
-ignore the ancestor field at its declaration, or use a manual serializer. For
+ignore the ancestor field at its declaration, or use a custom serializer. For
 private ancestor state, setting `ignoreInheritedPrivateFields: true` omits all
 private ancestor storage from that child schema.
 
@@ -105,7 +105,7 @@ An external structural serializer requires:
 
 Select a public named constructor with
 `@ForyStruct(target: Type, constructor: 'name')`. Use a
-[manual serializer](custom-serializers.md) when the target requires a factory,
+[custom serializer](custom-serializers.md) when the target requires a factory,
 private state, field conversion, or name translation.
 
 ## `Deserialized value has type ..., expected ...`
@@ -124,7 +124,7 @@ To preserve identity:
 
 - For fields inside a `@ForyStruct`, add `@ForyField(ref: true)` to those fields.
 - For a top-level collection, pass `trackRef: true` to `fory.serialize(...)`.
-- In a manual serializer, use `context.writeRef` / `context.readRef` and call `context.reference(obj)` before reading nested fields.
+- In a custom serializer, use `context.writeRef` / `context.readRef` and call `context.reference(obj)` before reading nested fields.
 
 ## Cross-language field mismatch (missing data or wrong values)
 
@@ -219,6 +219,6 @@ separate protobuf service endpoint for generic protobuf clients.
 - [Struct Inheritance](inheritance.md)
 - [Xlang Serialization](xlang-serialization.md)
 - [Code Generation](code-generation.md)
-- [Manual Serializers](custom-serializers.md)
+- [Custom Serializers](custom-serializers.md)
 - [Web Platform Support](web-platform-support.md)
 - [gRPC Support](grpc-support.md)

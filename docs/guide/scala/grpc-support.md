@@ -114,7 +114,7 @@ final class GreeterService extends GreeterGrpc.GreeterImplBase {
 ```
 
 Generated request and response types are registered by the generated code, so
-service implementations do not perform manual serializer registration.
+service implementations do not perform custom serializer registration.
 
 ## Create a Client
 

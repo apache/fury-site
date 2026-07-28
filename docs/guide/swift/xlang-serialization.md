@@ -54,7 +54,7 @@ try fory.register(Order.self, name: "com.example.Order")
 - Keep compatible mode enabled when independently evolving schemas. Swift enables it by default.
 - Register all user-defined concrete targets used by dynamic fields and
   application protocol values
-- Use an external structural serializer, a separate manual serializer, or one
+- Use an external structural serializer, a separate custom serializer, or one
   intentional retroactive self-target conformance for a type owned by another
   module
 

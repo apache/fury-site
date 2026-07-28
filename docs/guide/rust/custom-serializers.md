@@ -1,7 +1,7 @@
 ---
-title: Manual Serializers
+title: Custom Serializers
 sidebar_position: 10
-id: manual_serializers
+id: custom_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,14 +19,14 @@ license: |
   limitations under the License.
 ---
 
-Use a manual serializer when derive cannot express the type's serialized
+Use a custom serializer when derive cannot express the type's serialized
 representation or when an opaque encoding is intentional. A serializer is a
 type-level implementation and names the value it handles through `Target`.
 
 For a public third-party struct or enum whose schema should remain structural,
 prefer [External-Type Serialization](external-types.md).
 
-## Implement a Manual Serializer
+## Implement a Custom Serializer
 
 This example uses a local type as its own serializer:
 
@@ -127,12 +127,12 @@ struct Request {
 }
 ```
 
-Manual serializer bodies are opaque. Compatible mode does not map fields
+Custom serializer bodies are opaque. Compatible mode does not map fields
 inside them.
 
 ## Support `Arc<dyn Any + Send + Sync>`
 
-If a manual serializer's target must be materialized behind
+If a custom serializer's target must be materialized behind
 `Arc<dyn Any + Send + Sync>` or a synchronized application trait, implement
 `read_arc_any`:
 
@@ -188,7 +188,7 @@ let value = context.reader.read_f64()?;
 For variable-size bodies, validate readable bytes and graph-memory limits
 before allocating from an encoded length.
 
-When a manual serializer is selected as a child of a variable-size carrier,
+When a custom serializer is selected as a child of a variable-size carrier,
 the carrier must emit at least one aggregate byte per declared element or map
 entry after its count. Fory rejects serialization when the carrier's complete
 header, metadata, framing, and child bodies are shorter than that count, so it

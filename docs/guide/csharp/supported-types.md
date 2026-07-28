@@ -84,7 +84,7 @@ This page summarizes built-in and generated type support in Apache Fory™ C#.
   declaration
 - `[ForyEnum]` enums and `[ForyUnion]` ADT records
 - External class, struct, and enum targets through serializer declarations
-- Manual serializer types registered through `Register<T, TSerializer>(...)`
+- Custom serializer types registered through `Register<T, TSerializer>(...)`
 - `Union` / `Union2<...>` typed union support
 
 `[ForyEnum]` numeric values are unsigned 32-bit wire tags and must be in the

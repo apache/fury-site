@@ -196,8 +196,8 @@ fory-derive/           # Procedural macros
 - [Native Serialization](native-serialization.md) - Rust-only serialization
 - [References](references.md) - Shared and circular references
 - [Polymorphism](polymorphism.md) - Trait object serialization
-- [Manual Serializers](manual-serializers.md) - Implement customized serialization behavior
-- [External-Type Serialization](external-types.md) - External structural and manual serializers
+- [Custom Serializers](custom-serializers.md) - Implement custom serialization behavior
+- [External-Type Serialization](external-types.md) - External structural and custom serializers
   plus carrier composition
 - [Row Format](row-format.md) - Zero-copy row-based format
 - [gRPC Support](grpc-support.md) - Fory payloads over tonic

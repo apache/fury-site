@@ -125,8 +125,8 @@ let decoded = try fory.deserialize(
 
 See [External-Type Serialization](external-types.md) for structural
 serializers and recursive carrier roots. See
-[Manual Serializers](manual-serializers.md) for serializers implemented
-directly by a type, retroactive conformances, and separate manual serializers.
+[Custom Serializers](custom-serializers.md) for serializers implemented
+directly by a type, retroactive conformances, and separate custom serializers.
 
 ## Built-in Supported Types
 

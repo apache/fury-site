@@ -39,11 +39,11 @@ fory.register::<MyStruct>(100)?;  // Register before use
 Confirm that:
 
 - Every concrete dynamic target is registered through the matching structural,
-  union, or manual serializer API.
+  union, or custom serializer API.
 - The same ID or name mapping is reused on the deserialize side.
 
 For external-type serialization, register the selected external structural or
-manual serializer, not its third-party target:
+custom serializer, not its third-party target:
 
 ```rust
 fory.register::<UserSerializer>(100)?;

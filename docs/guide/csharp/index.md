@@ -82,7 +82,7 @@ User decoded = fory.Deserialize<User>(payload);
 - `Serialize<T>(in T value)` / `Deserialize<T>(...)`
 - `Serialize<object?>(...)` / `Deserialize<object?>(...)` for dynamic payloads
 - `Register<T>(uint typeId)` and name registration APIs
-- `Register<T, TSerializer>(...)` for manual serializers
+- `Register<T, TSerializer>(...)` for custom serializers
 
 ## Documentation
 
@@ -92,9 +92,9 @@ User decoded = fory.Deserialize<User>(payload);
 | [Basic Serialization](basic-serialization.md) | Typed and dynamic serialization APIs          |
 | [Xlang Serialization](xlang-serialization.md) | Interoperability guidance                     |
 | [Schema Metadata](schema-metadata.md)         | `[ForyField]` ids and schema type descriptors |
-| [Type Registration](type-registration.md)     | Registering user types and manual serializers |
+| [Type Registration](type-registration.md)     | Registering user types and custom serializers |
 | [External Types](external-types.md)           | Serializers for third-party types             |
-| [Manual Serializers](manual-serializers.md)   | Implementing `Serializer<T>`                  |
+| [Custom Serializers](custom-serializers.md)   | Implementing `Serializer<T>`                  |
 | [References](references.md)                   | Shared/circular reference handling            |
 | [Schema Evolution](schema-evolution.md)       | Compatible mode behavior                      |
 | [Supported Types](supported-types.md)         | Built-in and generated type support           |

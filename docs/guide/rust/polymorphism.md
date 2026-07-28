@@ -71,7 +71,7 @@ fory.register::<Cat>(101)?;
 ```
 
 A listed third-party target can be registered through an external structural
-serializer or manual serializer. The list still names the target, not that
+serializer or custom serializer. The list still names the target, not that
 serializer.
 
 The generated names are private to the macro's module by default. A library
@@ -224,12 +224,12 @@ assert_eq!(dog.name, "Buddy");
 ```
 
 Derived serializers support synchronized `Arc` materialization when their
-targets satisfy `Send + Sync`. A manual serializer that needs this path
+targets satisfy `Send + Sync`. A custom serializer that needs this path
 implements `read_arc_any`.
 
 Generic LIST, SET, and MAP identities do not identify one exact Rust generic
 target behind `Any`. Put such a container in a registered struct, or register an
-exact whole-container manual serializer when an opaque EXT representation is
+exact whole-container custom serializer when an opaque EXT representation is
 intentional.
 
 ## Related Topics

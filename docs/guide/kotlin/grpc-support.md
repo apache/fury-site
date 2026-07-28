@@ -96,7 +96,7 @@ For this schema, the Kotlin generator emits:
 Run KSP when compiling the generated model files so the schema serializers are
 available at runtime. Generated request and response types are registered by
 the generated schema module used by the service companion, so service
-implementations do not perform manual serializer registration.
+implementations do not perform custom serializer registration.
 
 ## Implement a Server
 

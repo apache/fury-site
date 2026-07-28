@@ -89,7 +89,7 @@ ExternalSerializersForyModule.register(
 
 See [External-Type Serialization](external-types.md) for the declaration.
 
-## Registering a Manual Serializer
+## Registering a Custom Serializer
 
 Pass a serializer instance directly when a type needs custom wire or
 construction logic:
@@ -102,7 +102,7 @@ fory.registerSerializer(
 );
 ```
 
-See [Manual Serializers](custom-serializers.md) for how to implement a serializer.
+See [Custom Serializers](custom-serializers.md) for how to implement a serializer.
 
 ## Rules to Follow
 
@@ -123,4 +123,4 @@ The same numeric ID or name must be used in every peer that reads or writes the 
 - [Code Generation](code-generation.md)
 - [External-Type Serialization](external-types.md)
 - [Xlang Serialization](xlang-serialization.md)
-- [Manual Serializers](custom-serializers.md)
+- [Custom Serializers](custom-serializers.md)

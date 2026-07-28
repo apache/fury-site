@@ -233,7 +233,7 @@ directly.
 ### External-Type Field Selection
 
 Use `with` to select a serializer whose target is the exact field type. The
-serializer can be external structural, manual, or a carrier composition:
+serializer can be external structural, custom, or a carrier composition:
 
 ```rust
 use fory::{ForyStruct, VecSerializer};

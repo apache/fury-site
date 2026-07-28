@@ -111,7 +111,7 @@ Native serialization owns the Rust-specific object surface:
 - Runtime type dispatch with `Box<dyn Any>`, `Rc<dyn Any>`, and
   `Arc<dyn Any + Send + Sync>` for registered non-container payloads. Wrap
   containers in registered structs, enums, or unions, or register an
-  exact-target manual serializer when an opaque EXT/NAMED_EXT representation
+  exact-target custom serializer when an opaque EXT/NAMED_EXT representation
   is appropriate.
 - Date and time carriers, including optional `chrono` support.
 
@@ -214,7 +214,7 @@ The same serializer works with `compatible(false)` when both peers use the
 same schema. Multi-field tuple and named variants have no xlang union mapping,
 so registering this serializer with `xlang(true)` returns an error. See
 [External-Type Serialization](external-types.md) for field, carrier, root, and
-manual serializer composition.
+custom serializer composition.
 
 ## Performance Guidelines
 

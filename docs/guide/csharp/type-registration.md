@@ -54,14 +54,14 @@ separately:
 fory.Register<User>("com.example", "User");
 ```
 
-## Register a Manual Serializer
+## Register a Custom Serializer
 
 ```csharp
 Fory fory = Fory.Builder().Build();
 fory.Register<MyType, MyTypeSerializer>(200);
 ```
 
-Name-based manual serializer registration is also supported:
+Name-based custom serializer registration is also supported:
 
 ```csharp
 fory.Register<MyType, MyTypeSerializer>("com.example.MyType");
@@ -96,5 +96,5 @@ fory.Register<Order>(101);
 
 - [Basic Serialization](basic-serialization.md)
 - [External Types](external-types.md)
-- [Manual Serializers](manual-serializers.md)
+- [Custom Serializers](custom-serializers.md)
 - [Xlang Serialization](xlang-serialization.md)

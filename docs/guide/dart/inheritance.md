@@ -160,7 +160,7 @@ value is ignored or transformed.
 Filtering a private field does not let Fory invent constructor inputs. If a
 required child constructor parameter no longer has a serialized field source,
 generation fails. Use a reconstructing constructor, declaration-owned
-`@ForyField(ignore: true)` where appropriate, or a manual serializer.
+`@ForyField(ignore: true)` where appropriate, or a custom serializer.
 
 ## Mixins, Generics, and Field IDs
 

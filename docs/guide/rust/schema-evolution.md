@@ -139,7 +139,7 @@ let decoded: third_party::User =
 ```
 
 Peers must use the same numeric ID or registered name for the logical type.
-Adding or removing fields follows the normal compatible-mode rules. A manual
+Adding or removing fields follows the normal compatible-mode rules. A custom
 serializer owns an opaque EXT body instead, so its implementation must define
 any versioning inside that body.
 
@@ -185,7 +185,7 @@ locally before deserializing unknown cases you need to preserve.
 payload types must satisfy `Send + Sync`. Direct generic containers are not
 supported as erased `Any` payloads by their structural carrier registration.
 Wrap the container in a registered derived type, or register an exact-target
-manual serializer when an opaque EXT/NAMED_EXT body is intentional.
+custom serializer when an opaque EXT/NAMED_EXT body is intentional.
 
 ### Enum Schema Evolution
 

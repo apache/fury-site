@@ -199,7 +199,7 @@ Fory row-format schemas.
 
 ## Differences from Python Native Mode
 
-The binary protocol and API are similar to `pyfory`'s Python native mode, but Python native mode can serialize any Python object—including global functions, local functions, lambdas, local classes, and types with customized serialization using `__getstate__/__reduce__/__reduce_ex__`, which are **not allowed** in xlang mode.
+The binary protocol and API are similar to `pyfory`'s Python native mode, but Python native mode can serialize any Python object—including global functions, local functions, lambdas, local classes, and types with custom serialization using `__getstate__/__reduce__/__reduce_ex__`, which are **not allowed** in xlang mode.
 
 ## See Also
 

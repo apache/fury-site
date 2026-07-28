@@ -21,7 +21,7 @@ license: |
 
 Rust external-type serialization lets an application serialize a type owned by
 another crate without a wrapper value. Use a derived external structural
-serializer for an accessible public schema, or a manual serializer for an
+serializer for an accessible public schema, or a custom serializer for an
 opaque or invariant-bearing type.
 
 ## One serializer model
@@ -150,9 +150,9 @@ for such an enum while `xlang = true` returns an error before registration is
 published. Fory does not discard fields, synthesize hidden variant structs, or
 silently encode the type as EXT.
 
-## Manual serializers
+## Custom serializers
 
-Use a manual serializer for opaque types such as UUID or Jiff values:
+Use a custom serializer for opaque types such as UUID or Jiff values:
 
 ```rust
 use fory::{Error, ReadContext, Serializer, WriteContext};
@@ -194,12 +194,12 @@ impl Serializer for UuidSerializer {
 }
 ```
 
-Manual serializers use the existing EXT or NAMED_EXT wire kinds. Their internal
+Custom serializers use the existing EXT or NAMED_EXT wire kinds. Their internal
 body evolution is application-owned. If a body length controls an allocation,
-the manual serializer must use the read context's byte-availability and graph-memory
+the custom serializer must use the read context's byte-availability and graph-memory
 checks before reserving or allocating that storage.
 
-When a manual serializer is composed under a variable-size carrier, the
+When a custom serializer is composed under a variable-size carrier, the
 carrier's complete bytes after its count must average at least one byte per
 declared element or map entry. Fory checks this once after writing the carrier
 and returns an error for a body that is too compact for the paired
@@ -209,7 +209,7 @@ exempt.
 
 Fory invokes the optional `read_arc_any` method only after reserving the final
 Arc owner; the method shown above performs that allocation once and must not
-reserve the same outer owner again. A manual serializer that does not need sync
+reserve the same outer owner again. A custom serializer that does not need sync
 Arc dynamic carriers omits it and remains valid for typed, Box, and Rc uses;
 attempting sync Arc materialization then returns an unsupported error.
 
@@ -309,7 +309,7 @@ annotation applies only to its declared node; it never silently propagates
 through a composite.
 
 A node-local `#[fory(with = PackedUsersSerializer)]` may instead select one
-manual serializer whose exact target is the whole `Vec`, map, set, array, or
+custom serializer whose exact target is the whole `Vec`, map, set, array, or
 tuple. That field uses opaque EXT/NAMED_EXT encoding and has no child schema.
 It cannot also use `list`, `map`, `tuple`, `array`, `bytes`, or `encoding`.
 Recursive list/map/tuple annotations are the distinct choice when the composite
@@ -317,7 +317,7 @@ should retain its structural wire kind and only its children need selected
 serializers. This opaque customization is not a user-declared carrier
 serializer and cannot compose child serializers.
 
-If that exact whole-container manual serializer is registered, erased polymorphic values
+If that exact whole-container custom serializer is registered, erased polymorphic values
 of the exact target use it. Ordinary unannotated typed fields and roots whose
 children self-provide keep using the built-in structural container format;
 explicit carrier serializer roots also keep their declared structural format.
@@ -416,14 +416,14 @@ carrier. Standard-library `Weak<T>` is also not an alias for Fory's
 `RcWeak<T>` or `ArcWeak<T>`.
 
 Every child argument is another serializer type. It can be an ordinary serializer targeting itself,
-an external structural serializer, a manual leaf serializer, or another Fory-owned carrier
+an external structural serializer, a custom leaf serializer, or another Fory-owned carrier
 serializer. All four forms preserve the carrier's built-in encoding. An ordinary
 local type is its own serializer, so
 `HashMapSerializer<String, UserSerializer>` targets
 `HashMap<String, third_party::User>`.
 `ArraySerializer<S, N>` uses the same carrier selection as the chosen child
 serializer. A canonical primitive serializer such as `i32` retains its
-dense-array format, while an external structural or manual child serializer
+dense-array format, while an external structural or custom child serializer
 uses LIST even if its target is a primitive Rust type.
 
 `VecSerializer<S>` also preserves the ordinary Vec format selected by its
@@ -449,7 +449,7 @@ type. A field can select an exact carrier serializer with `with`, such as
 `tuple(element(...))` grammar, when serializers are selected at recursive child
 nodes.
 
-An exact whole-container or whole-tuple manual serializer remains a valid opaque
+An exact whole-container or whole-tuple custom serializer remains a valid opaque
 root, but it uses EXT/NAMED_EXT instead of the built-in structural
 representation and does not select child serializers.
 
@@ -458,7 +458,7 @@ matching `#[fory(with = UserSerializer)]`.
 
 ## Registration
 
-Structural and manual serializers use the existing registration categories.
+Structural and custom serializers use the existing registration categories.
 Choose one identity style for each serializer.
 
 Numeric registration:
@@ -483,12 +483,12 @@ Registration associates the wire identity with the serializer's target. One
 `Fory` instance accepts only one registered dynamic serializer for a given
 target. Registering it does not replace an ordinary static serializer or
 implicitly select it for an unannotated field or root. Complete registration
-before the first serialization operation. Register each structural or manual
+before the first serialization operation. Register each structural or custom
 external child; never register a carrier serializer.
 
 Carrier composition does not make the entire container a dynamic `Any` target.
 If the exact whole container must participate in erased dynamic dispatch,
-register a manual exact-target serializer and use its EXT/NAMED_EXT
+register a custom exact-target serializer and use its EXT/NAMED_EXT
 representation.
 
 ## Polymorphism
@@ -496,7 +496,7 @@ representation.
 Registered external targets participate in `Box<dyn Any>` and `Rc<dyn Any>`
 through their target identity. A `Send + Sync` target also participates in
 `Arc<dyn Any + Send + Sync>` when its structural derive generated the Arc
-materializer or its manual serializer implemented `read_arc_any`.
+materializer or its custom serializer implemented `read_arc_any`.
 
 These erased carriers work in native and xlang modes when the selected concrete
 serializer supports that mode. The Rust carrier and application trait name are
@@ -517,7 +517,7 @@ register_trait_type!(Animal, Dog, third_party::Cat);
 ```
 
 The concrete target list is closed and explicit. Each target can use an
-ordinary serializer, an external structural serializer, or a manual serializer.
+ordinary serializer, an external structural serializer, or a custom serializer.
 
 For `Arc<dyn Trait>`, the sync form requires the trait and listed targets to
 implement `Send + Sync`:
@@ -548,11 +548,11 @@ wrapper conversions.
 
 The trait carrier serializers are not registered by ID or name. Applications
 register each allowed concrete target through its ordinary serializer,
-external structural serializer, or manual serializer.
+external structural serializer, or custom serializer.
 
 ## Related Topics
 
-- [Manual Serializers](manual-serializers.md)
+- [Custom Serializers](custom-serializers.md)
 - [Polymorphism](polymorphism.md)
 - [Type Registration](type-registration.md)
 - [Schema Evolution](schema-evolution.md)

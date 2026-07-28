@@ -1,5 +1,5 @@
 ---
-title: Manual Serializers
+title: Custom Serializers
 sidebar_position: 11
 id: custom_serializers
 license: |
@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-A manual serializer lets you control exactly how a type is encoded and decoded.
+A custom serializer lets you control exactly how a type is encoded and decoded.
 Use one when:
 
 - you need a completely custom binary layout
@@ -118,7 +118,7 @@ final class ShapeSerializer extends UnionSerializer<Shape> {
 }
 ```
 
-## Circular References in Manual Serializers
+## Circular References in Custom Serializers
 
 If your serializer can encounter circular object graphs, bind the object to the reference tracker **before** reading its nested fields:
 

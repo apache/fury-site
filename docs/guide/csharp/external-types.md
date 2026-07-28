@@ -138,7 +138,7 @@ External struct targets support visible field and property mappings only.
 Exact mappings and `Ignore` are class-only because value storage belongs to the
 holder that materializes the struct. An inaccessible pointer field is also
 rejected: without reading private package layout, the generator cannot
-distinguish pointer storage from a fixed buffer. Use a manual serializer for
+distinguish pointer storage from a fixed buffer. Use a custom serializer for
 these shapes.
 
 ## Third-Party Base Classes
@@ -239,11 +239,11 @@ derived behavior after deserialization.
 A standalone external target must be an accessible concrete class or struct
 with a legal parameterless construction path and writable declared wire state.
 Constructor-bound, factory-only, readonly, init-only, converted, or
-custom-wire targets require a [manual serializer](manual-serializers.md).
+custom-wire targets require a [custom serializer](custom-serializers.md).
 
 Closed generic targets such as `ThirdParty.Box<string>` are supported. On
 .NET 8, a private wire member whose declaring type or signature is generic
-requires a manual serializer. Visible generic members and exact ignored class
+requires a custom serializer. Visible generic members and exact ignored class
 field mappings remain supported. Open generic targets are not supported.
 
 ## Enum Targets
@@ -359,6 +359,6 @@ This feature does not add arbitrary interface or base-class polymorphism.
 
 - [Schema Metadata](schema-metadata.md)
 - [Type Registration](type-registration.md)
-- [Manual Serializers](manual-serializers.md)
+- [Custom Serializers](custom-serializers.md)
 - [References](references.md)
 - [Schema Evolution](schema-evolution.md)

@@ -1,7 +1,7 @@
 ---
-title: Manual Serializers
+title: Custom Serializers
 sidebar_position: 10
-id: manual_serializers
+id: custom_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,11 +19,11 @@ license: |
   limitations under the License.
 ---
 
-Use a manual serializer when a target needs a custom encoding or cannot meet
+Use a custom serializer when a target needs a custom encoding or cannot meet
 the direct-access requirements of an
 [external structural serializer](external-types.md).
 
-A manual serializer is not limited to external types:
+A custom serializer is not limited to external types:
 
 - A target that itself conforms to `Serializer` with `Target == Self` selects
   that implementation implicitly everywhere.
@@ -34,7 +34,7 @@ The same selection rules apply to roots, generated fields, optionals, arrays,
 sets, and dictionaries. Register a separate serializer and select it explicitly
 where it is used.
 
-## When to Use a Manual Serializer
+## When to Use a Custom Serializer
 
 - The target has private or immutable state.
 - The target must enforce construction invariants.
@@ -284,9 +284,9 @@ let data = try fory.serialize(
 )
 ```
 
-## Manual Serializer Rules
+## Custom Serializer Rules
 
-A manual serializer must return `.ext` from `staticTypeId`. The
+A custom serializer must return `.ext` from `staticTypeId`. The
 `.structType`, `.enumType`, and `.typedUnion` values are reserved for
 `@ForyStruct`, `@ForyEnum`, and `@ForyUnion`.
 
@@ -302,7 +302,7 @@ or missing field.
 
 Reject invalid input with an appropriate `ForyError`.
 
-## Manual Class Serializers
+## Custom Class Serializers
 
 For a cyclic class, override the complete-value `read` operation and use Fory's
 reference APIs so repeated references resolve to the same object.

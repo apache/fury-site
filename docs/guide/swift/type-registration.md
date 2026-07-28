@@ -98,6 +98,6 @@ Complete all registrations before the first root operation.
 ## Dynamic Types and Registration
 
 When serializing `Any`, `AnyObject`, or application protocol values, register
-each concrete target through its ordinary, external structural, or manual
+each concrete target through its ordinary, external structural, or custom
 serializer. `Any` and `AnyObject` use direct root APIs; application protocols
 select `DynamicSerializer<T>` explicitly.

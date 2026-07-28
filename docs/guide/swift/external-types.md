@@ -24,7 +24,7 @@ another Swift module without modifying that type.
 
 Use an external structural serializer when the target exposes a schema that
 Fory can access and construct directly. Use a
-[manual serializer](manual-serializers.md) when the target needs a customized
+[custom serializer](custom-serializers.md) when the target needs a custom
 encoding or has private construction invariants.
 
 An external structural serializer is a separate declaration. Register it, then
@@ -33,7 +33,7 @@ select it explicitly at roots, fields, and carrier children.
 For one application-owned global implementation, Swift also permits an
 external type to conform retroactively to `Serializer` with `Target == Self`.
 That form uses ordinary implicit selection everywhere and has process-global
-conformance risks. See [Manual Serializers](manual-serializers.md).
+conformance risks. See [Custom Serializers](custom-serializers.md).
 
 ## External Structs
 
@@ -88,7 +88,7 @@ Swift budgets only fields listed in this declaration. Add
 `@ForyField(ignore: true)` fields for substantial omitted storage; they count
 toward the graph budget but are not serialized.
 
-Use a manual serializer if the class is immutable, requires constructor
+Use a custom serializer if the class is immutable, requires constructor
 arguments, or cannot be safely observed before all fields are assigned.
 
 ## External Enums
@@ -104,7 +104,7 @@ enum StatusSerializer {
 ```
 
 An enum from another module must be exhaustively switchable. A resilient
-non-frozen public enum requires a manual serializer.
+non-frozen public enum requires a custom serializer.
 
 ## External Unions
 
@@ -127,7 +127,7 @@ enum CommandSerializer {
 The target must expose matching cases and a lossless
 `unknown(UnknownCase)` case. A dependency-free third-party module can declare a
 generic unknown payload, such as `Command<UnknownPayload>`, and the serializer
-can target its `Command<UnknownCase>` specialization. Use a manual serializer
+can target its `Command<UnknownCase>` specialization. Use a custom serializer
 when a third-party union has a different unknown-case representation or cannot
 preserve unknown payloads.
 
@@ -266,7 +266,7 @@ let decoded = try fory.deserialize(
 ```
 
 Register each concrete target through its ordinary, external structural, or
-manual serializer.
+custom serializer.
 
 For a root carrier containing protocol values, compose
 `DynamicSerializer` explicitly:

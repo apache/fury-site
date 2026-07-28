@@ -128,7 +128,7 @@ public sealed class GreeterService : Greeter.GreeterBase
 
 Generated request and response types are registered by the generated schema
 module used by the service companion, so service implementations do not perform
-manual serializer registration.
+custom serializer registration.
 
 ## Create a Client
 

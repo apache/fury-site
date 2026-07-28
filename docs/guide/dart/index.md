@@ -32,7 +32,7 @@ languages.
 - **Inheritance**: ordinary structs flatten concrete superclass and mixin storage into one schema
 - **Schema evolution**: add or remove fields without breaking existing messages
 - **Circular references**: optional reference tracking handles shared or recursive object graphs
-- **Escape hatch**: write a manual serializer for any type that cannot be annotated
+- **Escape hatch**: write a custom serializer for any type that cannot be annotated
 
 ## Quick Start
 
@@ -147,7 +147,7 @@ constructors, mixins, and field inclusion options.
 | [Xlang Serialization](xlang-serialization.md)    | Interoperability rules and field alignment                      |
 | [Schema Metadata](schema-metadata.md)            | `@ForyField`, field IDs, nullability, references, polymorphism  |
 | [Type Registration](type-registration.md)        | ID-based vs name-based registration and registration rules      |
-| [Manual Serializers](custom-serializers.md)      | Manual `Serializer<T>` implementations and unions               |
+| [Custom Serializers](custom-serializers.md)      | Custom `Serializer<T>` implementations and unions               |
 | [Supported Types](supported-types.md)            | Built-in xlang values, wrappers, collections, and structs       |
 | [Schema Evolution](schema-evolution.md)          | Compatible structs and evolving schemas                         |
 | [Web Platform Support](web-platform-support.md)  | Dart VM/AOT, Flutter, and web support, limits, and validation   |

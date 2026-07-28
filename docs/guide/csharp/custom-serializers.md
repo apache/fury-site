@@ -1,7 +1,7 @@
 ---
-title: Manual Serializers
+title: Custom Serializers
 sidebar_position: 11
-id: manual_serializers
+id: custom_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,15 +19,15 @@ license: |
   limitations under the License.
 ---
 
-Use a manual serializer when a type is not generated with `[ForyStruct]` or
+Use a custom serializer when a type is not generated with `[ForyStruct]` or
 requires specialized encoding.
 
 [External-type serialization](external-types.md) generates serializers for
 mutable third-party targets, including exact private or renamed fields. Use a
-manual serializer for immutable, constructor-only, factory-only, readonly,
+custom serializer for immutable, constructor-only, factory-only, readonly,
 init-only, converted, or custom-wire targets. On .NET 8, a private external
 wire field whose declaring type or accessor signature is generic also requires
-a manual serializer. Exact storage-only mappings do not emit private accessors.
+a custom serializer. Exact storage-only mappings do not emit private accessors.
 
 ## Implement `Serializer<T>`
 
@@ -88,7 +88,7 @@ fory.Register<Point, PointSerializer>("com.example.Point");
 
 1. Keep serializers deterministic and symmetric.
 2. Use varint/fixed/tagged encoding intentionally for integer-heavy payloads.
-3. Register manual serializers on all reader/writer peers.
+3. Register custom serializers on all reader/writer peers.
 4. Prefer generated `[ForyStruct]` serializers for normal domain models.
 
 ## Related Topics

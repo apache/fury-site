@@ -180,7 +180,7 @@ let mut reader = Reader::new(&buf);
 let decoded: MyStruct = fory.deserialize_from(&mut reader)?;
 ```
 
-When the Rust value type uses an external structural serializer or manual
+When the Rust value type uses an external structural serializer or custom
 serializer, select it explicitly at the root:
 
 ```rust
@@ -215,5 +215,5 @@ all supported carriers, and registration.
 
 - [Type Registration](type-registration.md) - Registering types
 - [References](references.md) - Shared and circular references
-- [Manual Serializers](manual-serializers.md) - Customized serialization
+- [Custom Serializers](custom-serializers.md) - Custom serialization
 - [External-Type Serialization](external-types.md) - Third-party values and carrier roots

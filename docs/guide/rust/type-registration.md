@@ -59,9 +59,9 @@ let mut fory = Fory::builder().xlang(true).build();
 fory.register_by_name::<MyStruct>("com.example.MyStruct")?;
 ```
 
-## Register a Manual Serializer
+## Register a Custom Serializer
 
-For types that need customized serialization logic, register the manual
+For types that need custom serialization logic, register the custom
 serializer:
 
 ```rust
@@ -137,5 +137,5 @@ let handles: Vec<_> = (0..4)
 
 - [Configuration](configuration.md) - Fory builder options
 - [Xlang Serialization](xlang-serialization.md) - xlang mode registration
-- [Manual Serializers](manual-serializers.md) - Customized serialization
+- [Custom Serializers](custom-serializers.md) - Custom serialization
 - [External-Type Serialization](external-types.md) - Third-party targets and carrier roots

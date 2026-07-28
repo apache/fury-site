@@ -80,7 +80,7 @@ cd dart/packages/fory
 dart run build_runner build
 ```
 
-The registration call is the same on VM/AOT, Flutter, and web. Manual
+The registration call is the same on VM/AOT, Flutter, and web. Custom
 serializers use `registerSerializer(...)`; generated structs use the generated
 `register` wrapper.
 
@@ -143,9 +143,9 @@ class StorageExtent {
 }
 ```
 
-## Manual Serializers
+## Custom Serializers
 
-Manual serializers can use the same `Buffer`, `WriteContext`, and `ReadContext`
+Custom serializers can use the same `Buffer`, `WriteContext`, and `ReadContext`
 APIs on VM/AOT, Flutter, and web. For 64-bit values:
 
 - Use `buffer.writeInt64(Int64(...))` and `buffer.readInt64()` for full-range

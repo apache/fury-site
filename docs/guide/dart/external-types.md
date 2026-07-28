@@ -184,7 +184,7 @@ A constructor-based target cannot decode a statically known reference-tracked
 path back to itself because the target does not exist until its constructor
 arguments have been read. This includes the target nested as a `List` or `Set`
 element or as a `Map` key or value. Generation rejects these schemas. Use a
-mutable two-phase target or a manual serializer when cycles are required.
+mutable two-phase target or a custom serializer when cycles are required.
 Indirect cycles that cannot be determined from the declaration are also
 unsupported for constructor-based targets.
 
@@ -305,9 +305,9 @@ abstract final class UserSerializer {
 Keep field IDs and the registered type identity stable across peers. A field
 name must still match the corresponding property on the local target class.
 
-## When to Use a Manual Serializer
+## When to Use a Custom Serializer
 
-Use a [manual serializer](custom-serializers.md) when the target needs a custom
+Use a [custom serializer](custom-serializers.md) when the target needs a custom
 wire body, field-name translation, value conversion, factory-only
 construction, private state, or any reconstruction rule that cannot be
 expressed through matching public getters, constructor parameters, and
@@ -320,4 +320,4 @@ setters.
 - [Type Registration](type-registration.md)
 - [Schema Metadata](schema-metadata.md)
 - [Schema Evolution](schema-evolution.md)
-- [Manual Serializers](custom-serializers.md)
+- [Custom Serializers](custom-serializers.md)

@@ -92,7 +92,7 @@ An external struct needs readable matching properties and an accessible
 matching initializer. An external class needs an accessible zero-argument
 initializer and writable matching properties.
 
-Use a [manual serializer](manual-serializers.md) when the target does not expose
+Use a [custom serializer](custom-serializers.md) when the target does not expose
 that construction surface.
 
 ### Union case has multiple associated values

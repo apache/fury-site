@@ -122,11 +122,11 @@ When using evolving structs, also assign stable field IDs with `@ForyField(id: .
 Included inherited and direct fields share this one ID namespace. Do not reuse
 an ID among fields included in the same child schema.
 
-## Choosing Generated or Manual Serialization
+## Choosing Generated or Custom Serialization
 
 Use an [external structural serializer](external-types.md) when another
 package's class exposes matching public getters and a safe public construction
-path. Use a [manual serializer](custom-serializers.md) when the wire body,
+path. Use a [custom serializer](custom-serializers.md) when the wire body,
 field names, values, or construction need custom logic.
 
 ## Related Topics
