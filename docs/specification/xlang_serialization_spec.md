@@ -61,7 +61,7 @@ This specification defines the Fory xlang binary format. The format is dynamic r
 - compatible_struct: a dynamic(final) type serialized by Fory compatible Struct serializer.
 - named_struct: a `struct` whose type mapping will be encoded as a name.
 - named_compatible_struct: a `compatible_struct` whose type mapping will be encoded as a name.
-- ext: a type which will be serialized by a manual serializer.
+- ext: a type which will be serialized by a custom serializer.
 - named_ext: an `ext` type whose type mapping will be encoded as a name.
 - list: a sequence of objects.
 - set: an unordered set of unique elements.
@@ -123,7 +123,7 @@ wire identity.
 - That equivalence includes canonical specialized carrier mappings. For
   example, a Rust vector carrier serializer over the canonical `i32` serializer
   uses `INT32_ARRAY`, one over the canonical `u8` serializer uses BINARY, and one
-  over an external structural or manual serializer uses LIST. A nested carrier
+  over an external structural or custom serializer uses LIST. A nested carrier
   MUST preserve the selected child type ID and recursive `FieldType`; serializer
   composition
   MUST NOT replace a canonical primitive-array or binary mapping with LIST.
@@ -145,7 +145,7 @@ wire identity.
   without adding a wire identity or repeated registration lookup; any
   containing schema metadata owns the prior identity validation. The carrier
   serializer itself remains unregistered in every case.
-- A manual serializer that is not the runtime's
+- A custom serializer that is not the runtime's
   canonical implementation of an existing built-in MUST use the existing EXT
   or NAMED_EXT form. This serializer-provider separation does not replace runtime-owned
   built-in mappings.

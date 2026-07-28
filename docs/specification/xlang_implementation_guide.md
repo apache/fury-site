@@ -213,7 +213,7 @@ The ownership split is:
   field schemas
 - one carrier implementation owns the body, allocation, insertion, and
   reference algorithms reused by root serializers and field codecs
-- a manual serializer owns allocations inside its opaque body and must perform the
+- a custom serializer owns allocations inside its opaque body and must perform the
   corresponding readable-byte, policy, and graph-memory checks before
   allocation
 - `Fory` owns root framing and operation setup/reset
@@ -330,7 +330,7 @@ exact private pointer mapping is rejected.
 Standalone external structural targets require an accessible concrete class
 or struct, legal parameterless construction, and writable declared wire state.
 Constructor-only, factory-only, readonly, init-only, converted, and
-custom-wire shapes use a manual `Serializer<T>`. Explicit nullability must
+custom-wire shapes use a custom `Serializer<T>`. Explicit nullability must
 match when target metadata is annotated; otherwise the declaration supplies
 schema nullability.
 
@@ -340,7 +340,7 @@ generator-owned `Evolving` into target `TypeInfo`. Generated enums and unions
 use `TypeResolver.RegisterGenerated<T, TSerializer>()`. Abstract ordinary and
 `BaseOnly` providers do not register. Multiple generated owners for one target
 are rejected during generation or deterministically on the cold
-cross-assembly factory-registration path. Manual serializer replacement keeps
+cross-assembly factory-registration path. Custom serializer replacement keeps
 the resolver's normal target rules.
 
 C# carrier composition remains target-based. The resolver recursively binds
@@ -348,7 +348,7 @@ C# carrier composition remains target-based. The resolver recursively binds
 `Stack<T>`, `HashSet<T>`, `SortedSet<T>`, `ImmutableHashSet<T>`,
 `Dictionary<TKey, TValue>`, `SortedDictionary<TKey, TValue>`,
 `SortedList<TKey, TValue>`, `ConcurrentDictionary<TKey, TValue>`, and
-`NullableKeyDictionary<TKey, TValue>`. Ordinary, external, and manual
+`NullableKeyDictionary<TKey, TValue>`. Ordinary, external, and custom
 serializers use the same carrier bodies. There is no hierarchy runtime lookup,
 provider object, callback, schema tree, per-element dispatch, or additional
 value allocation.
@@ -400,7 +400,7 @@ or forwards field framing without changing root or value composition.
 
 Serializer-provider identity is a host implementation detail and is never
 encoded. External structural serializers use the same STRUCT, ENUM, or UNION
-metadata and value format as an equivalent directly supported target. Manual
+metadata and value format as an equivalent directly supported target. Custom
 serializers that are not the runtime's canonical implementation of an existing
 built-in use EXT or NAMED_EXT. Serializer-provider separation does not replace
 runtime-owned built-in mappings.
@@ -408,7 +408,7 @@ runtime-owned built-in mappings.
 Static generated fields and serializer-selected roots should dispatch directly
 to the serializer selected by their schema. A Rust field `with = S` selects the
 exact field node and requires `S::Target` to equal the declared field type.
-This accepts an ordinary, external structural, manual, or carrier serializer.
+This accepts an ordinary, external structural, custom, or carrier serializer.
 For example, `with = VecSerializer<UserSerializer>` selects the structural
 `Vec<User>` field node, while `list(element(with = UserSerializer))` selects
 the child node recursively. Transparent fields select their exact carrier
@@ -473,7 +473,7 @@ Carrier delegation must include every existing canonical specialization rather
 than forcing a generic collection shape. For example, a Rust vector carrier
 serializer over the canonical `i32` serializer retains `INT32_ARRAY`, one over
 the canonical `u8` serializer retains BINARY, and one over an external
-structural or manual serializer uses LIST. A nested vector retains the selected
+structural or custom serializer uses LIST. A nested vector retains the selected
 child representation in root bytes; the equivalent field-codec tree retains it
 in recursive `FieldType`.
 
@@ -492,7 +492,7 @@ For Rust, the audited carrier serializer surface is exhaustive:
 
 Every carrier serializer target is formed recursively from child serializer
 targets. Each child can be an ordinary serializer targeting itself, an external
-structural serializer, a manual serializer, or another carrier serializer, and
+structural serializer, a custom serializer, or another carrier serializer, and
 all four forms enter the same carrier body implementation. `Tuple1Serializer` through
 `Tuple22Serializer` and matching
 arity-specific codecs are macro-generated because Rust has no variadic
@@ -509,8 +509,8 @@ Likewise, standard-library weak pointers are not aliases for Fory's weak
 carriers.
 
 For Swift, `Serializer` follows the same exact-target ownership boundary with
-an associated `Target`. A self-provided structural or manual serializer uses
-`Target == Self`; a separately provided structural or manual serializer names
+an associated `Target`. A self-provided structural or custom serializer uses
+`Target == Self`; a separately provided structural or custom serializer names
 another target type. Serializer operations are static and accept or return
 `Target`. Fory never instantiates a serializer object, and generated external
 structural code reads target properties and constructs the target directly.
@@ -532,7 +532,7 @@ serializer so applications can choose the implementation explicitly.
 
 Swift `StructSerializer` covers every structural registration category.
 Ordinary and external `@ForyStruct`, `@ForyEnum`, and `@ForyUnion` expansions
-all conform; manual EXT serializers do not.
+all conform; custom EXT serializers do not.
 
 Swift's doc-hidden `FieldCodec` extends value serialization for the same exact
 target. It owns `FieldType`, recursive field generics, field null/reference
@@ -557,7 +557,7 @@ packed-array wire mapping.
 
 Swift `Serializer.isWrapper` is a doc-hidden value-level property used only to
 reject Fory-owned transparent wrappers as independent EXT registrations.
-`OptionalSerializer` sets it; collection carriers do not. A manual serializer
+`OptionalSerializer` sets it; collection carriers do not. A custom serializer
 does not acquire wrapper status from target spelling and may own an independent
 opaque carrier body. Target-identity conflicts prevent it from replacing a
 seeded canonical dynamic builtin.
@@ -622,7 +622,7 @@ the class target's `AnyObject` constraint. Swift has no negative generic
 constraint for the inverse case, so cold registration validation rejects a
 value-schema declaration that targets a class before publishing metadata. An
 inaccessible, immutable, invariant-bearing, or non-exhaustive target requires a
-manual serializer; the implementation must not use reflection, unsafe layout
+custom serializer; the implementation must not use reflection, unsafe layout
 access, unavailable-overload tricks, schema mirror values, conversion wrappers,
 or builders as a fallback.
 
@@ -637,7 +637,7 @@ An external structural union requires the target to expose a lossless
 generic unknown payload and let the application select its `UnknownCase`
 specialization; a target may also use Fory's carrier directly. Fory does not
 convert another module's unknown representation. A third-party union without
-this shape requires a manual serializer and does not claim structural-union
+this shape requires a custom serializer and does not claim structural-union
 wire equivalence.
 
 An ordinary Swift generated field recursively selects a self-provided declared
@@ -686,7 +686,7 @@ identity and concrete target identity. Static schema and explicit selection use
 serializer identity; dynamic writes use target identity; wire reads use the
 numeric ID or name. All directions share one writer, exact reader, compatible
 reader, metadata, and registration owner. Public registration accepts the
-selected structural or manual serializer through the ID or name API. It rejects
+selected structural or custom serializer through the ID or name API. It rejects
 carrier, dynamic, builtin, and field codec identities before publication.
 
 Swift arbitrary application protocol existentials use a zero-state
@@ -792,7 +792,7 @@ only for explicit `#[fory(array)]`; it maps canonical `u8` BINARY to
 `#[fory(bytes)]`. Consequently, an unannotated `Vec<i32>` field remains
 `LIST<VARINT32>`, an explicit fixed-element list remains `LIST<INT32>`, and
 ordinary or serializer-selected primitive Vec roots retain their dense-array or
-BINARY representation. An external structural or manual serializer targeting a
+BINARY representation. An external structural or custom serializer targeting a
 primitive remains an object LIST child because its serializer does not expose the
 canonical scalar wire ID. Derive may validate the explicit primitive category
 but does not map Rust types to wire IDs. Inline scalar-ID and exact-target
@@ -814,22 +814,22 @@ required child registration through its ordinary per-position type-metadata
 operation. A binding must not add an eager recursive root validation pass,
 reached-body check, selector tree, composed-target lookup, per-element
 serializer dispatch, allocation, callback, or hot-path branch to change that
-behavior. An exact manual serializer for a whole container remains a separate
+behavior. An exact custom serializer for a whole container remains a separate
 opaque EXT/NAMED_EXT choice. It owns registered dynamic target identity, while
 unregistered carrier serializers continue to own explicit static structural
 composition.
 
 Carrier serializers have no independent registered identity. Structural
 registration requires the existing structural serializer contract and matching
-STRUCT/ENUM/UNION category. Manual registration requires an independent
+STRUCT/ENUM/UNION category. Custom registration requires an independent
 EXT/NAMED_EXT serializer and rejects `IS_WRAPPER`. Option, Box, Rc, Arc,
 RcWeak, ArcWeak, RefCell, and Mutex carrier serializers set this property
 independently of their child's category. Lists, sets, maps, fixed arrays, and
 tuples keep it false and are rejected through their own wire category. A
-manual serializer targeting one of the same Rust shapes also keeps it false
+custom serializer targeting one of the same Rust shapes also keeps it false
 because it owns an independent opaque EXT body. Private built-in registration
 validates only its expected internal type ID. These semantic checks use the
-existing serializer contracts and wire categories. Manual EXT registration is
+existing serializer contracts and wire categories. Custom EXT registration is
 the only runtime consumer of `IS_WRAPPER`.
 
 Dynamic values should resolve by the concrete target identity. When a runtime
@@ -1564,7 +1564,7 @@ actionable remedy. Typical remedies are adding
 generated companion, forwarding a constructor value unchanged, placing
 `@ForyField(ignore: true)` on the field declaration, setting
 `ignoreInheritedPrivateFields: true` on the concrete child when all private
-ancestor state should be omitted, or using a manual serializer. Diagnostics
+ancestor state should be omitted, or using a custom serializer. Diagnostics
 must state that hierarchy discovery is independent of cross-library access.
 
 Changes to hierarchy storage, exposure boundaries, or
