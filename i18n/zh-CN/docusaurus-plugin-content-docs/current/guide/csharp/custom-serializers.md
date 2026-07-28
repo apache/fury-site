@@ -1,6 +1,6 @@
 ---
 title: 自定义序列化器
-sidebar_position: 4
+sidebar_position: 11
 id: custom_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,6 +20,8 @@ license: |
 ---
 
 当某个类型不是通过 `[ForyStruct]` 生成，或者需要专门的编码方式时，可以使用自定义序列化器。
+
+[外部类型序列化](external_types)可为可变的第三方目标类型生成序列化器，包括精确映射私有字段或已重命名字段。对于不可变、仅能通过构造函数或工厂创建、包含 `readonly` 或 `init-only` 成员、需要类型转换或采用自定义编码格式的目标类型，请使用自定义序列化器。在 .NET 8 上，如果某个外部私有编码字段的声明所在类型或访问器签名使用了泛型，也需要使用自定义序列化器。只用于存储的精确映射不会生成私有访问器。
 
 ## 实现 `Serializer<T>`
 
@@ -64,6 +66,12 @@ byte[] payload = fory.Serialize(value);
 Point decoded = fory.Deserialize<Point>(payload);
 ```
 
+当对端使用类型名称而不是数字 ID 来标识类型时，请使用接受名称参数的重载：
+
+```csharp
+fory.Register<Point, PointSerializer>("com.example.Point");
+```
+
 ## 序列化器行为说明
 
 - `WriteData` / `ReadData` 只负责处理载荷内容。
@@ -80,5 +88,5 @@ Point decoded = fory.Deserialize<Point>(payload);
 ## 相关主题
 
 - [类型注册](type-registration.md)
-- [字段配置](schema-metadata.md)
+- [Schema 元数据](schema-metadata.md)
 - [故障排查](troubleshooting.md)

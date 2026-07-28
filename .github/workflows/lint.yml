@@ -19,8 +19,11 @@ name: ❄️ Lint
 
 on: [pull_request]
 
-jobs:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
 
+jobs:
   markdownlint:
     name: 🍇 Markdown
     runs-on: ubuntu-latest

@@ -116,11 +116,11 @@ assert_eq!(person, decoded);
 
 ### 日期和时间
 
-| Rust 类型   | 描述                             |
-| ----------- | -------------------------------- |
+| Rust 类型   | 描述                              |
+| ----------- | --------------------------------- |
 | `Date`      | 不带时区的日期，存储为 epoch 天数 |
 | `Timestamp` | 时间点，存储为 epoch 秒和纳秒     |
-| `Duration`  | 有符号时长，存储为秒和规范化纳秒 |
+| `Duration`  | 有符号时长，存储为秒和规范化纳秒  |
 
 内置承载类型提供无额外依赖的构造器、访问器、转换和 checked 算术：
 
@@ -188,4 +188,4 @@ let decoded: MyStruct = fory.deserialize_from(&mut reader)?;
 
 - [类型注册](type-registration.md) - 注册类型
 - [引用](references.md) - 共享引用和循环引用
-- [自定义序列化器](custom-serializers.md) - 手动序列化
+- [自定义序列化器](custom-serializers.md) - 自定义序列化

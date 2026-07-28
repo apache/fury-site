@@ -39,7 +39,8 @@ Use these terms consistently across all translated docs.
 | cross-language       | 跨语言            |                                                                                           |
 | object graph         | 对象图            | Use for graph-shaped data models with identity, shared refs, or cycles.                   |
 | domain object        | 领域对象          | Use for generated host-language models used directly in application code.                 |
-| sum type             | 和类型            | Prefer when describing `union`-style algebraic variants across languages.                 |
+| sum type             | 联合类型          | Use for `union`-style algebraic variants across languages.                                |
+| custom serializer    | 自定义序列化器    | Keep filenames, document IDs, and links aligned with the current English document owner.  |
 
 ## Terms to Avoid (Unless User Explicitly Requests)
 
