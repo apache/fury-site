@@ -177,8 +177,11 @@ ForyJson json =
         .build();
 ```
 
-`withConcurrencyLevel` controls reusable operation states, not a caller limit. Extra concurrent
-operations use temporary state rather than one global lock.
+`withConcurrencyLevel` sets the maximum number of root operations that execute concurrently.
+Additional callers wait until one of those fixed execution states is available. Root APIs on one
+`ForyJson` instance are not reentrant: a custom codec must continue through the concrete reader or
+writer passed to it instead of calling `toJson`, `toJsonBytes`, `writeJsonTo`, or `fromJson` on that
+instance.
 
 ## Object mapping
 
@@ -286,7 +289,7 @@ are rejected.
 | `withClassLoader`            | Snapshotted context loader, then Fory loader | Resolve annotation subtype class names                 |
 | `maxDepth`                   | `20`                                         | Maximum nested object/array depth                      |
 | `withMaxCachedFieldNames`    | `DEFAULT_MAX_CACHED_FIELD_NAMES` (`8192`)    | Field-name cache entries per reader; zero disables it  |
-| `withConcurrencyLevel`       | `max(1, 2 * processors)`                     | Reusable operation-state count                         |
+| `withConcurrencyLevel`       | `max(1, 2 * processors)`                     | Maximum concurrent root operations                     |
 | `withBufferSizeLimitBytes`   | 2 MiB                                        | Reusable capacity retained by each pooled writer       |
 | `registerCodec`              | None                                         | Exact-class complete-value codec                       |
 | `registerMixin`              | None                                         | Annotation Mixin for its exact declared target         |
@@ -682,12 +685,12 @@ The complete group occupies one position in parent serialization order. Position
 is preserved inside the group. Input matches parent fixed properties first, flattened properties
 second, and dynamic Any members last.
 
-Fory rejects final-name or name-hash collisions, recursive chains made only of unwrapped
-properties, parameterized children, JSON Any children, polymorphic or custom-codec child roots,
-and scalar, array, collection, or Map children. Flatten Maps with `JsonAnyProperty`,
-`JsonAnyGetter`, or `JsonAnySetter`. An unwrapped property cannot use `JsonProperty.value`, a
-non-default `JsonProperty.include`, or `JsonCodec`; ordinary leaf properties inside the child keep
-their normal annotations.
+Fory rejects duplicate final names, recursive chains made only of unwrapped properties,
+parameterized children, JSON Any children, polymorphic or custom-codec child roots, and scalar,
+array, collection, or Map children. Flatten Maps with `JsonAnyProperty`, `JsonAnyGetter`, or
+`JsonAnySetter`. An unwrapped property cannot use `JsonProperty.value`, a non-default
+`JsonProperty.include`, or `JsonCodec`; ordinary leaf properties inside the child keep their normal
+annotations.
 
 ### Dynamic object members
 
@@ -760,15 +763,11 @@ Dynamic keys are emitted unchanged in Map iteration order. A null Map emits noth
 Map value emits JSON null regardless of fixed-property null settings. Null and non-String output
 keys are rejected. Raw Maps, wildcard or unresolved keys, and non-String key types are invalid.
 Declared fixed members, including members excluded from reading, are not delivered to an Any
-input. Output keys whose Fory field-name hash conflicts with a fixed property are rejected,
-including differently spelled hash collisions. Fory does not inspect an Any Map for a key whose
-name or Fory field-name hash conflicts with an inline subtype discriminator. An exact-name output
-key emits a duplicate JSON member; on input, a differently spelled hash collision is classified as
-the discriminator by the child field table. Applications must keep dynamic keys distinct from the
-active discriminator by both name and hash. Repeated unknown names replace the Map value; an
-any-setter is called for every occurrence. Fixed input lookup is also hash-based, so a differently
-spelled colliding name follows the fixed member instead of Any handling. Escaped input names are
-decoded before delivery.
+input. An output key that conflicts with a fixed property is rejected. Fory does not inspect an Any
+Map for a key that duplicates an inline subtype discriminator; such a key emits a duplicate JSON
+member. Applications must keep dynamic keys distinct from the active discriminator. Repeated
+unknown names replace the Map value; an any-setter is called for every occurrence. Escaped input
+names are decoded before delivery.
 
 ### `JsonCreator`
 
