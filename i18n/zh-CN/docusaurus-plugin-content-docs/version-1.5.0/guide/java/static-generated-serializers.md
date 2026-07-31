@@ -1,0 +1,143 @@
+---
+title: 静态生成序列化器
+sidebar_position: 8
+id: static_generated_serializers
+license: |
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+---
+
+静态生成序列化器是在应用构建期间由 javac 生成的 Java 序列化器。当运行时代码生成被禁用或不可用时，它们很有用。
+
+适用场景：
+
+- 在 Android 上运行。
+- 在普通 JVM 上使用 `ForyBuilder#withCodegen(false)`，但仍希望使用生成的序列化器。
+- Android 模型类使用 Fory type-use 注解，例如 `@Ref`、`@UInt8Type` 或 `@Float16Type`。
+
+对于 GraalVM native image，请改为遵循 [GraalVM 支持](graalvm-support.md)。
+
+## 安装注解处理器
+
+将 `fory-annotation-processor` 添加到编译可序列化类的模块的注解处理器路径中：
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <configuration>
+        <annotationProcessorPaths>
+          <path>
+            <groupId>org.apache.fory</groupId>
+            <artifactId>fory-annotation-processor</artifactId>
+            <version>${fory.version}</version>
+          </path>
+        </annotationProcessorPaths>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+生成的序列化器在运行时依赖 `fory-core`。应用通过添加注解处理器来选择启用；`fory-core` 不依赖它。
+
+## 标注类
+
+使用 `@ForyStruct` 标注每个可序列化类：
+
+```java
+import org.apache.fory.annotation.ForyStruct;
+
+@ForyStruct
+public class Order {
+  public long id;
+  public String note;
+
+  public Order() {}
+}
+```
+
+处理器会在与被标注类相同的 Java 包中生成序列化器类。对于 `Order`，生成的类为：
+
+- xlang 模式使用 `Order_ForySerializer`。
+- Java native 模式使用 `Order_ForyNativeSerializer`。
+
+对于 `Outer.Inner` 这样的静态嵌套类型，生成的顶层类为 `Outer_d_Inner_ForySerializer` 和 `Outer_d_Inner_ForyNativeSerializer`。
+
+## 字段调试跟踪
+
+当需要生成的序列化器包含字段级调试跟踪钩子时，在 `@ForyStruct` 旁添加 `@ForyDebug`。生成的代码只有在 `ENABLE_FORY_DEBUG_OUTPUT=1` 时才会打印这些跟踪。
+
+```java
+import org.apache.fory.annotation.ForyDebug;
+import org.apache.fory.annotation.ForyStruct;
+
+@ForyStruct
+@ForyDebug
+public class DebugOrder {
+  public long id;
+  public String note;
+
+  public DebugOrder() {}
+}
+```
+
+## 运行时使用
+
+在以下情况下，Fory 会使用可用的静态生成序列化器：
+
+- Android。
+- 使用 `ForyBuilder#withCodegen(false)` 的普通 JVM。
+- 目标 struct 有生成序列化器时的兼容模式读取。
+
+在 `codegen=true` 的普通 JVM 上，Fory 仍会优先使用运行时生成的序列化器。
+
+运行时会根据已注册的目标类名解析生成的序列化器。应用代码不应直接引用生成的序列化器类。
+
+## 字段访问规则
+
+生成的序列化器必须能在编译时访问序列化字段或其访问器。
+
+- 当 Java 包访问规则允许同包生成的序列化器使用字段时，public、protected 和 package-private 字段可以被直接访问。
+- Private 序列化字段必须有可访问的非 private getter 和 setter 方法，或者使用 `transient` 或 Fory `@Ignore` 排除。
+- 当 public、protected 和 package-private getter/setter 方法可从生成的序列化器包访问时，会被接受。
+- 普通可变类不支持 final 字段，因为生成的 read 和 copy 方法必须能为字段赋值。基于构造函数的不可变值应使用 records。
+
+对于 records，生成的序列化器使用 public record 访问器，并通过 canonical record constructor 构造值。被忽略的 record components 会在序列化和复制时跳过，生成的 read/copy 会为其构造函数参数使用 Java 默认值。
+
+## Android 上的 Type-Use 注解
+
+在 Android 上，当类在嵌套类型上使用 Fory type-use 注解时，必须使用静态生成序列化器：
+
+```java
+import java.util.List;
+import org.apache.fory.annotation.ForyStruct;
+import org.apache.fory.annotation.UInt8Type;
+
+@ForyStruct
+public class ImageBlock {
+  public List<@UInt8Type Integer> pixels;
+}
+```
+
+如果没有生成的序列化器元信息，Android 可能无法为 Fory 暴露足够的嵌套类型信息，以保留 `@Ref`、`@Int8Type`、`@UInt8Type`、`@Float16Type` 或 `@BFloat16Type` 等注解。
+
+注解处理器会在 `META-INF/proguard/` 下为 Fory 实际使用的序列化器构造函数生成 consumer R8/ProGuard 规则。Android 应用不应手动添加宽泛的生成序列化器 keep 规则。
+
+## 兼容模式读取
+
+静态生成序列化器同时支持普通序列化和兼容模式读取。兼容模式读取会将远端字段匹配到本地字段，跳过本地已不存在的字段，并为远端载荷中缺失的字段保留 Java 默认值。
