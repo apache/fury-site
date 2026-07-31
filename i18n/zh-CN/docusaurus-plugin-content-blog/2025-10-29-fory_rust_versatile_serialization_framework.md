@@ -1,6 +1,6 @@
 ---
 slug: fory_rust_versatile_serialization_framework
-title: "Apache Fory™ Rust：面向现代应用的灵活易用的高性能序列化框架"
+title: "Apache Fory™ Rust：面向现代应用，兼具灵活易用与高性能的序列化框架"
 authors: [chaokunyang]
 tags: [fory, rust]
 ---
