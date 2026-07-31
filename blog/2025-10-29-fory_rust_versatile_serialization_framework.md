@@ -5,7 +5,7 @@ authors: [chaokunyang]
 tags: [fory, rust]
 ---
 
-**TL;DR**: Apache Fory Rust is a blazingly-fast, cross-language serialization framework that delivers **ultra-fast serialization performance** while **automatically handling circular references, trait objects, and schema evolution**. Built with Rust's safety guarantees and zero-copy techniques, it's designed for developers who refuse to compromise between performance and developer experience.
+**TL;DR**: Apache Fory Rust is a blazingly-fast, cross-language serialization framework that delivers **ultra-fast serialization performance** while supporting **shared and circular references, trait objects, schema evolution, row-format access, and external types**. Built with Rust's safety guarantees and compile-time code generation, it's designed for developers who refuse to compromise between performance and developer experience.
 
 - 🐙 GitHub: https://github.com/apache/fory
 - 📦 Crate: https://crates.io/crates/fory
@@ -19,31 +19,44 @@ tags: [fory, rust]
 Every backend engineer has faced this moment: your application needs to serialize complex data structures such as nested objects, circular references, polymorphic types, and you're forced to choose between three bad options:
 
 1. **Fast but fragile**: Hand-rolled binary formats that break with schema changes
-2. **Flexible but slow**: JSON/Protocol with 10x performance overhead
+2. **Flexible but slow**: Text formats that add substantial runtime overhead
 3. **Complex and limiting**: Existing solutions that don't support your language's advanced features
 
-Apache Fory Rust eliminates this false choice. It's a serialization framework that delivers exceptional performance while automatically handling the complexities of modern applications—no IDL files, no manual schema management, no compromises.
+Apache Fory Rust eliminates this false choice. It's a serialization framework that delivers exceptional performance while handling the complexities of modern applications—with derived Rust schemas for native development and an optional shared IDL when teams want generated types across languages.
 
 ## What Makes Apache Fory Rust Different?
 
 ### 1. **Truly Cross-Language**
 
-Apache Fory Rust speaks the same binary protocol as Java, Python, C++, Go, and other language implementations. Serialize data in Rust, deserialize in Python — **it just works**. No schema files. No code generation. No version mismatches.
+Apache Fory Rust speaks the same binary protocol as Java, Python, C++, Go, C#, Swift, Dart, and other language implementations. Register matching schemas on each side, serialize data in Rust, and deserialize it in another language using the same compact binary format.
 
 ```rust
-// Rust: Serialize
+use fory::{Fory, ForyStruct};
+use std::collections::HashMap;
+
+#[derive(ForyStruct)]
+struct User {
+    name: String,
+    age: i32,
+    metadata: HashMap<String, String>,
+}
+
+let mut fory = Fory::builder().xlang(true).build();
+fory.register::<User>(100)?;
+
 let user = User {
     name: "Alice".to_string(),
     age: 30,
-    metadata: HashMap::from([("role", "admin")]),
+    metadata: HashMap::from([(
+        "role".to_string(),
+        "admin".to_string(),
+    )]),
 };
-let bytes = fory.serialize(&user);
-
-// Python: Deserialize (same binary format!)
-user = fory.deserialize(bytes)  # Just works!
+let bytes = fory.serialize(&user)?;
+// Register the matching type in another Fory runtime and deserialize `bytes`.
 ```
 
-This isn't just convenient — it changes how we develop microservices architectures where different teams use different languages.
+This isn't just convenient—it changes how we develop microservice architectures where different teams use different languages. Numeric IDs provide compact type metadata, while stable registered names make coordination easier across independently managed services.
 
 ### 2. **Automatic Shared/Circular Reference Handling**
 
@@ -55,7 +68,10 @@ Most serialization frameworks panic when encountering circular references. Apach
 use fory::Fory;
 use std::rc::Rc;
 
-let fory = Fory::default();
+let fory = Fory::builder()
+    .xlang(false)
+    .track_ref(true)
+    .build();
 
 // Create a shared value
 let shared = Rc::new(String::from("shared_value"));
@@ -64,7 +80,7 @@ let shared = Rc::new(String::from("shared_value"));
 let data = vec![shared.clone(), shared.clone(), shared.clone()];
 
 // The shared value is serialized only once
-let bytes = fory.serialize(&data);
+let bytes = fory.serialize(&data)?;
 let decoded: Vec<Rc<String>> = fory.deserialize(&bytes)?;
 
 // Verify reference identity is preserved
@@ -79,14 +95,21 @@ assert!(Rc::ptr_eq(&decoded[1], &decoded[2]));
 **Circular Reference**:
 
 ```rust
-use fory::{ForyObject, RcWeak};
+use fory::{Fory, ForyStruct, RcWeak};
+use std::{cell::RefCell, rc::Rc};
 
-#[derive(ForyObject)]
+#[derive(ForyStruct)]
 struct Node {
     value: i32,
     parent: RcWeak<RefCell<Node>>,     // Weak pointer breaks cycles
     children: Vec<Rc<RefCell<Node>>>,  // Strong references tracked
 }
+
+let mut fory = Fory::builder()
+    .xlang(false)
+    .track_ref(true)
+    .build();
+fory.register::<Node>(100)?;
 
 // Build a parent-child tree with circular references
 let parent = Rc::new(RefCell::new(Node { ... }));
@@ -97,11 +120,13 @@ let child = Rc::new(RefCell::new(Node {
 parent.borrow_mut().children.push(child.clone());
 
 // Serialization handles the cycle automatically
-let bytes = fory.serialize(&parent);
+let bytes = fory.serialize(&parent)?;
 let decoded: Rc<RefCell<Node>> = fory.deserialize(&bytes)?;
 
 // Reference relationships preserved!
-assert!(Rc::ptr_eq(&decoded, &decoded.borrow().children[0].borrow().parent.upgrade().unwrap()));
+let decoded_child = decoded.borrow().children[0].clone();
+let decoded_parent = decoded_child.borrow().parent.upgrade().unwrap();
+assert!(Rc::ptr_eq(&decoded, &decoded_parent));
 ```
 
 This isn't just a feature—it's essential for graph databases, object-relational mappers, and domain models.
@@ -111,20 +136,36 @@ This isn't just a feature—it's essential for graph databases, object-relationa
 Rust's trait system enables powerful abstractions, but serializing `Box<dyn Trait>` is notoriously difficult. Apache Fory makes it trivial:
 
 ```rust
-use fory::{ForyObject, Serializer, register_trait_type};
+use fory::{register_trait_type, Fory, ForyObject, ForyStruct};
 
-trait Animal: Serializer {
+trait Animal: ForyObject {
     fn speak(&self) -> String;
 }
 
-#[derive(ForyObject)]
+#[derive(ForyStruct)]
 struct Dog { name: String, breed: String }
 
-#[derive(ForyObject)]
+impl Animal for Dog {
+    fn speak(&self) -> String {
+        "Woof!".to_string()
+    }
+}
+
+#[derive(ForyStruct)]
 struct Cat { name: String, color: String }
+
+impl Animal for Cat {
+    fn speak(&self) -> String {
+        "Meow!".to_string()
+    }
+}
 
 // Register implementations
 register_trait_type!(Animal, Dog, Cat);
+
+let mut fory = Fory::builder().xlang(false).build();
+fory.register::<Dog>(100)?;
+fory.register::<Cat>(101)?;
 
 // Serialize heterogeneous collections
 let animals: Vec<Box<dyn Animal>> = vec![
@@ -132,7 +173,7 @@ let animals: Vec<Box<dyn Animal>> = vec![
     Box::new(Cat { ... }),
 ];
 
-let bytes = fory.serialize(&animals);
+let bytes = fory.serialize(&animals)?;
 let decoded: Vec<Box<dyn Animal>> = fory.deserialize(&bytes)?;
 
 // Polymorphism preserved!
@@ -150,7 +191,7 @@ use std::any::Any;
 let dog: Rc<dyn Any> = Rc::new(Dog { name: "Rex".to_string(), breed: "Labrador".to_string() });
 let cat: Rc<dyn Any> = Rc::new(Cat { name: "Whiskers".to_string(), color: "Orange".to_string() });
 
-let bytes = fory.serialize(&dog);
+let bytes = fory.serialize(&dog)?;
 let decoded: Rc<dyn Any> = fory.deserialize(&bytes)?;
 
 // Downcast to concrete type
@@ -162,8 +203,8 @@ assert_eq!(unwrapped.name, "Rex");
 
 - `Box<dyn Trait>` - Owned trait objects
 - `Rc<dyn Trait>` / `Arc<dyn Trait>` - Reference-counted trait objects
-- `Rc<dyn Any>` / `Arc<dyn Any>` - Runtime type dispatch without traits
-- Auto-generated wrapper types for standalone serialization
+- `Rc<dyn Any>` / `Arc<dyn Any + Send + Sync>` - Runtime type dispatch without traits
+- Generated root serializers for `Rc<dyn Trait>` and `Arc<dyn Trait>`
 
 This unlocks plugin systems, heterogeneous collections, and extensible architectures that were previously impossible to serialize.
 
@@ -172,22 +213,23 @@ This unlocks plugin systems, heterogeneous collections, and extensible architect
 Microservices evolve independently. Apache Fory's **Compatible mode** allows schema changes without coordination:
 
 ```rust
-use fory::{Fory, ForyObject};
+use fory::{Fory, ForyStruct};
+use std::collections::HashMap;
 
 // Service A: Version 1
-#[derive(ForyObject)]
-struct User {
+#[derive(ForyStruct)]
+struct UserV1 {
     name: String,
     age: i32,
     address: String,
 }
 
-let mut fory_v1 = Fory::default().compatible(true);
-fory_v1.register::<User>(1);
+let mut fory_v1 = Fory::builder().xlang(false).build();
+fory_v1.register::<UserV1>(1)?;
 
 // Service B: Version 2 (evolved independently)
-#[derive(ForyObject)]
-struct User {
+#[derive(ForyStruct)]
+struct UserV2 {
     name: String,
     age: i32,
     // address removed
@@ -195,12 +237,12 @@ struct User {
     metadata: HashMap<String, String>,  // Another new field
 }
 
-let mut fory_v2 = Fory::default().compatible(true);
-fory_v2.register::<User>(1);
+let mut fory_v2 = Fory::builder().xlang(false).build();
+fory_v2.register::<UserV2>(1)?;
 
 // V1 data deserializes into V2 structure
-let v1_bytes = fory_v1.serialize(&user_v1);
-let user_v2: User = fory_v2.deserialize(&v1_bytes)?;
+let v1_bytes = fory_v1.serialize(&user_v1)?;
+let user_v2: UserV2 = fory_v2.deserialize(&v1_bytes)?;
 // Missing fields get default values automatically
 ```
 
@@ -210,9 +252,41 @@ let user_v2: User = fory_v2.deserialize(&v1_bytes)?;
 - ✅ Remove fields (skipped during deserialization)
 - ✅ Reorder fields (matched by name)
 - ✅ Change nullability (`T` ↔ `Option<T>`)
-- ❌ Type changes (except nullable variants)
+- ✅ Selected scalar type changes when conversion is lossless
+- ❌ Lossy or incompatible type changes
 
 This is critical for zero-downtime deployments and polyglot microservices.
+
+### 5. **External-Type Serialization**
+
+Rust's orphan rules normally prevent you from deriving a serialization trait for a type owned by another crate. Apache Fory solves this without forcing wrapper objects into your application model:
+
+```rust
+use fory::{Fory, ForyStruct};
+
+#[derive(ForyStruct)]
+#[fory(target = third_party::User)]
+struct UserSerializer {
+    name: String,
+    age: u32,
+}
+
+let mut fory = Fory::builder().xlang(true).build();
+fory.register::<UserSerializer>(100)?;
+
+let user = third_party::User {
+    name: "Alice".to_string(),
+    age: 30,
+};
+
+let bytes = fory.serialize_with::<UserSerializer>(&user)?;
+let decoded: third_party::User =
+    fory.deserialize_with::<UserSerializer>(&bytes)?;
+```
+
+`UserSerializer` is a compile-time schema and code-generation declaration, not a mirror value created at runtime. Fory reads fields from `third_party::User` and reconstructs that type directly. The same serializer can be selected for a field with `#[fory(with = UserSerializer)]`, while carrier serializers such as `VecSerializer<UserSerializer>` extend the model to collection roots.
+
+For opaque types with private fields or invariants, implement Fory's `Serializer` trait instead. Together, these two paths make third-party types first-class citizens without modifying their source code or adding conversion layers.
 
 ## The Technical Foundation
 
@@ -228,7 +302,7 @@ Apache Fory uses a sophisticated binary protocol designed for both performance a
 
 1. **Efficient encoding**: Variable-length integers, compact type IDs, bit-packed flags
 2. **Reference tracking**: Deduplicates shared objects automatically (serialize once, reference thereafter)
-3. **Meta compression**: Gzip compression for type metadata in meta-sharing mode
+3. **Compact metadata**: Encodes and deduplicates type metadata efficiently
 4. **Little-endian layout**: Optimized for modern CPU architectures
 
 ### Compile-Time Code Generation
@@ -236,20 +310,16 @@ Apache Fory uses a sophisticated binary protocol designed for both performance a
 Unlike reflection-based frameworks, Apache Fory generates serialization code at compile time via procedural macros:
 
 ```rust
-use fory::ForyObject;
+use fory::ForyStruct;
 
-#[derive(ForyObject)]
+#[derive(ForyStruct)]
 struct Person {
     name: String,
     age: i32,
     address: Address,
 }
 
-// Macro generates:
-// - fory_write_data() for serialization
-// - fory_read_data() for deserialization
-// - fory_reserved_space() for buffer pre-allocation
-// - fory_get_type_id() for type registration
+// The derive generates the serializer implementation and schema metadata.
 ```
 
 **Benefits**:
@@ -264,8 +334,8 @@ struct Person {
 Apache Fory Rust consists of three focused crates:
 
 ```
-fory/            # High-level API
-  └─ Convenience wrappers, derive re-exports
+fory/            # Public API facade
+  └─ Runtime and derive re-exports
 
 fory-core/       # Core serialization engine
   ├─ fory.rs         # Main entry point
@@ -273,43 +343,23 @@ fory-core/       # Core serialization engine
   ├─ serializer/     # Type-specific serializers
   ├─ resolver/       # Type registration & dispatch
   ├─ meta/           # Meta string compression
+  ├─ types/          # Built-in Fory types
   └─ row/            # Row format implementation
 
 fory-derive/     # Procedural macros
-  ├─ object/         # ForyObject derive macro
-  └─ fory_row.rs    # ForyRow derive macro
+  ├─ object/         # ForyStruct/ForyEnum/ForyUnion derives
+  └─ fory_row.rs     # ForyRow derive macro
 ```
 
 This modular design ensures clean separation of concerns and makes the codebase maintainable.
 
 ## Benchmarks: Real-World Performance
 
-<img src="/img/benchmarks/rust/ecommerce_data.png" width="90%"/>
-<img src="/img/benchmarks/rust/system_data.png" width="90%"/>
+The current Rust benchmark suite measures serialization and deserialization throughput across representative primitive, collection, struct, and nested-object workloads. It compares Apache Fory with Prost Protocol Buffers and MessagePack under the same checked-in benchmark harness.
 
-| Datatype       | Size   | Operation | Fory TPS   | JSON TPS   | Protobuf TPS | Fastest |
-| -------------- | ------ | --------- | ---------- | ---------- | ------------ | ------- |
-| company        | small  | serialize | 10,063,906 | 761,673    | 896,620      | fory    |
-| company        | medium | serialize | 412,507    | 33,835     | 37,590       | fory    |
-| company        | large  | serialize | 9,183      | 793        | 880          | fory    |
-| ecommerce_data | small  | serialize | 2,350,729  | 206,262    | 256,970      | fory    |
-| ecommerce_data | medium | serialize | 59,977     | 4,699      | 5,242        | fory    |
-| ecommerce_data | large  | serialize | 3,727      | 266        | 295          | fory    |
-| person         | small  | serialize | 13,632,522 | 1,345,189  | 1,475,035    | fory    |
-| person         | medium | serialize | 3,839,656  | 337,610    | 369,031      | fory    |
-| person         | large  | serialize | 907,853    | 79,631     | 91,408       | fory    |
-| simple_list    | small  | serialize | 27,726,945 | 4,874,957  | 4,643,172    | fory    |
-| simple_list    | medium | serialize | 4,770,765  | 401,558    | 397,551      | fory    |
-| simple_list    | large  | serialize | 606,061    | 41,061     | 44,565       | fory    |
-| simple_map     | small  | serialize | 22,862,369 | 3,888,025  | 2,695,999    | fory    |
-| simple_map     | medium | serialize | 2,128,973  | 204,319    | 193,132      | fory    |
-| simple_map     | large  | serialize | 177,847    | 18,419     | 18,668       | fory    |
-| simple_struct  | small  | serialize | 35,729,598 | 10,167,045 | 8,633,342    | fory    |
-| simple_struct  | medium | serialize | 34,988,279 | 9,737,098  | 6,433,350    | fory    |
-| simple_struct  | large  | serialize | 31,801,558 | 4,545,041  | 7,420,049    | fory    |
-| system_data    | small  | serialize | 5,382,131  | 468,033    | 569,930      | fory    |
-| system_data    | medium | serialize | 174,240    | 11,896     | 14,753       | fory    |
-| system_data    | large  | serialize | 10,671     | 876        | 1,040        | fory    |
+![Rust serialization benchmark throughput](../docs/benchmarks/rust/throughput.png)
+
+The chart shows why Fory is built for performance-sensitive systems: its generated serializers, compact binary layout, and specialized collection paths deliver high throughput without giving up the features required by complex Rust applications. See the [complete Rust benchmark report](/docs/benchmarks/rust/) for the environment, workload definitions, payload sizes, and detailed results.
 
 ## When to Use Apache Fory Rust
 
@@ -317,7 +367,7 @@ This modular design ensures clean separation of concerns and makes the codebase 
 
 1. **Microservices with polyglot teams**
    - Different services in different languages
-   - Need seamless data exchange without schema files
+   - Need compact data exchange through a shared protocol
    - Schema evolution across independent deployments
 
 2. **High-performance data pipelines**
@@ -331,9 +381,9 @@ This modular design ensures clean separation of concerns and makes the codebase 
    - Rich object graphs with shared references
 
 4. **Real-time systems**
-   - Low-latency requirements (`<1ms` serialization)
-   - Memory-mapped file access
-   - Zero-copy deserialization critical
+   - Low-latency serialization requirements
+   - Repeated access to large structured datasets
+   - Zero-copy row-format field access
 
 ### ⚠️ **Consider Alternatives If**
 
@@ -349,15 +399,15 @@ Add to `Cargo.toml`:
 
 ```toml
 [dependencies]
-fory = "0.13"
+fory = "1.5.0"
 ```
 
 ### Basic Object Serialization
 
 ```rust
-use fory::{Fory, Error, ForyObject};
+use fory::{Error, Fory, ForyStruct};
 
-#[derive(ForyObject, Debug, PartialEq)]
+#[derive(ForyStruct, Debug, PartialEq)]
 struct User {
     name: String,
     age: i32,
@@ -365,15 +415,15 @@ struct User {
 }
 
 fn main() -> Result<(), Error> {
-    let mut fory = Fory::default();
-    fory.register::<User>(1);  // Register with unique ID
+    let mut fory = Fory::builder().xlang(false).build();
+    fory.register::<User>(1)?;  // Register with a unique ID
     let user = User {
         name: "Alice".to_string(),
         age: 30,
         email: "alice@example.com".to_string(),
     };
     // Serialize
-    let bytes = fory.serialize(&user);
+    let bytes = fory.serialize(&user)?;
     // Deserialize
     let decoded: User = fory.deserialize(&bytes)?;
     assert_eq!(user, decoded);
@@ -387,13 +437,13 @@ fn main() -> Result<(), Error> {
 use fory::Fory;
 
 // Enable cross-language mode
-let mut fory = Fory::default().compatible(true).xlang(true);
+let mut fory = Fory::builder().xlang(true).build();
 
-// Register with id/namespace for cross-language compatibility
-fory.register_by_namespace::<User>(1);
-// fory.register_by_namespace::<User>("example", "User");
+// Register the same logical type by ID or name in every language
+fory.register::<User>(100)?;
+// fory.register_by_name::<User>("example.User")?;
 
-let bytes = fory.serialize(&user);
+let bytes = fory.serialize(&user)?;
 // This can now be deserialized in Java, Python, Go, etc.
 ```
 
@@ -408,42 +458,15 @@ Apache Fory Rust supports a comprehensive type system:
 
 **Primitives**: `bool`, `i8`, `i16`, `i32`, `i64`, `f32`, `f64`, `String`
 
-**Collections**: `Vec<T>`, `HashMap<K,V>`, `BTreeMap<K,V>`, `HashSet<T>`, `Option<T>`
+**Collections**: `Vec<T>`, `VecDeque<T>`, `LinkedList<T>`, `HashMap<K,V>`, `BTreeMap<K,V>`, `HashSet<T>`, `BTreeSet<T>`, `BinaryHeap<T>`, `Option<T>`
 
 **Smart Pointers**: `Box<T>`, `Rc<T>`, `Arc<T>`, `RcWeak<T>`, `ArcWeak<T>`, `RefCell<T>`, `Mutex<T>`
 
-**Date/Time**: `chrono::NaiveDate`, `chrono::NaiveDateTime`
+**Date/Time**: `Date`, `Timestamp`, `Duration`, and supported `chrono` types
 
-**Custom Types**: Derive `ForyObject` for object graphs, `ForyRow` for row format
+**Custom Types**: Derive `ForyStruct`, `ForyEnum`, or `ForyUnion` for object graphs, and `ForyRow` for row format
 
-**Trait Objects**: `Box<dyn T>`, `Rc<dyn T>`, `Arc<dyn T>`, `Rc<dyn Any>`, `Arc<dyn Any>`
-
-## Roadmap: What's Next
-
-Apache Fory Rust is production-ready today, but we're just getting started and continuing active development:
-
-### ✅ **Shipped in v0.13**
-
-- ✅ Static codegen via procedural macros
-- ✅ Row format serialization with zero-copy
-- ✅ Cross-language object graph serialization
-- ✅ Shared and circular reference tracking
-- ✅ Weak pointer support (RcWeak, ArcWeak)
-- ✅ Trait object serialization (Box/Rc/Arc)
-- ✅ Schema evolution in compatible mode
-
-### 🚧 **Coming Soon**
-
-- [ ] **Cross-language reference serialization**: serialize `Rc/Arc` to/from other languages.
-- [ ] **Partial row updates**: Mutate row format in-place
-
-### 🎯 **Help Wanted**
-
-We're actively seeking contributors for:
-
-- **Performance tuning**: Profile and optimize hot paths
-- **Documentation**: More examples, tutorials, and guides
-- **Testing**: Fuzzing, property tests, edge case coverage
+**Trait Objects**: `Box<dyn T>`, `Rc<dyn T>`, `Arc<dyn T>`, `Rc<dyn Any>`, `Arc<dyn Any + Send + Sync>`
 
 ## Production Considerations
 
@@ -455,7 +478,7 @@ We're actively seeking contributors for:
 use fory::Fory;
 use std::{sync::Arc, thread};
 
-let mut fory = Fory::default();
+let mut fory = Fory::builder().xlang(false).build();
 fory.register::<Item>(1)?;
 let fory = Arc::new(fory); // `Fory` is Send + Sync once registration is done
 
@@ -465,7 +488,7 @@ let handles: Vec<_> = (0..4)
         let fory = Arc::clone(&fory);
         let input = item.clone();
         thread::spawn(move || {
-            let bytes = fory.serialize(&input);
+            let bytes = fory.serialize(&input).expect("serialization succeeds");
             let decoded: Item = fory.deserialize(&bytes).expect("valid data");
             (bytes, decoded)
         })
@@ -483,19 +506,17 @@ for handle in handles {
 Apache Fory uses `Result<T, Error>` for all fallible operations:
 
 ```rust
-use fory::Error;
-
 match fory.deserialize::<User>(&bytes) {
     Ok(user) => process_user(user),
-    Err(Error::TypeMismatch) => log::error!("Schema mismatch"),
-    Err(Error::BufferTooShort) => log::error!("Incomplete data"),
     Err(e) => log::error!("Deserialization failed: {}", e),
 }
 ```
 
 ## Documentation
 
-- Apache Fory Rust Guide: [📖 View](https://fory.apache.org/docs/docs/guide/rust_serialization)
+- Apache Fory Rust Guide: [📖 View](https://fory.apache.org/docs/guide/rust/)
+- Apache Fory External-Type Serialization: [📖 View](https://fory.apache.org/docs/guide/rust/external_types)
+- Apache Fory Rust Benchmarks: [📊 View](https://fory.apache.org/docs/benchmarks/rust/)
 - Apache Fory Rust API Doc: [📖 View](https://docs.rs/fory/latest/fory/)
 - Apache Fory Xlang Serialization Spec: [📖 View](https://fory.apache.org/docs/specification/fory_xlang_serialization_spec/)
 
@@ -512,7 +533,7 @@ Apache Fory is an **Apache Software Foundation** project with a vibrant, growing
 
 We welcome contributions of all kinds:
 
-1. **Code**: Implement features from the roadmap
+1. **Code**: Implement features and improve existing capabilities
 2. **Docs**: Write tutorials, examples, and guides
 3. **Testing**: Add benchmarks, fuzz tests, integration tests
 4. **Feedback**: Report bugs, request features, share use cases
@@ -529,7 +550,7 @@ Apache Fory Rust represents a paradigm shift in serialization:
 
 - **No more trade-offs**: Get performance _and_ flexibility
 - **No more boilerplate**: Derive macros handle the complexity
-- **No more lock-in**: Trait-object and shared reference support by nature
+- **No more conversion layers**: External-type serializers work directly with third-party values
 
 Whether you're building microservices, data pipelines, or real-time systems, Apache Fory Rust delivers the performance you need with the ergonomics you deserve.
 
