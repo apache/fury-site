@@ -19,6 +19,13 @@ The Java benchmark section compares Fory against popular Java serialization fram
 
 ![Java Deserialization Throughput](../benchmarks/java/java_repo_deserialization_throughput.png)
 
+**JSON Throughput**:
+
+<div style={{display: 'flex', gap: '1rem'}}>
+  <img src={require('../benchmarks/java/json/string_throughput.png').default} alt="Java JSON String Throughput" style={{width: 'calc(50% - 0.5rem)'}} />
+  <img src={require('../benchmarks/java/json/utf8_bytes_throughput.png').default} alt="Java JSON UTF-8 Throughput" style={{width: 'calc(50% - 0.5rem)'}} />
+</div>
+
 **Cross-Language Throughput**:
 
 ![Java Cross-Language Throughput](../benchmarks/java/throughput.png)

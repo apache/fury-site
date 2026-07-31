@@ -19,6 +19,13 @@ Java 性能测试部分使用 `docs/benchmarks/java` 中的当前基准套件，
 
 ![Java 反序列化吞吐](../benchmarks/java/java_repo_deserialization_throughput.png)
 
+**JSON 吞吐**：
+
+<div style={{display: 'flex', gap: '1rem'}}>
+  <img src={require('../benchmarks/java/json/string_throughput.png').default} alt="Java JSON String 吞吐" style={{width: 'calc(50% - 0.5rem)'}} />
+  <img src={require('../benchmarks/java/json/utf8_bytes_throughput.png').default} alt="Java JSON UTF-8 吞吐" style={{width: 'calc(50% - 0.5rem)'}} />
+</div>
+
 **跨语言吞吐**：
 
 ![Java 跨语言吞吐](../benchmarks/java/throughput.png)
