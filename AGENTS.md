@@ -116,6 +116,13 @@ This means Chinese docs may be a mix of translated content and English fallback 
 
 - `CONTRIBUTING.md` states that `docs/guide` and `docs/specification` are mainly synced from `apache/fory`.  
   For those sections, confirm whether changes should go to the main `apache/fory` repo instead.
+- Do not run benchmarks during `fory-site` release, documentation, or blog work.
+  Use existing benchmark reports, data, and figures checked into the relevant
+  documentation as the source of truth. Run or regenerate a benchmark only
+  when the user explicitly asks for a benchmark run.
+- Do not use subagents for `fory-site` work unless the user explicitly asks for
+  subagent delegation. Keep implementation, validation, and review in the main
+  task by default.
 - `scripts/unified-docs/script.py` uses `i18n/eu-US/...` paths (not `en-US`); treat this as existing behavior and validate intent before changing.
 - Since link-check is not effectively active, external link regressions may pass PR checks.
 - The repo has substantial versioned/mirrored docs; avoid accidental bulk edits in `versioned_docs` and `i18n/version-*`.

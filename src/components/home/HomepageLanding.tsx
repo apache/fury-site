@@ -138,7 +138,7 @@ const runtimeExamples: RuntimeExample[] = [
     install: `<dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>`,
     codeLanguage: "java",
     guide: "/docs/guide/java/",
@@ -181,7 +181,7 @@ out = fory.deserialize(data)`,
     id: "rust",
     label: "Rust",
     installLanguage: "bash",
-    install: `cargo add fory@1.4.0`,
+    install: `cargo add fory@1.5.0`,
     codeLanguage: "rust",
     guide: "/docs/guide/rust/",
     summary: "Rust uses derive macros for type-safe structs and supports both xlang and native payloads.",
@@ -230,7 +230,7 @@ _ = f.Deserialize(payload, &out)`,
 FetchContent_Declare(
   fory
   GIT_REPOSITORY https://github.com/apache/fory.git
-  GIT_TAG v1.4.0
+  GIT_TAG v1.5.0
   SOURCE_SUBDIR cpp
 )
 FetchContent_MakeAvailable(fory)`,
@@ -278,7 +278,7 @@ const out = deserialize(payload);`,
     id: "csharp",
     label: "C#",
     installLanguage: "bash",
-    install: `dotnet add package Apache.Fory --version 1.4.0`,
+    install: `dotnet add package Apache.Fory --version 1.5.0`,
     codeLanguage: "csharp",
     guide: "/docs/guide/csharp/",
     summary: ".NET support uses source-generated serializers for Fory structs, enums, and unions.",
@@ -301,7 +301,7 @@ Person out = fory.Deserialize<Person>(payload);`,
     id: "swift",
     label: "Swift",
     installLanguage: "swift",
-    install: `.package(url: "https://github.com/apache/fory.git", exact: "1.4.0")`,
+    install: `.package(url: "https://github.com/apache/fory.git", exact: "1.5.0")`,
     codeLanguage: "swift",
     guide: "/docs/guide/swift/",
     summary: "Swift uses @ForyStruct, @ForyEnum, and @ForyUnion macros for xlang-compatible models.",
@@ -324,7 +324,7 @@ let out: Person = try fory.deserialize(payload)`,
     label: "Dart",
     installLanguage: "yaml",
     install: `dependencies:
-  fory: ^1.4.0
+  fory: ^1.5.0
 
 dev_dependencies:
   build_runner: ^2.4.13`,
@@ -359,7 +359,7 @@ final out = fory.deserialize<Person>(payload);`,
     id: "scala",
     label: "Scala",
     installLanguage: "sbt",
-    install: `libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.4.0"`,
+    install: `libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.5.0"`,
     codeLanguage: "scala",
     guide: "/docs/guide/scala/",
     summary: "Scala builds on Fory Java with optimized serializers for case classes, collections, tuples, and Option.",
@@ -379,8 +379,8 @@ val out = fory.deserialize(payload).asInstanceOf[Person]`,
     id: "kotlin",
     label: "Kotlin",
     installLanguage: "kotlin",
-    install: `implementation("org.apache.fory:fory-kotlin:1.4.0")
-ksp("org.apache.fory:fory-kotlin-ksp:1.4.0")`,
+    install: `implementation("org.apache.fory:fory-kotlin:1.5.0")
+ksp("org.apache.fory:fory-kotlin-ksp:1.5.0")`,
     codeLanguage: "kotlin",
     guide: "/docs/guide/kotlin/",
     summary: "Kotlin adds data-class support, Android guidance, and KSP static serializers for xlang/schema mode.",
