@@ -16,14 +16,14 @@ Use Maven to add Apache Fory™:
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 <!-- Optional row format support -->
 <!--
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-format</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 -->
 ```
@@ -36,7 +36,7 @@ Scala 2.13 with Maven:
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-scala_2.13</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -46,20 +46,20 @@ Scala 3 with Maven:
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-scala_3</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
 Scala 2.13 with sbt:
 
 ```sbt
-libraryDependencies += "org.apache.fory" % "fory-scala_2.13" % "1.4.0"
+libraryDependencies += "org.apache.fory" % "fory-scala_2.13" % "1.5.0"
 ```
 
 Scala 3 with sbt:
 
 ```sbt
-libraryDependencies += "org.apache.fory" % "fory-scala_3" % "1.4.0"
+libraryDependencies += "org.apache.fory" % "fory-scala_3" % "1.5.0"
 ```
 
 ## Kotlin
@@ -70,7 +70,7 @@ Add Apache Fory™ Kotlin with Maven:
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-kotlin</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -78,7 +78,7 @@ Add Apache Fory™ Kotlin with Maven:
 
 ```bash
 python -m pip install --upgrade pip
-pip install pyfory==1.4.0
+pip install pyfory==1.5.0
 ```
 
 ## Go
@@ -86,7 +86,7 @@ pip install pyfory==1.4.0
 Use the full Go module path `github.com/apache/fory/go/fory`:
 
 ```bash
-go get github.com/apache/fory/go/fory@v1.4.0
+go get github.com/apache/fory/go/fory@v1.5.0
 ```
 
 If your Go proxy has not picked up the new submodule tag yet, retry later or use `GOPROXY=direct` temporarily.
@@ -95,13 +95,13 @@ If your Go proxy has not picked up the new submodule tag yet, retry later or use
 
 ```toml
 [dependencies]
-fory = "1.4.0"
+fory = "1.5.0"
 ```
 
 Or use `cargo add`:
 
 ```bash
-cargo add fory@1.4.0
+cargo add fory@1.5.0
 ```
 
 ## JavaScript / TypeScript
@@ -124,7 +124,7 @@ Add Apache Fory™ Dart to `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  fory: ^1.4.0
+  fory: ^1.5.0
 
 dev_dependencies:
   build_runner: ^2.4.13
@@ -141,12 +141,12 @@ dart run build_runner build --delete-conflicting-outputs
 Install the `Apache.Fory` NuGet package. It includes both the runtime and the source generator for `[ForyStruct]` types.
 
 ```bash
-dotnet add package Apache.Fory --version 1.4.0
+dotnet add package Apache.Fory --version 1.5.0
 ```
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.4.0" />
+  <PackageReference Include="Apache.Fory" Version="1.5.0" />
 </ItemGroup>
 ```
 
@@ -156,7 +156,7 @@ Add Apache Fory™ from the GitHub repository with Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/apache/fory.git", exact: "1.4.0")
+    .package(url: "https://github.com/apache/fory.git", exact: "1.5.0")
 ],
 targets: [
     .target(
