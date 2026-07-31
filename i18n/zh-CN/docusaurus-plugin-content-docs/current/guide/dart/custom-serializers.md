@@ -1,7 +1,7 @@
 ---
 title: 自定义序列化器
-sidebar_position: 5
-id: dart_custom_serializers
+sidebar_position: 11
+id: custom_serializers
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,13 +19,16 @@ license: |
   limitations under the License.
 ---
 
-自定义序列化器让你可以完全控制某个类型如何编码和解码。通常只有在以下情况才需要使用它：
+自定义序列化器让你可以完全控制某个类型如何编码和解码。以下场景适合使用它：
 
-- 类型来自你无法修改的第三方包，无法添加 `@ForyStruct()`
 - 你需要完全自定义的二进制布局
-- 你要实现 union / discriminated type
+- 目标类型需要转换字段名或字段值
+- 目标类型只提供工厂构造函数或 private 构造方式
+- 无法通过名称匹配的 public 成员获取目标类型的完整状态
+- 你需要实现联合类型或带判别字段的类型
 
-对于你自己的模型，`@ForyStruct()` 配合代码生成几乎总是更好的选择。
+对于自己的模型，请使用 `@ForyStruct()`。对于另一个包中结构匹配的类，
+请使用[外部结构化序列化器](external-types.md)。
 
 ## 实现 `Serializer<T>`
 
@@ -48,13 +51,13 @@ final class PersonSerializer extends Serializer<Person> {
   void write(WriteContext context, Person value) {
     final buffer = context.buffer;
     buffer.writeUtf8(value.name);
-    buffer.writeInt64(value.age);
+    buffer.writeInt64FromInt(value.age);
   }
 
   @override
   Person read(ReadContext context) {
     final buffer = context.buffer;
-    return Person(buffer.readUtf8(), buffer.readInt64());
+    return Person(buffer.readUtf8(), buffer.readInt64AsInt());
   }
 }
 ```
@@ -66,8 +69,7 @@ final fory = Fory();
 fory.registerSerializer(
   Person,
   const PersonSerializer(),
-  namespace: 'example',
-  typeName: 'Person',
+  name: 'example.Person',
 );
 ```
 
@@ -93,9 +95,11 @@ Wrapper read(ReadContext context) {
 context.writeNonRef(value.child);
 ```
 
-## Union
+## 联合类型
 
-对于带判别标签的 union，请继承 `UnionSerializer<T>` 而不是 `Serializer<T>`。先写入判别值，再写入当前激活的变体；读取时先解析判别值，再分派到正确分支。
+对于带判别标签的联合类型，请继承 `UnionSerializer<T>`，而不是
+`Serializer<T>`。先写入判别值，再写入当前激活的变体；读取时先解析判别值，
+再分派到正确分支。
 
 ```dart
 final class ShapeSerializer extends UnionSerializer<Shape> {
@@ -130,10 +134,11 @@ return value;
 ## 提示
 
 - 在热点路径中，优先使用 `context.buffer` 直接读写字节。
-- 在所有端上，都用相同的身份注册该序列化器，即相同的 `id` 或相同的 `namespace + typeName`。
+- 在所有端上，都使用相同的身份（`id` 或 `name`）注册该序列化器。
 
 ## 相关主题
 
 - [类型注册](type-registration.md)
+- [外部类型序列化](external-types.md)
 - [跨语言](xlang-serialization.md)
 - [故障排查](troubleshooting.md)

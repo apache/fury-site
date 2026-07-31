@@ -190,6 +190,527 @@ xlang 的引用标记如下：
 serializer 自身不负责解析类元数据。它们通过当前 context
 请求读写嵌套值，再由 context 将类型相关工作委托给 `TypeResolver`。
 
+### 外部类型序列化的所有权
+
+如果某种语言绑定无法将 Fory 行为直接附加到每一种应用值类型上，可以将
+serializer provider 与其目标值分离。
+
+所有权划分如下：
+
+- serializer provider 持有静态序列化行为；若为外部结构序列化器，还持有本地 schema 声明
+- target 持有运行时值、宿主类型身份、存储大小和动态向下转型
+- value serializer 持有 target body、完整根值、默认值、值类型身份、根/动态类型信息和
+  value-level 多态
+- internal field codec 针对同一 target 扩展 value serializer，并持有 `FieldType`、
+  字段 null/引用 framing、字段容量提示、远端字段元数据、兼容字段组合和递归 carrier
+  字段 schema
+- 一份 carrier 实现持有根 serializer 与 field codec 共用的 body、分配、插入和引用算法
+- 自定义序列化器持有其 opaque body 内的分配，并且必须在分配前完成相应的可读字节、策略和
+  对象图内存检查
+- `Fory` 持有根 framing 以及操作的准备/重置
+- `TypeResolver` 持有注册和动态查找
+
+#### C# 生成的结构序列化器
+
+C# 对普通结构序列化器和外部结构序列化器使用同一条按 target 建立索引的源码生成路径。
+`ForyStructAttribute` 不可继承：参与可序列化继承层次的每个第一方 class 都必须直接带有注解。
+外部声明则为不可修改的 target 提供等价契约。
+
+对于一个具体普通 class，编译级的继承层次发现会产生两个相互独立的不可变结果：
+
+- 一组扁平化编码成员，用于字段排序、schema hash、`TypeMeta` 以及生成的读写；以及
+- 一份浅层存储模型，仅用于对象图内存计量。
+
+编码成员集合按 base-first 顺序从各声明所持有的生成 descriptor 组装而成。属性 override
+链会先折叠为一个逻辑 slot，再由协议 comparator 校验和排序完整集合。被隐藏的成员保留其
+准确 declaring type。生成的子类绝不会调用父 serializer body，也不会把 base object
+编码成嵌套值。
+
+每个可继承的普通 class 都会发布一份按 target 建立索引的编译器契约，其中包含：
+
+- 其准确 target；
+- 其准确的直接声明编码成员数量；
+- 每个直接声明编码成员的确定性 accessor 上的一份 descriptor：字段使用可写 `ref`
+  accessor，属性使用 getter 及与之匹配的 setter；以及
+- 一个 public static readonly 的累计 `HierarchyShallowBytes` 值。
+
+provider 的浅层值等于直接父 provider 的值加上当前 class 直接声明的物理实例字段。
+sealed 具体 serializer 在内部使用同一累计表达式，但不发布 provider marker、descriptor
+或 hierarchy value。具体 serializer 只将对象自身存储计入一次。属性从不直接增加存储量，
+而 private、readonly、编译器生成和非编码实例字段都会增加。引用其他编译单元的子类只消费
+可访问的 provider 契约；它们不会导入、枚举或重建父类 private 字段。仅作为 provider 的
+target 会生成 static provider；具体且非 sealed 的 serializer 自身携带同一契约，不会再有
+第二种类型或转发路径。internal provider 仅对通过正常 C# 可访问性获得权限的 assembly
+可用，例如通过 `InternalsVisibleTo`；不可访问或只能通过 extern alias 访问的契约不持有
+其他编译单元的继承层次。
+
+只要 C# 可访问性允许，generator 就会为普通成员生成直接访问。引用其他编译单元的子类需要
+访问声明所持有的状态时，provider 会发布 accessor。accessor 签名保留成员的 CLR 类型和
+nullability 元数据。provider 缺失或存在歧义会导致生成失败。
+
+abstract 普通 class 只生成继承层次 provider，不创建 serializer 实例或注册。其属性
+descriptor 可以发布尚未解析的 abstract override slot；具体后代必须提供可调用实现。
+具体 class 必须支持合法的无参构造，并保留现有顺序：先分配 target、发布预留引用，再读取子项。
+
+`ForyStructAttribute` 和 `ForyEnumAttribute` 都带有可选的 `Target` 类型。一个本地、
+非泛型 abstract class 用于声明外部结构；一个空的非泛型 static class 用于选择外部 enum
+target：
+
+```csharp
+[ForyStruct(Target = typeof(ThirdParty.User))]
+internal abstract class UserSerializer
+{
+    [ForyField(
+        1,
+        TargetDeclaringType = typeof(ThirdParty.User),
+        TargetMemberName = "<Name>k__BackingField")]
+    public abstract string Name { get; }
+}
+
+[ForyEnum(Target = typeof(ThirdParty.Status))]
+internal static class StatusSerializer
+{
+}
+```
+
+外部声明仅作为 generator 的编译时输入。运行时绝不会实例化或反射它们，也不会注册、发布引用，
+或将其用作编码身份。运行时类型位置、构造、`TypeInfo`、元数据、引用发布、生成的 factory key、
+根、字段、动态值和 carrier 均使用 target 类型。
+
+外部成员可以绑定可见的同名字段或属性。对于外部 class target，设置
+`TargetDeclaringType` 和 `TargetMemberName` 可改为声明 target 或其非 `object`
+祖先上的一个准确字段。准确编码映射同时提供物理存储；`Ignore = true` 只提供浅层存储。
+外部 struct target 仅支持可见成员映射。未映射的可见 public 实例字段只会被计入外部 class
+浅层存储一次。generator 绝不会从引用的 assembly 中发现 private 字段。
+
+`BaseOnly = true` 会使外部 class 声明成为完整第三方继承层次前缀的终结 provider。
+它可以列出 target 和 target 祖先上的准确字段，但不发布独立 factory 或注册。普通子类对该
+provider 的消费方式与普通父 provider 完全相同。`BaseOnly` target 可以是 abstract 或
+不可构造的，因为真正实例化的只有具体普通子类。
+
+准确的 private 映射是与版本绑定的 package ABI 声明。target ABI 变化时，编码 accessor
+会以 CLR missing-field 错误失败；不存在反射或备用成员 fallback。在 .NET 8 上，如果
+declaring owner 或签名为泛型，generator 会拒绝 private 编码访问。对于 class target，
+可见的 closed-generic 成员和仅用于存储的显式字段映射仍受支持。若不导入 private layout，
+就无法区分不可访问的 pointer 字段与 fixed-buffer 存储，因此准确的 private pointer 映射
+会被拒绝。
+
+独立的外部结构 target 必须是可访问的具体 class 或 struct，支持合法无参构造，并且声明的
+编码状态可写。仅构造器、仅 factory、readonly、init-only、转换或自定义编码形状应使用
+自定义 `Serializer<T>`。target 元数据带注解时，显式 nullability 必须匹配；否则由声明提供
+schema nullability。
+
+每个生成的普通或外部 struct 都使用
+`TypeResolver.RegisterGeneratedStruct<T, TSerializer>(bool evolving)`
+将 generator 持有的 `Evolving` 写入 target `TypeInfo`。生成的 enum 和 union 使用
+`TypeResolver.RegisterGenerated<T, TSerializer>()`。abstract 普通 provider 和
+`BaseOnly` provider 不注册。一个 target 有多个生成 owner 时，会在生成期拒绝，或在 cold
+的跨 assembly factory 注册路径中确定性拒绝。自定义序列化器替换继续遵循 resolver 的常规
+target 规则。
+
+C# carrier 组合仍然基于 target。resolver 会递归绑定 `Nullable<T>`、一维 `T[]`、
+`List<T>`、`LinkedList<T>`、`Queue<T>`、`Stack<T>`、`HashSet<T>`、
+`SortedSet<T>`、`ImmutableHashSet<T>`、`Dictionary<TKey, TValue>`、
+`SortedDictionary<TKey, TValue>`、`SortedList<TKey, TValue>`、
+`ConcurrentDictionary<TKey, TValue>` 和
+`NullableKeyDictionary<TKey, TValue>`。普通、外部和自定义序列化器使用相同的
+carrier body。不存在继承层次的运行时查找、provider object、callback、schema tree、
+逐元素 dispatch 或额外值分配。
+
+动态 `object` 值和 union 通过 `TypeResolver` 解析具体 target 类型。任意静态类型的
+interface 或 base-class 多态仍不受支持。扁平的普通和外部生成 hot body 除 target/member
+元数据 token 外仍具有相同的工作量和分配形状；继承层次组合属于 static initialization
+和编译时元数据工作。
+
+Rust 对这些 serializer 操作边界进行了明确命名：
+
+- `Serializer::write` 和 `Serializer::read` 处理完整值，包括所需的引用和类型信息 envelope。
+- `Serializer::write_data` 和 `Serializer::read_data` 只处理 target body。
+- `write_with_type_info` 和 `read_with_type_info` 仍是对已经解析出值元数据的完整值操作。
+
+Rust 通过 `Serializer` 上的五个 associated constant 表示 value serializer 的不可变属性：
+
+- `IS_OPTIONAL` 表示选中的值形状带有 Option 语义；
+- `IS_POLYMORPHIC` 表示其具体 target 从运行时值中选择；
+- `IS_SHARED_REF` 表示它使用现有的共享引用编码行为；
+- `IS_WRAPPER` 表示它是没有独立注册身份的 Fory 自有 wrapper serializer；以及
+- `REQUIRES_SCOPED_ACCESS` 表示检查或使用其中的动态值需要 borrow、lock 或 weak upgrade。
+
+这些是类型级的值属性，必须在 monomorphization 中折叠。`Codec<T>` 通过
+`Serializer<Target = T>` 继承这些属性，不再重复声明。`SerializerCodec<S>` 从 `S`
+转发这些属性。依赖值的 `is_none(value)` 和 `dynamic_type_id(value)` 操作仍为函数。
+`is_none` 仅表示 `Option::None`，包括透明的 Option 传播；weak target 过期仍属于另一种
+weak-access 结果。
+
+`Serializer` 没有字段 API 或字段 schema 参数。具体来说，它不暴露 `FieldType`、字段兼容
+读取、声明字段泛型状态、字段 null/引用策略或字段编码选择。Rust 内部的 `Codec<T>` 扩展
+`Serializer<Target = T>` 并持有这些字段操作。leaf `SerializerCodec<S>` 通过转发到
+`S` 实现值行为，并自行实现字段行为；它绝不会调用 `S` 上的字段 hook。其 value-capacity
+提示原样转发。生成字段和 field-mode carrier body 使用 codec 持有的字段容量提示，它会
+增加或转发字段 framing，但不会改变根或值的组合。
+
+serializer-provider 身份只是宿主实现细节，绝不编码。外部结构序列化器使用与等价直接支持
+target 相同的 STRUCT、ENUM 或 UNION 元数据和值格式。若自定义序列化器不是运行时现有内建
+类型的规范实现，则使用 EXT 或 NAMED_EXT。serializer-provider 分离不能替代运行时持有的
+内建映射。
+
+静态生成字段和由 serializer 选择的根应直接 dispatch 到其 schema 选中的 serializer。
+Rust 字段 `with = S` 选择准确的字段节点，并要求 `S::Target` 等于声明的字段类型。这里可以
+使用普通序列化器、外部结构序列化器、自定义序列化器或 carrier serializer。例如，
+`with = VecSerializer<UserSerializer>`
+选择结构化 `Vec<User>` 字段节点，而 `list(element(with = UserSerializer))` 递归选择子节点。
+透明字段选择其准确 carrier serializer，例如 `OptionSerializer<UserSerializer>`。
+字段代码生成会把两种形式递归 lower 为 carrier codec。
+
+Rust procedural macro 无法解析 type alias 或重命名 import。由于该设计没有 associated codec
+映射 trait 或运行时 fallback，带 schema 的 derive 字段在其声明 Rust 类型中的每个 carrier
+constructor，以及其 `with` 树中的每个 Fory 自有 carrier constructor，都必须使用规范的终结
+名称，可带限定路径。leaf serializer alias、root carrier alias，以及仅被跳过字段的值级默认值
+所使用的 carrier alias 仍有效。derive 会识别经过完整审计的 carrier 语法，并仅将未知类型
+lower 为 leaf serializer。leaf adapter 在 cold 字段 schema 构造期间、resolver 发布前，
+使用既有编码 category 拒绝 aliased non-wrapper carrier。aliased Fory 自有 wrapper 无法
+独立注册，因此会在普通 required-provider 查找时失败。leaf adapter 不消费 `IS_WRAPPER`、
+不检查运行时类型名，也不增加值路径分支。
+
+当根是包含选中外部子项的透明、collection、定长数组、map 或异构 tuple 组合时，binding
+应暴露由 binding 持有、以子 serializer 递归参数化的 carrier 专用 static serializer。
+例如，基于 `S` 的 vector carrier serializer 的 target 是 `S::Target` 的 vector；
+基于 `KS` 和 `VS` 的 map carrier serializer 的 target 是从 `KS::Target` 到
+`VS::Target` 的 map；arity-N tuple carrier serializer 的 target 则由每个
+`Si::Target` 按位置组成。
+
+root carrier 组合递归组合 value serializer；字段组合递归组合 codec。二者有意构成不同的
+编译时类型树：root carrier 不得构造 field-codec 树，也不得请求或合成 `FieldType`。
+root carrier 读取只能使用直接子状态或 value-`TypeInfo` 子状态；远端 `FieldType` 仅属于
+field-codec 入口。每个 carrier 实现在其子项实现 `Serializer` 时提供 `Serializer` 行为，
+仅在子项实现 `Codec` 时提供字段 `Codec` 行为。两层都调用同一份 carrier body、分配、插入
+和引用实现。它们不得复制 collection、map、reference、holder、定长数组、tuple 或兼容读取
+算法。只适配元数据却仍调用整个 carrier serializer 的 adapter 并不构成 external-child 支持。
+
+Rust 让外部结构序列化器生成的 `write_data` body 保持 non-inlined。否则递归 carrier 组合
+会把该 body 复制到每个 list、map、tuple 和 wrapper monomorph 中。这是成功路径上的直接函数
+边界，不是 cold path，也不会增加运行时选择、callback 或分配。self-owned 生成序列化器仍采用
+普通的编译器 inlining heuristic。
+
+透明引用 carrier 只消费自身的 null 或引用 envelope。如果兼容模式把用户类型元数据放在选中
+子 body 之前，子项仍必须消费该元数据并使用其远端 schema。若所属 schema 声明的是递归 carrier
+子项，则该子项直接接收声明的字段元数据。实现不得丢弃任何一种元数据形式，也不得读取 carrier
+envelope 两次。
+
+carrier serializer 不是已注册用户类型：它们保留 carrier 的标准编码 kind，没有 resolver
+entry 或动态 harness；注册只属于访问到的选中用户类型子项。carrier 委托必须覆盖每个现有规范
+specialization，而不能强制变成泛型 collection 形状。例如，基于规范 `i32` serializer 的
+Rust vector carrier serializer 保留 `INT32_ARRAY`；基于规范 `u8` serializer 的保留
+BINARY；基于外部结构或自定义序列化器的则使用 LIST。嵌套 vector 在 root bytes 中保留选中的
+子表示；等价 field-codec 树则在递归 `FieldType` 中保留该表示。
+
+对 Rust 而言，经过审计的 carrier serializer 接口是穷尽的：
+
+- `OptionSerializer<S>`、`BoxSerializer<S>`、`RcSerializer<S>`、
+  `ArcSerializer<S>`、Fory `RcWeakSerializer<S>`/`ArcWeakSerializer<S>`、
+  `RefCellSerializer<S>` 和 `MutexSerializer<S>`；
+- `VecSerializer<S>`、`VecDequeSerializer<S>`、
+  `LinkedListSerializer<S>`、`HashSetSerializer<S>`、
+  `BTreeSetSerializer<S>`、`BinaryHeapSerializer<S>` 和
+  `ArraySerializer<S, N>`；
+- `HashMapSerializer<KS, VS>` 和 `BTreeMapSerializer<KS, VS>`；
+- `Tuple1Serializer<S0>` 至 `Tuple22Serializer<S0, ..., S21>`。
+
+每个 carrier serializer target 都由子 serializer target 递归形成。每个子项都可以是以自身
+为 target 的普通 serializer、外部结构序列化器、自定义序列化器或另一个 carrier serializer，
+四种形式均进入同一 carrier body 实现。由于 Rust 没有 variadic generic，
+`Tuple1Serializer` 至 `Tuple22Serializer` 及匹配的、按 arity 区分的 codec 由 macro 生成；
+不会引入 public serializer-list trait 或运行时 tuple descriptor。unit `()` 和
+`PhantomData<T>` 没有序列化子项，不需要 serializer 组合。擦除的 Any/application-trait
+carrier 保留其动态已注册 target owner，不会伪装成静态子 serializer。
+
+`Cell<T>` 不在当前 Rust serializer 接口中：derive 只识别其 Send/Sync 属性。当前没有
+`Cell` serializer 或 codec，因此本功能不得虚构 `CellSerializer<S>`，也不得把 `Cell`
+当作 `RefCell`。同样，标准库 weak pointer 不是 Fory weak carrier 的 alias。
+
+对于 Swift，`Serializer` 使用带 associated `Target` 的相同 exact-target 所有权边界。
+self-provided 结构或自定义序列化器使用 `Target == Self`；独立提供的结构或自定义序列化器
+则指定另一个 target 类型。serializer 操作是 static 的，接收或返回 `Target`。Fory 绝不
+实例化 serializer object，生成的外部结构代码会直接读取 target 属性并构造 target。
+
+静态选择统一遵循 provider 所有权。自身遵循 `Serializer` 且 `Target == Self` 的 target，
+会在根、生成字段、optional、array、set 和 dictionary 中被隐式选择。这包括有意采用
+retroactive conformance 的外部类型。若一个 serializer 类型的 `Target` 是另一类型，则在
+每个需要它的静态节点上都必须显式选择。即使它是该 target 唯一注册的 provider，注册也不会
+推断该 serializer，因为 Swift 无法从 `S.Target == T` 反向推断唯一的 `S: Serializer`。
+
+retroactive conformance 在进程范围内全局生效。`@retroactive` 只确认 Swift 的所有权警告，
+并不能让重复的 `(Target, Protocol)` conformance 变得安全。应用可以在有意持有唯一全局绑定
+时使用它；public library 通常应使用独立 serializer，让应用显式选择实现。
+
+Swift `StructSerializer` 覆盖所有结构化注册 category。普通和外部 `@ForyStruct`、
+`@ForyEnum` 与 `@ForyUnion` 展开结果均遵循该协议；自定义 EXT 序列化器不遵循。
+
+Swift 的 doc-hidden `FieldCodec` 针对同一准确 target 扩展值序列化。它持有 `FieldType`、
+递归字段泛型、字段 null/引用策略、兼容字段读取、scalar 转换和注解选择的字段编码。
+`Serializer` 没有 `FieldType`、兼容字段 hook 或 declared-generics 参数。仅 `FieldCodec`
+携带 `hasDeclaredChildren` 模式，以便在所属字段元数据持有递归子 schema 时保留规范的
+collection 和 map header 决策。`SerializerCodec<S>` 是生成的 leaf adapter，其 target
+为 `S.Target`。由于 `FieldCodec` 扩展 `Serializer`，其值级部分必须仍是有效 root
+serializer，但根代码不能观察任何字段专用操作。在非兼容模式下，如果准确的 nonoptional
+选中 leaf 没有类型信息 envelope，且不需要引用 envelope，就调用 `S.readData`；
+被跟踪的引用 target 仍通过 `S.read`。兼容或递归保留的元数据仍由
+`SerializerCodec<S>` 持有，并在该 scope 不变的情况下进入选中 serializer。
+数值 field codec 将其值级部分委托给规范数值 serializer，packed-array field codec 将其
+值级部分委托给规范 LIST carrier。只有字段操作使用定长、带 tag 或 packed 的字段表示。
+因此根的可用性不会增加替代的数值或 packed-array 编码映射。
+
+Swift `Serializer.isWrapper` 是 doc-hidden 的值级属性，仅用于拒绝把 Fory 自有透明
+wrapper 独立注册为 EXT。`OptionalSerializer` 会设置它；collection carrier 不会。
+自定义序列化器不会因为 target 的拼写而获得 wrapper 状态，并且可以持有独立的 opaque
+carrier body。target 身份冲突会阻止它替换预置的规范动态 builtin。
+
+Swift 的递归 carrier serializer 接口穷尽如下：
+
+- `OptionalSerializer<S>`，target 为 `S.Target?`；
+- `ArraySerializer<S>`，target 为 `[S.Target]`，编码形状为 LIST；
+- `SetSerializer<S>`，target 为 `Set<S.Target>`，其中 `S.Target: Hashable`；
+- `DictionarySerializer<KS, VS>`，target 为
+  `[KS.Target: VS.Target]`，其中 `KS.Target: Hashable`。
+
+每个 carrier serializer 都会在其子项是 field codec 时条件式提供 field-codec 行为。因此
+root 组合包含 serializer，字段组合则包含递归 lower 的 field codec，且二者调用同一份
+carrier body、分配、插入、引用和兼容实现。普通 `Optional`、`Array`、`Set` 和
+`Dictionary` conformance 在准确 self-target 约束下委托给相同 owner。这些约束同样适用于
+用户声明的外部子项和 retroactively conforming 的外部子项。carrier serializer 是零状态且
+不注册的。
+
+透明 Swift `OptionalSerializer` 没有独立的字段元数据身份。它的 field-codec 元数据 scope
+递归委托给被包装的 field codec，包括 nonnull 读取，因此已接受的远端子元数据仍由选中的 leaf
+或嵌套 carrier 持有。
+
+Swift `Array` 对静态选择的根和 carrier 根都是 LIST，包括 `[Int32]`。`@ArrayField` 是另一种
+仅字段使用的密集 bool/数值选择；隐藏在动态 `Any` 中的准确 primitive array 则使用规范动态
+packed-array 映射。只有规范 primitive field codec 可以选择 packed 形式；非规范选中子项会
+被拒绝，而不会因 target 语法获得映射。`Data` 仍是 BINARY leaf。
+
+Swift 不支持泛型 tuple、定长 array、cell、box、weak、reference-holder、
+`ContiguousArray`、`ArraySlice`、result、range、deque、`NSSet` 或
+`NSDictionary` serializer。外部子项组合不得虚构这些 carrier。`AnyHashable`、
+`UnknownCase` 和 `ByteBuffer` 分别是动态 key holder、union value holder 和传输 owner，
+并非递归静态 carrier。
+
+Swift 外部结构声明使用结构 macro：
+
+```swift
+@ForyStruct(target: ThirdParty.User.self)
+struct UserSerializer {
+    var name: String
+    var age: UInt32
+}
+```
+
+生成的普通值声明使用 `Target = Self`。由于 Swift 不允许 class 内嵌套
+`Target = Self` type alias，生成的普通 class 会显式命名 declaring class；两种形式表达
+相同的准确 self-target 关系。
+
+等价 target 选择也适用于 `@ForyEnum` 和 `@ForyUnion`。value schema 声明以 value type
+为 target，并使用直接带 label 的构造。class schema 声明以 class 为 target，通过可访问的
+零参数 initializer 分配最终 target，在读取子字段前发布它，并给可访问的 mutable 属性赋值。
+生成的 Swift 代码会强制 class target 满足 `AnyObject` 约束。Swift 没有表达反向条件的
+negative generic constraint，因此 cold 注册校验会在发布元数据前拒绝以 class 为 target
+的 value-schema 声明。不可访问、不可变、带 invariant 或非穷尽的 target 需要自定义序列化器；
+实现不得用反射、unsafe layout 访问、unavailable-overload 技巧、schema mirror value、
+conversion wrapper 或 builder 作为 fallback。
+
+Swift macro 无法检查另一类型的 stored layout。因此外部 class 的浅层对象图内存公式仅使用
+其声明字段。`@ForyField(ignore: true)` 会增加仅用于 budget 的声明字段，但不增加 schema、
+target 访问、构造或编码代码。应用必须用此形式声明大量被省略的存储。
+
+外部结构 union 要求 target 暴露一个无损的 `unknown(UnknownCase)` case。无 Fory 依赖的
+target module 可以暴露泛型 unknown payload，再由应用选择其 `UnknownCase` specialization；
+target 也可以直接使用 Fory 的 carrier。Fory 不会转换其他 module 的 unknown 表示。不具备
+该形状的第三方 union 需要自定义序列化器，且不能声称具有结构 union 编码等价性。
+
+普通 Swift 生成字段会递归选择没有注解的 self-provided declared type。Swift 字段选择使用
+`@ForyField(with: S.self)` 选择一个准确的声明节点；在 `ForyFieldType` 的 list、set、
+map 和 union payload 节点内，则用 `.with(S.self)` 选择独立 serializer 或其他有意 override。
+选中的 optional 或完整 collection 节点应指定其准确 carrier serializer。规范的完整 carrier
+语法会递归 lower 为与结构字段 DSL 相同的 field-codec 树。编译器会强制选中 serializer
+target 等于声明字段节点。
+
+Swift 根选择使用 serializer metatype：
+
+```swift
+fory.serialize(user, with: UserSerializer.self)
+fory.deserialize(bytes, with: UserSerializer.self)
+fory.serialize(users, with: ArraySerializer<UserSerializer>.self)
+```
+
+`Data`、append-to-`Data` 和 `ByteBuffer` 形式共用一种根 framing 和可复用 context。
+普通根要求 `T.Target == T`，并委托给同一个 selected-serializer helper。这使每个
+self-provider 都可用，包括有意 retroactive conformance 的外部类型，但不会从注册中推断
+独立 serializer。不存在并行的 serializer-selection alias 或应用声明的结构 container
+schema。root facade 保持现有 module 边界与 inlining 策略；static specialization 属于其下层
+的 serializer、生成代码和 carrier owner。不得只为强迫完整根流程进入客户端，就把 resolver
+或可复用 context 状态暴露为 `@usableFromInline`。
+选中的 Swift read root 带有推断出的 result generic，并受 `S.Target == T` 约束。调用方式
+仍为 `deserialize(..., with: S.self)`，但这个 same-type generic 可让调用方提供具体
+target 元数据，从而避免每次 unspecialized root 调用中的 associated-target 查找和动态结果
+存储设置。
+
+生成的 value-struct `readData` 直接持有 target 构造。当外部结构序列化器有递归选择的 carrier
+字段时，该 owner 可为了控制代码大小而 out of line；但在 `readData` 和最终 target 结果
+buffer 之间不得再放置返回大型值的 private helper。生成的 class reader 仍保留 private
+helper，因为 class 分配 owner 必须在读取子项前发布预留引用。
+
+Swift `TypeResolver` 同时按 serializer 身份和具体 target 身份索引同一份不可变 `TypeInfo`。
+static schema 和显式选择使用 serializer 身份；动态写入使用 target 身份；编码读取使用数值
+ID 或名称。所有方向共享一个 writer、exact reader、compatible reader、元数据和注册 owner。
+public 注册通过 ID 或 name API 接收选中的结构或自定义序列化器，并在发布前拒绝 carrier、
+dynamic、builtin 和 field codec 身份。
+
+Swift 中任意 application protocol existential 使用零状态的 `DynamicSerializer<T>`。
+动态写入解析已注册的具体 target，向下转型一次到 serializer 的准确 target，然后调用共用
+`TypeInfo` harness。动态读取只实例化一次最终具体 target，并将其转型为请求的 existential。
+普通 target 注册就是 allowlist，因此 Swift 不需要 marker protocol、protocol 专用 registry、
+closed target-list macro、protocol 编码身份、serializer value 或 wrapper collection。
+protocol root 和 root carrier 显式选择动态 serializer，例如
+`DynamicSerializer<any Animal>` 和
+`ArraySerializer<DynamicSerializer<any Animal>>`。为保持源码兼容性，Swift 保留直接
+`Any` 和 `AnyObject` root overload；这些 overload 转发给使用 `DynamicSerializer<Any>`
+或 `DynamicSerializer<AnyObject>` 的同一 selected-serializer root，不增加并行 codec、
+framing、lookup 或分配路径。它们的 append-to-Data 和 ByteBuffer 形式同样如此。由于 Swift
+允许每个值转换为 `Any`，具体的非 self-serializing 值可以通过 `Any` overload 进入已注册的
+动态 target 查找。需要独立 static serializer 时，显式 `with:` 选择它。Swift 不暴露
+unconstrained generic dynamic root、`any Serializer` root 或特化的异构 container root
+overload。
+
+`DynamicSerializer<T>` 会 override 完整值引用处理。它先解析具体 `TypeInfo`，再判断 target
+是否为引用，并仅对外层动态字段形状保守地使用 `isRefType == true`。外层动态 serializer
+持有 nullability 和类型信息。其 `TypeInfo` harness 对 value target 调用 body 序列化，对
+class target 则调用具体的完整值引用 envelope。动态 slot 计量使用声明的 existential layout，
+而不是将每个值都视为引用。`AnyObject` 读取会在转型前拒绝 value-typed 元数据，使 Swift
+无法分配 bridge object。任意 nonoptional protocol 没有合成默认值；optional protocol 值
+通过 `OptionalSerializer` 组合。
+
+选中 codec 的 static 身份为 UNKNOWN 的准确生成字段，仍会读写具体 `TypeInfo`；carrier
+header 为动态子项持有该信息且不会重复编码。动态 map chunk 保持既有的
+key-type/value-type/key-body/value-body 顺序，并复用两个已解析 `TypeInfo` entry，不再执行
+target 查找。保留的动态 `TypeInfo` 由选择它的 serializer 确定 scope，因此
+`AnyHashable` 和 `DynamicSerializer<T>` 共用一份实现，但不会互换彼此的 scope 身份。
+
+Swift 会拒绝大小为零的 non-null MAP chunk，因为它无法推进已解码 entry count。一个只有一侧
+为 null 的 entry，会把 non-null 一侧编码成完整字段值：先是存在时的引用 envelope，再是未声明
+的 `TypeInfo`，最后是 body。MAP writer、reader 和兼容字段 skipper 使用这个完整字段顺序，
+而不是 non-null chunk 共用的 type-prefix 顺序。static 与 dynamic MAP 分支使用相同顺序和
+校验。
+
+动态 Any 和 protocol 路径直接作用于最终 target 值与 container。static 组合不会进入 target
+查找；动态查找仅发生在显式动态边界。
+
+Swift 异构动态 collection 使用其准确受支持的 target 形状：`[Any]`、`[String: Any]`、
+`[Int32: Any]` 和 `[AnyHashable: Any]`。把 homogeneous list 或 map 赋给 `Any` 不会
+擦除其具体 target 身份，也不得触发 converted collection 或第二个 collection codec。
+homogeneous list 和 map 使用普通或显式选择的 carrier serializer。预置的准确 primitive
+array 保留其 packed 动态映射。`[AnyHashable: Any]` 中的 null 动态 key 实例化为
+`AnyHashable(ForyAnyNullValue())`。
+
+当 carrier 为用户类型 field codec 保留远端子元数据时，leaf codec 会在不再读取 envelope
+的情况下进入选中 serializer，使其 exact 或 compatible reader 能看到保留的 `TypeInfo`。
+builtin leaf codec 直接读取其字段 body。
+
+Swift 仅支持 xlang 编码模式。已知 `@ForyUnion` case 带有零个或一个 associated value；
+多个逻辑字段必须使用显式 struct payload。不存在需要保留的 Swift-native 多字段 enum 编码。
+
+Rust tuple 字段元数据选择稀疏的、从零开始的位置，未提及的位置使用普通 serializer。
+它会 lower 为对应 arity 的 tuple codec，而 root carrier 则递归组合 tuple serializer；
+二者使用相同的、按 arity 区分的 tuple body。现有 tuple 编码契约保持不变：native
+非兼容模式使用直接的异构位置 body，兼容 native 模式和 xlang 模式使用现有异构 LIST 形式。
+其现有 UNKNOWN generic `FieldType` 形状保持不变，不会编码 serializer 类型或位置索引。
+
+Rust 的 primitive collection 选择必须由一个 owner 持有，并供普通类型、carrier serializer
+和 derive 共用。type ID、body 编码、reserved space、字段元数据和兼容读取不能使用相互独立
+的表。这包括规范 `u8` BINARY 和现有 `isize`/`usize` 密集数组类型。private
+primitive-array/carrier owner 根据子项的 scalar `static_type_id()`、准确 Rust 子 target
+和 carrier mode 推导父 kind。scalar serializer 和 codec 只声明 scalar 行为与 scalar
+编码 ID；public serializer 契约和 generic codec 契约均不暴露 parent-array kind。同一份
+private 映射还会校验 unsafe bulk copy，并提供兼容 LIST/array 元素元数据。
+
+Rust 1.70 无法根据 associated const 选择 codec 类型，因此现有 Vec 和定长 array carrier
+实现类型同时是 primitive body 与 object body 的唯一 owner。Vec 实现将两个既有 schema
+选择作为编译期 const 携带。`STRUCTURAL_LIST` 让未注解和显式 `list(...)` 生成字段即使包含
+规范 primitive 子项也仍为 LIST。普通 root、Vec carrier serializer、`#[fory(bytes)]`
+和 `#[fory(array)]` 会关闭它，使 carrier 能消费经过校验的规范子 kind。只有显式
+`#[fory(array)]` 的 `DENSE_ARRAY` 为 true；它把规范 `u8` BINARY 映射为
+`UINT8_ARRAY`。对于 root、carrier serializer、LIST 字段和 `#[fory(bytes)]`，
+该值为 false。因此，未注解的 `Vec<i32>` 字段仍为 `LIST<VARINT32>`，显式定长元素 list
+仍为 `LIST<INT32>`，而普通或 serializer 选择的 primitive Vec root 保留其密集数组或
+BINARY 表示。以 primitive 为 target 的外部结构或自定义序列化器仍是 object LIST 子项，
+因为其 serializer 不暴露规范 scalar 编码 ID。derive 可以校验显式 primitive category，
+但不把 Rust 类型映射到编码 ID。inline scalar-ID 和准确 target 检查必须在
+monomorphization 后折叠。derive 始终使用同一份统一的 core carrier 实现，不维护普通组合
+AST primitive 表。
+
+注册由 owning serializer 或 field codec 按访问触发。在 schema 构造或值处理访问选中用户
+serializer 的已注册身份或注册支撑的元数据前，必须先注册该 serializer。如果缺少 Option、
+collection 或 map 为空、weak value 为空、定长 array 长度为零，或等价递归分支的 owner
+路径没有访问子项注册，则该分支可以在不注册子项的情况下完成。declared-type body 路径直接
+调用其 statically selected serializer，不查询注册；若所属 schema 提供该声明，则其元数据
+构造已经持有唯一一次所需的注册/不匹配检查。现有外层 `FieldType` 未声明位置的异构 tuple，
+则通过普通逐位置 type-metadata 操作访问任何所需的子项注册。binding 不得添加 eager
+recursive root validation pass、reached-body check、selector tree、composed-target lookup、
+逐元素 serializer dispatch、分配、callback 或 hot-path 分支来改变这一行为。针对整个
+container 的准确自定义序列化器仍是一种独立 opaque EXT/NAMED_EXT 选择。它持有已注册动态
+target 身份，而未注册 carrier serializer 继续持有显式 static 结构组合。
+
+carrier serializer 没有独立的已注册身份。结构注册要求现有结构 serializer 契约以及匹配的
+STRUCT/ENUM/UNION category。自定义注册要求独立 EXT/NAMED_EXT serializer，并拒绝
+`IS_WRAPPER`。Option、Box、Rc、Arc、RcWeak、ArcWeak、RefCell 和 Mutex carrier
+serializer 独立于其子项 category 设置该属性。list、set、map、定长 array 和 tuple 将其
+保持为 false，并通过自身编码 category 被拒绝。以相同 Rust 形状之一为 target 的自定义
+序列化器也将其保持为 false，因为它持有独立 opaque EXT body。private 内建注册仅校验预期
+内部 type ID。这些语义检查使用现有 serializer 契约与编码 category。自定义 EXT 注册是
+`IS_WRAPPER` 唯一的运行时使用方。
+
+动态值应按具体 target 身份解析。运行时需要双向映射时，其 serializer-provider-to-type-info
+和 target-to-type-info 索引必须指向同一份不可变注册元数据与 serializer harness，而不是
+创建并行元数据或序列化路径。内部 context 和 resolver 入口必须说明方向；Rust 对静态 schema
+身份使用 `write_provider_type_info`/`get_provider_type_info`，对动态值身份使用
+`write_target_type_info`/`get_target_type_info`。存在歧义的 lookup 不得先查一张 map，
+再 fallback 到另一张。编码读取仍通过编码的 ID 或 name 解析到同一份元数据。
+
+当现有 homogeneous LIST/SET 或 MAP header 发出一个动态选中的具体类型时，header owner
+应只解析和校验 target 一次，并为当前编码 chunk 保留解析出的注册元数据。每个 body 借用这份
+准确元数据调用现有动态 harness；不得逐元素或逐 entry 重复 target lookup，或 clone
+reference-counted 元数据 handle。异构 chunk 保留现有逐值元数据路径。这种交接不会增加编码
+字段、运行时 serializer 实例、callback、schema tree、cache 或 static-path 分支。
+
+动态 target 检查是 fallible 的，并用没有 sentinel target 身份的方式表示缺失值。
+当 `!C::IS_POLYMORPHIC || !C::REQUIRES_SCOPED_ACCESS` 时，LIST/SET owner 可预先检查子项；
+这个 caller-local 决策不得变成另一项 serializer capability。需要 `RefCell` borrow、
+`Mutex` lock 或 weak upgrade 的多态子项会跳过 target/null 预检查，并在一次 holder access
+期间通过现有异构路径写入每个值。non-polymorphic nullable holder 保留现有 LIST/SET
+null-header 扫描，然后执行一次 body access，不重复 null 检查。MAP 两侧的元数据与 null flag
+都位于任一 body 之前，因此 nullable 或 access-constrained polymorphic MAP holder 会执行
+一次短暂 null/target 检查，释放 borrow、guard 或 upgraded owner，之后再执行普通 body
+access。实现不得让该 access 跨越 map 另一侧，不得暂存 body bytes、分配 prepared value、
+调用 callback 或改变 MAP 编码顺序。weak wrapper 不会让其 target 保持存活；要求单次一致
+观察的操作必须在该 owned operation 期间持有 upgrade 后的 strong owner。
+
+如果 closed polymorphic membership 在编码 ID/name lookup 后还需要宿主 target 身份，则共享
+harness 或注册元数据必须保留可选 target 身份。已注册本地行为提供该身份；remote-only stub
+不提供，并且必须在 membership 检查、serializer 调用或分配前进入 missing-registration 错误。
+不得扫描 reverse map、虚构 sentinel 身份或添加第二个元数据 cache。
+
+serializer 代码不得实例化 serializer provider value 或结构 mirror value。生成的结构读取
+应直接构造 target。动态 materializer 只分配一次请求的最终 owner，并使用 target size 进行
+内存计量。
+
+可能实例化值的 fallible serializer 默认值必须接收活动 read state 或 context。field codec
+使用其继承的 serializer 默认值，而不定义第二套默认值 API。具体 owner 在分配前预留对象图
+内存；null、缺失兼容字段和 skipped-field 路径不能仅因不消费 body bytes 而绕过正常分配
+budget。
+
+兼容结构读取继续由普通 struct-compatibility owner 持有。checked metadata cache 仍是已接受
+远端元数据的唯一 owner；serializer dispatch 不得添加另一个 validation marker、metadata
+cache 或 exact-schema 判断。
+
 ## 根帧职责
 
 每个根载荷都以一个 1-byte 位图开头，该位图由 `Fory`
@@ -481,7 +1002,16 @@ xlang 类型元信息由两类显式状态支撑：
 - `@ForyEnumId` 可将其覆盖为稳定的显式 tag
 - `serializeEnumByName(true)` 影响的是 Java native 模式，而不是 xlang 模式
 
+在 C# 中，enum 的底层数值就是 xlang tag。与稀疏 C# enum 互操作的 Java peer 必须声明
+匹配的 `@ForyEnumId` 值，而不能依赖声明 ordinal。
+
 即便配置接口或注解形式不同，其他运行时也应保持相同的编码规则。
+
+Rust 中携带数据的 enum 只有在每个已知 variant 都是 unit，或只携带一个 alternative value
+且满足 union case 规则时，才是 xlang union。Rust native 模式（`xlang = false`）还可以通过
+native enum 格式编码具有多个字段的 tuple 或 named variant。这些 struct-style enum 形状没有
+隐式 xlang 映射。xlang 模式下的注册必须在发布 resolver 状态前，于 cold schema/type-selection
+路径拒绝它们；生成代码不得丢弃字段、合成未声明的 variant struct 或 fallback 到 EXT。
 
 ## Out-Of-Band Buffer Object
 
@@ -498,8 +1028,8 @@ Dart 的常规集成路径如下：
 1. 使用 `@ForyStruct` 标注 struct
 2. 使用 `@ForyField` 标注字段覆盖
 3. 运行 `build_runner`
-4. 在源码库中私有绑定生成的元数据，并通过 `Fory.register(...)`
-   注册生成的类型
+4. 调用生成的 per-library helper（例如 `<InputFile>ForyModule.register(...)`），
+   绑定 private 生成元数据并注册生成类型
 
 生成代码应产出：
 
@@ -510,6 +1040,195 @@ Dart 的常规集成路径如下：
 
 生成代码不应创建公共全局 registry，也不应创建第二套公共 API
 族。
+
+### Dart 普通 Struct 继承
+
+普通 Dart `ForyStruct` 继承改变的是代码生成期的字段发现、规范化、访问、构造和扁平化，
+不会重新设计运行时引用协议。
+
+对于带注解的具体子类，generator 会遍历实例化的 superclass 和已应用 mixin 的存储链，
+而不是只检查子类直接的 `element.fields`。每一层的 `InterfaceType.element.fields`
+都会暴露其声明元素，包括另一个 library 中的 private 声明。Dart privacy 决定生成的表达式
+能否访问某个元素，但不决定是否发现该元素。
+
+存储收集器会：
+
+1. 访问实例化的 superclass；
+2. 按应用顺序访问实际应用的 mixin；
+3. 访问当前 class；
+4. 将每一层声明的具体实例存储准确收集一次。
+
+它会排除 `Object`、interface、mixin `on` constraint、abstract accessor、static 字段、
+external 字段，以及不持有存储的 synthetic 成员。mixin slot 由其应用位置和声明字段标识，
+因此多次应用不能按拼写或 `baseElement` 折叠。
+
+每个被发现的存储字段都经过同一条 pipeline：
+
+```text
+complete hierarchy discovery
+  -> declaration-owned @ForyField(ignore: true)
+  -> concrete-child ignoreInheritedPrivateFields policy
+  -> concrete generic substitution
+  -> direct or companion access resolution
+  -> constructor validation
+  -> one globally sorted child schema
+```
+
+`@ForyField(ignore: true)` 是由声明持有的逐字段省略。完成这项检查后，如果具体子类设置
+`ignoreInheritedPrivateFields: true`，就会删除 superclass 或已应用 mixin 声明的每个
+private 字段，包括同 library、跨 library、直接和传递祖先中的字段。它不会删除子类自身声明
+的 private 字段或继承的 public 字段。两种省略方式都会绕过 substitution、access、
+construction、编码身份、引用分析和 codec 工作，但对应物理 slot 仍计入具体对象的浅层对象图
+内存字段数量。任何仍被包含但无法解析的字段都会导致生成错误。
+
+所有权固定如下：
+
+| 关注点                             | Owner                                            |
+| ---------------------------------- | ------------------------------------------------ |
+| 字段身份和注解                     | 声明该存储的字段                                 |
+| 继承层次发现/substitution          | 具体子类 generator                               |
+| 继承 private 字段省略              | 带注解的具体子类                                 |
+| 跨 library private 访问权限        | 字段所属 library 中的 public boundary            |
+| Schema、排序和 codec               | 带注解的具体子类                                 |
+| 构造                               | 选中的具体子类 generative constructor            |
+| 引用分析/发布                      | 现有具体子类 serializer 路径                     |
+| 对象图内存 self charge             | 一个具体子类对象                                 |
+| 外部 target 字段列表               | 显式外部 serializer 声明                         |
+
+具体子类的省略选项默认为 `false`，不会从祖先注解继承，并且仅可用于持有扁平化 schema 的普通
+具体声明。它不能用于外部 target 声明，也不能用于仅作为 provider 的 abstract、open-generic
+或 mixin boundary。该选项在完成存储发现后、generic substitution 或 access resolution 前
+应用，因此即使 companion 存在，匹配字段也无需直接访问或 companion。
+
+对于仍被包含的字段，public 继承字段以及在子类 library 中声明的 private 继承字段使用直接生成
+访问，不要求父类注解。另一个 library 中声明的 private 字段要求该字段所属 library 的一个
+public hierarchy boundary 带有 `ForyStruct(exposePrivateFields: true)`。
+`exposePrivateFields` 默认为 `false`，不能与 `ForyStruct.target` 一起使用，并且只授权生成
+provider-library 访问。它不会启用字段发现，不会改变同 library 访问或字段包含规则，也不能
+让 consumer 授权另一个 library 的 private 状态。
+
+public boundary 可以暴露从 private class 或 mixin 继承的同 library private 存储。如果
+private 字段来自多个 Dart library，则每个 declaring library 都必须各自提供 opt-in 的 public
+boundary 以及可见 companion。系统会选择 declaring library 中离子类最近且对子类可见的合格
+boundary。
+
+provider 的 `.fory.dart` part 会生成 public `@nodoc` 的强类型 static access companion。
+它为每个暴露且未省略的 private 字段生成准确 getter，只为 mutable 存储生成 setter，不为
+`final` 或 `late final` 存储生成 setter。receiver 是 public boundary 类型。generic bound
+以及 public 签名中嵌套的每个类型，都必须能在 provider library 外命名。companion 不得使用
+`dynamic`、`Object?` bridge cast、反射、callback、运行时 lookup、父 serializer 或已存储
+运行时状态。companion 生成与每个 consumer 子类的 `ignoreInheritedPrivateFields` 值无关。
+具体 boundary 可同时启用两个选项：其自身 serializer 会应用省略，而其 provider companion
+仍会暴露 declaring library 中符合条件的 private 存储。
+
+子类源码必须有能暴露 public boundary 和 companion 的直接 import 或 re-export namespace。
+必须先生成并发布 provider 输出，再构建依赖 package。权限缺失、companion namespace 被隐藏
+或有歧义、签名类型无法命名，或者 dispatch 不再到达准确存储 slot，都会导致生成错误。子类还
+必须校验完整具体继承层次，确保 boundary 下方的字段隐藏不会把生成的 getter 或 setter 重定向
+到另一个 slot。
+
+每个包含的 `final` 或 `late final` 字段都必须由静态证明的身份流初始化：
+
+```text
+selected concrete-child constructor parameter
+  -> redirect or super parameter
+  -> exact storage field
+```
+
+可接受的 edge 包括准确 field formal、super formal、constructor field initializer 中的直接
+参数引用，以及 redirecting 或 super-constructor argument 中的直接参数引用。具体 generic
+substitution 后的类型（包括 nullability）必须保持一致。call、operator、cast、null assertion、
+constant、constructor-body assignment，以及名称匹配但元素身份不同的情况都不能作为证明。
+被包含的 final 字段不支持 declaration initializer，因为解码值无法持有该 slot。不存在构造后
+final write、反射或 fallback。
+
+与选中 constructor 参数相连的 mutable 字段通过同一准确身份流初始化一次。其余 mutable 字段
+必须有准确 setter，并在构造后恢复。required constructor 参数必须具有唯一且无歧义的字段来源。
+optional named 参数可以省略；省略的 optional positional 参数之后不能再传 positional 参数。
+constructor argument 与 assignment 按解析后的 storage-field 身份匹配，而不是字段名称字符串。
+如果省略策略删除了 required 参数唯一的序列化来源，生成将失败；generator 不得虚构值或放宽
+身份流证明。
+
+具体子类持有一个 `GeneratedStructSchema`、一份规范字段排序、一个 serializer 和 descriptor
+cache、一次重建、一条引用发布路径以及一个对象图内存 owner。父 serializer 不会嵌套或被调用，
+也不需要注册父运行时。另一个带注解的具体父类只为该准确类型的值拥有独立扁平化 schema。
+
+被包含的直接字段和继承字段会进入同一个规范化列表，再参与现有递归引用分析和 `needsRootRef`
+计算。被包含的继承 `ref: true` 和嵌套 container 元数据，其行为与等价的直接子字段相同；
+省略字段不进入该列表。继承不会增加引用状态、`ReadContext` API、serializer 签名、调用契约
+变化、运行时分支、slot、sentinel、callback、wrapper、compatible-layout 状态或父引用 owner。
+若等价扁平模型也有同一失败，那是另一个引用子系统问题。
+
+Java 仅为本功能提供扁平模型对照：其 object serializer 会跨继承扩展同一份 field-descriptor
+列表，不增加继承专用引用状态。Java 现有引用契约使用 `readRefIds` stack、真实引用 ID 及其
+`-1` sentinel，将 `reference(obj)` 与当前 serializer 调用关联。该契约不同于 Dart 当前
+引用子系统，不能在 Dart 继承支持中移植。Dart 继承只需与其自身等价扁平模型保持一致。
+
+继承层次遍历、substitution、access 校验和 constructor 证明都在生成期间运行。现有扁平
+serializer 不增加运行时工作；public 以及同 library 的继承字段生成与等价扁平字段相同的直接
+操作；policy 过滤不生成运行时检查；包含跨 library private 字段时只增加可 inline 的强类型
+static companion 调用。生成过程不得引入运行时继承层次遍历、分配、callback、反射或父级
+dispatch。
+
+子类的浅层对象图内存公式如下：
+
+```text
+24 + 4 * actualConcreteStorageFieldCount
+```
+
+它会将每个真实的继承和已忽略存储 slot 准确计算一次，且不增加父对象 self charge。
+
+生成的诊断必须标明具体子类、声明字段、declaring library，以及失败的 access 或 constructor
+路径，然后给出可操作的补救方法。典型补救包括：在 owner-library 的 public boundary 上添加
+`exposePrivateFields: true`、导入其生成 companion、原样转发 constructor 值、在字段声明上
+添加 `@ForyField(ignore: true)`、当所有祖先 private 状态都应省略时在具体子类上设置
+`ignoreInheritedPrivateFields: true`，或者使用自定义序列化器。诊断必须说明继承层次发现与
+跨 library 访问相互独立。
+
+继承层次存储、暴露 boundary 或 `ignoreInheritedPrivateFields` 的变化，都要求重新生成每个
+受影响的 `.fory.dart` 文件。兼容模式使用常规 missing/unknown-field 处理；fixed-schema peer
+必须同步修改。实现不得增加专用 legacy reader，不得保留仅限子类声明的替代路径，不得只按名称
+绑定 constructor，不得使用 late-final setter 路径，不得 fallback 到另一种访问模型，也不得
+委托给父 serializer。
+
+验收要求继承层次中的每个存储 slot 都满足以下三者之一：由其声明省略；由具体子类的继承 private
+策略省略；或以有效类型、访问路径、编码身份和重建路径准确表示一次。等价的已包含扁平模型和继承
+模型必须生成相同的规范 schema、编码字节、引用 ID 和 round-trip 行为。外部 target 声明保持
+显式且不受影响。
+
+### Dart 外部结构序列化器
+
+Dart 的外部类型序列化通过可选的编译期 `target` 和具名 generative `constructor` 扩展
+`ForyStruct`。带注解的 `abstract final` class 仅是 schema 声明，没有运行时值或注册身份。
+
+generator 必须通过同一份 struct 模型和 emitter 分析普通与外部 struct。private 生成符号名称
+来自声明名称。每个运行时类型位置都使用 target 类型：`Serializer<Target>`、
+`GeneratedStructSchema<Target>`、读写签名、constructor 调用、schema `type` 和生成 module
+dispatch。
+
+对于每个序列化的声明字段，应解析 target 上同名、可访问且实例化 Dart 类型准确匹配的 getter。
+constructor 参数以及任何构造后 setter 也必须准确匹配。仅当注解明确命名时才选择 public
+named generative constructor。factory constructor、abstract target、open target type，
+以及从基于 constructor 的引用跟踪路径回到 target 的路径，都会在生成期间被拒绝。递归检查
+包括受支持 list、set 和 map 字段元数据中嵌套的 target element、key 和 value。
+
+外部声明的字段就是完整 schema。它可以显式命名 target 继承的可访问属性，但 generator 不会
+自动扫描外部 target 继承层次来发现 schema 字段。`exposePrivateFields` 和
+`ignoreInheritedPrivateFields` 不能用于外部声明。
+
+外部对象的浅层对象图内存公式取声明字段与在 target、其 superclass 和已应用 mixin 上发现的
+public 实例字段的并集。由声明表示的 public target 字段只计算一次。
+`@ForyField(ignore: true)` 会添加仅用于 budget 的声明存储，但不增加 target 访问、构造、
+元数据或编码代码。
+
+生成代码直接读取 getter，并调用 target constructor 或 setter。它不得分配声明对象，不得
+通过中间对象复制值，不得调用运行时 callback、执行成员名称 lookup，或根据 struct 是否为
+external 而分支。现有生成 struct、注册、resolver、字段、collection、map、兼容读取和引用
+路径仍是唯一运行时路径。
+
+注册通过生成 module 和现有生成注册 API 按 `Target` 建立索引。直接 root、生成字段、动态值
+以及递归 collection/map 子项都会解析到同一 target 注册。Dart root collection 保留其现有
+untyped 外层运行时形状。
 
 ## 目录布局
 
@@ -541,8 +1260,11 @@ Dart 的常规集成路径如下：
 8. 内部命名应停留在序列化领域。优先使用 `codec`、`binding`、`layout`、
    `slots` 这类词，避免使用 `session` 这类 RPC 风格术语，或 `plan`
    这类含义模糊的控制流词汇。
-9. 每次 xlang 协议或所有权模型变更后，都要运行跨语言测试矩阵，并同时更新本指南与
-   [Xlang Serialization Spec](xlang_serialization_spec.md)。
+9. 当实现语言支持 cold 和 no-inline 注解时，应让 serializer hot path 可达的错误、
+   cache miss、schema mismatch、不支持能力及其他 cold 入口保持在 hot-path inlining
+   之外。不要把成功的动态 dispatch 标记为 cold。
+10. 每次 xlang 协议或所有权模型变更后，都要运行跨语言测试矩阵，并同时更新本指南与
+    [Xlang Serialization Spec](xlang_serialization_spec.md)。
 
 ## 验证
 
@@ -550,7 +1272,7 @@ Dart 的常规集成路径如下：
 
 ```bash
 cd dart
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart analyze
 dart test
 ```
@@ -559,6 +1281,6 @@ dart test
 
 ```bash
 cd dart/packages/fory-test
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 dart test
 ```

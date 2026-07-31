@@ -59,7 +59,7 @@ native 模式用于仅包含 Java 对象的对象图。[Fory JSON](json-support.
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -67,7 +67,7 @@ native 模式用于仅包含 Java 对象的对象图。[Fory JSON](json-support.
 
 ```kotlin
 // Binary object serialization
-implementation("org.apache.fory:fory-core:1.4.0")
+implementation("org.apache.fory:fory-core:1.5.0")
 ```
 
 #### JDK 25 及更高版本
@@ -264,14 +264,14 @@ Fory 行格式是一种独立、缓存友好的二进制格式，适用于随机
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-format</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```kotlin
-implementation("org.apache.fory:fory-format:1.4.0")
+implementation("org.apache.fory:fory-format:1.5.0")
 ```
 
 有关编码、类型化字段访问、部分反序列化、嵌套值和 Arrow 集成，请参阅[行格式](row-format.md)。
@@ -299,14 +299,14 @@ Fory JSON 是面向 Java 的线程安全 JSON 序列化框架，并针对 JSON �
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-json</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```kotlin
-implementation("org.apache.fory:fory-json:1.4.0")
+implementation("org.apache.fory:fory-json:1.5.0")
 ```
 
 在 JDK 25 及更高版本中，请使用二进制序列化安装章节所述的相同 `java.lang.invoke`

@@ -62,6 +62,41 @@ byte[] payload = fory.Serialize(person);
 Person decoded = fory.Deserialize<Person>(payload);
 ```
 
+## 类继承
+
+带注解的类会将其带注解基类所声明的受支持成员纳入同一个扁平化 Schema。
+需要直接为继承层次中的每个类添加注解；`[ForyStruct]` 不会被继承。
+
+```csharp
+[ForyStruct]
+public abstract class Entity
+{
+    [ForyField(1)]
+    private long _id;
+
+    public long Id => _id;
+}
+
+[ForyStruct]
+public sealed class User : Entity
+{
+    [ForyField(2)]
+    public string Name { get; set; } = string.Empty;
+}
+```
+
+public 以及在程序集内可访问的可变成员会自动纳入 Schema。private、仅 protected
+以及其他不可访问的字段或属性，必须在声明它们的类上添加 `[ForyField]`。
+带注解的抽象基类会为具体派生类提供 Schema 信息，但不会作为根类型注册或序列化。
+
+具体派生类型仍然只需注册一次：
+
+```csharp
+fory.Register<User>(102);
+```
+
+如果基类来自不可修改的包，请按[外部类型](external-types.md)中的说明显式声明其字段。
+
 ## 强类型 API
 
 ### 使用字节数组进行 Serialize / Deserialize
@@ -124,7 +159,8 @@ fory.Serialize<object?>(dynamicWriter, value);
 
 - 复用同一个 `Fory` 或 `ThreadSafeFory` 实例可以获得更好的性能。
 - 基础类型和集合类型不需要用户手动注册。
-- 用户自定义的 `[ForyStruct]`、`[ForyEnum]`、`[ForyUnion]` 类型和自定义序列化器类型应显式注册。
+- 对通过 `[ForyStruct]`、`[ForyEnum]`、`[ForyUnion]`、外部结构序列化器
+  或自定义序列化器处理的用户类型进行显式注册。
 
 ## 相关主题
 

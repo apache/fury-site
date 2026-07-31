@@ -111,6 +111,9 @@ license: |
 
 说明：
 
+- C# 外部类型序列化通过本地的 `ForyStruct(Target = typeof(...))` 或
+  `ForyEnum(Target = typeof(...))` 序列化器声明映射第三方 class/struct 或 enum。运行时
+  target 仍使用上表所示的 C# 映射；声明归属并不是编码格式上的区别。
 - Python 的 `pyfory.Float16` 和 `pyfory.BFloat16` 是保留的注解标记；标量值反序列化为 Python 原生 `float`。
 - Python 的 `BoolArray`、`Int8Array`、`Int16Array`、`Int32Array`、`Int64Array`、`UInt8Array`、`UInt16Array`、`UInt32Array`、`UInt64Array`、`Float16Array`、`BFloat16Array`、`Float32Array` 和 `Float64Array` 是公开的稠密数组封装，提供类似列表的序列行为。
 - JavaScript 的 `BoolArray`、回退实现 `Float16Array` 和 `BFloat16Array` 是由 `Uint8Array` 或 `Uint16Array` 支持的公开稠密数组封装。标量 `float16` 和 `bfloat16` 值使用 `number`。原生支持 `Float16Array` 的 JavaScript 环境可能会为 `array<float16>` 返回该原生载体。

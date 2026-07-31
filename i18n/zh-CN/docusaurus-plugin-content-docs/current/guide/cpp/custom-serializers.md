@@ -191,7 +191,7 @@ struct Serializer<CustomType> {
     write_not_null_ref_flag(ctx, ref_mode);
     if (write_type) {
       auto result = ctx.write_any_type_info(
-          static_cast<uint32_t>(TypeId::UNKNOWN),
+          static_cast<uint32_t>(type_id),
           std::type_index(typeid(CustomType)));
       if (!result.ok()) {
         ctx.set_error(std::move(result).error());
@@ -278,7 +278,7 @@ int main() {
 }
 ```
 
-## WriteContext Methods
+## WriteContext 方法
 
 The `WriteContext` provides methods for writing data:
 
@@ -307,7 +307,7 @@ ctx.buffer().write_float(value);
 ctx.buffer().write_double(value);
 ```
 
-## ReadContext Methods
+## ReadContext 方法
 
 The `ReadContext` provides methods for reading data:
 
@@ -333,7 +333,7 @@ float f = ctx.buffer().read_float(ctx.error());
 double d = ctx.buffer().read_double(ctx.error());
 ```
 
-## Delegating to Built-in Serializers
+## 委托给内置序列化器
 
 Reuse existing serializers for nested types:
 
@@ -354,16 +354,16 @@ static MyType read_data(ReadContext &ctx) {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use variable-length encoding** for integers that may be small
-2. **Check errors after read operations** using `ctx.has_error()`
-3. **Return default values on error** to maintain consistent behavior
-4. **Delegate to built-in serializers** for standard types
-5. **Match type IDs across languages** for cross-language compatibility
-6. **Use `(void)param`** to suppress unused parameter warnings
+1. **对可能取值较小的整数使用变长编码**
+2. **在读取操作后使用 `ctx.has_error()` 检查错误**
+3. **发生错误时返回默认值，以保持一致的行为**
+4. **标准类型应委托给内置序列化器处理**
+5. **跨语言使用时应保持类型 ID 一致**
+6. **使用 `(void)param` 避免未使用参数警告**
 
-## Related Topics
+## 相关主题
 
 - [Type Registration](type_registration) - Registering serializers
 - [Basic Serialization](basic_serialization) - Using FORY_STRUCT macro

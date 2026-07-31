@@ -40,14 +40,14 @@ Maven：
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-json</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
 Gradle：
 
 ```kotlin
-implementation("org.apache.fory:fory-json:1.4.0")
+implementation("org.apache.fory:fory-json:1.5.0")
 ```
 
 请让所有 Fory 模块使用相同版本。
@@ -169,8 +169,9 @@ ForyJson json =
         .build();
 ```
 
-`withConcurrencyLevel` 控制可复用的操作状态数量，并非调用方数量上限。超出该数量的并发操作会使用
-临时状态，而不是争用一个全局锁。
+`withConcurrencyLevel` 设置可并发执行的根操作数上限。额外的调用方会等待，直到某个固定执行状态
+可用。同一 `ForyJson` 实例上的根 API 不可重入：自定义 codec 必须继续使用传入的具体 reader 或
+writer，而不能在该实例上调用 `toJson`、`toJsonBytes`、`writeJsonTo` 或 `fromJson`。
 
 ## 对象映射
 
@@ -269,7 +270,7 @@ String、number、boolean、character 和 enum 值，但读回时都是字符串
 | `withClassLoader`            | 构建时快照的 context loader，随后为 Fory loader | 解析注解中的子类型类名 |
 | `maxDepth`                   | `20`                                         | 对象/数组最大嵌套深度 |
 | `withMaxCachedFieldNames`    | `DEFAULT_MAX_CACHED_FIELD_NAMES`（`8192`）   | 每个 reader 的字段名缓存条目数；零表示禁用 |
-| `withConcurrencyLevel`       | `max(1, 2 * processors)`                     | 可复用操作状态数量 |
+| `withConcurrencyLevel`       | `max(1, 2 * processors)`                     | 并发根操作数上限 |
 | `withBufferSizeLimitBytes`   | 2 MiB                                        | 每个池化 writer 保留的可复用容量 |
 | `registerCodec`              | 无                                           | 精确类的完整值 codec |
 | `registerMixin`              | 无                                           | 精确声明目标的注解 Mixin |
@@ -619,7 +620,7 @@ public final class Name {
 中列出其 Java 逻辑属性名。组内保持子对象顺序。输入匹配顺序依次为父对象固定属性、扁平化属性和动态 Any
 成员。
 
-Fory 会拒绝最终名称或名称 hash 冲突、仅由 unwrapped 属性组成的递归链、参数化子对象、JSON Any
+Fory 会拒绝重复的最终名称、仅由 unwrapped 属性组成的递归链、参数化子对象、JSON Any
 子对象、多态或自定义 codec 子对象根，以及标量、数组、collection 或 Map 子对象。Map 应通过
 `JsonAnyProperty`、`JsonAnyGetter` 或 `JsonAnySetter` 扁平化。unwrapped 属性不能使用
 `JsonProperty.value`、非默认 `JsonProperty.include` 或 `JsonCodec`；子对象内部的普通叶子属性
@@ -687,11 +688,9 @@ any-getter 的写入方向，其 `ignoreRead` flag 也不会禁用单独的 any-
 动态 key 按 Map 迭代顺序原样输出。null Map 不输出内容，而 null Map value 无论固定属性的 null 设置
 如何都会输出 JSON null。null 和非 String 输出 key 会被拒绝。raw Map、通配符或未解析 key，以及非
 String key 类型均无效。声明的固定成员（包括排除读取的成员）不会交给 Any 输入。输出 key 若与固定属性
-的 Fory 字段名 hash 冲突，会被拒绝，包括拼写不同但 hash 冲突的情况。Fory 不会检查 Any Map 中的 key
-是否与内联子类型判别字段在名称或 Fory 字段名 hash 上冲突。同名输出 key 会生成重复 JSON 成员；输入时，
-拼写不同但 hash 冲突的名称会被子字段表归为判别字段。应用必须保证动态 key 与当前判别字段的名称和 hash
-都不同。重复的未知名称会替换 Map value；any-setter 则会为每次出现都调用。固定输入查找也基于 hash，
-因此拼写不同但冲突的名称会走固定成员，而不是 Any 处理。转义的输入名称会先解码再交付。
+冲突则会被拒绝。Fory 不会检查 Any Map 中是否存在与内联子类型判别字段重复的 key；该 key 会生成重复的
+JSON 成员。应用必须保证动态 key 与当前判别字段不同。重复的未知名称会替换 Map value；any-setter
+则会为每次出现都调用。转义的输入名称会先解码再交付。
 
 ### `JsonCreator`
 

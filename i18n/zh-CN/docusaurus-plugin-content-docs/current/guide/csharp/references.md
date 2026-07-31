@@ -1,6 +1,6 @@
 ---
 title: 引用
-sidebar_position: 6
+sidebar_position: 7
 id: references
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -33,6 +33,9 @@ Fory fory = Fory.Builder()
 
 - 共享对象身份会被保留。
 - 循环对象图可以安全地序列化和反序列化。
+
+由[外部类型序列化](external-types.md)处理的可变 class 使用相同的引用跟踪。
+外部 struct 仍然是内联值。
 
 ## 循环引用示例
 
@@ -71,4 +74,5 @@ C# union 包装器是不可变对象，要在读取 case 载荷后才能创建�
 
 - [配置](configuration.md)
 - [基础序列化](basic-serialization.md)
+- [外部类型](external-types.md)
 - [线程安全](thread-safety.md)

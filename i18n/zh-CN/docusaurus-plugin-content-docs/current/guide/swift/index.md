@@ -24,10 +24,11 @@ Apache Fory Swift 提供高性能对象图序列化，同时具备强类型安�
 ## 为什么选择 Fory Swift？
 
 - 面向 Swift 值类型和引用类型的高性能二进制序列化
-- 使用 `@ForyObject` 宏，几乎无需样板代码即可让模型支持序列化
+- 使用 `@ForyStruct`、`@ForyEnum` 和 `@ForyUnion` 宏，几乎无需样板代码即可让模型支持序列化
 - 通过 `xlang` 协议与 Java、Rust、Go、Python 等运行时互通
 - 通过兼容模式支持跨版本 Schema 演进
-- 内置支持动态值，例如 `Any`、`AnyObject`、`any Serializer`、`AnyHashable`
+- 支持外部结构化序列化器、自定义序列化器和递归组合的容器序列化器
+- 内置支持动态值和任意应用协议存在类型
 - 支持共享引用和循环引用跟踪，类类型还支持 `weak` 引用场景
 
 ## 安装
@@ -36,7 +37,7 @@ Apache Fory Swift 提供高性能对象图序列化，同时具备强类型安�
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/apache/fory.git", exact: "$version")
+    .package(url: "https://github.com/apache/fory.git", exact: "1.5.0")
 ],
 targets: [
     .target(
@@ -52,14 +53,14 @@ targets: [
 
 - [配置](configuration.md)
 - [基础序列化](basic-serialization.md)
+- [跨语言序列化](xlang-serialization.md)
+- [Schema 元信息](schema-metadata.md)
 - [类型注册](type-registration.md)
+- [外部类型序列化](external-types.md)
 - [自定义序列化器](custom-serializers.md)
-- [字段配置](schema-metadata.md)
 - [共享引用与循环引用](references.md)
 - [多态与动态类型](polymorphism.md)
 - [Schema 演进](schema-evolution.md)
-- [跨语言序列化](xlang-serialization.md)
-- [Row Format 状态](../xlang/row_format.md)
 - [故障排查](troubleshooting.md)
 
 ## 快速示例
@@ -67,14 +68,14 @@ targets: [
 ```swift
 import Fory
 
-@ForyObject
+@ForyStruct
 struct User: Equatable {
     var name: String = ""
     var age: Int32 = 0
 }
 
 let fory = Fory()
-fory.register(User.self, id: 1)
+try fory.register(User.self, id: 1)
 
 let input = User(name: "alice", age: 30)
 let data = try fory.serialize(input)

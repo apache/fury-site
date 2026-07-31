@@ -89,7 +89,7 @@ foryc service.fdl --kotlin_out=./generated/kotlin --grpc
 | `GreeterGrpcKt.kt`  | Coroutine service base、stub 和 codec |
 
 编译生成 model 文件时需要运行 KSP，以便 runtime 可以使用 schema serializer。生成的 request 和
-response 类型由 service companion 使用的 schema module 注册，service 实现不需要手动注册 serializer。
+response 类型由 service companion 使用的 schema module 注册，service 实现不需要注册自定义序列化器。
 
 ## 实现 Server
 

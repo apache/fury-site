@@ -48,13 +48,13 @@ struct Dog : Animal {
   std::string speak() const override { return "Woof!"; }
   std::string breed;
 };
-FORY_STRUCT(Dog, age, breed);
+FORY_STRUCT(Dog, FORY_BASE(Animal), breed);
 
 struct Cat : Animal {
   std::string speak() const override { return "Meow!"; }
   std::string color;
 };
-FORY_STRUCT(Cat, age, color);
+FORY_STRUCT(Cat, FORY_BASE(Animal), color);
 
 // Struct with polymorphic field
 struct Zoo {
@@ -288,7 +288,7 @@ auto bytes = fory2.serialize(level1).value();
 auto decoded = fory2.deserialize<std::shared_ptr<Container>>(bytes).value();
 ```
 
-**Depth exceeded error:**
+**超出深度限制错误：**
 
 ```cpp
 auto fory_shallow = Fory::builder().max_dyn_depth(2).build();
@@ -299,12 +299,12 @@ auto result = fory_shallow.deserialize<std::shared_ptr<Container>>(bytes);
 assert(!result.ok());  // Fails with depth exceeded error
 ```
 
-**When to adjust:**
+**何时调整：**
 
-- **Increase `max_dyn_depth`**: For legitimate deeply nested polymorphic data structures
-- **Decrease `max_dyn_depth`**: For stricter security requirements or shallow data structures
+- **增大 `max_dyn_depth`**：用于合理的深度嵌套多态数据结构
+- **减小 `max_dyn_depth`**：用于更严格的安全要求或浅层数据结构
 
-## Nullability for Polymorphic Fields
+## 多态字段的可空性
 
 By default, `std::shared_ptr<T>` and `std::unique_ptr<T>` fields are treated as
 non-nullable in the schema. To allow `nullptr`, wrap the field with
@@ -323,9 +323,9 @@ FORY_STRUCT(Pet, primary, optional);
 
 See [Field Configuration](schema_metadata) for more details.
 
-## Combining Polymorphism with Other Features
+## 多态与其他特性结合使用
 
-### Polymorphism + Reference Tracking
+### 多态 + 引用跟踪
 
 ```cpp
 struct GraphNode {
@@ -338,7 +338,7 @@ FORY_STRUCT(GraphNode, id, neighbors);
 struct WeightedNode : GraphNode {
   double weight = 0.0;
 };
-FORY_STRUCT(WeightedNode, id, neighbors, weight);
+FORY_STRUCT(WeightedNode, FORY_BASE(GraphNode), weight);
 
 // Enable ref tracking to handle shared references and cycles
 auto fory = Fory::builder().track_ref(true).build();
@@ -360,7 +360,7 @@ auto decoded = fory.deserialize<std::shared_ptr<GraphNode>>(bytes).value();
 // Cycle handled correctly
 ```
 
-### Polymorphism + Schema Evolution
+### 多态 + Schema 演进
 
 Use compatible mode for schema evolution with polymorphic types:
 
@@ -371,21 +371,21 @@ auto fory = Fory::builder()
     .build();
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use type ID registration** for polymorphic types:
+1. **对多态类型使用类型 ID 注册**：
 
    ```cpp
    fory.register_struct<DerivedType>(100);
    ```
 
-2. **Enable reference tracking** for polymorphic types:
+2. **为多态类型启用引用跟踪**：
 
    ```cpp
    auto fory = Fory::builder().track_ref(true).build();
    ```
 
-3. **Virtual destructors required**: Ensure base classes have virtual destructors:
+3. **必须使用虚析构函数**：确保基类具有虚析构函数：
 
    ```cpp
    struct Base {
@@ -393,14 +393,23 @@ auto fory = Fory::builder()
    };
    ```
 
-4. **Register all concrete types** before serialization/deserialization:
+4. **使用 `FORY_BASE` 声明每一组需要序列化的基类关系**：
+
+   ```cpp
+   FORY_STRUCT(DerivedType, FORY_BASE(BaseType), derived_field);
+   ```
+
+   这样 Fory 才能校验多态值，并在反序列化期间为多重继承正确调整指针。
+   如果派生值没有声明对应的基类关系，就无法通过该基类智能指针类型完成反序列化。
+
+5. **注册所有具体类型**，然后再执行序列化或反序列化：
 
    ```cpp
    fory.register_struct<Derived1>(100);
    fory.register_struct<Derived2>(101);
    ```
 
-5. **Use `dynamic_cast`** to downcast after deserialization:
+6. **反序列化后使用 `dynamic_cast`** 进行向下转型：
 
    ```cpp
    auto* derived = dynamic_cast<DerivedType*>(base_ptr.get());
@@ -409,19 +418,19 @@ auto fory = Fory::builder()
    }
    ```
 
-6. **Adjust `max_dyn_depth`** based on your data structure depth:
+7. **根据数据结构的深度调整 `max_dyn_depth`**：
 
    ```cpp
    auto fory = Fory::builder().max_dyn_depth(10).build();
    ```
 
-7. **Use `fory::nullable`** for optional polymorphic fields:
+8. **对可选多态字段使用 `fory::nullable`**：
 
    ```cpp
    fory::field<std::shared_ptr<Base>, 0, fory::nullable> optional_ptr;
    ```
 
-## Error Handling
+## 错误处理
 
 ```cpp
 auto bytes_result = fory.serialize(obj);
@@ -439,39 +448,39 @@ if (!decoded_result.ok()) {
 }
 ```
 
-**Common errors:**
+**常见错误：**
 
-- **Type not registered**: Register all concrete types with unique IDs before use
-- **Depth exceeded**: Increase `max_dyn_depth` for deeply nested structures
-- **Type ID conflict**: Ensure each type has a unique type ID across all registered types
+- **类型未注册**：使用前为所有具体类型注册唯一 ID
+- **超出深度限制**：对于深度嵌套的结构，增大 `max_dyn_depth`
+- **类型 ID 冲突**：确保所有已注册类型均具有唯一的类型 ID
 
-## Performance Considerations
+## 性能考量
 
-**Polymorphic serialization overhead:**
+**多态序列化开销：**
 
 - Type metadata written for each polymorphic object (~16-32 bytes)
 - Dynamic type resolution during deserialization
 - Virtual function calls for runtime dispatch
 
-**Optimization tips:**
+**优化建议：**
 
-1. **Use `fory::dynamic<false>`** when runtime type matches declared type:
+1. **运行时类型与声明类型一致时使用 `fory::dynamic<false>`**：
 
    ```cpp
    fory::field<std::shared_ptr<Base>, 0, fory::dynamic<false>> fixed_type;
    ```
 
-2. **Minimize nesting depth** to reduce metadata overhead
+2. **尽量减小嵌套深度**，以降低元数据开销
 
-3. **Batch polymorphic objects** in collections rather than individual fields
+3. **在集合中批量存放多态对象**，而不是使用单独字段
 
-4. **Consider non-polymorphic alternatives** when polymorphism isn't needed:
+4. **不需要多态时，考虑使用非多态替代方案**：
 
    ```cpp
    std::variant<Dog, Cat> animal;  // Type-safe union instead of polymorphism
    ```
 
-## Related Topics
+## 相关主题
 
 - [Type Registration](type_registration) - Registering types for serialization
 - [Field Configuration](schema_metadata) - Field-level metadata and options

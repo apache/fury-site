@@ -1,6 +1,6 @@
 ---
-title: 故障排除
-sidebar_position: 10
+title: 故障排查
+sidebar_position: 13
 id: troubleshooting
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-本页涵盖 Apache Fory™ Rust 的常见问题和调试技术。
+本页介绍 Apache Fory™ Rust 的常见问题和调试技巧。
 
 ## 常见问题
 
@@ -36,42 +36,87 @@ let mut fory = Fory::default();
 fory.register::<MyStruct>(100)?;  // 使用前注册
 ```
 
-确认：
+请确认：
 
-- 每个可序列化的结构体或 trait 实现都调用 `fory.register::<T>(type_id)`
-- 在反序列化端重用相同的 ID
+- 每个动态具体目标都通过与之匹配的结构化序列化器、联合类型序列化器或自定义序列化器 API 注册。
+- 反序列化端复用了相同的 ID 或名称映射。
+
+使用外部类型序列化时，应注册所选的外部结构化序列化器或自定义序列化器，而不是其第三方目标类型：
+
+```rust
+fory.register::<UserSerializer>(100)?;
+```
+
+不要注册 `VecSerializer<UserSerializer>` 或其他承载序列化器。请注册 `UserSerializer`，然后在字段上使用递归的 `list`、`map` 或 `tuple` 注解，或者在根值上选择承载序列化器。
 
 ### 类型不匹配错误
 
-**原因**：字段类型不兼容或 schema 已更改。
+**原因**：字段类型不兼容或 Schema 已变更。
 
 **解决方案**：
 
-- 启用 compatible 模式以支持 schema 演化
+- 保持兼容模式启用，以支持 Schema 演进
 - 确保跨版本字段类型匹配
 
 ```rust
-let fory = Fory::default().compatible(true);
+// 从通信双方移除所有 compatible(false) 覆盖。
+let fory = Fory::builder()
+    // 现有选项
+    .build();
 ```
 
-## 调试技术
+### 外部类型序列化选择错误
 
-### 启用错误时 Panic 以获取回溯
+如果派生宏报告 `with` 的目标类型错误，请确认所选序列化器声明了完全匹配的字段目标类型：
 
-在 `RUST_BACKTRACE=1` 旁边切换 `FORY_PANIC_ON_ERROR=1`，在构造错误的确切位置 panic：
+```rust
+impl Serializer for UserSerializer {
+    type Target = third_party::User;
+    // ...
+}
+```
+
+对于透明 holder，请选择目标类型与字段类型完全匹配的承载序列化器：
+
+```rust
+#[fory(with = OptionSerializer<UserSerializer>)]
+user: Option<third_party::User>
+```
+
+对于完全匹配的容器字段，也可以使用承载序列化器：
+
+```rust
+#[fory(with = VecSerializer<UserSerializer>)]
+users: Vec<third_party::User>
+```
+
+当选择元素、map 子节点或 tuple 位置时，请使用递归集合语法：
+
+```rust
+#[fory(list(element(with = UserSerializer)))]
+users: Vec<third_party::User>
+```
+
+如果注册只在 xlang 模式下失败，请检查外部结构化序列化器是否包含带多个字段的 Rust native 枚举变体。这种结构没有对应的 xlang `UNION` 表示；请使用 native 模式，或修改共享 Schema。
+
+## 调试技巧
+
+### 在错误处 Panic 以获取回溯
+
+将 `FORY_PANIC_ON_ERROR=1` 与 `RUST_BACKTRACE=1` 一起启用，使程序在错误构造的确切位置 panic：
 
 ```bash
 RUST_BACKTRACE=1 FORY_PANIC_ON_ERROR=1 cargo test --features tests
 ```
 
-之后重置该变量以避免中止面向用户的代码路径。
+完成后重置该变量，以免面向用户的代码路径中止。
 
-### 结构体字段跟踪
+### 跟踪结构体字段
 
-在 `#[derive(ForyObject)]` 旁边添加 `#[fory(debug)]` 属性以发出钩子调用：
+在 `#[derive(ForyStruct)]` 旁添加 `#[fory(debug)]` 属性，以发出 hook 调用：
 
 ```rust
-#[derive(ForyObject)]
+#[derive(ForyStruct)]
 #[fory(debug)]
 struct MyStruct {
     field1: i32,
@@ -79,28 +124,28 @@ struct MyStruct {
 }
 ```
 
-使用调试钩子编译后，调用这些函数以插入自定义回调：
+使用调试 hook 编译后，调用以下函数接入自定义回调：
 
 - `set_before_write_field_func`
 - `set_after_write_field_func`
 - `set_before_read_field_func`
 - `set_after_read_field_func`
 
-当你想要恢复默认值时，使用 `reset_struct_debug_hooks()`。
+需要恢复默认值时，请使用 `reset_struct_debug_hooks()`。
 
 ### 轻量级日志
 
-在没有自定义钩子的情况下，启用 `ENABLE_FORY_DEBUG_OUTPUT=1` 以打印字段级读/写事件：
+不使用自定义 hook 时，可以启用 `ENABLE_FORY_DEBUG_OUTPUT=1` 来打印字段级读写事件：
 
 ```bash
 ENABLE_FORY_DEBUG_OUTPUT=1 cargo test --features tests
 ```
 
-这在调查对齐或游标不匹配时特别有用。
+这对于排查对齐或游标不匹配尤其有用。
 
 ### 检查生成的代码
 
-使用 `cargo expand` 检查 Fory derive 宏生成的代码：
+使用 `cargo expand` 检查 Fory 派生宏生成的代码：
 
 ```bash
 cargo expand --test mod $mod$::$file$ > expanded.rs
@@ -114,51 +159,52 @@ cargo expand --test mod $mod$::$file$ > expanded.rs
 cargo test --features tests
 ```
 
-### 运行特定测试
+### 运行指定测试
 
 ```bash
 cargo test -p tests --test $test_file $test_method
 ```
 
-### 使用调试运行测试
+### 在调试模式下运行测试
 
 ```bash
 RUST_BACKTRACE=1 FORY_PANIC_ON_ERROR=1 ENABLE_FORY_DEBUG_OUTPUT=1 \
   cargo test --test mod $dir$::$test_file::$test_method -- --nocapture
 ```
 
-## 测试时的卫生
+## 测试环境注意事项
 
-一些集成测试期望 `FORY_PANIC_ON_ERROR` 保持未设置状态。仅在集中调试会话时导出它：
+部分集成测试要求 `FORY_PANIC_ON_ERROR` 保持未设置状态。仅在针对性调试会话中设置该变量：
 
 ```bash
-# 仅用于特定调试
+# 仅用于指定的调试任务
 FORY_PANIC_ON_ERROR=1 cargo test -p tests --test specific_test -- --nocapture
 
-# 正常测试运行（不在错误时 panic）
+# 正常运行测试（不在错误处 panic）
 cargo test --features tests
 ```
 
 ## 错误处理最佳实践
 
-优先使用 `fory_core::error::Error` 上的静态构造函数：
+优先使用 facade `Error` 类型上的静态构造函数：
 
 - `Error::type_mismatch`
 - `Error::invalid_data`
 - `Error::unknown`
 
-这样可以保持诊断的一致性，并使选择性 panic 正确工作。
+这样可以保持诊断一致，并确保按需启用的 panic 正常工作。
 
 ## 快速参考
 
-| 环境变量                     | 目的                    |
-| ---------------------------- | ----------------------- |
-| `RUST_BACKTRACE=1`           | 启用堆栈跟踪            |
-| `FORY_PANIC_ON_ERROR=1`      | 在错误位置 panic 以调试 |
-| `ENABLE_FORY_DEBUG_OUTPUT=1` | 打印字段级读/写事件     |
+| 环境变量                     | 用途                       |
+| ---------------------------- | -------------------------- |
+| `RUST_BACKTRACE=1`           | 启用堆栈跟踪               |
+| `FORY_PANIC_ON_ERROR=1`      | 在错误位置 panic 以便调试  |
+| `ENABLE_FORY_DEBUG_OUTPUT=1` | 打印字段级读写事件         |
 
 ## 相关主题
 
 - [配置](configuration.md) - Fory 选项
 - [类型注册](type-registration.md) - 注册最佳实践
-- [Schema 演化](schema-evolution.md) - Compatible 模式
+- [Schema 演进](schema-evolution.md) - 兼容模式
+- [外部类型序列化](external-types.md) - 字段和根值序列化器选择

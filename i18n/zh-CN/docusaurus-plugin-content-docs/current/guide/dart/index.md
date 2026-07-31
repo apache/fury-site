@@ -1,7 +1,7 @@
 ---
 title: Dart 序列化指南
 sidebar_position: 0
-id: dart_serialization_index
+id: serialization_index
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,21 +19,25 @@ license: |
   limitations under the License.
 ---
 
-Apache Fory™ Dart 可以把 Dart 对象序列化为字节，再从字节反序列化回来，并且支持与 Java、Go、C#、Python 以及其他 Fory 支持语言编写的服务进行互通。
+Apache Fory™ Dart 可以把 Dart 对象序列化为字节，再从字节反序列化回来，
+并且支持与 Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、
+Swift、Scala、Kotlin 以及其他 Fory 支持语言编写的服务进行互通。
 
 ## 为什么选择 Fory Dart？
 
 - **跨语言**：在 Dart 中序列化，在 Java、Go、C# 等语言中反序列化，无需额外胶水代码
+- **平台支持**：在 Dart VM/AOT、Flutter 和 Web 平台上使用相同的生成序列化器 API
 - **高性能**：生成的序列化代码会替代运行时反射
+- **继承**：普通结构体会把具体父类和 mixin 中的存储展平到同一个 Schema 中
 - **Schema 演进**：可以新增或删除字段，而不破坏已有消息
 - **循环引用**：可选的引用跟踪可处理共享或递归对象图
-- **逃生口**：对任何无法加注解的类型，你都可以手写序列化器
+- **自定义扩展**：对任何无法加注解的类型，都可以编写自定义序列化器
 
 ## 快速开始
 
 ### 要求
 
-- Dart SDK 3.6 或更高版本
+- Dart SDK 3.7 或更高版本
 - `build_runner`，用于生成序列化代码
 
 ### 安装
@@ -42,7 +46,7 @@ Apache Fory™ Dart 可以把 Dart 对象序列化为字节，再从字节反序
 
 ```yaml
 dependencies:
-  fory: ^1.4.0
+  fory: ^1.5.0
 
 dev_dependencies:
   build_runner: ^2.4.0
@@ -67,29 +71,29 @@ class Person {
   Person();
 
   String name = '';
-  Int32 age = Int32(0);
+
+  @ForyField(type: Int32Type())
+  int age = 0;
   Color favoriteColor = Color.red;
   List<String> tags = <String>[];
 }
 
 void main() {
   final fory = Fory();
-  PersonFory.register(
+  PersonForyModule.register(
     fory,
     Color,
-    namespace: 'example',
-    typeName: 'Color',
+    name: 'example.Color',
   );
-  PersonFory.register(
+  PersonForyModule.register(
     fory,
     Person,
-    namespace: 'example',
-    typeName: 'Person',
+    name: 'example.Person',
   );
 
   final person = Person()
     ..name = 'Ada'
-    ..age = Int32(36)
+    ..age = 36
     ..favoriteColor = Color.blue
     ..tags = <String>['engineer', 'mathematician'];
 
@@ -102,10 +106,16 @@ void main() {
 在运行程序之前，先生成配套文件：
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
-`PersonFory` 由 `build_runner` 生成。`namespace` 和 `typeName` 是其他语言中的对端识别同一类型的方式，一旦服务进入生产环境，就应保持稳定。
+`PersonForyModule` 由 `build_runner` 生成。其他语言中的对端通过 `name`
+识别同一类型，因此服务进入生产环境后应保持该值稳定。可以在 `name` 中使用 `.`
+添加命名空间前缀。
+
+普通的带注解类会包含其具体父类和所应用 mixin 中的存储。public 继承字段和
+同一库中的 private 继承字段无需在父类上添加注解。有关 private 字段、构造函数、
+mixin 和字段包含选项的说明，请参阅[结构体继承](inheritance.md)。
 
 ## API 概览
 
@@ -113,25 +123,34 @@ dart run build_runner build --delete-conflicting-outputs
 - `fory.serialize(value)`：返回 `Uint8List` 字节
 - `fory.deserialize<T>(bytes)`：返回一个 `T`
 - `@ForyStruct()`：标记需要生成代码的类
-- `@ForyField(...)`：字段级选项，例如跳过、ID、可空性、引用
-- 整数包装类型：`Int8`、`Int16`、`Int32`、`UInt8`、`UInt16`、`UInt32`
-- 浮点包装类型：`Float16`、`Float32`
-- 时间包装类型：`LocalDate`、`Timestamp`
+- `@ForyStruct(exposePrivateFields: true)`：允许另一个库生成的子类序列化器访问本库拥有的 private 状态
+- `@ForyStruct(ignoreInheritedPrivateFields: true)`：从当前具体子类的 Schema 中排除父类和所应用 mixin 的全部 private 存储
+- `@ForyStruct(target: Type)`：生成外部结构化序列化器
+- `@ForyField(...)`：字段级选项以及规范的 `type:` 覆盖
+- `@ListField(...)`、`@SetField(...)`、`@MapField(...)`：用于嵌套 `type:` 树的容器简写
+- 精确值包装类型：`Int64`、`Uint64`、`Float32`
+- 低精度标量字段：配合 `Float16Type` 或 `Bfloat16Type` 使用的 `double`
+- 16 位浮点数组：`Float16List`、`Bfloat16List`
+- 时间类型：`LocalDate`、`Timestamp`、`Duration`
 
 ## 文档
 
-| 主题                                          | 说明                                 |
-| --------------------------------------------- | ------------------------------------ |
-| [配置](configuration.md)                      | 运行时选项、兼容模式和安全限制       |
-| [基础序列化](basic-serialization.md)          | `serialize`、`deserialize`、生成注册、根对象图 |
-| [代码生成](code-generation.md)                | `@ForyStruct`、build runner 和生成命名空间 |
-| [类型注册](type-registration.md)              | 基于 ID 与基于名称的注册，以及注册规则 |
-| [自定义序列化器](custom-serializers.md)       | 手写 `Serializer<T>` 实现与 union    |
-| [字段配置](schema-metadata.md)            | `@ForyField`、字段 ID、可空性、引用、多态 |
-| [支持的类型](supported-types.md)              | 内置 xlang 值、包装类型、集合和结构体 |
-| [Schema 演进](schema-evolution.md)            | 兼容结构体与可演进 Schema            |
-| [跨语言](xlang-serialization.md)                   | 互操作规则与字段对齐                 |
-| [故障排查](troubleshooting.md)                | 常见错误、诊断方法和验证步骤         |
+| 主题                                          | 说明                                                      |
+| --------------------------------------------- | --------------------------------------------------------- |
+| [配置](configuration.md)                      | Fory 选项、兼容模式和安全限制                             |
+| [基础序列化](basic-serialization.md)          | `serialize`、`deserialize`、生成式注册和根对象图          |
+| [代码生成](code-generation.md)                | `@ForyStruct`、build runner 和生成的模块                   |
+| [结构体继承](inheritance.md)                  | 父类、mixin、private 字段和构造函数                       |
+| [外部类型序列化](external-types.md)           | 为其他包拥有的类生成序列化器                              |
+| [跨语言序列化](xlang-serialization.md)        | 互操作规则和字段对齐                                      |
+| [Schema 元信息](schema-metadata.md)           | `@ForyField`、字段 ID、可空性、引用和多态                 |
+| [类型注册](type-registration.md)              | 基于 ID 与基于名称的注册及其规则                          |
+| [自定义序列化器](custom-serializers.md)       | 自定义 `Serializer<T>` 实现和联合类型                     |
+| [支持的类型](supported-types.md)              | 内置 xlang 值、包装类型、集合和结构体                     |
+| [Schema 演进](schema-evolution.md)            | 兼容结构体和可演进 Schema                                 |
+| [Web 平台支持](web-platform-support.md)       | Dart VM/AOT、Flutter 和 Web 支持、限制及验证               |
+| [gRPC 支持](grpc-support.md)                  | 基于 Fory 生成的 gRPC 服务配套代码                        |
+| [故障排查](troubleshooting.md)                | 常见错误、诊断和验证步骤                                  |
 
 ## 相关资源
 

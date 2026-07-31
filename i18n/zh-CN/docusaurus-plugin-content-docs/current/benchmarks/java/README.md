@@ -1,5 +1,7 @@
 # Java 基准测试
 
+有关 fory-json、Jackson 和 Gson 的结果，请参阅 [Java JSON 基准报告](json/)。
+
 ## 系统环境
 
 - Operation System：4.9.151-015.x86_64

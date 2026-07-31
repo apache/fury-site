@@ -41,6 +41,8 @@ Use these terms consistently across all translated docs.
 | domain object        | 领域对象          | Use for generated host-language models used directly in application code.                 |
 | sum type             | 联合类型          | Use for `union`-style algebraic variants across languages.                                |
 | custom serializer    | 自定义序列化器    | Keep filenames, document IDs, and links aligned with the current English document owner.  |
+| external type serialization | 外部类型序列化 | Keep `external_types` document IDs and links unchanged.                                   |
+| external structural serializer | 外部结构化序列化器 | Use for generated schema declarations that target third-party types.                  |
 
 ## Terms to Avoid (Unless User Explicitly Requests)
 

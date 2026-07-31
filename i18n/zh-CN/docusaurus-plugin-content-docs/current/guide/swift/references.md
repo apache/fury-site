@@ -19,12 +19,12 @@ license: |
   limitations under the License.
 ---
 
-Swift 中的引用跟踪由 `ForyConfig.trackRef` 控制。
+Swift 中的引用跟踪由 `Config.trackRef` 控制。
 
 ## 启用引用跟踪
 
 ```swift
-let fory = Fory(xlang: true, trackRef: true, compatible: false)
+let fory = Fory(ref: true)
 ```
 
 启用后，可跟踪引用的类型会保留对象身份和循环结构。
@@ -34,7 +34,7 @@ let fory = Fory(xlang: true, trackRef: true, compatible: false)
 ```swift
 import Fory
 
-@ForyObject
+@ForyStruct
 final class Animal {
     var name: String = ""
 
@@ -45,7 +45,7 @@ final class Animal {
     }
 }
 
-@ForyObject
+@ForyStruct
 final class AnimalPair {
     var first: Animal? = nil
     var second: Animal? = nil
@@ -58,9 +58,9 @@ final class AnimalPair {
     }
 }
 
-let fory = Fory(xlang: true, trackRef: true)
-fory.register(Animal.self, id: 200)
-fory.register(AnimalPair.self, id: 201)
+let fory = Fory(ref: true)
+try fory.register(Animal.self, id: 200)
+try fory.register(AnimalPair.self, id: 201)
 
 let shared = Animal(name: "cat")
 let input = AnimalPair(first: shared, second: shared)
@@ -78,7 +78,7 @@ assert(decoded.first === decoded.second)
 ```swift
 import Fory
 
-@ForyObject
+@ForyStruct
 final class Node {
     var value: Int32 = 0
     weak var next: Node? = nil
@@ -91,8 +91,8 @@ final class Node {
     }
 }
 
-let fory = Fory(xlang: true, trackRef: true)
-fory.register(Node.self, id: 300)
+let fory = Fory(ref: true)
+try fory.register(Node.self, id: 300)
 
 let node = Node(value: 7)
 node.next = node

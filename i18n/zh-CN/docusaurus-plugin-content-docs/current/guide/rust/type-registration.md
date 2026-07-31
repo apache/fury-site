@@ -1,6 +1,6 @@
 ---
 title: 类型注册
-sidebar_position: 3
+sidebar_position: 5
 id: type_registration
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,23 +19,23 @@ license: |
   limitations under the License.
 ---
 
-本页涵盖 Apache Fory™ Rust 中的类型注册方法。
+本页介绍 Apache Fory™ Rust 中的类型注册方法。
 
 ## 按 ID 注册
 
-使用数字 ID 注册类型以实现快速、紧凑的序列化：
+使用数字 ID 注册类型，可实现快速、紧凑的序列化：
 
 ```rust
 use fory::Fory;
-use fory::ForyObject;
+use fory::ForyStruct;
 
-#[derive(ForyObject)]
+#[derive(ForyStruct)]
 struct User {
     name: String,
     age: i32,
 }
 
-let mut fory = Fory::default();
+let mut fory = Fory::builder().xlang(false).build();
 fory.register::<User>(1)?;
 
 let user = User {
@@ -47,41 +47,47 @@ let bytes = fory.serialize(&user)?;
 let decoded: User = fory.deserialize(&bytes)?;
 ```
 
-## 按命名空间注册
+## 按名称注册
 
-为了跨语言兼容性，使用命名空间和类型名称注册：
+为了实现跨语言兼容性，请使用稳定名称注册。使用 `.` 分隔命名空间前缀和类型名称：
 
 ```rust
-let mut fory = Fory::default()
-    .compatible(true)
-    .xlang(true);
+let mut fory = Fory::builder().xlang(true).build();
 
-// 使用基于命名空间的命名注册
-fory.register_by_namespace::<MyStruct>("com.example", "MyStruct");
+// 使用符号类型身份注册
+fory.register_by_name::<MyStruct>("com.example.MyStruct")?;
 ```
 
 ## 注册自定义序列化器
 
-对于需要自定义序列化逻辑的类型：
+对于需要自定义序列化逻辑的类型，请注册自定义序列化器：
 
 ```rust
-let mut fory = Fory::default();
-fory.register_serializer::<CustomType>(100);
+let mut fory = Fory::builder().xlang(false).build();
+fory.register_serializer::<UuidSerializer>(100)?;
 ```
 
-## 注册顺序
-
-当使用没有显式 ID 的基于 ID 的注册时，注册顺序很重要。确保序列化和反序列化之间的注册顺序一致：
+外部结构化序列化器使用普通的结构化注册 API：
 
 ```rust
-// 序列化器端
-let mut fory = Fory::default();
+fory.register::<UserSerializer>(101)?;
+```
+
+序列化器的 `Target` 是运行时值类型。注册时不需要单独的外部类型 API。在字段上，`with` 可以选择与字段类型完全匹配的承载序列化器，例如 `VecSerializer<UserSerializer>`；递归的 `list`、`map` 或 `tuple` 注解则选择子节点上的序列化器。在根值上，使用相同的承载序列化器进行组合。承载序列化器本身不需要注册。
+
+## 注册一致性
+
+Rust 注册 API 使用显式 ID 或显式名称。序列化和反序列化通信双方必须保持相同的注册映射：
+
+```rust
+// 序列化端
+let mut fory = Fory::builder().xlang(false).build();
 fory.register::<TypeA>(1)?;
 fory.register::<TypeB>(2)?;
 fory.register::<TypeC>(3)?;
 
-// 反序列化器端 - 必须使用相同顺序
-let mut fory = Fory::default();
+// 反序列化端——必须使用相同的 ID 映射
+let mut fory = Fory::builder().xlang(false).build();
 fory.register::<TypeA>(1)?;
 fory.register::<TypeB>(2)?;
 fory.register::<TypeC>(3)?;
@@ -89,17 +95,17 @@ fory.register::<TypeC>(3)?;
 
 ## 线程安全注册
 
-在生成线程之前执行所有注册：
+启动线程之前完成所有注册：
 
 ```rust
 use std::sync::Arc;
 use std::thread;
 
-let mut fory = Fory::default();
+let mut fory = Fory::builder().xlang(false).build();
 fory.register::<User>(1)?;
 fory.register::<Order>(2)?;
 
-// 现在可以在线程间共享
+// 现在可以在线程之间共享
 let fory = Arc::new(fory);
 
 let handles: Vec<_> = (0..4)
@@ -114,13 +120,14 @@ let handles: Vec<_> = (0..4)
 
 ## 最佳实践
 
-1. **使用一致的 ID**：在所有语言中为相同类型使用相同的类型 ID 以实现跨语言兼容性
-2. **在线程化之前注册**：在生成线程之前完成所有注册
-3. **对 xlang 使用命名空间**：使类型名称在各语言之间保持一致
-4. **显式 ID 以保持稳定性**：在生产环境中避免自动生成的 ID
+1. **使用一致的 ID**：为同一种类型在所有语言中使用相同的类型 ID，以实现跨语言兼容性
+2. **启动线程前注册**：启动线程之前完成所有注册
+3. **对 xlang 使用命名空间**：使类型名称在不同语言之间保持一致
+4. **使用显式 ID 保持稳定性**：生产环境中应避免自动生成的 ID
 
 ## 相关主题
 
 - [配置](configuration.md) - Fory 构建器选项
-- [跨语言](xlang-serialization.md) - XLANG 模式注册
+- [Xlang 序列化](xlang-serialization.md) - xlang 模式注册
 - [自定义序列化器](custom-serializers.md) - 自定义序列化
+- [外部类型序列化](external-types.md) - 第三方目标和根承载类型

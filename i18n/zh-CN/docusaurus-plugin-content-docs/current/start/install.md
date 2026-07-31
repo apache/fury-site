@@ -16,14 +16,14 @@ Apache Fory™ 同时提供源码发布物和各语言对应的软件包。
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 <!-- 可选的 row format 支持 -->
 <!--
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-format</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 -->
 ```
@@ -36,7 +36,7 @@ Scala 2.13 的 Maven 依赖：
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-scala_2.13</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -46,20 +46,20 @@ Scala 3 的 Maven 依赖：
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-scala_3</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
 Scala 2.13 的 sbt 依赖：
 
 ```sbt
-libraryDependencies += "org.apache.fory" % "fory-scala_2.13" % "1.4.0"
+libraryDependencies += "org.apache.fory" % "fory-scala_2.13" % "1.5.0"
 ```
 
 Scala 3 的 sbt 依赖：
 
 ```sbt
-libraryDependencies += "org.apache.fory" % "fory-scala_3" % "1.4.0"
+libraryDependencies += "org.apache.fory" % "fory-scala_3" % "1.5.0"
 ```
 
 ## Kotlin
@@ -70,7 +70,7 @@ libraryDependencies += "org.apache.fory" % "fory-scala_3" % "1.4.0"
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-kotlin</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -78,7 +78,7 @@ libraryDependencies += "org.apache.fory" % "fory-scala_3" % "1.4.0"
 
 ```bash
 python -m pip install --upgrade pip
-pip install pyfory==1.4.0
+pip install pyfory==1.5.0
 ```
 
 ## Go
@@ -86,7 +86,7 @@ pip install pyfory==1.4.0
 请使用完整的 Go 模块路径 `github.com/apache/fory/go/fory`：
 
 ```bash
-go get github.com/apache/fory/go/fory@v1.4.0
+go get github.com/apache/fory/go/fory@v1.5.0
 ```
 
 如果你的 Go proxy 还没有同步新的子模块 tag，请稍后重试，或者临时使用 `GOPROXY=direct`。
@@ -95,13 +95,13 @@ go get github.com/apache/fory/go/fory@v1.4.0
 
 ```toml
 [dependencies]
-fory = "1.4.0"
+fory = "1.5.0"
 ```
 
 或者使用 `cargo add`：
 
 ```bash
-cargo add fory@1.4.0
+cargo add fory@1.5.0
 ```
 
 ## JavaScript / TypeScript
@@ -124,7 +124,7 @@ npm install @apache-fory/hps
 
 ```yaml
 dependencies:
-  fory: ^1.4.0
+  fory: ^1.5.0
 
 dev_dependencies:
   build_runner: ^2.4.13
@@ -141,12 +141,12 @@ dart run build_runner build --delete-conflicting-outputs
 安装 `Apache.Fory` NuGet 包。它同时包含运行时以及 `[ForyStruct]` 类型所需的源代码生成器。
 
 ```bash
-dotnet add package Apache.Fory --version 1.4.0
+dotnet add package Apache.Fory --version 1.5.0
 ```
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.4.0" />
+  <PackageReference Include="Apache.Fory" Version="1.5.0" />
 </ItemGroup>
 ```
 
@@ -156,7 +156,7 @@ dotnet add package Apache.Fory --version 1.4.0
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/apache/fory.git", exact: "1.4.0")
+    .package(url: "https://github.com/apache/fory.git", exact: "1.5.0")
 ],
 targets: [
     .target(

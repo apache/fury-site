@@ -34,7 +34,7 @@ streaming response 或 request stream，可添加 `tokio-stream`。
 
 ```toml
 [dependencies]
-fory = "1.4.0"
+fory = "1.5.0"
 bytes = "1"
 tonic = { version = "0.14", features = ["transport"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

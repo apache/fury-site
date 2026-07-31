@@ -21,7 +21,7 @@ license: |
 
 当派生宏无法表达类型的序列化表示，或者需要特意使用不透明编码时，请使用自定义序列化器。序列化器是一种类型级实现，通过 `Target` 指定其处理的值类型。
 
-对于需要保持结构化 Schema 的公开第三方结构体或枚举，优先使用[外部类型序列化](external_types)。
+对于需要保持结构化 Schema 的公开第三方结构体或枚举，优先使用[外部类型序列化](external-types.md)。
 
 ## 实现自定义序列化器
 
@@ -178,6 +178,6 @@ let value = context.reader.read_f64()?;
 
 ## 相关主题
 
-- [外部类型序列化](external_types)
+- [外部类型序列化](external-types.md)
 - [类型注册](type-registration.md)
 - [Schema 演进](schema-evolution.md)

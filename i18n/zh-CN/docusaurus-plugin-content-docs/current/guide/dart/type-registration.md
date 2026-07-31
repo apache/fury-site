@@ -1,7 +1,7 @@
 ---
 title: 类型注册
-sidebar_position: 4
-id: dart_type_registration
+sidebar_position: 8
+id: type_registration
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,80 +19,104 @@ license: |
   limitations under the License.
 ---
 
-Fory 需要知道序列化消息中的某个类型对应哪个类。你要做的，就是在序列化或反序列化之前注册每个类。
+Fory 需要知道序列化消息中的类型与哪个类对应。你需要在序列化或反序列化之前注册每个类。
 
 ## 选择注册策略
 
-Fory 提供两种策略。选定一种后，就要在所有读写该类型的语言里保持一致。
+Fory 提供两种策略。请选择其中一种，并在读写该类型的每种语言中保持一致。
 
 ### 策略一：数字 ID
 
-更紧凑，也更快。适合小团队在服务间统一协调 ID。
+这种方式紧凑且速度快，适合小团队能够跨服务协调 ID 的场景。
 
 ```dart
-ModelsFory.register(fory, User, id: 100);
+ModelsForyModule.register(fory, User, id: 100);
 ```
 
-其他语言里也必须使用相同的数字：
+其他每种语言都必须使用相同的数字：
 
 ```java
 // Java side
 fory.register(User.class, 100);
 ```
 
-### 策略二：Namespace + Type Name
+### 策略二：名称
 
-自描述性更强。适合多个团队或多个包独立定义类型，而协调数字 ID 不现实的场景。
+这种方式的自描述性更强，适合多个团队或 package 独立定义类型、
+难以协调数字 ID 的场景。
 
 ```dart
-ModelsFory.register(
+ModelsForyModule.register(
   fory,
   User,
-  namespace: 'example',
-  typeName: 'User',
+  name: 'example.User',
 );
 ```
 
-每个读写该类型的运行时都必须使用相同的 `namespace` 和 `typeName`。
+读写此类型的每个对端都必须使用相同的名称。可以在 `name` 中使用 `.`
+添加 namespace 前缀。
 
-> **不要对同一个类型混用策略。** 如果一侧使用数字 ID，另一侧使用名称，反序列化会失败。
+> **不要为同一类型混用两种策略。** 如果一端使用数字 ID，另一端使用名称，
+> 反序列化将会失败。
 
-## 注册生成类型
+## 注册生成的类型
 
-调用 `.fory.dart` 文件中生成的 `register` 函数，它会为你安装好所需的全部序列化元信息：
+调用 `.fory.dart` 文件中生成的 `register` 函数。它会为你安装所有序列化器元数据：
 
 ```dart
-UserModelsFory.register(fory, User, id: 100);
+UserModelsForyModule.register(fory, User, id: 100);
 ```
+
+对于常规的继承类型，注册带注解的具体子类即可。生成的序列化器已经拥有完整且扁平化的
+子类 Schema；父类或 mixin 仅仅贡献了字段时，Fory 不要求在运行时注册它们。
+
+只有当运行时类型为某个独立注解的具体父类的值也需要序列化时，才注册该父类。
+仅用于提供字段访问的 `@ForyStruct(exposePrivateFields: true)` 边界没有自己的注册项。
+有关边界和子类 Schema 选项，请参见 [Struct 继承](inheritance.md)。
+
+外部结构化序列化器使用相同的生成注册 API。请传入外部目标类型：
+
+```dart
+ExternalSerializersForyModule.register(
+  fory,
+  third_party.User,
+  id: 100,
+);
+```
+
+声明方式请参见 [外部类型序列化](external-types.md)。
 
 ## 注册自定义序列化器
 
-对于无法添加 `@ForyStruct()` 的类型，可以直接传入序列化器实例：
+当类型需要自定义编码格式或构造逻辑时，直接传入序列化器实例：
 
 ```dart
 fory.registerSerializer(
   ExternalType,
   const ExternalTypeSerializer(),
-  namespace: 'example',
-  typeName: 'ExternalType',
+  name: 'example.ExternalType',
 );
 ```
 
-关于如何实现序列化器，见 [自定义序列化器](custom-serializers.md)。
+如何实现序列化器请参见 [自定义序列化器](custom-serializers.md)。
 
 ## 必须遵守的规则
 
-- 在第一次调用 `serialize` 或 `deserialize` **之前**完成注册
-- 注册消息中可能出现的**每一个**类，而不仅是根类型
-- 一旦载荷已经持久化，或已经在服务间交换，就必须保持 ID 或名称**稳定**
-- 对同一个类型，不要一侧用数字 ID，另一侧用名称
+- 在第一次调用 `serialize` 或 `deserialize` **之前**完成注册。
+- 注册消息中可能出现的**每一个**类，而不仅仅是根类型。
+- 不要注册生成的私有字段访问 companion；只注册实际序列化的具体类型。
+- 一旦载荷已经持久化或在服务间交换，就必须保持 ID（或名称）**稳定**。修改它们将导致旧消息无法反序列化。
+- 不要为同一类型在一端使用数字 ID、另一端使用名称。
 
-## 跨语言要求
+## Xlang 要求
 
-所有读写该类型的运行时都必须使用相同的数字 ID，或者相同的 `namespace + typeName` 组合。示例见 [跨语言](xlang-serialization.md)。
+读写该类型的每个对端都必须使用相同的数字 ID 或名称。
+示例请参见 [Xlang 序列化](xlang-serialization.md)。
 
 ## 相关主题
 
+- [Struct 继承](inheritance.md)
 - [代码生成](code-generation.md)
-- [跨语言](xlang-serialization.md)
+- [外部类型序列化](external-types.md)
+- [Xlang 序列化](xlang-serialization.md)
 - [自定义序列化器](custom-serializers.md)

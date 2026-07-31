@@ -24,8 +24,11 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化运行时。它�
 ## 为什么选择 Fory C#？
 
 - 面向 .NET 8+ 的高性能二进制序列化
-- 与 Java、Python、C++、Go、Rust 和 JavaScript 中的 Fory 实现保持跨语言兼容
-- 基于 source generator 的 `[ForyStruct]` 类型序列化器，以及 `[ForyEnum]` 和 `[ForyUnion]` 类型注册
+- 与 Java、Python、C++、Go、Rust、JavaScript/TypeScript、Swift、Dart、Scala
+  和 Kotlin 中的 Fory 实现保持跨语言兼容
+- 基于 source generator 的 `[ForyStruct]` 类型序列化器，以及 `[ForyEnum]`
+  和 `[ForyUnion]` 类型注册
+- 为外部 class、struct 和 enum 目标生成序列化器
 - 可选引用跟踪，支持共享对象图和循环对象图
 - 面向 Schema 演进的兼容模式
 - 面向多线程服务的线程安全运行时 `ThreadSafeFory`
@@ -43,7 +46,7 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化运行时。它�
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.4.0" />
+  <PackageReference Include="Apache.Fory" Version="1.5.0" />
 </ItemGroup>
 ```
 
@@ -85,17 +88,19 @@ User decoded = fory.Deserialize<User>(payload);
 
 | 主题                                          | 说明                               |
 | --------------------------------------------- | ---------------------------------- |
-| [配置](configuration.md) | 构建器选项与运行时模式 |
-| [基础序列化](basic-serialization.md) | 强类型和动态序列化 API |
-| [类型注册](type-registration.md) | 注册用户类型和自定义序列化器 |
-| [自定义序列化器](custom-serializers.md) | 实现 `Serializer<T>` |
-| [字段配置](schema-metadata.md) | `[Field]` 特性与整数编码选项 |
-| [引用](references.md) | 共享引用与循环引用处理 |
-| [Schema 演进](schema-evolution.md) | 兼容模式行为 |
-| [跨语言](xlang-serialization.md) | 互操作性指导 |
-| [支持的类型](supported-types.md) | 内置类型与生成类型支持 |
-| [线程安全](thread-safety.md) | `Fory` 与 `ThreadSafeFory` 的用法 |
-| [故障排查](troubleshooting.md) | 常见错误与调试步骤 |
+| [配置](configuration.md)                      | 构建器选项与模式设置               |
+| [基础序列化](basic-serialization.md)          | 强类型和动态序列化 API             |
+| [Xlang 序列化](xlang-serialization.md)        | 互操作性指导                       |
+| [Schema 元数据](schema-metadata.md)           | `[ForyField]` ID 与 Schema 类型描述符 |
+| [类型注册](type-registration.md)              | 注册用户类型和自定义序列化器       |
+| [外部类型](external-types.md)                 | 第三方类型序列化器                 |
+| [自定义序列化器](custom-serializers.md)       | 实现 `Serializer<T>`               |
+| [引用](references.md)                         | 共享引用与循环引用处理             |
+| [Schema 演进](schema-evolution.md)            | 兼容模式行为                       |
+| [支持的类型](supported-types.md)              | 内置类型与生成类型支持             |
+| [线程安全](thread-safety.md)                  | `Fory` 与 `ThreadSafeFory` 的用法  |
+| [gRPC 支持](grpc-support.md)                  | 生成由 Fory 支持的 gRPC service companion |
+| [故障排查](troubleshooting.md)                | 常见错误与调试步骤                 |
 
 ## 相关资源
 

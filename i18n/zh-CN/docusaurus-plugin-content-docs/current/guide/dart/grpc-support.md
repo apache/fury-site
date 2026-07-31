@@ -1,6 +1,6 @@
 ---
 title: gRPC 支持
-sidebar_position: 12
+sidebar_position: 14
 id: grpc_support
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -36,7 +36,7 @@ protobuf client、reflection 工具或期望 protobuf message bytes 的组件消
 
 ```yaml
 dependencies:
-  fory: ^1.4.0
+  fory: ^1.5.0
   grpc: ^4.0.0
 
 dev_dependencies:
@@ -76,7 +76,7 @@ foryc service.fdl --dart_out=./lib/generated --grpc
 必须执行这一步：
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 对这个 schema，Dart generator 会输出如下文件（model 文件和 module 名称来自 package
@@ -275,7 +275,7 @@ gRPC stack 负责：
 
 ### 生成代码引用缺失的 `.fory.dart` Part
 
-生成或重新生成 Dart source 后，运行 `dart run build_runner build --delete-conflicting-outputs`。
+生成或重新生成 Dart source 后，运行 `dart run build_runner build`。
 Serializer part 文件由 `build_runner` 生成，不由 `foryc` 直接生成。
 
 ### Protobuf Client 无法解码 Service

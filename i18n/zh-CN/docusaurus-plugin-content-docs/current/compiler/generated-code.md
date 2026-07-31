@@ -401,7 +401,7 @@ Python gRPC 序列化器接收并返回完整的 `bytes` 载荷，因此生成�
 
 ### 类型生成
 
-联合类型映射为带有 `#[fory(id = ...)]` Schema case 属性的 Rust 枚举。`#[fory(unknown)] Unknown(::fory::UnknownCase)` 标记由 Fory 提供的前向兼容载体。该标记只用于选择载体，不会向 Schema case 表添加条目；Schema case 仍可使用完整的 `0..N` ID 范围。生成的类型化联合必须至少包含一个非 `Unknown` case。编译器会将声明的第一个非 `Unknown` case 标记为 `#[fory(default)]`，并基于该 case 生成 `Default`：
+联合类型映射为带有 `#[fory(id = ...)]` Schema case 属性的 Rust 枚举。`#[fory(unknown)] Unknown(::fory::UnknownCase)` 标记由 Fory 提供的前向兼容载体。该标记只用于选择载体，不会向 Schema case 表添加条目；Schema case 仍可使用完整的 `0..N` ID 范围。生成的类型化联合必须至少包含一个非 `Unknown` case。编译器会将声明的第一个非 `Unknown` case 标记为 `#[fory(default)]`。当该 case 的载荷实现 Rust 标准 `Default` trait 时，编译器还会基于该 case 生成标准 `Default` 实现：
 
 ```rust
 #[derive(::fory::ForyUnion, Clone, Debug, PartialEq, Eq, Hash)]
@@ -416,10 +416,12 @@ pub enum Animal {
 
 impl ::std::default::Default for Animal {
     fn default() -> Self {
-        Self::Dog(<self::Dog as ::fory::ForyDefault>::fory_default())
+        Self::Dog(<self::Dog as ::std::default::Default>::default())
     }
 }
 ```
+
+如果选定 case 的载荷未实现标准 `Default`，例如 `any` 载荷，则生成的联合类型不会生成必定成功的 `Default` 实现。这个模型层面的默认值独立于 Fory 的可失败反序列化默认值；后者通过相应的 codec 和当前读取上下文重建选定的 case。
 
 嵌套类型会生成嵌套模块：
 
@@ -1075,7 +1077,8 @@ public enum Addressbook {
         @ForyField(id: 1)
         public var name: String = ""
         @ForyField(id: 8)
-        public var pet: Addressbook.Animal = .foryDefault()
+        public var pet: Addressbook.Animal =
+            Addressbook.Animal.dog(Addressbook.Dog())
     }
 }
 ```
@@ -1089,7 +1092,7 @@ public struct Addressbook_Person: Equatable { ... }
 
 同时设置二者时，CLI 标志 `--swift_namespace_style` 会覆盖 Schema 选项 `swift_namespace_style`。
 
-联合类型会生成为带有关联载荷值的标签 Swift 枚举。带有 `ref`/`weak_ref` 字段的消息会生成为 `final class` 模型，以保留引用语义。列表/映射字段中的定长或带标签整数编码会生成为 Swift 字段类型提示，例如 `@ListField(element: .encoding(.fixed))` 或 `@MapField(value: .encoding(.tagged))`。对于非空的定长整数列表元素，Swift 会将该字段归类为相应的 Fory 基元紧凑数组类型；定长整数集合仍然使用 Fory 集合。
+联合类型会生成为带有关联载荷值的标签 Swift 枚举。递归联合类型会生成为 `indirect` 枚举。第一个已知联合 case 必须具有有限且可递归构造的默认值；如果第一个 case 的默认值存在循环，编译器会拒绝该 Schema，而不是生成无法终止的初始化器。带有 `ref`/`weak_ref` 字段的消息会生成为 `final class` 模型，以保留引用语义。对于直接存储的消息循环，必须将循环上的至少一条边标记为 `ref`；否则编译器会拒绝该 Schema，因为 Swift 值类型无法表示这种循环。列表/映射字段中的定长或带标签整数编码会生成为 Swift 字段类型提示，例如 `@ListField(element: .encoding(.fixed))` 或 `@MapField(value: .encoding(.tagged))`。对于非空的定长整数列表元素，Swift 会将该字段归类为相应的 Fory 基元紧凑数组类型；定长整数集合仍然使用 Fory 集合。
 
 ### 模块安装
 
@@ -1099,8 +1102,8 @@ public struct Addressbook_Person: Equatable { ... }
 public enum ForyModule {
     public static func install(_ fory: Fory) throws {
         try ComplexPb.ForyModule.install(fory)
-        fory.register(Addressbook.Person.self, id: 100)
-        fory.register(Addressbook.Animal.self, id: 106)
+        try fory.register(Addressbook.Person.self, id: 100)
+        try fory.register(Addressbook.Animal.self, id: 106)
     }
 }
 ```

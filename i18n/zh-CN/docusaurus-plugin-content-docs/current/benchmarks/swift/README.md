@@ -2,6 +2,11 @@
 
 该基准比较 Apache Fory、Protocol Buffers 和 JSON 在 Swift 中的序列化与反序列化吞吐量。
 
+## 基准产品
+
+常规/xlang 用例由 `swift-benchmark` 构建。外部类型和容器对比由独立的
+`swift-external-benchmark` 产品构建，因此构建常规产品时不会编译这些模型或序列化器特化实现。
+
 ## 吞吐图表
 
 ![Throughput](throughput.png)

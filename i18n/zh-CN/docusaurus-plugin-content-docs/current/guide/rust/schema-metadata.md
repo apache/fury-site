@@ -220,7 +220,38 @@ struct Data {
 }
 ```
 
+未添加注解的 `Vec<i32>` 字段是 `list<int32>`，其元素默认使用 varint 编码。上面的 `fixed_values` 字段仍然是 `LIST`，只是将元素编码改为定长 `int32`。当字段 Schema 本身是紧凑原始类型 array 时，请使用 `#[fory(array)]`；对于二进制 `Vec<u8>`，请使用 `#[fory(bytes)]`。
+
 `compress` 已被移除。请直接使用 `encoding = varint` 或 `encoding = fixed`。
+
+### 外部类型字段选择
+
+使用 `with` 选择目标类型与字段类型完全匹配的序列化器。该序列化器可以是外部结构化序列化器、自定义序列化器或承载序列化器组合：
+
+```rust
+use fory::{ForyStruct, VecSerializer};
+use std::collections::HashMap;
+
+#[derive(ForyStruct)]
+struct Envelope {
+    #[fory(with = UserSerializer)]
+    user: third_party::User,
+
+    #[fory(with = VecSerializer<UserSerializer>)]
+    direct_users: Vec<third_party::User>,
+
+    #[fory(list(element(with = UserSerializer)))]
+    users: Vec<third_party::User>,
+
+    #[fory(map(value(with = UserSerializer)))]
+    by_name: HashMap<String, third_party::User>,
+
+    #[fory(tuple(element(index = 1, with = UserSerializer)))]
+    selected: (String, third_party::User),
+}
+```
+
+`with` 会选择目标类型与当前字段节点完全匹配的序列化器，因此 `direct_users` 使用针对整个 `Vec` 的承载序列化器。每个递归注解只应用于其子节点。例如，map 的 key 和 value 可以选择不同的序列化器。Tuple 索引从零开始。有关完整的递归语法和支持的承载类型，请参阅[外部类型序列化](external-types.md)。
 
 ## 类型分类 {#type-classification}
 
@@ -447,11 +478,14 @@ struct User {
 | `nullable` | `nullable` 或 `nullable = bool`  | 控制 null 标志写入             | 所有字段                   |
 | `ref`      | `ref` 或 `ref = bool`            | 控制引用跟踪                   | `Rc`、`Arc`、weak 类型     |
 | `encoding` | `encoding = varint/fixed/tagged` | 整数编码方法                   | `i32`、`u32`、`i64`、`u64` |
-| `list`     | `list(element(...))`             | 元素 schema 元数据             | `Vec<T>`                   |
-| `map`      | `map(key(...), value(...))`      | key/value schema 元数据        | `HashMap<K, V>`            |
+| `list`     | `list(element(...))`             | 元素 Schema 元数据             | list、set、array           |
+| `map`      | `map(key(...), value(...))`      | key/value Schema 元数据        | `HashMap`、`BTreeMap`      |
+| `tuple`    | `tuple(element(index = N, ...))` | tuple 位置 Schema 元数据       | tuple                      |
+| `with`     | `with = Serializer`              | 选择字段序列化器               | 外部目标节点               |
 
 ## 相关主题 {#related-topics}
 
 - [基本序列化](basic-serialization.md) - Fory 序列化入门
 - [Schema 演进](schema-evolution.md) - 兼容模式与 Schema 演进
 - [Xlang 序列化](xlang-serialization.md) - 与 Java、C++、Go、Python 互操作
+- [外部类型序列化](external-types.md) - 为第三方字段选择序列化器

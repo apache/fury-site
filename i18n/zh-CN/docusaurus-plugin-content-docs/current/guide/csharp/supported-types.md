@@ -73,9 +73,21 @@ license: |
 
 ## 用户类型
 
-- 通过 source generator 生成序列化器的 `[ForyStruct]` 类和结构体、`[ForyEnum]` 枚举以及 `[ForyUnion]` ADT 记录
+- 通过 source generator 生成序列化器的 `[ForyStruct]` class 和 struct
+- 每个第一方 class 都直接添加注解的普通 class 继承层次；具体序列化器使用一个扁平化 Schema
+- 使用 `[ForyField]` 选取的 private 或 protected 普通基类成员
+- 由一个显式外部声明描述的、未经修改的第三方基类继承层次
+- `[ForyEnum]` enum 和 `[ForyUnion]` ADT record
+- 通过序列化器声明支持的外部 class、struct 和 enum 目标
 - 通过 `Register<T, TSerializer>(...)` 注册的自定义序列化器类型
 - `Union` / `Union2<...>` 强类型联合支持
+
+`[ForyEnum]` 的数值是无符号 32 位编码 tag，取值范围必须为
+`0..uint.MaxValue`。
+
+不支持开放泛型的生成目标。当外部声明描述了一个完全匹配的封闭第三方泛型基类时，
+非泛型普通 class 可以继承该基类。在 .NET 8 上，不支持声明所在类型或签名使用泛型的
+private 编码成员；可见成员和显式的仅存储字段声明仍受支持。
 
 ## 动态类型
 
@@ -93,5 +105,6 @@ license: |
 ## 相关主题
 
 - [基础序列化](basic-serialization.md)
+- [外部类型](external-types.md)
 - [类型注册](type-registration.md)
 - [跨语言](xlang-serialization.md)

@@ -1,6 +1,6 @@
 ---
 title: Trait 对象序列化
-sidebar_position: 6
+sidebar_position: 8
 id: polymorphism
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,214 +19,199 @@ license: |
   limitations under the License.
 ---
 
-Apache Fory™ 通过 trait 对象支持多态序列化，实现动态分发和类型灵活性。
+Apache Fory 通过已注册的应用程序 trait 和标准 `Any` trait 支持动态值。
 
-## 支持的 Trait 对象类型
+## 应用程序 Trait
 
-- `Box<dyn Trait>` - 拥有所有权的 trait 对象
-- `Rc<dyn Trait>` - 引用计数 trait 对象
-- `Arc<dyn Trait>` - 线程安全引用计数 trait 对象
-- `Vec<Box<dyn Trait>>`、`HashMap<K, Box<dyn Trait>>` - trait 对象集合
-
-## 基础 Trait 对象序列化
+应用程序 trait 需要扩展 `ForyObject`。使用 `register_trait_type!` 列出该 trait 接受的每个具体目标：
 
 ```rust
-use fory::{Fory, register_trait_type};
-use fory::Serializer;
-use fory::ForyObject;
+use fory::{
+    register_trait_type, Fory, ForyObject, ForyStruct,
+};
 
-trait Animal: Serializer {
-    fn speak(&self) -> String;
+trait Animal: ForyObject {
     fn name(&self) -> &str;
 }
 
-#[derive(ForyObject)]
-struct Dog { name: String, breed: String }
+#[derive(ForyStruct)]
+struct Dog {
+    name: String,
+}
 
 impl Animal for Dog {
-    fn speak(&self) -> String { "Woof!".to_string() }
-    fn name(&self) -> &str { &self.name }
+    fn name(&self) -> &str {
+        &self.name
+    }
 }
 
-#[derive(ForyObject)]
-struct Cat { name: String, color: String }
+#[derive(ForyStruct)]
+struct Cat {
+    name: String,
+}
 
 impl Animal for Cat {
-    fn speak(&self) -> String { "Meow!".to_string() }
-    fn name(&self) -> &str { &self.name }
+    fn name(&self) -> &str {
+        &self.name
+    }
 }
 
-// 注册 trait 实现
 register_trait_type!(Animal, Dog, Cat);
-
-#[derive(ForyObject)]
-struct Zoo {
-    star_animal: Box<dyn Animal>,
-}
-
-let mut fory = Fory::default().compatible(true);
-fory.register::<Dog>(100);
-fory.register::<Cat>(101);
-fory.register::<Zoo>(102);
-
-let zoo = Zoo {
-    star_animal: Box::new(Dog {
-        name: "Buddy".to_string(),
-        breed: "Labrador".to_string(),
-    }),
-};
-
-let bytes = fory.serialize(&zoo);
-let decoded: Zoo = fory.deserialize(&bytes)?;
-
-assert_eq!(decoded.star_animal.name(), "Buddy");
-assert_eq!(decoded.star_animal.speak(), "Woof!");
 ```
 
-## 序列化 dyn Any Trait 对象
-
-Apache Fory™ 支持序列化 `Rc<dyn Any>` 和 `Arc<dyn Any>` 以实现运行时类型分发：
-
-**要点：**
-
-- 适用于任何实现 `Serializer` 的类型
-- 反序列化后需要向下转型以访问具体类型
-- 序列化期间保留类型信息
-- 对插件系统和动态类型处理很有用
+具体类型列表包含运行时值类型。每个类型还必须在 `Fory` 实例中注册：
 
 ```rust
-use std::rc::Rc;
-use std::any::Any;
-
-let dog_rc: Rc<dyn Animal> = Rc::new(Dog {
-    name: "Rex".to_string(),
-    breed: "Golden".to_string()
-});
-
-// 转换为 Rc<dyn Any> 以进行序列化
-let dog_any: Rc<dyn Any> = dog_rc.clone();
-
-// 序列化 Any 包装器
-let bytes = fory.serialize(&dog_any);
-let decoded: Rc<dyn Any> = fory.deserialize(&bytes)?;
-
-// 向下转型回具体类型
-let unwrapped = decoded.downcast_ref::<Dog>().unwrap();
-assert_eq!(unwrapped.name, "Rex");
+let mut fory = Fory::builder().xlang(false).build();
+fory.register::<Dog>(100)?;
+fory.register::<Cat>(101)?;
 ```
 
-对于线程安全场景，使用 `Arc<dyn Any>`：
+列表中的第三方目标可以通过外部结构化序列化器或自定义序列化器注册。该列表仍应填写目标类型，而不是序列化器类型。
+
+默认情况下，生成的名称仅在宏所在的模块内可见。如果库需要导出生成的根序列化器，请添加普通 Rust 可见性：
 
 ```rust
-use std::sync::Arc;
-use std::any::Any;
-
-let dog_arc: Arc<dyn Animal> = Arc::new(Dog {
-    name: "Buddy".to_string(),
-    breed: "Labrador".to_string()
-});
-
-// 转换为 Arc<dyn Any>
-let dog_any: Arc<dyn Any> = dog_arc.clone();
-
-let bytes = fory.serialize(&dog_any);
-let decoded: Arc<dyn Any> = fory.deserialize(&bytes)?;
-
-// 向下转型为具体类型
-let unwrapped = decoded.downcast_ref::<Dog>().unwrap();
-assert_eq!(unwrapped.name, "Buddy");
+register_trait_type!(pub Animal, Dog, Cat);
 ```
 
-## 结构体中基于 Rc/Arc 的 Trait 对象
+Trait 和列表中的类型必须至少与生成的序列化器具有相同的可见范围。也支持 `pub(crate)` 和受限可见性。
 
-对于具有 `Rc<dyn Trait>` 或 `Arc<dyn Trait>` 的字段，Fory 自动处理转换：
+## Trait 对象字段
+
+`Box<dyn Trait>` 和 `Rc<dyn Trait>` 可以直接用于派生字段和嵌套容器：
 
 ```rust
-use std::sync::Arc;
-use std::rc::Rc;
 use std::collections::HashMap;
+use std::rc::Rc;
 
-#[derive(ForyObject)]
-struct AnimalShelter {
-    animals_rc: Vec<Rc<dyn Animal>>,
-    animals_arc: Vec<Arc<dyn Animal>>,
-    registry: HashMap<String, Arc<dyn Animal>>,
+#[derive(ForyStruct)]
+struct Shelter {
+    featured: Box<dyn Animal>,
+    shared: Rc<dyn Animal>,
+    animals: Vec<Box<dyn Animal>>,
+    by_name: HashMap<String, Rc<dyn Animal>>,
 }
-
-let mut fory = Fory::default().compatible(true);
-fory.register::<Dog>(100);
-fory.register::<Cat>(101);
-fory.register::<AnimalShelter>(102);
-
-let shelter = AnimalShelter {
-    animals_rc: vec![
-        Rc::new(Dog { name: "Rex".to_string(), breed: "Golden".to_string() }),
-        Rc::new(Cat { name: "Mittens".to_string(), color: "Gray".to_string() }),
-    ],
-    animals_arc: vec![
-        Arc::new(Dog { name: "Buddy".to_string(), breed: "Labrador".to_string() }),
-    ],
-    registry: HashMap::from([
-        ("pet1".to_string(), Arc::new(Dog {
-            name: "Max".to_string(),
-            breed: "Shepherd".to_string()
-        }) as Arc<dyn Animal>),
-    ]),
-};
-
-let bytes = fory.serialize(&shelter);
-let decoded: AnimalShelter = fory.deserialize(&bytes)?;
-
-assert_eq!(decoded.animals_rc[0].name(), "Rex");
-assert_eq!(decoded.animals_arc[0].speak(), "Woof!");
 ```
 
-## 独立 Trait 对象序列化
+Fory 会先检查封闭的具体类型列表，再具体化该值。不要在 trait 对象节点上添加 `#[fory(with = ...)]`；其具体序列化器会根据已注册目标动态选择。
 
-由于 Rust 的孤儿规则，`Rc<dyn Trait>` 和 `Arc<dyn Trait>` 不能直接实现 `Serializer`。对于独立序列化（不在结构体字段内），`register_trait_type!` 宏生成包装类型。
-
-**注意：** 如果不想使用包装类型，可以改为序列化为 `Rc<dyn Any>` 或 `Arc<dyn Any>`（参见上面的 dyn Any 部分）。
-
-`register_trait_type!` 宏生成 `AnimalRc` 和 `AnimalArc` 包装类型：
+对于 `Arc<dyn Trait>`，trait 必须是线程安全的，并且宏需要使用其 `sync` 形式：
 
 ```rust
-// 对于 Rc<dyn Trait>
-let dog_rc: Rc<dyn Animal> = Rc::new(Dog {
-    name: "Rex".to_string(),
-    breed: "Golden".to_string()
-});
-let wrapper = AnimalRc::from(dog_rc);
+use std::sync::Arc;
 
-let bytes = fory.serialize(&wrapper);
-let decoded: AnimalRc = fory.deserialize(&bytes)?;
+trait SharedAnimal: ForyObject + Send + Sync {
+    fn name(&self) -> &str;
+}
 
-// 解包回 Rc<dyn Animal>
-let unwrapped: Rc<dyn Animal> = decoded.unwrap();
-assert_eq!(unwrapped.name(), "Rex");
+impl SharedAnimal for Dog {
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
 
-// 对于 Arc<dyn Trait>
-let dog_arc: Arc<dyn Animal> = Arc::new(Dog {
-    name: "Buddy".to_string(),
-    breed: "Labrador".to_string()
-});
-let wrapper = AnimalArc::from(dog_arc);
+impl SharedAnimal for Cat {
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
 
-let bytes = fory.serialize(&wrapper);
-let decoded: AnimalArc = fory.deserialize(&bytes)?;
+register_trait_type!(sync SharedAnimal, Dog, Cat);
 
-let unwrapped: Arc<dyn Animal> = decoded.unwrap();
-assert_eq!(unwrapped.name(), "Buddy");
+#[derive(ForyStruct)]
+struct SharedShelter {
+    featured: Arc<dyn SharedAnimal>,
+}
 ```
 
-## 最佳实践
+`sync` 声明中列出的每个目标都必须实现 `Send + Sync`。当库需要导出生成的根序列化器时，请使用 `register_trait_type!(pub sync SharedAnimal, Dog, Cat)`。
 
-1. **使用 `register_trait_type!`** 注册所有 trait 实现
-2. **启用 compatible 模式**：对 trait 对象使用 `.compatible(true)`
-3. **注册所有具体类型**：在序列化之前
-4. **优先使用 dyn Any**：对于更简单的独立序列化
+## Trait 对象根值
+
+`Box<dyn Trait>` 可以直接作为普通根值：
+
+```rust
+let animal: Box<dyn Animal> = Box::new(Dog {
+    name: "Rex".to_string(),
+});
+
+let bytes = fory.serialize(&animal)?;
+let decoded: Box<dyn Animal> = fory.deserialize(&bytes)?;
+assert_eq!(decoded.name(), "Rex");
+```
+
+由于 Rust 的 orphan rule，不能直接为 `Rc<dyn Trait>` 和 `Arc<dyn Trait>` 实现普通序列化器。宏会为这些根值生成序列化器类型：
+
+```rust
+let animal: Rc<dyn Animal> = Rc::new(Dog {
+    name: "Milo".to_string(),
+});
+
+let bytes =
+    fory.serialize_with::<AnimalRcSerializer>(&animal)?;
+let decoded =
+    fory.deserialize_with::<AnimalRcSerializer>(&bytes)?;
+assert_eq!(decoded.name(), "Milo");
+```
+
+```rust
+let animal: Arc<dyn SharedAnimal> = Arc::new(Dog {
+    name: "Luna".to_string(),
+});
+
+let bytes =
+    fory.serialize_with::<SharedAnimalArcSerializer>(&animal)?;
+let decoded =
+    fory.deserialize_with::<SharedAnimalArcSerializer>(&bytes)?;
+assert_eq!(decoded.name(), "Luna");
+```
+
+这些 API 会直接序列化原始的 `Rc` 或 `Arc`，不会使用转换 wrapper。生成的序列化器类型不需要按 ID 或名称注册。
+
+## 动态 `Any`
+
+Fory 支持：
+
+- `Box<dyn Any>`；
+- `Rc<dyn Any>`；
+- `Arc<dyn Any + Send + Sync>`。
+
+具体目标必须先注册：
+
+```rust
+use std::any::Any;
+
+let value: Rc<dyn Any> = Rc::new(Dog {
+    name: "Rex".to_string(),
+});
+
+let bytes = fory.serialize(&value)?;
+let decoded: Rc<dyn Any> = fory.deserialize(&bytes)?;
+let dog = decoded.downcast_ref::<Dog>().unwrap();
+assert_eq!(dog.name, "Rex");
+```
+
+当类型擦除后的值需要跨线程共享时，请使用 `Arc<dyn Any + Send + Sync>`：
+
+```rust
+let value: Arc<dyn Any + Send + Sync> = Arc::new(Dog {
+    name: "Buddy".to_string(),
+});
+
+let bytes = fory.serialize(&value)?;
+let decoded: Arc<dyn Any + Send + Sync> =
+    fory.deserialize(&bytes)?;
+let dog = decoded.downcast_ref::<Dog>().unwrap();
+assert_eq!(dog.name, "Buddy");
+```
+
+如果目标满足 `Send + Sync`，派生序列化器就支持具体化同步的 `Arc`。需要支持该路径的自定义序列化器应实现 `read_arc_any`。
+
+通用 `LIST`、`SET` 和 `MAP` 身份无法标识 `Any` 背后唯一且精确的 Rust 泛型目标。请将此类容器放入已注册的结构体中；如果有意使用不透明的 `EXT` 表示，也可以为整个容器注册目标类型完全匹配的自定义序列化器。
 
 ## 相关主题
 
-- [引用](references.md) - Rc/Arc 共享引用
-- [Schema 演化](schema-evolution.md) - Compatible 模式
-- [类型注册](type-registration.md) - 注册类型
+- [外部类型序列化](external-types.md)
+- [引用](references.md)
+- [类型注册](type-registration.md)

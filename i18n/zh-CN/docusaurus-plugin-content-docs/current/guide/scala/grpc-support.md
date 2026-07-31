@@ -100,7 +100,7 @@ final class GreeterService extends GreeterGrpc.GreeterImplBase {
 }
 ```
 
-生成代码会注册 request/response 类型，service 实现不需要手动注册 serializer。
+生成代码会注册生成的 request/response 类型，因此 service 实现不需要注册自定义序列化器。
 
 ## 创建 Client
 
