@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 18
+sidebar_position: 19
 id: troubleshooting
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -97,6 +97,44 @@ public class DeserializeIntoType {
   }
 }
 ```
+
+## Cyclic References in Set Elements and Map Keys
+
+Fory supports cyclic references in object fields, arrays, lists, and map values. However, an
+object that participates in a cycle must not be used as a `Set` element or a `Map` key. This
+restriction applies to both hash-based and sorted containers, such as `HashSet`, `TreeSet`,
+`HashMap`, and `TreeMap`.
+
+While resolving a cycle, Fory may expose an object's identity before all of its fields have been
+deserialized. A container can therefore call `hashCode()`, `equals()`, `compareTo()`, or a
+comparator while the object is only partially initialized. If later fields affect those methods,
+the container's hash buckets or ordering become invalid. The object may still appear during
+iteration even though `contains()` or `get()` cannot find it.
+
+When a set view is required, serialize the cyclic references as a list and derive a transient set
+after deserialization:
+
+```java
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+public final class Node {
+  private final List<Node> parentList = new ArrayList<>();
+  private transient Set<Node> parents;
+
+  public Set<Node> getParents() {
+    if (parents == null) {
+      parents = new LinkedHashSet<>(parentList);
+    }
+    return parents;
+  }
+}
+```
+
+For a derived map, serialize an ordered list of key-value entries and build the transient map after
+deserialization.
 
 ## Common Error Messages
 

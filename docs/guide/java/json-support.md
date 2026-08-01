@@ -1,6 +1,6 @@
 ---
 title: JSON Support
-sidebar_position: 19
+sidebar_position: 18
 id: json_support
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
