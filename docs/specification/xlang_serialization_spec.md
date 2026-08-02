@@ -1618,6 +1618,8 @@ The mathematical value is:
 
 - `scale` is encoded as signed varint32.
 - `scale` carries no extra flags or mode bits.
+- Arbitrary-precision decimal carriers accept only
+  `-10_000 <= scale <= 10_000`.
 
 #### Unscaled Header
 
@@ -1652,6 +1654,10 @@ Encoding:
 - `unscaledHeader = (meta << 1) | 1`
 - `payload = magnitude as canonical minimal little-endian bytes`
 
+For arbitrary-precision decimal carriers, `len` must not exceed `10_000`.
+This limit counts only the canonical unsigned binary bytes of `abs(unscaled)`;
+it does not count the header, decimal digits, or textual representations.
+
 Decoding:
 
 - `meta = unscaledHeader >>> 1`
@@ -1672,6 +1678,17 @@ Decoding:
 After decoding `scale` and `unscaled`, the decimal value is reconstructed as:
 
 `value = unscaled × 10^-scale`
+
+The scale and magnitude bounds are accepted-value limits, not changes to the
+wire encoding. Writers must reject values outside them, and readers must reject
+them before allocating the magnitude or constructing the decimal while still
+checking that an accepted body is readable and canonically encoded. A target
+with a fixed-range decimal carrier may impose a stricter native range.
+
+The compatible scalar conversion limits described earlier in this specification
+remain independent. In particular, conversion that formats plain text,
+rescales, quantizes, or otherwise expands output must retain its own expected
+output-length checks; the ordinary decimal scale bound does not replace them.
 
 ### struct
 
