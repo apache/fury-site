@@ -1006,8 +1006,8 @@ public static partial class AddressBookService
 
 Each generated method descriptor uses a static Fory-backed
 `Grpc.Core.Marshaller<T>` that reuses the schema module's `ThreadSafeFory`.
-Deserialization reads the gRPC body through `PayloadAsReadOnlySequence()` and
-rejects trailing bytes after the single Fory frame. Generated service companions
+Deserialization copies the gRPC body through `PayloadAsNewBuffer()` and rejects
+trailing bytes after the single Fory frame. Generated service companions
 do not use protobuf parsers and do not create Fory instances per RPC call.
 
 Streaming RPCs map to standard gRPC C# APIs:
