@@ -91,7 +91,12 @@ let fory = Fory(compatible: false, checkClassVersion: true)
 
 ### Size and Depth Limits
 
-`maxDepth` bounds decoded payload nesting depth.
+`maxDepth` limits how deeply deserialization may materialize values whose concrete types are
+selected dynamically through `Any`. Statically declared arrays, dictionaries, structs, classes,
+and unions do not consume this limit.
+
+TypeMeta generic metadata has a fixed maximum nesting depth of `20`. Writers reject metadata above
+this limit, and readers apply the same limit.
 
 `maxGraphMemoryBytes` sets an approximate graph-memory gate for one root deserialization. The
 estimate mainly covers materialized arrays, dictionaries, sets, structs, classes, and objects. It
@@ -150,7 +155,7 @@ Security-related configuration:
 
 - Register only the expected generated models before deserializing untrusted payloads.
 - Use `checkClassVersion` with `compatible: false` for intentional same-schema payloads.
-- Set `maxDepth` for the largest nesting depth your service accepts.
+- Set `maxDepth` for the largest dynamic `Any` nesting depth your service accepts.
 - Set `maxGraphMemoryBytes` as an approximate gate for collection, map, array, struct, class, and
   object-heavy payloads. It is not an exact heap cap; leaf values are gated by remaining input
   bytes.

@@ -117,16 +117,6 @@ ReadOnlySpan<byte> span = payload;
 MyType decoded = fory.Deserialize<MyType>(span);
 ```
 
-### Stream-style frame consumption
-
-```csharp
-using System.Buffers;
-
-ReadOnlySequence<byte> sequence = GetFramedSequence();
-MyType first = fory.Deserialize<MyType>(ref sequence);
-MyType second = fory.Deserialize<MyType>(ref sequence);
-```
-
 ## Dynamic Payloads via Generic Object API
 
 When the compile-time type is unknown or heterogeneous, use the generic API with `object?`.

@@ -74,9 +74,16 @@ for model_class in [User, Order, Product, Invoice]:
 
 ## Strict Mode Relationship
 
-With `strict=True`, deserialization accepts only registered types. Register all
-application classes before serializing or deserializing payloads, and keep the
-same registration IDs or names on every peer that shares those payloads.
+With `strict=True`, Fory loads and instantiates only registered application
+classes. Register application classes before serializing or deserializing
+payloads, and keep the same registration IDs or names on every peer that shares
+those payloads.
+
+Compatible metadata has one data-only exception: when a remote Struct has no
+local registration, deserialization returns the fixed framework
+`pyfory.UnknownStruct` value instead of loading or generating the sender's
+class. Register the class locally when the application requires a concrete
+application object.
 
 ## Related Topics
 

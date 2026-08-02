@@ -88,6 +88,25 @@ print(user.email)  # "unknown@example.com"
 - **Remove fields**: Old data with extra fields will be skipped
 - **Reorder fields**: Fields are matched by name, not position
 
+## Unknown Remote Structs
+
+When compatible metadata describes a Struct that has no local registration,
+Python returns `pyfory.UnknownStruct`. This fixed data-only carrier exposes the
+remote fields through mapping-style access and can be serialized again with its
+original schema:
+
+```python
+value = reader.deserialize(data)
+assert isinstance(value, pyfory.UnknownStruct)
+print(value["name"])
+
+forwarded = reader.serialize(value)
+```
+
+This behavior also applies with `strict=True`: Fory does not import, generate,
+or instantiate the sender-named Python class. Register the matching class on a
+reader that should materialize the application type instead.
+
 ## Same-Schema Class Optimization
 
 Use `compatible=False` only when the class schema used to deserialize every payload is always the same

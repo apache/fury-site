@@ -106,7 +106,11 @@ See [Custom Serializers](custom-serializers.md) for how to implement a serialize
 
 ## Rules to Follow
 
-- Register **before** the first `serialize` or `deserialize` call.
+- Register **before** the first `serialize`, `serializeTo`, `serializeBuiltin`,
+  `serializeBuiltinTo`, `deserialize`, or `deserializeFrom` call. That first
+  root operation permanently closes registration for the `Fory` instance, even
+  if the operation fails; create a new instance when a different registry is
+  required.
 - Register **every** class that can appear in a message, not only the root type.
 - Do not register generated private-field access companions; register only
   concrete serialized types.
