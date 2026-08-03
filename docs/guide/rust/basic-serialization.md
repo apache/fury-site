@@ -152,10 +152,12 @@ fory = { version = "1.5.0", features = ["chrono"] }
 
 ### Custom Types
 
-| Macro                   | Description                |
-| ----------------------- | -------------------------- |
-| `#[derive(ForyStruct)]` | Object graph serialization |
-| `#[derive(ForyRow)]`    | Row-based serialization    |
+| Macro                   | Description                           |
+| ----------------------- | ------------------------------------- |
+| `#[derive(ForyStruct)]` | Object graph serialization            |
+| `#[derive(ForyRow)]`    | Standard Row Format for named structs |
+
+`ForyRow` has a separate type set and returns borrowed field views. Row reads and field access use `Result` to report invalid row data. See [Row Format](row-format.md) for supported types, nullability, and examples.
 
 ## Serialization APIs
 
@@ -205,7 +207,7 @@ all supported carriers, and registration.
 
 ## Performance Tips
 
-- **Zero-Copy Deserialization**: Row format enables direct memory access without copying
+- **Selective Zero-Copy Access**: Row Format returns borrowed views for direct field and element access
 - **Buffer Pre-allocation**: Minimizes memory allocations during serialization
 - **Compact Encoding**: Variable-length encoding for space efficiency
 - **Little-Endian**: Optimized for modern CPU architectures
@@ -217,3 +219,4 @@ all supported carriers, and registration.
 - [References](references.md) - Shared and circular references
 - [Custom Serializers](custom-serializers.md) - Custom serialization
 - [External-Type Serialization](external-types.md) - Third-party values and carrier roots
+- [Row Format](row-format.md) - Standard Row Format and zero-copy borrowed views

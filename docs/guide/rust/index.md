@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-**Apache Fory™** is a blazing fast multi-language serialization framework powered by **JIT compilation** and **zero-copy** techniques, providing up to **ultra-fast performance** while maintaining ease of use and safety.
+**Apache Fory™** is a high-performance multi-language serialization framework. The Rust implementation uses compile-time code generation for object serialization and borrowed views for zero-copy Row Format access.
 
 The Rust implementation provides versatile and high-performance serialization with automatic memory management and compile-time type safety. It supports both xlang mode for cross-language payloads and native mode for Rust-only payloads.
 
@@ -32,7 +32,7 @@ The Rust implementation provides versatile and high-performance serialization wi
 - **Circular references**: Automatic tracking of shared and circular references with `Rc`/`Arc` and weak pointers
 - **Polymorphic**: Serialize trait objects with `Box<dyn Trait>`, `Rc<dyn Trait>`, and `Arc<dyn Trait>`
 - **Schema evolution**: Compatible mode for independent schema changes
-- **Two formats**: Object graph serialization and zero-copy row-based format
+- **Two formats**: Object graph serialization and the Standard Row Format shared with Java, C++, and Python
 
 ## Crates
 
@@ -146,30 +146,6 @@ fn main() -> Result<(), Error> {
 
 **Tip:** Perform registrations (such as `fory.register::<T>(id)`) before spawning threads so every worker sees the same metadata. Once configured, wrapping the instance in `Arc` is enough to fan out serialization and deserialization tasks safely.
 
-## Architecture
-
-The Rust implementation consists of three main crates:
-
-```
-fory/                   # High-level API
-├── src/lib.rs         # Public API exports
-
-fory-core/             # Core serialization engine
-├── src/
-│   ├── fory.rs       # Main serialization entry point
-│   ├── buffer.rs     # Binary buffer management
-│   ├── serializer/   # Type-specific serializers
-│   ├── resolver/     # Type resolution and metadata
-│   ├── meta/         # Meta string compression
-│   ├── row/          # Row format implementation
-│   └── types.rs      # Type definitions
-
-fory-derive/           # Procedural macros
-├── src/
-│   ├── object/       # ForyStruct macro
-│   └── fory_row.rs  # ForyRow macro
-```
-
 ## Use Cases
 
 ### Object Serialization
@@ -180,13 +156,14 @@ fory-derive/           # Procedural macros
 - Schema evolution with compatible mode
 - Graph-like data structures with circular references
 
-### Row-Based Serialization
+### Standard Row Format
 
 - High-throughput data processing
 - Analytics workloads requiring fast field access
 - Memory-constrained environments
 - Real-time data streaming applications
-- Zero-copy scenarios
+- Zero-copy field and collection access
+- Standard Row Format interchange with Java, C++, and Python
 
 ## Next Steps
 
@@ -199,5 +176,5 @@ fory-derive/           # Procedural macros
 - [Custom Serializers](custom-serializers.md) - Implement custom serialization behavior
 - [External-Type Serialization](external-types.md) - External structural and custom serializers
   plus carrier composition
-- [Row Format](row-format.md) - Zero-copy row-based format
+- [Row Format](row-format.md) - Standard Row Format with borrowed views
 - [gRPC Support](grpc-support.md) - Fory payloads over tonic

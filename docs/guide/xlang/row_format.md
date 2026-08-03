@@ -19,14 +19,19 @@ license: |
   limitations under the License.
 ---
 
-Fory Row Format is a cache-friendly binary format designed for efficient random access and partial serialization. Unlike object graph serialization, row format allows you to read individual fields without deserializing the entire object.
+Fory Row Format is a cache-friendly binary format designed for efficient random access. Unlike object graph serialization, Row Format allows readers to access individual fields without reconstructing the complete object.
 
 ## Features
 
 - **Zero-Copy Random Access**: Read specific fields directly from binary data
-- **Partial Serialization**: Skip unnecessary fields during serialization
-- **Cross-Language Compatible**: Row format data can be shared between Java, Python, and C++
+- **Selective Access**: Read only the fields or collection elements an application needs
+- **Cross-Language Compatible**: Standard Row Format data can be shared between Java, Python, C++, and Rust
 - **Apache Arrow Integration**: Convert row format to/from Arrow RecordBatch for analytics (Java/Python)
+
+| Format              | Implementations         | Purpose                    |
+| ------------------- | ----------------------- | -------------------------- |
+| Standard Row Format | Java, Python, C++, Rust | Cross-language interchange |
+| Compact Row Format  | Java                    | Smaller Java-only rows     |
 
 ## Java
 
@@ -78,15 +83,22 @@ Bar newBar2 = barEncoder.fromRow(binaryArray4.getStruct(20));
 ## Python
 
 ```python
+import datetime
+import pickle
+from dataclasses import dataclass
+from typing import Dict, List
+
+import pyfory
+
 @dataclass
 class Bar:
     f1: str
-    f2: List[pa.int64]
+    f2: List[pyfory.Int64]
 @dataclass
 class Foo:
-    f1: pa.int32
-    f2: List[pa.int32]
-    f3: Dict[str, pa.int32]
+    f1: pyfory.Int32
+    f2: List[pyfory.Int32]
+    f3: Dict[str, pyfory.Int32]
     f4: List[Bar]
 
 encoder = pyfory.encoder(Foo)
@@ -105,6 +117,42 @@ new_foo = pickle.loads(binary)
 print(new_foo.f2[100000], new_foo.f4[100000].f1, new_foo.f4[200000].f2[5])
 print(f"pickle end: {datetime.datetime.now()}")
 ```
+
+## Rust
+
+Rust derives a static Row Format schema from a named struct. Struct fields use source declaration order, and `Option<T>` declares nullable fields or array elements. The Rust type used by `from_row` must match the producer's field types and order.
+
+```rust
+use fory::{from_row, to_row, Error, ForyRow};
+
+#[derive(ForyRow)]
+struct Metric {
+    id: i64,
+    label: String,
+    samples: Vec<f64>,
+    note: Option<String>,
+}
+
+fn main() -> Result<(), Error> {
+    let bytes = to_row(&Metric {
+        id: 7,
+        label: "latency".to_string(),
+        samples: vec![1.5, 2.0],
+        note: None,
+    })?;
+
+    let row = from_row::<Metric>(&bytes)?;
+    assert_eq!(row.id()?, 7);
+    assert_eq!(row.label()?, "latency");
+    assert_eq!(row.note()?, None);
+
+    let samples = row.samples()?;
+    assert_eq!(samples.get(1)?, 2.0);
+    Ok(())
+}
+```
+
+Rust reads and writes the exact Standard Row Format, including natural-width primitive array elements, little-endian offset-size slots, null bitmaps, and 8-byte zero padding. See the [Rust Row Format Guide](../rust/row-format.md) for supported types and API details.
 
 ## Apache Arrow Support
 
@@ -188,3 +236,4 @@ Parent decoded = encoder.fromRow(row);
 - [Row Format Specification](https://fory.apache.org/docs/specification/row_format_spec) - Binary format details
 - [Java Row Format Guide](../java/row-format.md) - Java-specific row format documentation
 - [Python Row Format Guide](../python/row-format.md) - Python-specific row format documentation
+- [Rust Row Format Guide](../rust/row-format.md) - Rust-specific row format documentation

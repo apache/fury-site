@@ -27,13 +27,13 @@ Row format drastically reduces overhead when working with large objects where on
 
 **Key Benefits:**
 
-| Feature                 | Description                                            |
-| ----------------------- | ------------------------------------------------------ |
-| Zero-Copy Access        | Read nested fields without deserializing entire object |
-| Memory Efficiency       | Memory-map large datasets directly from disk           |
-| Cross-Language          | Binary format compatible between Python, Java, C++     |
-| Partial Deserialization | Deserialize only specific elements you need            |
-| High Performance        | Skip unnecessary data parsing for analytics workloads  |
+| Feature                 | Description                                              |
+| ----------------------- | -------------------------------------------------------- |
+| Zero-Copy Access        | Read nested fields without deserializing entire object   |
+| Memory Efficiency       | Memory-map large datasets directly from disk             |
+| Cross-Language          | Binary format compatible between Python, Java, C++, Rust |
+| Partial Deserialization | Deserialize only specific elements you need              |
+| High Performance        | Skip unnecessary data parsing for analytics workloads    |
 
 ## Basic Usage
 
@@ -102,7 +102,7 @@ standard-library Python `array.array` carrier, not PyArrow.
 
 ## Cross-Language Compatibility
 
-Row format works seamlessly across languages. The same binary data can be accessed from Java and C++.
+Row format works seamlessly across languages. The same binary data can be accessed from Java, C++, and Rust.
 
 ### Java
 

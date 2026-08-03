@@ -28,7 +28,7 @@ Row format is a cache-friendly binary random access format that supports:
 - **Zero-copy access**: Read fields directly from binary without allocating objects
 - **Partial deserialization**: Access only the fields you need
 - **Skipping serialization**: Skip serialization of fields you don't need
-- **Cross-language compatibility**: Works across Python, Java, C++, and other languages
+- **Cross-language compatibility**: Standard rows work across Python, Java, C++, and Rust
 - **Column format conversion**: Can convert to Apache Arrow columnar format automatically
 
 ## Basic Usage
@@ -62,7 +62,7 @@ for (int i = 0; i < 1_000_000; i++) {
 }
 foo.f4 = bars;
 
-// Encode to row format (cross-language compatible with Python/C++)
+// Encode to row format (cross-language compatible with Python/C++/Rust)
 BinaryRow binaryRow = encoder.toRow(foo);
 
 // Zero-copy random access without full deserialization
@@ -95,13 +95,13 @@ straight to the ordinal row getter without another schema map lookup or typed ha
 
 ## Key Benefits
 
-| Feature                 | Description                                            |
-| ----------------------- | ------------------------------------------------------ |
-| Zero-Copy Access        | Read nested fields without deserializing entire object |
-| Memory Efficiency       | Memory-map large datasets directly from disk           |
-| Cross-Language          | Binary format compatible between Java, Python, C++     |
-| Partial Deserialization | Deserialize only specific elements you need            |
-| High Performance        | Skip unnecessary data parsing for analytics workloads  |
+| Feature                 | Description                                              |
+| ----------------------- | -------------------------------------------------------- |
+| Zero-Copy Access        | Read nested fields without deserializing entire object   |
+| Memory Efficiency       | Memory-map large datasets directly from disk             |
+| Cross-Language          | Binary format compatible between Java, Python, C++, Rust |
+| Partial Deserialization | Deserialize only specific elements you need              |
+| High Performance        | Skip unnecessary data parsing for analytics workloads    |
 
 ## When to Use Row Format
 
@@ -121,20 +121,19 @@ Row format works seamlessly across languages. The same binary data can be access
 
 ```python
 import pyfory
-import pyarrow as pa
 from dataclasses import dataclass
 from typing import List, Dict
 
 @dataclass
 class Bar:
     f1: str
-    f2: List[pa.int64]
+    f2: List[pyfory.Int64]
 
 @dataclass
 class Foo:
-    f1: pa.int32
-    f2: List[pa.int32]
-    f3: Dict[str, pa.int32]
+    f1: pyfory.Int32
+    f2: List[pyfory.Int32]
+    f3: Dict[str, pyfory.Int32]
     f4: List[Bar]
 
 encoder = pyfory.encoder(Foo)
