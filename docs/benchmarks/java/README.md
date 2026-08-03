@@ -1,6 +1,6 @@
-# Java Native Serialization Benchmarks
+# Java Benchmarks
 
-See the [Java JSON benchmark report](../../../json/java/README.md) for fory-json, Jackson, and Gson results.
+See the [Java JSON benchmark report](json/) for fory-json, Jackson, and Gson results.
 
 ## System Environment
 
@@ -239,3 +239,31 @@ But if you serialize data between processes on same node and use shared-memory, 
 | deserialize | 5000       | array        | PRIMITIVE_ARRAY | 40312.590172   | 6122.351228    | 10672.872798   |
 | deserialize | 5000       | directBuffer | BUFFER          | 3284441.570594 | 148614.476829  | 77950.612503   |
 | deserialize | 5000       | directBuffer | PRIMITIVE_ARRAY | 40413.743717   | 21826.040410   | 8561.694533    |
+
+## Xlang Benchmark
+
+Run from `benchmarks/java/run.sh`. Raw JMH JSON stays under the ignored local `benchmarks/java/reports/` directory; `throughput.png` and this xlang section are synced into `docs/benchmarks/java/`.
+
+```bash
+cd benchmarks/java
+./run.sh
+```
+
+JMH parameters: `-f 1 -wi 3 -i 3 -t 1 -w 3s -r 3s -bm thrpt -tu s`. Higher throughput is better.
+
+![Java Xlang Serialization Throughput](throughput.png)
+
+| Data type         | Operation   | Fory ops/sec | Protobuf ops/sec | Flatbuffer ops/sec | Fastest |
+| ----------------- | ----------- | ------------ | ---------------- | ------------------ | ------- |
+| NumericStruct     | Serialize   | 46,787,647   | 33,024,161       | 9,612,018          | Fory    |
+| NumericStruct     | Deserialize | 71,683,707   | 29,837,931       | 40,514,436         | Fory    |
+| Sample            | Serialize   | 17,406,902   | 2,071,963        | 3,153,672          | Fory    |
+| Sample            | Deserialize | 17,772,123   | 1,867,967        | 4,179,494          | Fory    |
+| MediaContent      | Serialize   | 10,783,325   | 1,781,338        | 1,444,737          | Fory    |
+| MediaContent      | Deserialize | 7,950,203    | 2,184,597        | 3,453,985          | Fory    |
+| NumericStructList | Serialize   | 21,263,673   | 2,511,081        | 3,047,836          | Fory    |
+| NumericStructList | Deserialize | 19,249,877   | 2,067,204        | 8,168,569          | Fory    |
+| SampleList        | Serialize   | 4,580,165    | 401,280          | 696,268            | Fory    |
+| SampleList        | Deserialize | 3,811,985    | 344,945          | 773,625            | Fory    |
+| MediaContentList  | Serialize   | 1,657,717    | 353,717          | 296,868            | Fory    |
+| MediaContentList  | Deserialize | 1,111,043    | 435,956          | 516,192            | Fory    |
