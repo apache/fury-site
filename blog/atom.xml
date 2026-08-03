@@ -2329,7 +2329,7 @@ schema above, generated code looks like:</p>
 <li class="">Apache Fory External-Type Serialization: <a href="https://fory.apache.org/docs/guide/rust/external_types" target="_blank" rel="noopener noreferrer" class="">📖 View</a></li>
 <li class="">Apache Fory Rust Benchmarks: <a href="https://fory.apache.org/docs/benchmarks/rust/" target="_blank" rel="noopener noreferrer" class="">📊 View</a></li>
 <li class="">Apache Fory Rust API Doc: <a href="https://docs.rs/fory/latest/fory/" target="_blank" rel="noopener noreferrer" class="">📖 View</a></li>
-<li class="">Apache Fory Xlang Serialization Spec: <a href="https://fory.apache.org/docs/specification/fory_xlang_serialization_spec/" target="_blank" rel="noopener noreferrer" class="">📖 View</a></li>
+<li class="">Apache Fory Xlang Serialization Spec: <a href="https://fory.apache.org/docs/specification/xlang_serialization_spec/" target="_blank" rel="noopener noreferrer" class="">📖 View</a></li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="community-and-contribution">Community and Contribution<a href="https://fory.apache.org/blog/fory_rust_versatile_serialization_framework#community-and-contribution" class="hash-link" aria-label="Direct link to Community and Contribution" title="Direct link to Community and Contribution" translate="no">​</a></h2>
 <p>Apache Fory is an <strong>Apache Software Foundation</strong> project with a vibrant, growing community:</p>
