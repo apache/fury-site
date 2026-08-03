@@ -307,7 +307,7 @@ disabled. Every other builder option keeps the behavior described above.
 
 Fory JSON provides `JsonProperty`, `JsonPropertyOrder`, `JsonIgnore`, `JsonAnyProperty`,
 `JsonAnyGetter`, `JsonAnySetter`, `JsonCreator`, `JsonCodec`, `JsonValue`, `JsonRawValue`,
-`JsonBase64`, `JsonUnwrapped`, and `JsonSubTypes` as mapping annotations under
+`JsonBase64`, `JsonFormat`, `JsonUnwrapped`, and `JsonSubTypes` as mapping annotations under
 `org.apache.fory.json.annotation`. `JsonType` is a separate build-time generation marker. They are
 not Jackson, Gson, or Fory binary-protocol annotations.
 
@@ -321,6 +321,7 @@ import org.apache.fory.json.annotation.JsonAnySetter;
 import org.apache.fory.json.annotation.JsonBase64;
 import org.apache.fory.json.annotation.JsonCodec;
 import org.apache.fory.json.annotation.JsonCreator;
+import org.apache.fory.json.annotation.JsonFormat;
 import org.apache.fory.json.annotation.JsonIgnore;
 import org.apache.fory.json.annotation.JsonMixin;
 import org.apache.fory.json.annotation.JsonMixinRemove;
@@ -379,7 +380,7 @@ that the subclass inherits, but the resulting annotation applies only while that
 mapped.
 
 All Fory JSON mapping annotations are supported: `JsonAnyGetter`, `JsonAnyProperty`,
-`JsonAnySetter`, `JsonBase64`, `JsonCodec`, `JsonCreator`, `JsonIgnore`, `JsonProperty`,
+`JsonAnySetter`, `JsonBase64`, `JsonCodec`, `JsonCreator`, `JsonFormat`, `JsonIgnore`, `JsonProperty`,
 `JsonPropertyOrder`, `JsonRawValue`, `JsonSubTypes`, `JsonUnwrapped`, and `JsonValue`. `JsonType`
 cannot be added or removed because it controls build-time generation rather than the JSON schema.
 
@@ -404,7 +405,8 @@ abstract class QuotedMessageMixin {
 
 Removal affects only the matched declaration in the exact-target configuration. Removing
 `JsonRawValue` restores ordinary quoted String output; removing `JsonBase64` restores the ordinary
-`byte[]` representation; removing `JsonUnwrapped` restores a nested object property. Type-level
+`byte[]` representation; removing `JsonFormat` restores the ordinary date/time representation;
+removing `JsonUnwrapped` restores a nested object property. Type-level
 removal can mask inherited `JsonCodec` or `JsonPropertyOrder` declarations for the exact target.
 Removing an absent annotation is harmless, but the selector must still match exactly one target
 declaration. A source cannot both declare and remove the same annotation type on one declaration.
@@ -612,7 +614,7 @@ Java null follows the property's existing inclusion rule and is written as JSON 
 Reading is unchanged and still expects a JSON string. A raw object or array written through the
 property cannot be read back into that `String`. The annotation does not apply to setters, creator
 parameters, Any declarations, container elements, or Map values, and it cannot share an occurrence
-with `JsonCodec`.
+with `JsonCodec` or `JsonFormat`.
 As an occurrence-local representation, it keeps the raw String shape even when the value type has
 an exact builder-registered codec.
 
@@ -641,8 +643,57 @@ normal inclusion rule.
 
 The annotation is not a type-use annotation and does not affect ordinary `byte[]` properties,
 container elements, or Map values. It cannot share a logical property with `JsonRawValue`, an
-occurrence `JsonCodec`, or an Any declaration. The equivalent explicit codec is
+occurrence `JsonCodec`, `JsonFormat`, or an Any declaration. The equivalent explicit codec is
 `@JsonCodec(Base64ByteArrayCodec.class)`.
+
+### `JsonFormat`
+
+Use `JsonFormat` on a date/time field to select its JSON text pattern in both directions. Patterns
+use `DateTimeFormatter` syntax and the root locale:
+
+```java
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import org.apache.fory.json.annotation.JsonFormat;
+
+public final class Schedule {
+  @JsonFormat(pattern = "dd/MM/uuuu")
+  public LocalDate day;
+
+  @JsonFormat(pattern = "dd/MM/uuuu")
+  public Optional<LocalDate> optionalDay;
+
+  @JsonFormat(pattern = "dd/MM/uuuu")
+  public List<LocalDate> days;
+
+  @JsonFormat(pattern = "dd/MM/uuuu")
+  public Map<String, LocalDate> daysByName;
+}
+```
+
+For `day = LocalDate.of(2024, 1, 2)`, the property is written as `"day":"02/01/2024"` and
+the same text reads back to that date. The annotation applies to the field value when it is a
+supported date/time type. For one direct wrapper, it applies to an array or collection element, an
+`AtomicReferenceArray` element, an `Optional` or `AtomicReference` content value, or a Map value.
+This includes `List`, `Set`, and their concrete `Collection` implementations. Null handling still
+follows the property's ordinary inclusion rule.
+
+Supported values are exact `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `ZonedDateTime`,
+`Year`, `YearMonth`, `MonthDay`, `OffsetTime`, `OffsetDateTime`, `HijrahDate`, `JapaneseDate`,
+`MinguoDate`, and `ThaiBuddhistDate` types. `Instant` uses UTC; zoned and offset types use the zone or
+offset carried by the value. The pattern must contain enough information to reconstruct the
+declared type.
+
+`JsonFormat` is a field annotation, not a type-use annotation. A record component works through its
+generated field. Nested wrappers, Map keys, raw or wildcard direct children, JSON Any values, and
+unwrapped values are intentionally rejected. Types with ambiguous formatting semantics, including
+legacy and SQL date types, `Duration`, `Period`, `TimeZone`, `ZoneId`, and `ZoneOffset`, are not
+supported. A wrapper with a complete registered, annotation-selected, polymorphic, or `JsonValue`
+representation is also rejected because that representation owns the whole wrapper.
+`JsonFormat` cannot share a field with `JsonCodec`, `JsonBase64`, `JsonRawValue`, `JsonAnyProperty`,
+`JsonUnwrapped`, or `JsonValue`.
 
 ### `JsonUnwrapped`
 
@@ -689,7 +740,7 @@ Fory rejects duplicate final names, recursive chains made only of unwrapped prop
 parameterized children, JSON Any children, polymorphic or custom-codec child roots, and scalar,
 array, collection, or Map children. Flatten Maps with `JsonAnyProperty`, `JsonAnyGetter`, or
 `JsonAnySetter`. An unwrapped property cannot use `JsonProperty.value`, a non-default
-`JsonProperty.include`, or `JsonCodec`; ordinary leaf properties inside the child keep their normal
+`JsonProperty.include`, `JsonCodec`, or `JsonFormat`; ordinary leaf properties inside the child keep their normal
 annotations.
 
 ### Dynamic object members
@@ -1166,8 +1217,8 @@ default. URL and arbitrary unsupported Number/CharSequence subclasses require ex
 - No InputStream parser, incremental `OutputStream` writer on the `ForyJson` root API, or
   pretty-print configuration.
 - No Jackson/Gson annotation compatibility.
-- No aliases, views, filters, injection, managed/back references, object identity annotations, root
-  wrapping, or format annotations.
+- No aliases, views, filters, injection, managed/back references, object identity annotations, or
+  root wrapping.
 - Fory core's `Expose` is ignored.
 
 Circular graphs eventually fail `maxDepth`; they are not reconstructed.
