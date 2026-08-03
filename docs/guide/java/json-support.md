@@ -289,16 +289,17 @@ are rejected.
 | `withClassLoader`            | Snapshotted context loader, then Fory loader | Resolve annotation subtype class names                 |
 | `maxDepth`                   | `20`                                         | Maximum nested object/array depth                      |
 | `withMaxCachedFieldNames`    | `DEFAULT_MAX_CACHED_FIELD_NAMES` (`8192`)    | Field-name cache entries per reader; zero disables it  |
+| `withMaxGraphMemoryBytes`    | `DEFAULT_MAX_GRAPH_MEMORY_BYTES` (128 MiB)   | Approximate retained graph limit for each root read    |
 | `withConcurrencyLevel`       | `max(1, 2 * processors)`                     | Maximum concurrent root operations                     |
 | `withBufferSizeLimitBytes`   | 2 MiB                                        | Reusable capacity retained by each pooled writer       |
 | `registerCodec`              | None                                         | Exact-class complete-value codec                       |
 | `registerMixin`              | None                                         | Annotation Mixin for its exact declared target         |
 | `withTypeChecker`            | None                                         | Application policy in addition to Fory's disallow list |
 
-Depth, concurrency, and retained buffer limits must be positive. The cached-field-name limit applies
-independently to each reader; zero disables the cache, and the setting does not limit accepted
-input. The buffer setting does not limit output size. Builder changes after `build()` do not mutate
-an existing runtime.
+Depth, graph-memory, concurrency, and retained buffer limits must be positive. The
+cached-field-name limit applies independently to each reader; zero disables the cache, and the
+setting does not limit accepted input. The buffer setting does not limit output size. Builder
+changes after `build()` do not mutate an existing runtime.
 
 In a GraalVM native image, runtime compilation and asynchronous compilation are unavailable.
 Configurations returned by a reachable `ForyJsonProvider` use codecs generated while the image is
@@ -309,7 +310,8 @@ other builder option keeps the behavior described above.
 
 Fory JSON provides `JsonProperty`, `JsonPropertyOrder`, `JsonIgnore`, `JsonAnyProperty`,
 `JsonAnyGetter`, `JsonAnySetter`, `JsonCreator`, `JsonCodec`, `JsonValue`, `JsonRawValue`,
-`JsonBase64`, `JsonFormat`, `JsonUnwrapped`, and `JsonSubTypes` as mapping annotations under
+`JsonBase64`, `JsonFormat`, `JsonUnwrapped`, `JsonSubTypes`, and `JsonValidator` as mapping and
+validation annotations under
 `org.apache.fory.json.annotation`. `JsonType` is a separate build-time generation marker. They are
 not Jackson, Gson, or Fory binary-protocol annotations.
 
@@ -332,6 +334,7 @@ import org.apache.fory.json.annotation.JsonPropertyOrder;
 import org.apache.fory.json.annotation.JsonRawValue;
 import org.apache.fory.json.annotation.JsonSubTypes;
 import org.apache.fory.json.annotation.JsonType;
+import org.apache.fory.json.annotation.JsonValidator;
 import org.apache.fory.json.annotation.JsonValue;
 import org.apache.fory.json.annotation.JsonUnwrapped;
 ```
@@ -383,10 +386,11 @@ interface registration does not change an implementation. A subclass Mixin may s
 that the subclass inherits, but the resulting annotation applies only while that exact subclass is
 mapped.
 
-All Fory JSON mapping annotations are supported: `JsonAnyGetter`, `JsonAnyProperty`,
+All Fory JSON mapping and validation annotations are supported: `JsonAnyGetter`, `JsonAnyProperty`,
 `JsonAnySetter`, `JsonBase64`, `JsonCodec`, `JsonCreator`, `JsonFormat`, `JsonIgnore`, `JsonProperty`,
-`JsonPropertyOrder`, `JsonRawValue`, `JsonSubTypes`, `JsonUnwrapped`, and `JsonValue`. `JsonType`
-cannot be added or removed because it controls build-time generation rather than the JSON schema.
+`JsonPropertyOrder`, `JsonRawValue`, `JsonSubTypes`, `JsonUnwrapped`, `JsonValidator`, and
+`JsonValue`. `JsonType` cannot be added or removed because it controls build-time generation rather
+than the JSON schema.
 
 A source annotation replaces the target annotation of the same type on the matched declaration.
 The complete annotation is replaced, so omitted members use their declared defaults instead of
@@ -418,9 +422,9 @@ declaration. A source cannot both declare and remove the same annotation type on
 Only one source is enabled for an exact target in a built runtime. Registering a different source
 for the same target replaces the earlier registration, while registering the same source again is
 idempotent. `build()` snapshots the current last-registration-wins mapping; a later registration on
-the builder does not change a previously built `ForyJson`. A source with no mapping annotations is
-a no-op; registering it after another source for the same target clears the earlier overlay for
-subsequent builds.
+the builder does not change a previously built `ForyJson`. A source with no mapping or validation
+annotations is a no-op; registering it after another source for the same target clears the earlier
+overlay for subsequent builds.
 
 A `JsonCodec` supplied by a Mixin is the target's effective annotation and follows the ordinary
 codec precedence below. In particular, an exact `registerCodec` registration wins over a type-level
@@ -883,6 +887,55 @@ missing primitives use zero, duplicate members use the last value, and explicit 
 fails. Records cannot declare a property-based `JsonCreator`; a record with `JsonValue` may annotate
 its one-String canonical constructor for the value form.
 
+### `JsonValidator`
+
+Use `JsonValidator` to run application validation after an object is completely constructed and
+populated:
+
+```java
+public final class Account {
+  public String id;
+  public long balance;
+
+  @JsonValidator
+  public void validate() {
+    if (id == null || id.isEmpty() || balance < 0) {
+      throw new IllegalArgumentException("invalid account");
+    }
+  }
+}
+```
+
+A validator must be a public concrete instance method with no arguments and a `void` return type.
+Every effective validator runs exactly once after its object is complete, including creator-built
+objects, records, nested and unwrapped objects, and selected subtypes. JSON null skips validation.
+Multiple validators have no guaranteed order, and the first failure stops validation. `Error` is
+propagated; other invocation failures become `ForyJsonException` with the original cause.
+`JsonValidator` has no index or ordering member. A `JsonCreator` may instead enforce the invariant
+during construction.
+
+A Mixin can add a validator to a matching public target method:
+
+```java
+@JsonMixin(target = ThirdPartyAccount.class)
+abstract class ThirdPartyAccountMixin {
+  @JsonValidator
+  public abstract void checkValid();
+}
+```
+
+The Mixin method must match the target method's exact name, parameters, and return type. Use
+`@JsonMixinRemove(JsonValidator.class)` on a matching source method to remove the target annotation
+for that configuration. An unannotated override does not inherit the overridden method's
+validator.
+
+Validation applies to the default object mapping. A complete codec selected through
+`registerCodec` or a type-level `JsonCodec`, and a complete `JsonValue` representation, performs
+its own validation. On Android, compile direct validator models with `JsonType` and the Fory
+annotation processor; a Mixin validator uses the generated exact Mixin-target pair. GraalVM Native
+Image discovers a direct `JsonType` or registered Mixin and prepares its effective validators
+without annotation-processor output.
+
 ### `JsonSubTypes`
 
 `JsonSubTypes` defines a complete finite table on an interface or abstract base. Each entry has a
@@ -1013,6 +1066,14 @@ position delegate the complete value, including null. The registered codec insta
 concurrently and must be thread-safe. A custom codec on a subtype is compatible with wrapper
 inclusion, not inline property inclusion. A codec on the base replaces its `JsonSubTypes`
 annotation.
+
+A custom codec that materializes composite graph owners must call `JsonReader.reserveGraphMemory`
+with an application-defined byte estimate before creating each owner. This applies to composite
+application objects, collections, maps, and reference arrays. Reserve collection and map reference
+storage before the mutation that may grow it. A custom scalar or other dedicated leaf
+representation, such as `MoneyCodec` above, needs no reservation. Complete codecs also run any
+required application validation themselves; Fory JSON does not wrap a complete custom
+representation with the target type's `JsonValidator` methods.
 
 ### Selecting codecs with `JsonCodec`
 
@@ -1226,9 +1287,29 @@ fixed disallow list.
 `withClassLoader` fixes subtype `className` resolution. Otherwise `build()` snapshots the thread
 context class loader and falls back to the Fory JSON loader.
 
-`maxDepth` is not an input-size or memory quota. Enforce request size, timeout, and resource limits
-at the transport boundary. `Class`, `URL`, `InetAddress`, and `InetSocketAddress` are unsupported by
-default. URL and arbitrary unsupported Number/CharSequence subclasses require exact custom codecs.
+`maxDepth` is not an input-size or memory quota. `withMaxGraphMemoryBytes` separately limits the
+approximate retained graph created by each root read and defaults to a fixed 128 MiB. Every String
+or UTF-8 byte-array root starts with the full configured limit, including after a prior success or
+failure.
+
+The graph budget includes shallow POJO and record storage, collections and sets plus candidate
+element-reference slots, maps plus candidate key/value-reference slots, reference arrays plus their
+slots, and Java primitive arrays plus their primitive storage. Natural `JsonObject` and `JsonArray`
+values use the same rules. Repeated set elements and duplicate or overwritten map members consume
+candidate-slot budget for every occurrence. Dedicated leaves are excluded: null, strings,
+characters, booleans, numbers including big numbers, enums, temporal and other scalar values, and
+binary values. A `byte[]` decoded from a JSON numeric array counts as a primitive array, while a
+`byte[]` handled by a binary or Base64 codec remains a binary leaf. A reference array still counts
+when its elements are leaves, and an object still counts when all properties are leaves.
+`AtomicReference`, `AtomicReferenceArray`, and generic `Optional<T>` values include wrapper and
+reference storage; primitive optionals and atomic primitive values are leaves.
+
+This is a portable approximate estimate, not exact JVM heap accounting. Custom-codec allocations
+that the codec does not reserve, application constructor or validator work, temporary parsing
+storage, and other process memory can exceed the limit. Enforce request size, timeout, and resource
+limits at the transport boundary. `Class`, `URL`, `InetAddress`, and `InetSocketAddress` are
+unsupported by default. URL and arbitrary unsupported Number/CharSequence subclasses require exact
+custom codecs.
 
 ## Limits and unsupported features
 
@@ -1247,9 +1328,9 @@ Circular graphs eventually fail `maxDepth`; they are not reconstructed.
 
 | Symptom                            | Action                                                                                          |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `ForyJsonException`                | Check JSON grammar, target type, mapping support, depth, trailing content, or output cause      |
+| `ForyJsonException`                | Check grammar, target type, mapping, depth, graph memory, validation, trailing input, or output |
 | `InsecureException`                | Check Fory's disallow list and the configured type checker                                      |
-| Builder `IllegalArgumentException` | Check the configured depth, concurrency, retained-buffer, and cached-field-name limits          |
+| Builder `IllegalArgumentException` | Check depth, graph-memory, concurrency, retained-buffer, and cached-field-name limits           |
 | Declared write fails               | Remove wildcard/type variables and pass an assignable value; primitive declarations reject null |
 | Immutable value is empty           | Use a record, valid creator, or custom codec                                                    |
 | `JsonValue` read fails             | Add one plain `String` creator, or register an exact custom codec                               |
@@ -1261,8 +1342,8 @@ Circular graphs eventually fail `maxDepth`; they are not reconstructed.
 | Subtype fails                      | Write with the declared base, list the exact runtime class, and use the configured wire shape   |
 | Collection fails                   | Target a supported interface/common implementation or register a codec                          |
 
-Creator failures other than `Error` are wrapped with their original cause. User codec code may
-still throw its own runtime exceptions.
+Creator and validator failures other than `Error` are wrapped with their original cause. User codec
+code may still throw its own runtime exceptions.
 
 ## Related Java guides
 

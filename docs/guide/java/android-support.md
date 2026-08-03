@@ -82,8 +82,8 @@ Child codecs act on one direct level only. For example, `elementCodec` on `Money
 `value` codec when deeper custom behavior is required.
 
 Add the annotation processor and mark application object models with `JsonType` to generate direct
-field, getter, setter, Record constructor, and `JsonCreator` operations together with exact R8
-rules:
+field, getter, setter, Record constructor, `JsonCreator`, and `JsonValidator` operations together
+with exact R8 rules:
 
 ```kotlin
 dependencies {
@@ -93,10 +93,18 @@ dependencies {
 
 ```java
 import org.apache.fory.json.annotation.JsonType;
+import org.apache.fory.json.annotation.JsonValidator;
 
 @JsonType
 public final class Invoice {
-  // ...
+  public long total;
+
+  @JsonValidator
+  public void validate() {
+    if (total < 0) {
+      throw new IllegalArgumentException("total must not be negative");
+    }
+  }
 }
 ```
 
@@ -122,6 +130,10 @@ R8 rules and any pair-specific target operations that the runtime can use. Regis
 effective type codecs, and built-in mappings keep their normal runtime precedence. An empty Mixin
 produces no generated output.
 
+A Mixin may place `JsonValidator` on a public abstract zero-argument `void` method that exactly
+matches a public target method. The generated pair calls that target method directly. The target
+does not need `JsonType` solely for a Mixin validator.
+
 The target does not need `JsonType` merely because it has a Mixin. `JsonMixin` is itself the
 processor entry point for the pair. If a target also uses `JsonType`, the runtime selects the
 pair-specific companion for a non-empty registered Mixin instead of combining the overlay with the
@@ -134,11 +146,12 @@ only the last registered source.
 
 Use the processor-generated R8 rules for non-empty Mixins instead of broad package keep rules.
 
-Ordinary non-Record classes that omit `JsonType` can supply equivalent exact rules themselves.
-Retain every model
-constructor, field, method, generic signature, declaration annotation, and parameter annotation used
-by Fory JSON, plus the public no-argument constructor of every annotation-selected codec. For the
-previous `Invoice` example:
+Ordinary non-Record classes that omit `JsonType` can supply equivalent exact rules themselves unless
+they declare `JsonValidator`. Direct validators require the processor-generated calls from
+`JsonType`; do not replace them with reflection rules. Retain every model constructor, field,
+method, generic signature, declaration annotation, and parameter annotation used by Fory JSON,
+plus the public no-argument constructor of every annotation-selected codec. For a model without a
+validator:
 
 ```proguard
 -keepattributes Signature,RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations
@@ -156,14 +169,15 @@ previous `Invoice` example:
 The same exact-rule approach supports every `JsonCodec` member; it is not limited to complete-value
 codecs. `JsonType` is not required for codec selection on an ordinary class.
 
-For `@JsonType` models, the generated R8 rules also retain `JsonValue` fields and effective methods,
-fixed `JsonRawValue` and `JsonBase64` fields and getters, `JsonFormat` date/time fields, their runtime
-annotations, and the Base64 codec constructor. Without `@JsonType`, these annotations still work
-through reflection, but a release-minified application must keep the exact annotated members,
-annotation attributes, and codec constructor itself. A `JsonValue` method may use a non-JavaBean
-name, so its manual rule must name that method explicitly. `JsonFormat` keeps the same direct-field
-and one-wrapper-level behavior as on the JVM, including `timezone` for `Instant`, `ZonedDateTime`,
-and `OffsetDateTime`.
+For `@JsonType` models, generated operations and R8 rules also cover effective `JsonValidator`
+methods, `JsonValue` fields and effective methods, fixed `JsonRawValue` and `JsonBase64` fields and
+getters, `JsonFormat` date/time fields, their runtime annotations, and the Base64 codec constructor.
+Without `@JsonType`, the value, raw, Base64, format, and codec annotations still work through
+reflection, but a release-minified application must keep the exact annotated members, annotation
+attributes, and codec constructor itself. A `JsonValue` method may use a non-JavaBean name, so its
+manual rule must name that method explicitly. `JsonFormat` keeps the same direct-field and
+one-wrapper-level behavior as on the JVM, including `timezone` for `Instant`, `ZonedDateTime`, and
+`OffsetDateTime`.
 
 Android Fory JSON requires a retained no-argument constructor for an ordinary mutable class; it may
 be non-public when Android reflection can make it accessible. `JsonCreator` constructor-backed

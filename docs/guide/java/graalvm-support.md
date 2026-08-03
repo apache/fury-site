@@ -52,11 +52,19 @@ Fory JSON has its own Native Image Feature and does not use the Fory annotation 
 ```java
 import org.apache.fory.json.ForyJson;
 import org.apache.fory.json.annotation.JsonType;
+import org.apache.fory.json.annotation.JsonValidator;
 
 @JsonType
 public final class User {
   public long id;
   public String name;
+
+  @JsonValidator
+  public void validate() {
+    if (id < 0) {
+      throw new IllegalArgumentException("id must not be negative");
+    }
+  }
 }
 
 public class JsonExample {
@@ -150,10 +158,22 @@ built with.
 
 The `fory-json` artifact activates its Native Image Feature automatically. `@JsonType` is not
 inherited, so annotate every concrete runtime model. An annotated base with a class-literal
-`@JsonSubTypes` table registers its listed subtypes automatically. Reachable concrete `Collection`
-and `Map` root types are supported when they have the public no-argument constructor required by
-Fory JSON. A class referenced only by a runtime string is not reachable;
+`@JsonSubTypes` table registers its listed subtypes automatically. Dedicated supported containers,
+including `EnumMap` and `EnumSet`, use their built-in factories. Other reachable concrete
+`Collection` and `Map` root types require a public no-argument constructor. A class referenced only
+by a runtime string is not reachable;
 `JsonSubTypes.Type.className` is therefore unsupported in a native image.
+
+Do not add application reflection configuration as a replacement for the generated configuration.
+The native executable resolves the same effective annotations as the JVM.
+
+Effective `JsonValidator` methods must be public instance methods with no arguments and a `void`
+return type. A model with a directly declared validator must use `JsonType`. A validator contributed
+by a registered Mixin uses that exact Mixin-target pair, so the target does not also need
+`JsonType`. The Native Image Feature prepares validator access for interpreted configurations and
+provider-generated codecs invoke the same effective validators. Do not add reflection configuration
+for validators. Complete custom codecs, complete `JsonValue` representations, and creators that
+enforce validation themselves perform their own validation.
 
 Type, field, effective ordinary getter, setter value parameter, and `JsonCreator` parameter
 `@JsonCodec` annotations are supported. The Feature retains every selected complete-value, element,

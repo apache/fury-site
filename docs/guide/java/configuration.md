@@ -103,11 +103,12 @@ Security-related options:
 - `withMaxDepth(...)` rejects unexpectedly deep object graphs.
 - `withMaxGraphMemoryBytes(...)` sets an approximate gate for materialized graph memory during one
   root deserialization. The estimate mainly covers collections, maps, arrays, structs, and objects;
-  it skips leaf values such as strings, binary data, primitive scalars, and dense primitive arrays.
-  Actual process memory can be higher than this limit. Leaf values remain protected by
-  byte-availability checks: if the unread input does not contain enough bytes, Fory will not read or
-  create that leaf value. The default is a fixed `128 MiB`; set a positive byte limit when trusted
-  workloads need a larger or smaller gate.
+  Fory core primitive arrays and primitive lists count their primitive storage from the decoded
+  length. It skips leaf values such as strings, primitive scalars, and dedicated binary values that
+  do not use a primitive-array serializer. Actual process memory can be higher than this limit. Leaf
+  values remain protected by byte-availability checks: if the unread input does not contain enough
+  bytes, Fory will not read or create that leaf value. The default is a fixed `128 MiB`; set a
+  positive byte limit when trusted workloads need a larger or smaller gate.
 - `withMaxUnbackedContainerItems(...)` limits count-driven collection and map work whose repeated
   read bodies do not consume proportional input. The default is `8192`; zero is a strict limit.
 - `withMaxTypeFields(...)` and `withMaxTypeMetaBytes(...)` bound the field count
