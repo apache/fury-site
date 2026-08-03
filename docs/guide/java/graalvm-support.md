@@ -46,20 +46,8 @@ compilation is unavailable.
 
 ## Fory JSON
 
-Fory JSON uses a separate Native Image workflow. Add the Fory annotation processor to the
-application compiler path:
-
-```xml
-<annotationProcessorPaths>
-  <path>
-    <groupId>org.apache.fory</groupId>
-    <artifactId>fory-annotation-processor</artifactId>
-    <version>${fory.version}</version>
-  </path>
-</annotationProcessorPaths>
-```
-
-Then add `@JsonType` to each concrete object model that the native executable reads or writes:
+Fory JSON has its own Native Image Feature and does not use the Fory annotation processor. Add
+`@JsonType` to each reachable concrete object model that the native executable reads or writes:
 
 ```java
 import org.apache.fory.json.ForyJson;
@@ -80,7 +68,54 @@ public class JsonExample {
 }
 ```
 
-The processor also supports Fory JSON Mixins for models that cannot be modified:
+This is sufficient for correct native execution. During image construction, Fory JSON retains the
+model metadata and prepares its field, property, creator, record, and `JsonAnySetter` access. At
+runtime, `ForyJson.builder().build()` can therefore use interpreted codecs without application
+reflection configuration, package exports or opens, or build-time initialization.
+
+To include generated codecs for a configuration, return that completed configuration from a
+reachable `@ForyJsonProvider`:
+
+```java
+import org.apache.fory.json.ForyJson;
+import org.apache.fory.json.PropertyNamingStrategy;
+import org.apache.fory.json.annotation.ForyJsonProvider;
+
+@ForyJsonProvider
+public final class JsonConfigs {
+  private final ForyJson api =
+      ForyJson.builder()
+          .writeNullFields(true)
+          .withPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+          .registerCodec(Money.class, new MoneyCodec())
+          .build();
+
+  public JsonConfigs() {}
+
+  public ForyJson api() {
+    return api;
+  }
+}
+```
+
+The provider class must be public and concrete and have a public no-argument constructor. Provider
+members are public, non-static, zero-argument instance methods whose exact return type is
+`ForyJson`. Inherited superclass methods and public interface default methods are included. A
+provider may return multiple configurations, and multiple providers may be reachable. Equivalent
+configurations are generated once.
+
+Provider objects exist only while the image is built. Prefer a dedicated configuration class with
+instance fields and methods as shown above; no application `native-image.properties` entry is
+needed, and the provider package does not need to be exported or opened to Fory. Static provider
+methods and fields are not supported.
+
+Only configurations returned by a provider receive generated codecs. The default configuration is
+not generated implicitly. If a codegen-enabled runtime configuration was not included, Fory JSON
+uses its prepared interpreted codecs and logs one process-wide warning recommending a reachable
+`@ForyJsonProvider`. `withCodegen(false)` explicitly selects interpreted codecs and does not request
+generated-codec lookup. Asynchronous compilation is disabled in a native executable.
+
+Use Fory JSON Mixins for models that cannot be modified:
 
 ```java
 import org.apache.fory.json.ForyJson;
@@ -105,40 +140,25 @@ public class JsonExample {
 
 `JsonMixin` is a build-time entry point for its exact declared target, so the target does not need
 `JsonType` solely to use the Mixin. The registered Mixin class literal must be reachable from the
-application. The processor emits available target operations for each non-empty Mixin, and the
-Fory JSON Native Image Feature retains the effective runtime metadata. Normal runtime codec
-precedence still selects the representation. An empty Mixin produces no generated output.
+application. The Native Image Feature retains the target metadata and prepares the same access as
+it does for a direct `JsonType` model. A provider configuration generates the Mixin
+target only when that exact Mixin is registered in the returned `ForyJson`.
 
 Only one source is enabled for an exact target in a built `ForyJson`. Later registration replaces
 an earlier source for subsequent `build()` calls; a runtime keeps the immutable snapshot it was
-built with. If the target also has a direct `JsonType` companion, a non-empty registered Mixin
-selects the pair-specific artifact instead of combining the overlay with the direct companion.
+built with.
 
-Do not add application reflection configuration as a replacement for the generated configuration.
-The native executable resolves the same effective annotations as the JVM.
-
-The processor generates direct property and creator operations. The `fory-json` artifact activates
-its Native Image Feature automatically and retains the generated factories and required model
-metadata. `@JsonType` is not inherited, so annotate every concrete runtime model. An annotated base
-with a class-literal `@JsonSubTypes` table registers those listed subtypes automatically, but each
-concrete object subtype needs its own direct `@JsonType` to receive generated operations. Reachable
-concrete `Collection` and `Map` root types are also supported when they
-have the public no-argument constructor required by Fory JSON. Reachable `@JsonCodec` declarations
-register their codec constructor even when the declaration target is not an object model. A class
-referenced only by a runtime string is not reachable; `JsonSubTypes.Type.className` is therefore
-unsupported in a native image.
-
-Native execution uses Fory JSON's interpreted readers and writers with the generated property and
-creator operations. `ForyJson.builder()` automatically
-disables runtime code generation and asynchronous compilation in the native executable, while all
-other builder options retain their normal behavior. Applications can create differently configured
-`ForyJson` instances at runtime and do not need build-time initialization or reflection
-configuration.
+The `fory-json` artifact activates its Native Image Feature automatically. `@JsonType` is not
+inherited, so annotate every concrete runtime model. An annotated base with a class-literal
+`@JsonSubTypes` table registers its listed subtypes automatically. Reachable concrete `Collection`
+and `Map` root types are supported when they have the public no-argument constructor required by
+Fory JSON. A class referenced only by a runtime string is not reachable;
+`JsonSubTypes.Type.className` is therefore unsupported in a native image.
 
 Type, field, effective ordinary getter, setter value parameter, and `JsonCreator` parameter
-`@JsonCodec` annotations are supported. The Feature registers every selected complete-value,
-element, content, Map-key, and Map-value codec constructor. This is the same annotation model used
-on the JVM and Android.
+`@JsonCodec` annotations are supported. The Feature retains every selected complete-value, element,
+content, Map-key, and Map-value codec constructor. This is the same annotation model used on the
+JVM and Android.
 
 `JsonValue` fields and effective public zero-argument methods are supported, including matching
 one-String `JsonCreator` constructors and public static factories. Fixed `JsonRawValue` fields and
@@ -154,21 +174,20 @@ instead.
 `@JsonCodec(valueCodec = ...)` on that field or getter to customize each dynamic value. A second
 `JsonAnySetter` parameter may use the normal configuration for its own value shape.
 
-`JsonUnwrapped` uses the same interpreted behavior as on the JVM. For direct target annotations,
-annotate the containing model and every unwrapped child or intermediate object with `JsonType` so
-each model receives its generated property and creator operations. A Mixin retains the
-unwrapped models reached by its effective schema; register a separate exact Mixin for a child only
-when that child's annotations also need an overlay.
+`JsonUnwrapped` uses the same behavior as on the JVM. For direct target annotations, annotate the
+containing model and every unwrapped child or intermediate object with `JsonType`. A Mixin retains
+the unwrapped models reached by its effective schema; register a separate exact Mixin for a child
+only when that child's annotations also need an overlay.
 
 Child codecs act on one direct level. `elementCodec` supports `Collection`, Java arrays, and
 `AtomicReferenceArray`; `contentCodec` supports `Optional` and `AtomicReference`; `keyCodec` and
 `valueCodec` support Map keys and values. A complete `value` codec cannot be combined with a child
 codec.
 
-An annotation codec must have the same public no-argument constructor required on the JVM. In a
-named module, export or open its package to `org.apache.fory.json`. A codec instance supplied
-through `registerCodec` is constructed by the application and needs no annotation-constructor
-metadata.
+An annotation codec must have a public no-argument constructor. Fory prepares that constructor
+during Native Image construction, so application modules do not need to export or open the codec
+package. A codec instance supplied through `registerCodec` is constructed by the application and
+needs no annotation-constructor metadata.
 
 ## Basic Usage
 
