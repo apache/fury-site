@@ -359,7 +359,7 @@ fory-derive/     # 过程宏
 
 ![Rust 序列化基准测试吞吐量](../../../docs/benchmarks/object-serialization/xlang/rust/throughput.png)
 
-这张图展示了 Fory 为何适合性能敏感型系统：代码生成的序列化器、紧凑二进制布局和专门优化的集合路径，可以在不牺牲复杂 Rust 应用所需能力的前提下提供高吞吐量。完整的环境信息、负载定义、载荷大小和详细结果，请参阅[完整 Rust 基准测试报告](/zh-CN/docs/next/benchmarks/object-serialization/xlang/rust/)。
+这张图展示了 Fory 为何适合性能敏感型系统：代码生成的序列化器、紧凑二进制布局和专门优化的集合路径，可以在不牺牲复杂 Rust 应用所需能力的前提下提供高吞吐量。完整的环境信息、负载定义、载荷大小和详细结果，请参阅[完整 Rust 基准测试报告](https://fory.apache.org/zh-CN/docs/benchmarks/object-serialization/xlang/rust/)。
 
 ## 何时使用 Apache Fory Rust
 
