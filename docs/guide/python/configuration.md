@@ -41,6 +41,7 @@ class Fory:
         max_schema_versions_per_type: int = 10,
         max_average_schema_versions_per_type: int = 3,
         max_graph_memory_bytes: int = 128 * 1024 * 1024,
+        max_unbacked_container_items: int = 8192,
         policy: DeserializationPolicy = None,
         field_nullable: bool = False,
         meta_compressor=None,
@@ -72,6 +73,7 @@ class ThreadSafeFory:
 | `max_schema_versions_per_type`         | `int`                           | `10`        | Maximum accepted remote metadata versions for one logical type.                                                                                          |
 | `max_average_schema_versions_per_type` | `int`                           | `3`         | Average accepted remote metadata versions across accepted remote types. The effective global floor is `8192` schemas.                                    |
 | `max_graph_memory_bytes`               | `int`                           | `134217728` | Approximate graph-memory gate for one root deserialization. Explicit non-positive values are rejected.                                                   |
+| `max_unbacked_container_items`         | `int`                           | `8192`      | Maximum collection elements and map entries whose repeated reads are not backed by input progress. Zero is strict.                                       |
 | `policy`                               | `DeserializationPolicy \| None` | `None`      | Deserialization policy used for security checks. Strongly recommended when `strict=False`.                                                               |
 | `field_nullable`                       | `bool`                          | `False`     | Treat dataclass fields as nullable by default.                                                                                                           |
 | `meta_compressor`                      | `Any`                           | `None`      | Optional metadata compressor used for compatible-mode metadata encoding.                                                                                 |
@@ -233,6 +235,9 @@ Received remote metadata is also limited:
   will not read or create that leaf value. The default is a fixed `128 MiB` for all root input
   forms. Set a positive byte value for trusted payloads that legitimately need a larger or smaller
   gate.
+- `max_unbacked_container_items` limits collection elements and map entries whose repeated read
+  bodies do not consume proportional input during one root deserialization. The default is `8192`;
+  zero is a strict limit.
 
 These limits do not change `strict`, `policy`, dynamic loading, unknown-class handling, or
 schema-evolution semantics.

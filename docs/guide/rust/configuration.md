@@ -128,6 +128,18 @@ let fory = Fory::builder()
 
 Zero is rejected when the runtime is created.
 
+### Unbacked Container Work Budget
+
+`max_unbacked_container_items(...)` limits collection elements and map entries
+whose repeated read bodies do not consume proportional input during one root
+deserialization. The default is `8192`; zero is a strict limit.
+
+```rust
+let fory = Fory::builder()
+    .max_unbacked_container_items(8192)
+    .build();
+```
+
 ### Explicit Xlang Examples
 
 Set `.xlang(true)` explicitly for xlang serialization examples:
@@ -173,6 +185,7 @@ let fory = Fory::builder()
 | `xlang(bool)`                                 | Use xlang mode                                    | `true`    |
 | `max_dyn_depth(u32)`                          | Maximum nesting depth for dynamic types           | `5`       |
 | `max_graph_memory_bytes(usize)`               | Approximate graph-memory gate per root read       | `128 MiB` |
+| `max_unbacked_container_items(usize)`         | Unbacked collection/map work per root read        | `8192`    |
 | `max_type_fields(usize)`                      | Max fields in one received struct metadata body   | `512`     |
 | `max_type_meta_bytes(usize)`                  | Max encoded bytes in one received metadata body   | `4096`    |
 | `max_schema_versions_per_type(usize)`         | Max remote metadata versions for one logical type | `10`      |
@@ -195,6 +208,8 @@ Security-related configuration:
 - Use `max_dyn_depth(...)` to reject unexpectedly deep dynamic object graphs.
 - Keep `max_graph_memory_bytes(...)` at the fixed `128 MiB` default for most inputs, or set a
   positive byte gate for trusted workloads with different legitimate collection/map/struct sizes.
+- Keep `max_unbacked_container_items(...)` at `8192` unless trusted compact codecs require a
+  larger root allowance. Zero rejects every unbacked item.
 - Keep the remote schema metadata limits at their defaults unless the data is not malicious and a
   trusted peer sends larger metadata or many schema versions.
 - Prefer concrete typed fields over `dyn Any` or broad trait-object fields for untrusted input.

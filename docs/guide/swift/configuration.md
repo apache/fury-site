@@ -32,6 +32,7 @@ public struct Config {
   public let checkClassVersion: Bool
   public let maxDepth: Int
   public let maxGraphMemoryBytes: Int64
+  public let maxUnbackedContainerItems: Int
   public let maxTypeFields: Int
   public let maxTypeMetaBytes: Int
   public let maxSchemaVersionsPerType: Int
@@ -106,6 +107,10 @@ byte-availability checks: if the unread input does not contain enough bytes, For
 create that leaf value. The default limit is a fixed `128 MiB` for all root input forms. A positive
 value overrides the default. Explicit non-positive values are rejected when the runtime is created.
 
+`maxUnbackedContainerItems` limits collection elements and map entries whose
+repeated read bodies do not consume proportional input during one root
+deserialization. The default is `8192`; zero is a strict limit.
+
 Compatible-mode remote metadata is also limited:
 
 - `maxTypeFields` defaults to `512` and limits fields in one received struct metadata body.
@@ -120,6 +125,7 @@ Compatible-mode remote metadata is also limited:
 let fory = Fory(
   maxDepth: 5,
   maxGraphMemoryBytes: 128 * 1024 * 1024,
+  maxUnbackedContainerItems: 8192,
   maxTypeFields: 512,
   maxTypeMetaBytes: 4096,
   maxSchemaVersionsPerType: 10,

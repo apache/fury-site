@@ -39,6 +39,7 @@ final fory = Fory(
   maxSchemaVersionsPerType: 10,
   maxAverageSchemaVersionsPerType: 3,
   maxGraphMemoryBytes: 64 * 1024 * 1024,
+  maxUnbackedContainerItems: 8192,
 );
 ```
 
@@ -127,6 +128,16 @@ final fory = Fory(maxGraphMemoryBytes: 256 * 1024 * 1024);
 
 Explicit non-positive values are rejected when the runtime is created.
 
+### `maxUnbackedContainerItems`
+
+Limits collection elements and map entries whose repeated read bodies do not
+consume proportional input during one root deserialization. The default is
+`8192`; zero is a strict limit.
+
+```dart
+final fory = Fory(maxUnbackedContainerItems: 8192);
+```
+
 ## Defaults
 
 | Option                            | Default   |
@@ -139,6 +150,7 @@ Explicit non-positive values are rejected when the runtime is created.
 | `maxSchemaVersionsPerType`        | 10        |
 | `maxAverageSchemaVersionsPerType` | 3         |
 | `maxGraphMemoryBytes`             | 134217728 |
+| `maxUnbackedContainerItems`       | 8192      |
 
 ## Xlang Notes
 

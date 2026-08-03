@@ -58,6 +58,29 @@ many schema versions.
 | Swift                 | `maxTypeFields`     | `maxTypeMetaBytes`     | `maxSchemaVersionsPerType`     | `maxAverageSchemaVersionsPerType`      |
 | Dart                  | `maxTypeFields`     | `maxTypeMetaBytes`     | `maxSchemaVersionsPerType`     | `maxAverageSchemaVersionsPerType`      |
 
+## Count-driven Container Work Limit
+
+Every runtime limits collection elements and map entries whose repeated read
+bodies do not consume proportional input. The default root allowance is `8192`.
+Zero is a strict limit, and negative values are rejected. Raise the limit only
+for trusted payloads that intentionally use compact zero-byte element codecs or
+empty Struct bodies. This is a reader resource limit and does not change the
+wire format or writer behavior.
+
+| Language              | Option                          |
+| --------------------- | ------------------------------- |
+| Java                  | `withMaxUnbackedContainerItems` |
+| Scala                 | `withMaxUnbackedContainerItems` |
+| Kotlin                | `withMaxUnbackedContainerItems` |
+| Python                | `max_unbacked_container_items`  |
+| JavaScript/TypeScript | `maxUnbackedContainerItems`     |
+| C++                   | `max_unbacked_container_items`  |
+| Go                    | `WithMaxUnbackedContainerItems` |
+| Rust                  | `max_unbacked_container_items`  |
+| C#                    | `MaxUnbackedContainerItems`     |
+| Swift                 | `maxUnbackedContainerItems`     |
+| Dart                  | `maxUnbackedContainerItems`     |
+
 ## Serialize Built-in Types
 
 Common types can be serialized automatically without registration: primitive numeric types, string, binary, array, list, map, and more.

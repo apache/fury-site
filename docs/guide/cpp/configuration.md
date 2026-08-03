@@ -120,6 +120,18 @@ leaf value.
 
 **Default:** `128 MiB`
 
+### max_unbacked_container_items(int64_t)
+
+Limit collection elements and map entries whose repeated read bodies do not
+consume proportional input during one root deserialization. The default is
+`8192`; zero is a strict limit.
+
+```cpp
+auto fory = Fory::builder()
+    .max_unbacked_container_items(8192)
+    .build();
+```
+
 ### max_dyn_depth(uint32_t)
 
 Set maximum allowed nesting depth for dynamically-typed objects.
@@ -230,6 +242,7 @@ auto fory = Fory::builder().build_thread_safe();  // Returns ThreadSafeFory
 | `compatible(bool)`                               | Enable schema evolution                           | `true`    |
 | `track_ref(bool)`                                | Enable reference tracking                         | `true`    |
 | `max_graph_memory_bytes(int64_t)`                | Approximate graph-memory gate per root read       | `128 MiB` |
+| `max_unbacked_container_items(int64_t)`          | Unbacked collection/map work per root read        | `8192`    |
 | `max_dyn_depth(uint32_t)`                        | Maximum nesting depth for dynamic types           | `5`       |
 | `max_type_fields(uint32_t)`                      | Max fields in one received struct metadata body   | `512`     |
 | `max_type_meta_bytes(uint32_t)`                  | Max encoded bytes in one received metadata body   | `4096`    |

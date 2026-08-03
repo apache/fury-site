@@ -40,6 +40,7 @@ Default settings:
 | IsXlang                         | true      | Xlang mode enabled                                |
 | Compatible                      | true      | Compatible schema-evolution metadata enabled      |
 | MaxGraphMemoryBytes             | 134217728 | Approximate graph-memory gate per root read       |
+| MaxUnbackedContainerItems       | 8192      | Unbacked collection/map work per root read        |
 | MaxTypeFields                   | 512       | Max fields in one received struct metadata body   |
 | MaxTypeMetaBytes                | 4096      | Max encoded bytes in one received metadata body   |
 | MaxSchemaVersionsPerType        | 10        | Max remote metadata versions for one logical type |
@@ -53,6 +54,7 @@ f := fory.New(
     fory.WithTrackRef(true),
     fory.WithMaxDepth(10),
     fory.WithMaxGraphMemoryBytes(128 * 1024 * 1024),
+    fory.WithMaxUnbackedContainerItems(8192),
     fory.WithMaxTypeFields(512),
     fory.WithMaxTypeMetaBytes(4096),
     fory.WithMaxSchemaVersionsPerType(10),
@@ -146,6 +148,17 @@ default. Explicit non-positive values are rejected when the runtime is created. 
 reservation complements byte-availability checks; it does not replace them. Skipped leaf values are
 still gated by remaining input bytes: if the unread input does not contain enough bytes, Fory will
 not read or create that leaf value.
+
+### WithMaxUnbackedContainerItems
+
+Limit collection elements and map entries whose repeated read bodies do not
+consume proportional input during one root deserialization:
+
+```go
+f := fory.New(fory.WithMaxUnbackedContainerItems(8192))
+```
+
+The default is `8192`; zero is a strict limit.
 
 ### WithMaxTypeFields
 

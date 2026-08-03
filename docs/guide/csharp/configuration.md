@@ -42,6 +42,7 @@ ThreadSafeFory threadSafe = Fory.Builder().BuildThreadSafe();
 | `CheckStructVersion`              | `false`     | Struct schema hash checks disabled                |
 | `MaxDepth`                        | `20`        | Max dynamic nesting depth                         |
 | `MaxGraphMemoryBytes`             | `134217728` | Approximate graph-memory gate per root read       |
+| `MaxUnbackedContainerItems`       | `8192`      | Unbacked collection/map work per root read        |
 | `MaxTypeFields`                   | `512`       | Max fields in one received struct metadata body   |
 | `MaxTypeMetaBytes`                | `4096`      | Max encoded bytes in one received metadata body   |
 | `MaxSchemaVersionsPerType`        | `10`        | Max remote metadata versions for one logical type |
@@ -114,6 +115,18 @@ The default limit is a fixed `128 MiB` for all root input forms. A positive valu
 default. Explicit non-positive values are rejected when the runtime is created. Skipped leaf values
 are still gated by remaining input bytes: if the unread input does not contain enough bytes, Fory
 will not read or create that leaf value.
+
+### `MaxUnbackedContainerItems(long value)`
+
+Limits collection elements and map entries whose repeated read bodies do not
+consume proportional input during one root deserialization. The default is
+`8192`; zero is a strict limit.
+
+```csharp
+Fory fory = Fory.Builder()
+    .MaxUnbackedContainerItems(8192)
+    .Build();
+```
 
 ### `MaxTypeFields(int value)`
 

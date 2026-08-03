@@ -44,6 +44,7 @@ const fory = new Fory({
   compatible: true,
   maxDepth: 100,
   maxGraphMemoryBytes: 128 * 1024 * 1024,
+  maxUnbackedContainerItems: 8192,
   maxTypeFields: 512,
   maxTypeMetaBytes: 4096,
   maxSchemaVersionsPerType: 10,
@@ -58,6 +59,7 @@ const fory = new Fory({
 | `compatible`                      | `true`    | Allow field additions/removals without breaking existing messages                     |
 | `maxDepth`                        | `50`      | Maximum nesting depth. Must be `>= 2`. Increase for deeply nested structures          |
 | `maxGraphMemoryBytes`             | `128 MiB` | Approximate graph-memory gate accepted during one root deserialization                |
+| `maxUnbackedContainerItems`       | `8192`    | Unbacked collection elements and map entries allowed during one root deserialization  |
 | `maxTypeFields`                   | `512`     | Maximum fields accepted in one received remote struct metadata body                   |
 | `maxTypeMetaBytes`                | `4096`    | Maximum encoded body bytes accepted for one received TypeMeta body                    |
 | `maxSchemaVersionsPerType`        | `10`      | Maximum accepted remote metadata versions for one logical type                        |
@@ -116,6 +118,13 @@ Explicit non-positive values are rejected when the runtime is created.
 String, binary, and dedicated dense primitive array payloads keep their normal
 byte-size checks and do not consume this graph budget. Raise the limit only for
 trusted workloads that legitimately contain very compact object graphs.
+
+## Unbacked Container Work Budget
+
+`maxUnbackedContainerItems` limits collection elements and map entries whose
+repeated read bodies do not consume proportional input during one root
+deserialization. The default is `8192`; zero is a strict limit. Raise it only
+for trusted payloads that intentionally use compact zero-byte codecs.
 
 ## Optional HPS String Path
 
