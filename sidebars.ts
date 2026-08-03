@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
       label: "Object Serialization",
       items: [
         "object-serialization/index",
+        "object-serialization/runtimes",
         "object-serialization/xlang/index",
         "object-serialization/native",
         "object-serialization/security",
@@ -164,7 +165,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/java/graalvm",
     section("OPERATE"),
     "object-serialization/java/virtual-threads",
-    "object-serialization/security",
     "object-serialization/java/troubleshooting",
   ],
 
@@ -187,7 +187,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/python/out-of-band",
     "object-serialization/python/numpy-integration",
     section("OPERATE"),
-    "object-serialization/security",
     "object-serialization/python/troubleshooting",
   ],
 
@@ -206,8 +205,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/cpp/polymorphism",
     "object-serialization/cpp/custom-serializers",
     "object-serialization/cpp/supported-types",
-    section("OPERATE"),
-    "object-serialization/security",
   ],
 
   goObjectSerializationSidebar: [
@@ -227,7 +224,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/go/supported-types",
     section("OPERATE"),
     "object-serialization/go/thread-safety",
-    "object-serialization/security",
     "object-serialization/go/troubleshooting",
   ],
 
@@ -248,7 +244,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/rust/external-types",
     "object-serialization/rust/custom-serializers",
     section("OPERATE"),
-    "object-serialization/security",
     "object-serialization/rust/troubleshooting",
   ],
 
@@ -266,7 +261,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/javascript/references",
     "object-serialization/javascript/supported-types",
     section("OPERATE"),
-    "object-serialization/security",
     "object-serialization/javascript/troubleshooting",
   ],
 
@@ -287,7 +281,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/csharp/supported-types",
     section("OPERATE"),
     "object-serialization/csharp/thread-safety",
-    "object-serialization/security",
     "object-serialization/csharp/troubleshooting",
   ],
 
@@ -307,7 +300,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/swift/external-types",
     "object-serialization/swift/custom-serializers",
     section("OPERATE"),
-    "object-serialization/security",
     "object-serialization/swift/troubleshooting",
   ],
 
@@ -330,7 +322,6 @@ const sidebars: SidebarsConfig = {
     section("PLATFORM"),
     "object-serialization/dart/web-platform-support",
     section("OPERATE"),
-    "object-serialization/security",
     "object-serialization/dart/troubleshooting",
   ],
 
@@ -345,8 +336,6 @@ const sidebars: SidebarsConfig = {
     "object-serialization/scala/schema-metadata",
     section("SCALA FEATURES"),
     "object-serialization/scala/default-values",
-    section("OPERATE"),
-    "object-serialization/security",
   ],
 
   kotlinObjectSerializationSidebar: [
@@ -361,8 +350,21 @@ const sidebars: SidebarsConfig = {
     section("KOTLIN FEATURES"),
     "object-serialization/kotlin/default-values",
     "object-serialization/kotlin/static-generated-serializers",
+  ],
+
+  xlangObjectSerializationSidebar: [
+    section("ORIENT"),
+    "object-serialization/xlang/index",
+    section("SHARED CONCEPTS"),
+    "object-serialization/xlang/type-system",
+    "object-serialization/xlang/type-identity",
+    "object-serialization/xlang/nullability",
+    "object-serialization/xlang/references",
+    "object-serialization/xlang/polymorphism",
+    "object-serialization/xlang/schema-evolution",
+    "object-serialization/xlang/zero-copy",
     section("OPERATE"),
-    "object-serialization/security",
+    "object-serialization/xlang/troubleshooting",
   ],
 
   generatedCodeSidebar: [
