@@ -446,7 +446,7 @@ To learn more about Fory, please see https://fory.apache.org/
 [ ] No compiled archives bundled in source archive.
 [ ] Can compile from source.
 
-How to Build and Test, please refer to: https://github.com/apache/fory/blob/main/docs/DEVELOPMENT.md
+How to Build and Test, please refer to: https://github.com/apache/fory/blob/main/docs/development/building.md
 
 
 Thanks,
@@ -539,11 +539,11 @@ In general, the following key areas need to be modified:
    Add a new markdown file under the blog folder:
 
 ```
-The Apache Fory team is pleased to announce the [?] release. This is a major release that includes [? PR](https://github.com/apache/fory/compare/v[?]...v[?]) from ? distinct contributors. See the [Install](https://fory.apache.org/docs/start/install) Page to learn how to get the libraries for your platform.
+The Apache Fory team is pleased to announce the [?] release. This is a major release that includes [? PR](https://github.com/apache/fory/compare/v[?]...v[?]) from ? distinct contributors. See [Getting Started](https://fory.apache.org/docs/start/) to choose a runtime and install the libraries for your platform.
 ```
 
 2. Replace versions by upgrading old versions to new ones.
-   For example, in [install](https://fory.apache.org/docs/start/install/#java) section, it is necessary to update the documentation for both the development branch and the latest release branch::
+   For example, update the [Java setup](https://fory.apache.org/docs/start/java) and its linked capability guides for both the development branch and the latest release branch:
 
 ```
 <dependency>

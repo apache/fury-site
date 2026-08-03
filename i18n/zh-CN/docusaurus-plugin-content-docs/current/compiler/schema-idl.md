@@ -1,7 +1,7 @@
 ---
 title: Schema IDL 语法
 sidebar_position: 2
-id: syntax
+id: schema-idl
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -21,7 +21,7 @@ license: |
 
 本文档提供 Fory IDL 的语法与语义参考。
 
-编译器使用方式与构建集成请参见 [Compiler Guide](compiler-guide.md)。
+编译器使用方式与构建集成请参见[快速开始](getting-started.md)与[构建集成](build-integration.md)。
 protobuf/FlatBuffers 前端映射请参见 [Protocol Buffers IDL Support](protobuf-idl.md) 与 [FlatBuffers IDL Support](flatbuffers-idl.md)。
 
 ## 文件结构

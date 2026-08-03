@@ -357,9 +357,9 @@ fory-derive/     # 过程宏
 
 当前 Rust 基准测试套件覆盖了具有代表性的原始类型、集合、结构体和嵌套对象负载，同时测量序列化与反序列化吞吐量。测试在同一套已提交的基准框架下，对比 Apache Fory、Prost Protocol Buffers 和 MessagePack。
 
-![Rust 序列化基准测试吞吐量](../../../docs/benchmarks/rust/throughput.png)
+![Rust 序列化基准测试吞吐量](../../../docs/benchmarks/object-serialization/xlang/rust/throughput.png)
 
-这张图展示了 Fory 为何适合性能敏感型系统：代码生成的序列化器、紧凑二进制布局和专门优化的集合路径，可以在不牺牲复杂 Rust 应用所需能力的前提下提供高吞吐量。完整的环境信息、负载定义、载荷大小和详细结果，请参阅[完整 Rust 基准测试报告](/docs/benchmarks/rust/)。
+这张图展示了 Fory 为何适合性能敏感型系统：代码生成的序列化器、紧凑二进制布局和专门优化的集合路径，可以在不牺牲复杂 Rust 应用所需能力的前提下提供高吞吐量。完整的环境信息、负载定义、载荷大小和详细结果，请参阅[完整 Rust 基准测试报告](/zh-CN/docs/next/benchmarks/object-serialization/xlang/rust/)。
 
 ## 何时使用 Apache Fory Rust
 
@@ -514,11 +514,11 @@ match fory.deserialize::<User>(&bytes) {
 
 ## 文档
 
-- Apache Fory Rust 指南：[📖 查看](https://fory.apache.org/docs/guide/rust/)
-- Apache Fory 外部类型序列化：[📖 查看](https://fory.apache.org/docs/guide/rust/external_types)
-- Apache Fory Rust 基准测试：[📊 查看](https://fory.apache.org/docs/benchmarks/rust/)
+- Apache Fory Rust 指南：[📖 查看](https://fory.apache.org/zh-CN/docs/guide/rust/)
+- Apache Fory 外部类型序列化：[📖 查看](https://fory.apache.org/zh-CN/docs/guide/rust/external_types)
+- Apache Fory Rust 基准测试：[📊 查看](https://fory.apache.org/zh-CN/docs/benchmarks/rust/)
 - Apache Fory Rust API 文档：[📖 查看](https://docs.rs/fory/latest/fory/)
-- Apache Fory 跨语言序列化规范：[📖 查看](https://fory.apache.org/docs/specification/fory_xlang_serialization_spec/)
+- Apache Fory 跨语言序列化规范：[📖 查看](https://fory.apache.org/zh-CN/docs/specification/xlang_serialization_spec/)
 
 ## 社区与贡献
 

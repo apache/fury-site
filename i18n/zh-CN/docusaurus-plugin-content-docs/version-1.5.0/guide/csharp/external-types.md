@@ -186,7 +186,7 @@ public sealed class LocalRecord : ThirdParty.VendorRecord
 
 只要每个带注解的具体子类都具有合法的无参数构造路径，`BaseOnly` 目标就可以是抽象类，也可以没有无参数构造函数。
 
-第一方基类应直接使用 `[ForyStruct]` 注解。请参阅[类继承](basic-serialization.md#class-inheritance)。
+第一方基类应直接使用 `[ForyStruct]` 注解。请参阅[类继承](basic-serialization.md#类继承)。
 
 ## 声明与目标类型要求
 

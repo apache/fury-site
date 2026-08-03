@@ -152,7 +152,7 @@ class TextMessage extends MessageBase {
 
 生成的 `TextMessage` Schema 包含 `sequence` 和 `text`，但不包含继承的私有字段 `_cache`。该选项不会忽略继承的公共字段，也不会忽略由子类自身声明的私有字段。
 
-有关构造函数规则、跨 package 的私有字段访问、mix-in、泛型、引用和 Schema 兼容性，请参阅 [C# 类继承](/zh-CN/docs/guide/csharp/basic_serialization#class-inheritance)和 [Dart 继承](/zh-CN/docs/guide/dart/inheritance)。
+有关构造函数规则、跨 package 的私有字段访问、mix-in、泛型、引用和 Schema 兼容性，请参阅 [C# 类继承](/zh-CN/docs/guide/csharp/basic_serialization#类继承)和 [Dart 继承](/zh-CN/docs/guide/dart/inheritance)。
 
 ## 新功能
 

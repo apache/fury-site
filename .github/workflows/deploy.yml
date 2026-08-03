@@ -47,7 +47,7 @@ jobs:
           python --version
           cd scripts/unified-docs
           python script.py
-          ls -lR ../../i18n/zh-CN/ ../../i18n/eu-US/
+          ls -lR ../../i18n/zh-CN/
 
       - name: NPM Install
         run: npm ci --prefer-offline --fund=false

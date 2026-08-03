@@ -344,7 +344,7 @@ To learn more about Fory, please see https://fory.apache.org/
 [ ] No compiled archives bundled in source archive.
 [ ] Can compile from source.
 
-How to Build and Test, please refer to: https://github.com/apache/fory/blob/main/docs/DEVELOPMENT.md
+How to Build and Test, please refer to: https://github.com/apache/fory/blob/main/docs/development/building.md
 
 Thanks,
 Chaokun Yang
