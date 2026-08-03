@@ -34,12 +34,12 @@ export default function (context, options) {
                   'introduction/benchmark': 'benchmarks',
                   'start/install': 'start',
                   'start/usage': 'start',
-                  'guide/xlang/index': 'object-serialization/xlang',
-                  'guide/xlang/getting-started': 'object-serialization/xlang',
+                  'guide/xlang': 'object-serialization/xlang',
+                  'guide/xlang/getting_started': 'object-serialization/xlang',
                   'guide/xlang/serialization': 'object-serialization/xlang',
-                  'guide/java/json-support': 'json',
-                  'compiler/compiler-guide': 'compiler/getting-started',
-                  'community/DEVELOPMENT': 'development/building',
+                  'guide/java/json_support': 'json',
+                  'compiler/compiler_guide': 'compiler/getting-started',
+                  'community/development': 'development/building',
                 };
                 var destination = routes[oldPath];
                 if (!destination) {
