@@ -657,6 +657,7 @@ Use `JsonFormat` on a date/time field to select its JSON text pattern in both di
 use `DateTimeFormatter` syntax and the root locale:
 
 ```java
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -675,6 +676,9 @@ public final class Schedule {
 
   @JsonFormat(pattern = "dd/MM/uuuu")
   public Map<String, LocalDate> daysByName;
+
+  @JsonFormat(pattern = "uuuu-MM-dd HH:mm:ss XXX", timezone = "Asia/Shanghai")
+  public Instant timestamp;
 }
 ```
 
@@ -690,6 +694,16 @@ Supported values are exact `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`,
 `MinguoDate`, and `ThaiBuddhistDate` types. `Instant` uses UTC; zoned and offset types use the zone or
 offset carried by the value. The pattern must contain enough information to reconstruct the
 declared type.
+
+Set `timezone` to a valid `ZoneId` identifier to format and parse `Instant`, `ZonedDateTime`, or
+`OffsetDateTime` in that zone. For example, the `timestamp` field above writes
+`Instant.parse("2024-01-02T03:04:05Z")` as `"2024-01-02 11:04:05 +08:00"`. The parsed value keeps
+the same instant for matching timezone text. The configured zone supplies missing zone or offset
+information during parsing; an explicit zone or offset in the JSON text participates in the usual
+`DateTimeFormatter` resolution. Include an offset in the pattern when an exact instant must survive
+a daylight saving time overlap. Omitting `timezone` preserves the default behavior described
+above. Invalid zone identifiers and a non-empty `timezone` on other supported date/time types are
+rejected.
 
 `JsonFormat` is a field annotation, not a type-use annotation. A record component works through its
 generated field. Nested wrappers, Map keys, raw or wildcard direct children, JSON Any values, and

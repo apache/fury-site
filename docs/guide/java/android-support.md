@@ -162,7 +162,8 @@ annotations, and the Base64 codec constructor. Without `@JsonType`, these annota
 through reflection, but a release-minified application must keep the exact annotated members,
 annotation attributes, and codec constructor itself. A `JsonValue` method may use a non-JavaBean
 name, so its manual rule must name that method explicitly. `JsonFormat` keeps the same direct-field
-and one-wrapper-level behavior as on the JVM.
+and one-wrapper-level behavior as on the JVM, including `timezone` for `Instant`, `ZonedDateTime`,
+and `OffsetDateTime`.
 
 Android Fory JSON requires a retained no-argument constructor for an ordinary mutable class; it may
 be non-public when Android reflection can make it accessible. `JsonCreator` constructor-backed
