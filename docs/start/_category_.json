@@ -1,4 +1,6 @@
 {
   "position": 2,
-  "label": "Start"
+  "label": "Getting Started",
+  "collapsible": true,
+  "collapsed": true
 }

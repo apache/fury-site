@@ -1,7 +1,7 @@
 ---
 title: Protobuf IDL 支持
 sidebar_position: 10
-id: protobuf_idl_support
+id: protobuf-idl
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with

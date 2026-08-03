@@ -21,6 +21,19 @@ i18n/zh-CN/docusaurus-plugin-content-docs/*/specification/
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-1.5.0/specification/
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-1.5.0/specification/*.md
 
+# English fallback files generated for capability-first current docs. Existing
+# tracked Chinese translations remain tracked and take precedence.
+i18n/zh-CN/docusaurus-plugin-content-docs/current/introduction/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/start/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/benchmarks/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/object-serialization/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/row-format/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/json/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/compiler/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/grpc/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/development/
+i18n/zh-CN/docusaurus-plugin-content-docs/current/index.md
+
 # Misc
 .DS_Store
 .env.local

@@ -357,7 +357,7 @@ This modular design ensures clean separation of concerns and makes the codebase 
 
 The current Rust benchmark suite measures serialization and deserialization throughput across representative primitive, collection, struct, and nested-object workloads. It compares Apache Fory with Prost Protocol Buffers and MessagePack under the same checked-in benchmark harness.
 
-![Rust serialization benchmark throughput](../docs/benchmarks/rust/throughput.png)
+![Rust serialization benchmark throughput](../docs/benchmarks/object-serialization/xlang/rust/throughput.png)
 
 The chart shows why Fory is built for performance-sensitive systems: its generated serializers, compact binary layout, and specialized collection paths deliver high throughput without giving up the features required by complex Rust applications. See the [complete Rust benchmark report](/docs/benchmarks/rust/) for the environment, workload definitions, payload sizes, and detailed results.
 
@@ -518,7 +518,7 @@ match fory.deserialize::<User>(&bytes) {
 - Apache Fory External-Type Serialization: [📖 View](https://fory.apache.org/docs/guide/rust/external_types)
 - Apache Fory Rust Benchmarks: [📊 View](https://fory.apache.org/docs/benchmarks/rust/)
 - Apache Fory Rust API Doc: [📖 View](https://docs.rs/fory/latest/fory/)
-- Apache Fory Xlang Serialization Spec: [📖 View](https://fory.apache.org/docs/specification/fory_xlang_serialization_spec/)
+- Apache Fory Xlang Serialization Spec: [📖 View](https://fory.apache.org/docs/specification/xlang_serialization_spec/)
 
 ## Community and Contribution
 

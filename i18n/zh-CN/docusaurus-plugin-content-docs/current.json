@@ -7,20 +7,36 @@
     "message": "介绍",
     "description": "The label for category Introduction in sidebar docsSidebar"
   },
-  "sidebar.docsSidebar.category.Start": {
+  "sidebar.docsSidebar.category.Getting Started": {
     "message": "快速开始",
-    "description": "The label for category Start in sidebar docsSidebar"
+    "description": "The label for category Getting Started in sidebar docsSidebar"
   },
-  "sidebar.docsSidebar.category.Schema IDL & Compiler": {
-    "message": "Schema IDL 与编译器",
-    "description": "The label for category Schema IDL & Compiler in sidebar docsSidebar"
+  "sidebar.docsSidebar.category.Benchmarks": {
+    "message": "性能测试",
+    "description": "The label for category Benchmarks in sidebar docsSidebar"
   },
-  "sidebar.docsSidebar.category.Guide": {
-    "message": "用户指南",
-    "description": "The label for category Guide in sidebar docsSidebar"
+  "sidebar.docsSidebar.category.Object Serialization": {
+    "message": "对象序列化",
+    "description": "The label for category Object Serialization in sidebar docsSidebar"
   },
-  "sidebar.docsSidebar.category.Cross Language": {
-    "message": "跨语言",
-    "description": "The label for category Cross Language in sidebar docsSidebar"
+  "sidebar.docsSidebar.category.Row Format": {
+    "message": "Row 格式",
+    "description": "The label for category Row Format in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Fory JSON": {
+    "message": "Fory JSON",
+    "description": "The label for category Fory JSON in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Fory IDL & Compiler": {
+    "message": "Fory IDL 与编译器",
+    "description": "The label for category Fory IDL & Compiler in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Fory gRPC": {
+    "message": "Fory gRPC",
+    "description": "The label for category Fory gRPC in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Development": {
+    "message": "开发",
+    "description": "The label for category Development in sidebar docsSidebar"
   }
 }

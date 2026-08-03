@@ -16,11 +16,16 @@ Apache Fory's website consists of static pages hosted at https://github.com/apac
 
 Create an issue with [this form](https://github.com/apache/fory-site/issues/new/choose).
 
-## How to update doc
+## How to update docs
 
-All updates about docs for [guide](https://github.com/apache/fory/tree/main/docs/guide) and [specification](https://github.com/apache/fory/tree/main/docs/specification) will be synced from [docs in fory repo](https://github.com/apache/fory/tree/main/docs) to this site repo automatically.
+The current Introduction, Getting Started, Benchmarks, Object Serialization,
+Row Format, Fory JSON, compiler, gRPC, Development, and Specification content is
+synced from the [docs directory in the Fory repository](https://github.com/apache/fory/tree/main/docs).
 
-If you want to update those pages, please submit a PR to https://github.com/apache/fory.
+To update those pages, submit a pull request to
+[apache/fory](https://github.com/apache/fory). Website pages, community pages,
+blog posts, navigation, localization, and historical version snapshots remain
+owned by this repository.
 
 ## How to lint doc
 
