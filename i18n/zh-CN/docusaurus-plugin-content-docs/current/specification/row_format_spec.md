@@ -1,5 +1,5 @@
 ---
-title: Row 格式
+title: 行格式
 sidebar_position: 2
 id: row_format_spec
 license: |
@@ -21,46 +21,48 @@ license: |
 
 ## 概述
 
-Apache Fory Row Format 是面向高性能数据处理的二进制布局，目标是“可随机访问 + 低拷贝 + 跨语言一致”。
+Apache Fory 行格式是一种缓存友好的随机访问二进制格式，专为高性能数据处理而设计。传统序列化格式通常需要完整反序列化，而行格式支持：
 
-相较于必须整对象反序列化的格式，Row Format 支持：
+- **随机字段访问**：无需反序列化整行即可读取单个字段
+- **零拷贝操作**：无需转换数据即可直接访问内存
+- **缓存友好布局**：通过优化内存布局提高 CPU 缓存效率
+- **跨语言支持**：Java、C++、Python 和 Rust 使用一致的二进制格式
 
-- **随机字段读取**：只读目标字段
-- **零拷贝访问**：在可行场景直接基于内存切片读取
-- **缓存友好布局**：降低 CPU cache miss
-- **跨语言一致性**：Java/C++/Python 可共享标准格式
+Fory 提供两种行格式：
 
-Fory 提供两种变体：
-
-| 格式             | 支持语言             | 典型用途                         |
-| ---------------- | -------------------- | -------------------------------- |
-| Standard Format  | Java、C++、Python    | 跨语言一致、实现简单             |
-| Compact Format   | 仅 Java              | 更小体积、更高局部性             |
+| 格式     | 语言                    | 使用场景                 |
+| -------- | ----------------------- | ------------------------ |
+| 标准格式 | Java、C++、Python、Rust | 跨语言兼容               |
+| 紧凑格式 | 仅 Java                 | 提高空间效率，减小行大小 |
 
 ## 格式对比
 
-| 特性                   | Standard Format                   | Compact Format                         |
-| ---------------------- | --------------------------------- | -------------------------------------- |
-| 字段槽位大小           | 固定 8 字节                       | 按自然宽度（1/2/4/8 字节）             |
-| Null Bitmap            | 8 字节对齐                        | 字节对齐，可借用尾部 padding           |
-| Null Bitmap 位置       | 字段槽位之前                      | 字段槽位之后（尾部）                   |
-| 固定大小 struct        | 放在 variable region（offset+size） | 可内联到 fixed region                |
-| 字段顺序               | 按 schema 定义顺序                | 按对齐规则排序                         |
-| 全非空字段             | 仍保留 bitmap                     | 可完全省略 bitmap                      |
-| 对齐策略               | 严格 8 字节                       | 放宽（2/4/8 字节）                     |
+| 功能             | 标准格式              | 紧凑格式                      |
+| ---------------- | --------------------- | ----------------------------- |
+| 字段槽位大小     | 固定 8 字节           | 自然宽度（1、2、4 或 8 字节） |
+| null 位图大小    | 按 8 字节对齐         | 按字节对齐，可利用填充空间    |
+| null 位图位置    | 位于字段槽位之前      | 位于字段槽位之后（末尾）      |
+| 定长结构体       | 变长区（偏移量+大小） | 内联在定长区                  |
+| 字段顺序         | Schema 定义的顺序     | 按对齐要求排序                |
+| 所有字段均不可空 | 仍保留位图            | 完全省略位图                  |
+| 对齐             | 严格按 8 字节对齐     | 宽松对齐（2、4 或 8 字节）    |
 
-## 标准 Row 格式
+---
 
-标准格式强调跨语言统一与实现稳定：字段槽位统一 8 字节。
+## 标准行格式
+
+标准格式使用统一的 8 字节字段槽位，优先保证跨语言兼容性和实现简洁性。
 
 ### 设计原则
 
-1. **8 字节对齐**：主要结构按 8-byte 对齐
-2. **固定槽位**：每字段固定 8-byte slot，便于常数时间寻址
-3. **位图标记 null**：通过 bitset 跟踪空值
-4. **相对偏移**：变长数据通过相对偏移定位
+1. **8 字节对齐**：所有主要结构均按 8 字节边界对齐，以优化内存访问
+2. **定长字段槽位**：每个字段使用 8 字节槽位，从而统一偏移量计算
+3. **null 位图**：使用位向量紧凑地跟踪 null 值
+4. **相对偏移量**：变长数据使用相对偏移量定位子缓冲区
 
-### Row 二进制布局
+### 行的二进制布局
+
+一行结构化数据采用以下布局：
 
 ```
 +----------------+------------------+------------------+-----+------------------+------------------+
@@ -69,61 +71,72 @@ Fory 提供两种变体：
 |  B bytes       |     8 bytes      |     8 bytes      |     |     8 bytes      |  Variable size   |
 ```
 
-#### Null Bitmap
+#### null 位图
 
-- 大小：`((num_fields + 63) / 64) * 8` 字节（向上取整到 8-byte word）
-- 编码：每 bit 对应一个字段
-- bit=1 表示 null，bit=0 表示非 null
-- 第一字节 bit0 对应 field0
+null 位图用于标记哪些字段包含 null 值：
+
+- **大小**：`((num_fields + 63) / 64) * 8`字节（向上取整到最接近的 8 字节字）
+- **编码**：每一位对应一个字段索引
+  - 位值`1`= 字段为 null
+  - 位值`0`= 字段非 null
+- **位顺序**：第一个字节的第 0 位对应字段 0
+
+**示例**：对于 10 个字段，位图大小 =`((10 + 63) / 64) * 8 = 8`字节
 
 #### 字段槽位
 
-- 任意字段都占 8 字节 slot
-- 槽位偏移：`bitmap_size + field_index * 8`
-- 固定区总大小：`bitmap_size + num_fields * 8`
+无论实际数据类型如何，每个字段都占用一个固定的 8 字节槽位：
 
-槽位内容：
+- **槽位偏移量**：`bitmap_size + field_index * 8`
+- **定长区总大小**：`bitmap_size + num_fields * 8`字节
 
-| 字段类别         | 槽位内容                                  |
-| ---------------- | ----------------------------------------- |
-| 定长类型         | 值直接写入（不足补零）                    |
-| 变长类型         | `offset + size` 打包                      |
+**不同类型的字段槽位内容**：
 
-#### 变长字段编码
+| 类型类别 | 槽位内容                  |
+| -------- | ------------------------- |
+| 定长     | 直接存储值（以零填充）    |
+| 变长     | 编码偏移量+大小（见下文） |
 
-变长字段（string/array/map/nested struct）在 slot 中写入：
+#### 变长数据编码
+
+变长字段（字符串、数组、Map 和嵌套结构体）在槽位中存储一对偏移量和大小。该数据对解释为一个小端序 64 位值：
 
 ```
 +---------------------------+---------------------------+
 |    Relative Offset        |         Size              |
 |       (32 bits)           |       (32 bits)           |
 +---------------------------+---------------------------+
+|<-------------- 64-bit field slot value -------------->|
 ```
 
-- 高 32 位：相对 row 起始地址偏移
-- 低 32 位：数据长度（字节）
+- **相对偏移量**（高 32 位）：相对于行基地址的偏移量
+- **大小**（低 32 位）：变长数据的字节数
+- **物理字节顺序**：字节 0-3 存放大小，字节 4-7 存放相对偏移量
 
-编码：
+**编码**：
 
 ```
 offset_and_size = (relative_offset << 32) | size
 ```
 
-解码：
+**解码**：
 
 ```
 relative_offset = (offset_and_size >> 32) & 0xFFFFFFFF
 size = offset_and_size & 0xFFFFFFFF
 ```
 
-#### Variable Data 区
+#### 变长数据区
 
-- 位于 fixed region 之后
-- 变长字段按写入顺序顺排
-- 每个条目按 8-byte 对齐
-- padding 字节清零，保证输出确定性
+变长数据存储在定长区之后：
 
-### Array 二进制布局
+- 设置字段时按顺序写入数据
+- 每个变长值填充到 8 字节对齐
+- 填充字节清零，以确保输出具有确定性
+
+### 数组的二进制布局
+
+数组存储同构元素序列：
 
 ```
 +------------------+------------------+------------------+
@@ -132,225 +145,400 @@ size = offset_and_size & 0xFFFFFFFF
 |     8 bytes      |     B bytes      |   Variable size  |
 ```
 
-#### Array Header
+#### 数组头部
 
-| 字段            | 大小                            | 说明                    |
-| --------------- | ------------------------------- | ----------------------- |
-| Element Count   | 8 字节                          | 元素数量（uint64）      |
-| Null Bitmap     | `((count + 63) / 64) * 8` 字节 | 每元素 null 标记        |
+| 字段      | 大小                          | 说明               |
+| --------- | ----------------------------- | ------------------ |
+| 元素数量  | 8 字节                        | 元素个数（uint64） |
+| null 位图 | `((count + 63) / 64) * 8`字节 | 各元素的 null 标志 |
 
-#### Array Element Data
+**头部大小**：`8 + ((num_elements + 63) / 64) * 8`字节
 
-- 定长元素按自然宽度连续存储
-- 变长元素存 8-byte `offset+size`
-- 元素偏移：`header_size + element_index * element_size`
-- 数据区总大小按 8-byte 对齐
+#### 数组元素数据
 
-#### Array 元素大小
+元素连续存储在头部之后：
 
-| 元素类型         | 元素占用                   |
-| ---------------- | -------------------------- |
-| bool/int8        | 1 byte                     |
-| int16            | 2 bytes                    |
-| int32/float32    | 4 bytes                    |
-| int64/float64    | 8 bytes                    |
-| string/binary    | 8 bytes（offset+size）     |
+- **定长元素**：按自然宽度存储（1、2、4 或 8 字节）
+- **变长元素**：存储为 8 字节的偏移量+大小数据对
 
-### Map 二进制布局
+**元素偏移量**：`header_size + element_index * element_size`
 
-Map 在 Row Format 中可视为键值对数组，并包含类型信息与可空位图。
+**数据区大小**：向上取整到最接近的 8 字节边界
+
+#### 数组元素大小
+
+| 元素类型        | 元素大小              |
+| --------------- | --------------------- |
+| bool            | 1 字节                |
+| int8            | 1 字节                |
+| int16           | 2 字节                |
+| int32           | 4 字节                |
+| int64           | 8 字节                |
+| float32         | 4 字节                |
+| float64         | 8 字节                |
+| string/二进制   | 8 字节（偏移量+大小） |
+| 数组/map/结构体 | 8 字节（偏移量+大小） |
+
+### Map 的二进制布局
+
+Map 将键值对分别存储在两个数组中：
+
+```
++------------------+------------------+------------------+
+|  Keys Array Size |   Keys Array     |   Values Array   |
++------------------+------------------+------------------+
+|     8 bytes      |   Variable size  |   Variable size  |
+```
 
 #### Map 结构
 
-推荐逻辑结构：
+| 字段       | 大小   | 说明                     |
+| ---------- | ------ | ------------------------ |
+| 键数组大小 | 8 字节 | 键数组的总字节数         |
+| 键数组     | 变长   | 用于存储键的完整数组结构 |
+| 值数组     | 变长   | 用于存储值的完整数组结构 |
 
-1. entry count
-2. key/value null bitmap（按实现可拆分）
-3. key data
-4. value data
+**键数组偏移量**：`base_offset + 8`
+**值数组偏移量**：`base_offset + 8 + keys_array_size`
 
-#### 嵌套 Struct 布局
+键数组和值数组都遵循标准数组二进制布局，并且必须包含相同数量的元素。
 
-嵌套 struct 在标准格式中作为变长字段处理：
+### 嵌套结构体布局
 
-- slot 写 `offset+size`
-- value region 中存其完整 row 二进制
-- 可递归嵌套
+嵌套结构体以完整行结构的形式存储在变长数据区中：
 
-## Compact Row Format（仅 Java）
+1. 父字段槽位包含指向嵌套行的偏移量+大小
+2. 嵌套行拥有自己的 null 位图和字段槽位
+3. 支持任意嵌套深度
 
-Compact 格式针对 Java 本地执行链路做体积与局部性优化，不保证与标准格式完全同布局。
+```
+Parent Row:
++----------------+------------------+------------------+
+|  Null Bitmap   |  ... Slots ...   |  Nested Row Data |
++----------------+------------------+------------------+
+                        |                    ^
+                        |  offset+size       |
+                        +------------------->+
+
+Nested Row:
++----------------+------------------+------------------+
+|  Null Bitmap   |  Field Slots     |  Variable Data   |
++----------------+------------------+------------------+
+```
+
+---
+
+## 紧凑行格式（仅 Java）
+
+紧凑格式通过额外优化提高空间效率，目前仅在 Java 中实现。
+
+> **说明**：紧凑格式仍在开发中，目前可能尚不稳定。
 
 ### 设计原则
 
-1. 字段槽按自然宽度缩小
-2. 字段重排以减少 padding
-3. null bitmap 可省略或压缩
-4. 定长嵌套 struct 尽可能内联
+1. **自然宽度存储**：定长字段使用其自然字节宽度，而不是统一使用 8 字节
+2. **按对齐要求排序字段**：根据对齐要求排列字段，以尽量减少填充
+3. **条件式 null 位图**：所有字段均不可空时省略 null 位图
+4. **内联定长结构体**：所有字段均为定长字段的嵌套结构体以内联方式存储
 
-### Compact Row Binary Layout
+### 紧凑行的二进制布局
 
-总体仍是“fixed + variable”双区结构，但 fixed region 更紧凑，null bitmap 可能后置。
+```
++------------------+------------------+-----+------------------+----------------+------------------+
+|  Field 0 Value   |  Field 1 Value   | ... |  Field N-1 Value | Null Bitmap    |  Variable Data   |
++------------------+------------------+-----+------------------+----------------+------------------+
+|  W0 bytes        |  W1 bytes        |     |  WN-1 bytes      | B bytes (opt)  |  Variable size   |
+```
 
-#### 与标准格式的关键差异
+#### 与标准格式的主要区别
 
-- slot 宽度非固定 8 字节
-- bitmap 可后置
-- 全非空时 bitmap 可省略
-- 可内联定长 nested struct
+1. **字段槽位大小**：每个字段使用其自然宽度（Wi = 类型宽度；变长字段为 8）
+2. **null 位图位置**：位于字段槽位之后，可以利用对齐填充空间
+3. **字段顺序**：按对齐要求排序（8 字节 → 4 字节 → 2 字节 → 1 字节 → 变长）
+4. **条件式位图**：所有字段均不可空时完全省略位图
 
-#### Null Bitmap（Compact）
+#### null 位图（紧凑格式）
 
-- 按字节对齐
-- 可能复用尾部 padding
-- 无可空字段时可完全移除
+- **大小**：`(num_nullable_fields + 7) / 8`字节（按字节对齐，而不是按 8 字节对齐）
+- **省略条件**：所有字段均为基本类型或不可空字段
+- **位置**：位于所有定长字段槽位之后，可以使用对齐填充空间
 
 #### 字段排序算法
 
-典型排序目标：
+字段按以下方式排序，以尽量减少填充并优化对齐：
 
-- 优先高对齐需求字段
-- 次序兼顾读取热度与 padding 最小化
-- 保持可重复计算（deterministic）
+```
+Priority order (highest to lowest):
+1. Fields with 8-byte alignment (int64, float64, variable-width)
+2. Fields with 4-byte alignment (int32, float32)
+3. Fields with 2-byte alignment (int16)
+4. Fields with 1-byte alignment (int8, bool)
+```
 
-#### 定长 Struct 内联
+在每个对齐分组内，较大的字段排在前面。
 
-若嵌套 struct 满足定长条件，可直接内联到 fixed region，减少一次间接寻址。
+#### 定长结构体内联
 
-#### 定宽计算
+所有字段均为定长字段的嵌套结构体以内联方式存储在父行中：
 
-定宽字段总大小由字段类型宽度与对齐约束共同决定，实际布局由编译器/运行时规划器输出。
+**标准格式**（包含 2 个 int32 字段的嵌套结构体）：
 
-### Compact Array Binary Layout
+```
+Parent slot: [offset (4 bytes) | size (4 bytes)]  → Points to nested row (8+ bytes elsewhere)
+```
 
-与标准数组类似，但 header 与元素布局可采用更紧凑表示。
+**紧凑格式**（同一个嵌套结构体）：
 
-#### Compact Array Header
+```
+Parent slot: [int32 field 0 | int32 field 1]  → 8 bytes total, inline
+```
 
-包含：元素数量、null 信息（可选）、元素布局元信息（按实现）。
+这样可以消除定长嵌套结构的偏移量+大小间接寻址。
 
-#### 与标准数组关键差异
+#### 定长宽度计算
 
-- 头部更短
-- 元素存储更贴近自然宽度
-- 在 Java 热路径下更节省内存带宽
+字段的定长宽度通过递归方式确定：
+
+- **基本类型**：自然字节宽度（1、2、4 或 8）
+- **结构体类型**：所有子字段定长宽度之和（仅当所有子字段均为定长字段）
+- **变长类型**（string、数组、map）：返回 -1（使用 8 字节偏移量+大小槽位）
+
+```
+fixed_width(field) =
+  if primitive: type_width
+  if struct and all_children_fixed: header_bytes + sum(fixed_width(child) for each child)
+  else: -1 (variable, uses 8-byte slot)
+```
+
+### 紧凑数组的二进制布局
+
+```
++------------------+------------------+------------------+
+|  Element Count   |   Null Bitmap    |   Element Data   |
++------------------+------------------+------------------+
+|     4 bytes      | B bytes (opt)    |   Variable size  |
+```
+
+#### 紧凑数组头部
+
+| 字段      | 大小                          | 说明               |
+| --------- | ----------------------------- | ------------------ |
+| 元素数量  | 4 字节                        | 元素个数（int32）  |
+| null 位图 | `(count + 7) / 8`字节（可选） | 各元素的 null 标志 |
+
+**头部大小计算**：
+
+```
+header_size = 4 + (element_nullable ? (num_elements + 7) / 8 : 0)
+
+// Round to 8-byte boundary only if element width is 8-byte aligned
+if (fixed_width % 8 == 0):
+    header_size = round_to_8_bytes(header_size)
+```
+
+#### 与标准数组的主要区别
+
+1. **元素数量**：使用 4 字节，而不是 8 字节
+2. **null 位图**：按字节对齐；元素不可空时省略
+3. **定长结构体**：定长结构体元素以内联方式存储
+
+---
 
 ## 通用规范
 
+以下规范同时适用于标准格式和紧凑格式。
+
 ### 类型编码
 
-#### Primitive Types
+#### 基本类型
 
-基础类型按既定宽度和 endian 读写（默认 little-endian）。
+| 类型    | 宽度   | 编码                            |
+| ------- | ------ | ------------------------------- |
+| bool    | 1 字节 | `0x00`（false）或`0x01`（true） |
+| int8    | 1 字节 | 二进制补码                      |
+| int16   | 2 字节 | 二进制补码，小端序              |
+| int32   | 4 字节 | 二进制补码，小端序              |
+| int64   | 8 字节 | 二进制补码，小端序              |
+| float32 | 4 字节 | IEEE 754 单精度                 |
+| float64 | 8 字节 | IEEE 754 双精度                 |
 
-#### Temporal Types
+#### 时间类型
 
-- `date`：通常以 epoch day 表示
-- `timestamp`：通常以 epoch 纳秒或秒+纳秒表示
+| 类型      | 宽度   | 编码                              |
+| --------- | ------ | --------------------------------- |
+| timestamp | 8 字节 | 自 Unix epoch 起的微秒数（int64） |
+| date32    | 4 字节 | 自 Unix epoch 起的天数（int32）   |
+| duration  | 8 字节 | 以微秒表示的时长（int64）         |
 
-#### String 与 Binary
+#### 字符串与二进制数据
 
-都属于变长类型，使用 `offset+size` 指向真实 payload。
+- **编码**：字符串使用 UTF-8，二进制数据使用原始字节
+- **存储**：字段槽位存储偏移量+大小数据对，数据存储在变长区
+- **填充**：标准格式将数据填充到 8 字节对齐，紧凑格式按自然宽度对齐
 
-### Null 处理
+### null 处理
 
-#### Row Null 处理
+#### 行中的 null 处理
 
-由 row bitmap 标记字段 null 状态，null 字段对应 slot 内容可忽略。
+- null 字段在 null 位图中的对应位设置为 1
+- null 字段的槽位内容在标准格式中未定义，在紧凑格式中清零
+- 读取 null 字段会返回 null/空值标志
 
-#### Array Null 处理
+#### 数组中的 null 处理
 
-由数组 bitmap 标记每个元素是否为 null。
+- null 元素在数组 null 位图中的对应位设置为 1
+- null 元素的元素数据未定义
+- 紧凑格式：元素不可空时省略位图
 
-#### 变长 null 语义
+#### 变长数据的 null 语义
 
-null 与空值（如空字符串、空数组）必须区分；空值应写长度为 0 的实体。
+从 null 字段读取变长数据时：
 
-### 对齐与 Padding
+- 返回大小 -1 或等价的 null 标志
+- 不执行数据访问
 
-#### Standard 对齐
+### 对齐与填充
 
-以 8-byte 为主，保证跨语言一致实现简单。
+#### 标准格式对齐
 
-#### Compact 对齐
+1. **null 位图**：大小向上取整到 8 字节边界
+2. **字段槽位**：每个槽位始终为 8 字节
+3. **变长数据**：每个值填充到 8 字节边界
+4. **数组数据**：整个数据区填充到 8 字节边界
 
-允许 2/4/8 灵活对齐，目标是减少浪费。
+#### 紧凑格式对齐
 
-#### Padding 字节
+1. **字段槽位**：使用自然宽度（1、2、4 或 8 字节）
+2. **null 位图**：按字节对齐，位于字段之后
+3. **变长数据**：仅在需要时填充到 8 字节边界
+4. **头部**：可以使用更宽松的对齐方式以降低开销
 
-padding 建议写 0，避免未初始化内存泄露并提高可重复性。
+#### 填充字节
+
+- 所有填充字节都必须设置为零
+- 确保序列化输出具有确定性
+- 防止未初始化内存造成信息泄露
 
 ## 大小计算
 
-### Standard Row 大小
+### 标准行大小
 
 ```
-row_size = bitmap_size + num_fields * 8 + aligned(variable_region_size)
+row_size = bitmap_size + num_fields * 8 + variable_data_size
+
+where:
+  bitmap_size = ((num_fields + 63) / 64) * 8
+  variable_data_size = sum of (padded_size for each variable field)
+  padded_size = ((size + 7) / 8) * 8
 ```
 
-### Compact Row 大小
+### 紧凑行大小
 
 ```
-row_size = compact_fixed_size + optional_bitmap + aligned(variable_region_size)
+row_size = fixed_region_size + bitmap_size + variable_data_size
+
+where:
+  fixed_region_size = sum of (fixed_width(field) or 8 for each field)
+  bitmap_size = all_non_nullable ? 0 : (num_nullable_fields + 7) / 8
+  // May be rounded to 8-byte boundary if has variable fields
 ```
 
-### Standard Array 大小
+### 标准数组大小
 
 ```
-array_size = header_size + aligned(element_data_size)
+array_size = header_size + fixed_data_size + variable_data_size
+
+where:
+  header_size = 8 + ((num_elements + 63) / 64) * 8
+  element_slot_size = natural width for fixed-width elements, otherwise 8
+  fixed_data_size = ((num_elements * element_slot_size + 7) / 8) * 8
+  variable_data_size = sum of (padded_size for each non-null variable-width element)
+  padded_size = ((size + 7) / 8) * 8
 ```
 
-### Compact Array 大小
+### 紧凑数组大小
 
 ```
-array_size = compact_header_size + aligned(compact_element_data_size)
+array_size = header_size + data_size
+
+where:
+  header_size = 4 + (element_nullable ? (num_elements + 7) / 8 : 0)
+  // header_size rounded to 8 if element_width % 8 == 0
+  data_size = num_elements * element_width
 ```
 
 ### Map 大小
 
 ```
-map_size = map_header + aligned(keys_region) + aligned(values_region)
+map_size = 8 + keys_array_size + values_array_size
 ```
 
 ## 汇总表
 
-### 布局总结
+### 布局汇总
 
-| 结构            | Standard                         | Compact (Java)                   |
-| --------------- | -------------------------------- | -------------------------------- |
-| Row             | bitmap + 8-byte slots + var data | compact fixed + optional bitmap + var data |
-| Array           | count + bitmap + elements        | compact header + elements        |
-| Map             | count + key/value data regions   | 依实现可紧凑化                   |
+| 组成部分          | 标准格式                              | 紧凑格式                            |
+| ----------------- | ------------------------------------- | ----------------------------------- |
+| 行头部            | `((N + 63) / 64) * 8`字节             | 0 或`(N + 7) / 8`字节（位于末尾）   |
+| 行字段槽位        | `N * 8`字节                           | `sum(field_widths)`字节             |
+| 数组头部          | `8 + ((E + 63) / 64) * 8`字节         | `4 + (E + 7) / 8`字节（元素可空时） |
+| 数组元素          | 按 8 字节对齐的槽位以及变长主体       | `E * element_width`                 |
+| Map 头部          | 8 字节                                | 8 字节                              |
+| 偏移量+大小数据对 | 8 字节`u64`：`(offset << 32) \| size` | 8 字节（相同）                      |
 
-### 类型宽度总结
+其中，N = 字段数，E = 元素数。
 
-| 类型族                 | 典型宽度                    |
-| ---------------------- | --------------------------- |
-| bool/int8              | 1 byte                      |
-| int16                  | 2 bytes                     |
-| int32/float32          | 4 bytes                     |
-| int64/float64          | 8 bytes                     |
-| string/binary/复杂类型 | slot 中 8-byte offset+size  |
+### 类型宽度汇总
+
+| 类别          | 存储宽度 | 标准槽位 | 紧凑槽位      |
+| ------------- | -------- | -------- | ------------- |
+| bool          | 1 字节   | 8 字节   | 1 字节        |
+| int8          | 1 字节   | 8 字节   | 1 字节        |
+| int16         | 2 字节   | 8 字节   | 2 字节        |
+| int32         | 4 字节   | 8 字节   | 4 字节        |
+| int64         | 8 字节   | 8 字节   | 8 字节        |
+| float32       | 4 字节   | 8 字节   | 4 字节        |
+| float64       | 8 字节   | 8 字节   | 8 字节        |
+| string/二进制 | 变长     | 8 字节   | 8 字节        |
+| 数组          | 变长     | 8 字节   | 8 字节        |
+| map           | 变长     | 8 字节   | 8 字节        |
+| 结构体        | 变长     | 8 字节   | 内联或 8 字节 |
 
 ## 实现说明
 
-### Endianness
+### 字节序
 
-统一使用 little-endian，跨语言实现必须一致。
+- 所有多字节整数均以**小端序**格式存储
+- 浮点值使用 IEEE 754 位表示形式，并按小端字节序存储
 
 ### 内存安全
 
-- 读取前先做边界检查
-- 对 offset/size 做溢出检查
-- 避免使用未初始化 padding
+- 写入器必须将填充字节清零，以防止信息泄露
+- 读取器必须先校验偏移量和大小，再访问数据
+- 对于不可信输入，必须检查缓冲区边界
 
-### 性能建议
+### 性能注意事项
 
-- 批量顺序写入，减少随机写
-- 热字段优先放 fixed region 前部
-- 通过 profile 决定是否启用 compact
+**标准格式**：
 
-### 何时选择哪种格式
+- 固定的 8 字节槽位只需简单的算术运算即可实现 O(1) 字段访问
+- 8 字节对齐可以优化 CPU 缓存行的使用
+- 最适合跨语言互操作
 
-- **Standard**：跨语言互通、调试友好、长期兼容
-- **Compact**：Java 单语言链路、内存敏感、高吞吐场景
+**紧凑格式**：
+
+- 更小的行可以降低内存带宽占用
+- 字段排序可尽量减少填充浪费
+- 内联结构体消除了指针追踪
+- 在某些架构上，宽松对齐可能产生少量 CPU 开销
+
+### 各格式的适用场景
+
+| 场景                           | 推荐格式 |
+| ------------------------------ | -------- |
+| 跨语言数据交换                 | 标准格式 |
+| 仅使用 Java 且内存受限         | 紧凑格式 |
+| 包含许多小型基本类型字段       | 紧凑格式 |
+| 包含许多嵌套定长结构体         | 紧凑格式 |
+| 要求最高读取性能               | 标准格式 |
+| 与 Java/C++/Python/Rust 互操作 | 标准格式 |

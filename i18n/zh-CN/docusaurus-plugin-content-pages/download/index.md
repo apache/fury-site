@@ -5,7 +5,7 @@ title: 下载
 
 Apache Fory™ 的官方发布以源码制品形式提供。
 
-如需二进制安装，请参见 Apache Fory™ [安装](/zh-CN/docs/start/install/) 文档。
+如需二进制安装，请参见 Apache Fory™ [安装](/docs/start/install/) 文档。
 
 ## 最新版本
 

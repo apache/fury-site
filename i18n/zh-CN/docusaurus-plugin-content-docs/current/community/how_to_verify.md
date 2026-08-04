@@ -1,21 +1,21 @@
 ---
-title: 如何验证 Apache Fory™
+title: 如何验证
 sidebar_position: 0
 id: how_to_verify
 ---
 
-## 下载 Apache Fory™
+## 下载候选版本
 
 ```bash
-# If there is svn locally, you can clone to the local
-svn co https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/
+#If there is svn locally, you can clone to the local
+svn co https://dist.apache.org/repos/dist/dev/fory/${release_version}-${rc_version}/
 # You can download the material file directly
-wget https://dist.apache.org/repos/dist/dev/incubator/fory/${release_version}-${rc_version}/xxx.xxx
+wget https://dist.apache.org/repos/dist/dev/fory/${release_version}-${rc_version}/xxx.xxx
 ```
 
-## 验证 checksums 和 signatures
+## 验证校验和与签名
 
-首先，您需要安装 gpg：
+首先需要安装 gpg：
 
 ```bash
 apt-get install gnupg
@@ -25,10 +25,10 @@ yum install gnupg
 brew install gnupg
 ```
 
-之后，导入 Apache Fory release manager 的公钥：
+然后导入 Fory 发布经理的公钥：
 
 ```bash
-curl https://downloads.apache.org/incubator/fory/KEYS > KEYS # Download KEYS
+curl https://downloads.apache.org/fory/KEYS > KEYS # Download KEYS
 gpg --import KEYS # Import KEYS to local
 # Then, trust the public key:
 gpg --edit-key <KEY-used-in-this-version> # Edit the key(mentioned in vote email)
@@ -76,10 +76,10 @@ unless you restart the program.
 for i in *.tar.gz; do echo $i; gpg --verify $i.asc $i; done
 ```
 
-如果出现如下内容，则表示签名正确：
+如果出现类似以下内容，则表示签名正确：
 
 ```bash
-apache-fory-0.5.0-src.tar.gz
+apache-fory-0.12.0-src.tar.gz
 gpg: Signature made Wed 17 Apr 2024 11:49:45 PM CST using RSA key ID 5E580BA4
 gpg: checking the trustdb
 gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
@@ -87,33 +87,39 @@ gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
 gpg: Good signature from "chaokunyang (CODE SIGNING KEY) <chaokunyang@apache.org>"
 ```
 
-然后验证 checksum：
+然后验证校验和：
 
 ```bash
-for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512; done
+for i in *.tar.gz; do echo $i; sha512sum --check  $i.sha512*; done
 ```
 
-它应该输出如下内容：
+输出应类似于：
 
 ```bash
 apache-fory-0.12.0-src.tar.gz
 apache-fory-0.12.0-src.tar.gz: OK
 ```
 
-## 检查源码包中的文件
+快速完成上述验证的方法是：
 
-解压缩 `apache-fory-${release_version}-${rc_version}-src.tar.gz` 并检查以下内容：
+```bash
+curl -s https://raw.githubusercontent.com/apache/fory/main/ci/release.py | python3 - verify -v 0.5.0
+```
 
-- 此存储库 LICENSE 和 NOTICE 文件是正确的；
-- 如有必要，所有文件都有 ASF 许可证标头；
-- 项目构建通过。
+## 检查源代码包的文件内容
 
-## 检查 fory-java 的 Maven artifacts
+解压 `apache-fory-${release_version}-${rc_version}-src.tar.gz`，并检查以下内容：
 
-下载 Apache Fory™：https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}/.
+- LICENSE 和 NOTICE 文件对于该仓库是正确的。
+- 所有需要许可证头的文件都带有 ASF 许可证头。
+- 可以正常构建。
 
-您可以检查以下内容：
+## 检查 fory-java 的 Maven 制品
 
-- JAR 的 Checksum 与项目绑定的 checksum 文件一致。
-- JAR 的 signature 与项目绑定的 signature 文件一致。
-- JAR 在本地是可重复的。这意味着您可以在计算机上构建 JAR，并验证 checksum 和与项目绑定的相同。
+从 https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}/ 下载制品。
+
+可以检查以下内容：
+
+- JAR 的校验和与随附的校验和文件一致。
+- JAR 的签名与随附的签名文件一致。
+- JAR 可以在本地复现。这意味着您可以在自己的计算机上构建 JAR，并验证其校验和与随附制品的校验和相同。

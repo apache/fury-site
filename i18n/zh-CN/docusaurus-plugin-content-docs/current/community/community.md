@@ -4,82 +4,81 @@ sidebar_position: 0
 id: community
 ---
 
-Apache Fory™ 是一个由社区驱动的开源项目，项目的蓬勃发展得益于社区贡献。
-我们邀请您根据自己的意愿尽可能地参与项目。以下是几种贡献方式：
+Apache Fory™ 是一个志愿者项目，依靠社区贡献蓬勃发展。
+无论您愿意投入多少精力，我们都诚邀您参与。以下是几种贡献方式：
 
-- 使用 Apache Fory™ 并分享使用体验和反馈问题；
-- 为项目提供最佳实践示例；
-- 报告错误并修复；
-- 贡献代码和参与文档建设。
+- 使用我们的项目并分享反馈。
+- 提供项目用例。
+- 报告 Bug 并贡献修复。
+- 贡献代码和改进文档。
 
 ## 邮件列表
 
-| 邮件列表                | 描述               | 订阅                                             | 取消订阅                                               | 发送邮件                               | 活动                                                                       |
-| ----------------------- | ------------------ | ------------------------------------------------ | ------------------------------------------------------ | -------------------------------------- | -------------------------------------------------------------------------- |
-| dev@fory.apache.org     | 开发相关讨论       | [订阅](mailto:dev-subscribe@fory.apache.org)     | [取消订阅](mailto:dev-unsubscribe@fory.apache.org)     | [发送邮件](mailto:dev@fory.apache.org) | [邮件列表活动](https://lists.apache.org/list.html?dev@fory.apache.org)     |
-| commits@fory.apache.org | 仓库的所有 commits | [订阅](mailto:commits-subscribe@fory.apache.org) | [取消订阅](mailto:commits-unsubscribe@fory.apache.org) | 只读的邮件列表                         | [邮件列表活动](https://lists.apache.org/list.html?commits@fory.apache.org) |
+| 名称                    | 说明             | 订阅                                             | 取消订阅                                               | 发帖                               | 存档                                                               |
+| ----------------------- | ---------------- | ------------------------------------------------ | ------------------------------------------------------ | ---------------------------------- | ------------------------------------------------------------------ |
+| dev@fory.apache.org     | 开发相关讨论     | [订阅](mailto:dev-subscribe@fory.apache.org)     | [取消订阅](mailto:dev-unsubscribe@fory.apache.org)     | [发帖](mailto:dev@fory.apache.org) | [存档](https://lists.apache.org/list.html?dev@fory.apache.org)     |
+| commits@fory.apache.org | 仓库中的所有提交 | [订阅](mailto:commits-subscribe@fory.apache.org) | [取消订阅](mailto:commits-unsubscribe@fory.apache.org) | 只读列表                           | [存档](https://lists.apache.org/list.html?commits@fory.apache.org) |
 
-在尝试发送邮件之前，请确保订阅上述的邮件列表。
+尝试发帖前，请务必先订阅相应的邮件列表。
 
-**如果您没有订阅邮件列表，您的邮件将被拒绝或不会收到回复。**
+如果您没有订阅邮件列表，您的消息将被拒绝，或者您将无法收到回复。
 
 ### 如何订阅邮件列表
 
-要发送邮件至邮件列表，请先通过以下方式订阅：
+要发布消息，请先按以下步骤订阅：
 
-1. 发送电子邮件至 listname-subscribe@fory.apache.org，并相应替换 `listname`；
-2. 回复您将收到的确认电子邮件，保持邮件主题行完整；
-3. 然后您将收到一封欢迎的电子邮件，订阅成功。
+1. 向 listname-subscribe@fory.apache.org 发送电子邮件，并相应替换 `listname`。
+2. 回复收到的确认邮件，并保持主题行不变。
+3. 随后您将收到欢迎邮件，表示订阅成功。
 
-在讨论电子邮件中的代码片段时，请确保：
+通过电子邮件讨论代码片段时，请确保：
 
-- 您不要链接到外部服务中的文件，因为此类文件可能会更改、被删除或链接可能会中断，从而使存档的电子邮件线程变得无用；
-- 您粘贴文本而不是文本屏幕截图；
-- 粘贴代码时保持格式，以保持代码可读；
-- 有足够的导入语句以避免产生代码歧义。
+- 不要链接到外部服务中的文件，因为这些文件可能会更改、被删除或链接可能失效，从而使存档的邮件讨论串失去价值。
+- 粘贴文本，而不是文字截图。
+- 粘贴代码时保留格式，以确保代码可读。
+- 包含足够的导入语句，以避免歧义。
 
 ## Slack
 
-您可以加入[Slack 上的 Apache Fory™ 社区](https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)。
+您可以加入 [Slack 上的 Apache Fory™ 社区](https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A)。
 
-这里有一些社区规则：
+社区有以下几项规则：
 
-- 保持尊重和友善；
-- 所有重要的决定和结论都必须反映到邮件列表中。 “如果这没有在邮件列表中有相关的讨论记录，则代表它不生效” ；
-- [The Apache Way](https://theapacheway.com/on-list/)；
-- 使用 Slack 线程来防止并行对话淹没当前的对话频道；
-- 请不要直接向邮件列表发送 Bug fix、Issue 分配和 Code Review 消息。这些内容应该被社区贡献者自愿处理并分配。
+- 相互尊重，友善交流。
+- 所有重要决定和结论都必须同步到邮件列表。“如果没有在邮件列表中发生，就等于没有发生。”——[Apache 格言](https://theapacheway.com/on-list/)。
+- 使用 Slack 讨论串，避免并行对话淹没频道。
+- 请勿通过私信请求他人协助排查问题、分配 Issue 或评审 PR。这些工作应由社区成员自愿认领。
 
-## Issue 跟踪
+## Issue 跟踪器
 
-我们使用 GitHub Issues 来跟踪所有 Issues：
+我们使用 GitHub Issues 跟踪所有问题：
 
 - 代码相关问题：https://github.com/apache/fory/issues
 - 网站相关问题：https://github.com/apache/fory-site/issues
 
-您需要有一个 [GitHub 帐号](https://github.com/signup) 才能创建问题。
-如果您没有 [GitHub 帐号](https://github.com/signup)，您可以发送电子邮件至 dev@fory.apache.org。
+您需要拥有 [GitHub 账号](https://github.com/signup)才能创建 Issue。
+如果您没有 [GitHub 账号](https://github.com/signup)，可以向 dev@fory.apache.org 发送电子邮件。
 
-### 报告 Bug
+### Bug 报告
 
-您在报告 Bug 之前，应该：
+报告 Bug 时：
 
-- 验证该 Bug 确实存在；
-- 搜索 [Issue List](https://github.com/apache/fory/issues) 以确保不存在相关 Bug。
-- 在 Issue List 中创建 [bug 报告](https://github.com/apache/fory/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml)。
-- 如果可能的话，深入研究 Apache Fory™ 的源代码，并针对您报告的 Bug 提交补丁，这有助于快速修复 Bug。
+- 确认该 Bug 确实存在。
+- 搜索 [Issue 跟踪器](https://github.com/apache/fory/issues)，确认其中没有报告您所发现 Bug 的现有 Issue。
+- 在 Issue 跟踪器中创建 [Bug 报告](https://github.com/apache/fory/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml)。
+- 如果可以，请深入研究 Fory 源代码，并为您报告的 Bug 提交补丁，这有助于确保 Bug 得到快速修复。
 
 ### 报告安全漏洞
 
-Apache Fory™ 是 [Apache 软件基金会](https://apache.org/) 的一个项目，遵循 [ASF 漏洞处理流程](https://apache.org/security/#vulnerability-handling)。
+Apache Fory™ 是 [Apache 软件基金会](https://apache.org/)的项目，并遵循 [ASF 漏洞处理流程](https://apache.org/security/#vulnerability-handling)。
 
-要报告您发现的新的安全漏洞，请遵循 [ASF 漏洞报告流程](https://apache.org/security/#reporting-a-vulnerability)，该流程解释了如何私下向社区维护者发送详细的漏洞信息。
+如需报告您发现的新漏洞，请遵循 [ASF 漏洞报告流程](https://apache.org/security/#reporting-a-vulnerability)，该流程说明了如何私下向我们发送详细信息。
 
-### New Feature
+### 功能增强
 
-欢迎您增强功能或新功能建议。提案越具体、越合理，您在 Apache Fory™ 社区的影响力就越大。它有可能在之后版本发布。
+我们也欢迎功能增强或新功能提案。提案越具体、理由越充分，被纳入未来版本的可能性就越大。
 
-### 项目源代码
+## 源代码
 
-- Apache Fory™ Core 存储库：https://github.com/apache/fory
-- Apache Fory™ 网站存储库：https://github.com/apache/fory-site
+- Fory 核心仓库：https://github.com/apache/fory
+- Fory 网站仓库：https://github.com/apache/fory-site

@@ -39,7 +39,7 @@ and element types. The normative byte layout, alignment rules, type table, and
 endianness are defined by the
 [Row Format Specification](../specification/row_format_spec.md).
 
-Row Format is intended for analytics, memory-mapped data, selective field
+Row Format is intended only for trusted analytics data, including memory-mapped data, selective field
 access, and data pipelines. Use [Object Serialization](../object-serialization/index.md)
 when the application needs general object graphs, shared or circular references,
 or complete object reconstruction as its primary access pattern.
