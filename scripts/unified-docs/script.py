@@ -58,7 +58,7 @@ def execute():
     base_blog_folder = "../../blog/"
     zh_cn_blog_dst = "../../i18n/zh-CN/docusaurus-plugin-content-blog/"
 
-    copy_markdown_files(base_src_folder, zh_cn_docs_dst, {"security", "images"})
+    copy_markdown_files(base_src_folder, zh_cn_docs_dst, {"security"})
     copy_markdown_files(base_blog_folder, zh_cn_blog_dst)
 
 
