@@ -68,4 +68,4 @@ round trip for an application project, and the next capability-specific steps:
 Object Serialization uses xlang mode for portable cross-language data. Java,
 Python, C++, Go, Rust, Scala, and Kotlin also offer native mode for
 same-runtime data. Use [Choose a Format](../introduction/choose-a-format.md)
-when the product choice is not yet clear.
+when you have not yet chosen a format.

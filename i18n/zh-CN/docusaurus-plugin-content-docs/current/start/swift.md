@@ -35,7 +35,7 @@ swift --version
 swift package init --type executable --name ForyExample
 ```
 
-在生成的 `Package.swift` 中添加已发布的软件包和 `Fory` 产品：
+在生成的 `Package.swift` 中添加已发布的软件包，并依赖其中的 `Fory` 库：
 
 ```swift title="Package.swift"
 dependencies: [

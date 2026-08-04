@@ -51,7 +51,43 @@ Python 默认生成异步 `grpc.aio` 配套代码，并支持通过 `--grpc-pyth
 JavaScript 在 Node.js 中使用 `@grpc/grpc-js`；浏览器客户端通过 `--grpc-web` 单独生成，
 并使用 `grpc-web`。
 
+## 架构
+
+生成的服务配套代码使用标准 gRPC server、channel、方法描述符、deadline、状态码、interceptor
+和流式 API。Fory 生成的 marshaller 负责对生成的请求和响应模型进行编码和解码。
+
+### 职责边界
+
+Fory 可以为应用提供的 gRPC 运行时生成服务配套代码。这些代码为请求和响应对象提供 Fory 序列化；
+listener、channel、credential、身份认证、授权、deadline、重试和传输生命周期仍由应用和 gRPC 技术栈负责。
+
+Fory 软件包不会将某个 gRPC 实现作为强制依赖。应用负责选择和配置运行时的 gRPC 库。
+
+### 生成的服务接口
+
+编译器会生成符合运行时习惯的 service base、client 或 stub、方法元数据和 Fory marshaller。
+模型生成详见[生成代码](../compiler/generated-code/index.md)；各运行时页面介绍 server 与 client 集成。
+
+## 互操作性
+
+只有使用同一份生成服务契约、匹配的 Fory 类型标识以及兼容的生成模型 Schema，Fory gRPC 对端
+才能互操作。
+
+### 协议边界
+
+传输协议是 gRPC，但消息字节是 Fory 载荷。通用 protobuf 客户端和 server reflection 工具无法将
+这些载荷解码为 protobuf 消息。每个对端都必须通过受支持的 Fory 编译器前端生成。
+
+### 验证
+
+至少测试一个一元调用，以及服务使用的每种流式调用形式。protobuf `UNIMPLEMENTED` 或解码失败
+通常表示对端使用了普通 protobuf stub，或使用了不同的生成服务契约。
+
 ## 运行时指南
+
+Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Dart、Scala 和 Kotlin 均有相应的
+gRPC 配套代码文档。当前依赖和流式调用支持请参阅[支持矩阵](../introduction/support-matrix.md)
+以及所选运行时页面。
 
 | 运行时                | 指南                                 |
 | --------------------- | ------------------------------------ |
@@ -65,5 +101,3 @@ JavaScript 在 Node.js 中使用 `@grpc/grpc-js`；浏览器客户端通过 `--g
 | Dart                  | [Dart](dart.md)                      |
 | Scala                 | [Scala](scala.md)                    |
 | Kotlin                | [Kotlin](kotlin.md)                  |
-
-载荷和传输的职责边界请参阅[架构](architecture.md)，对端兼容性请参阅[互操作性](interoperability.md)。

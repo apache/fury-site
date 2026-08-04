@@ -21,7 +21,7 @@ license: |
 
 Choose the runtime whose API your application uses. Runtime documentation is scoped to
 binary object serialization; Row Format, Fory JSON, compiler, and gRPC pages remain with
-their product owners.
+their respective capability guides.
 
 | Runtime               | Modes                | Documentation                                          |
 | --------------------- | -------------------- | ------------------------------------------------------ |

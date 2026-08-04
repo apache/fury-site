@@ -20,7 +20,7 @@ license: |
 ---
 
 选择能力前，请使用此矩阵确认文档所覆盖的 API。存在某个运行时页面，并不表示该运行时
-支持所有 Fory 产品。
+支持所有 Fory 能力。
 
 | 能力                | 已有文档的运行时                                                                   | 互操作能力                             |
 | ------------------- | ---------------------------------------------------------------------------------- | -------------------------------------- |
@@ -34,4 +34,4 @@ license: |
 
 [Android](../object-serialization/java/android.md) 和
 [GraalVM Native Image](../object-serialization/java/graalvm.md) 等平台限制，由相应的 Java
-对象序列化和 Fory JSON 产品文档说明。
+对象序列化和 Fory JSON 指南说明。

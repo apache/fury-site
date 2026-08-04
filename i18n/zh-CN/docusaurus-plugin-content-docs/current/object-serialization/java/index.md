@@ -21,7 +21,7 @@ license: |
 
 Apache Fory Java 提供高性能二进制对象序列化。与其他受支持运行时共享的载荷使用跨语言模式，仅供 Java/JVM 使用的对象图则使用原生模式。
 
-本运行时指南仅介绍二进制对象序列化。其他 Java 产品参见 [Row Format](../../row-format/java.md)、[Fory JSON](../../json/index.md)、[Fory IDL 与编译器](../../compiler/index.md)或 [Fory gRPC](../../grpc/java.md)。
+本运行时指南仅介绍二进制对象序列化。其他 Java 能力参见 [Row Format](../../row-format/java.md)、[Fory JSON](../../json/index.md)、[Fory IDL 与编译器](../../compiler/index.md)或 [Fory gRPC](../../grpc/java.md)。
 
 ## 二进制对象序列化
 

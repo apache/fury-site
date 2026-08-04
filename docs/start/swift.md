@@ -37,7 +37,7 @@ Create an executable package:
 swift package init --type executable --name ForyExample
 ```
 
-Add the released package and `Fory` product to the generated `Package.swift`:
+Add the released package and depend on its `Fory` library in the generated `Package.swift`:
 
 ```swift title="Package.swift"
 dependencies: [

@@ -51,12 +51,12 @@ Apache Fory™ 以源代码制品和各语言专用软件包的形式发布。�
 
 ## 可以构建什么
 
-| 能力       | 用途                                                        | 可用运行时                                                         | 详细指南                                                 |
-| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
-| 对象序列化 | 重建对象图，包括共享引用和 Schema 变更                      | 所有运行时                                                         | [对象序列化](../object-serialization/index.md)            |
-| Row Format | 对可信分析数据进行零拷贝、随机或部分字段访问                | Java、Python、C++、Rust                                            | [Row Format](../row-format/index.md)                     |
-| Fory JSON  | 高性能标准 JSON 映射                                        | Java                                                               | [Fory JSON](../json/index.md)                            |
-| Fory IDL   | 从 Fory、protobuf 或 FlatBuffers IDL 生成原生模型和序列化器 | 所有运行时                                                         | [Fory IDL 与编译器](../compiler/index.md)                |
-| Fory gRPC  | 通过常规 gRPC 传输使用生成的模型和 Fory 编码的消息          | Java、Python、C++、Go、Rust、JavaScript、C#、Dart、Scala、Kotlin | [Fory gRPC](../grpc/index.md)                            |
+| 能力       | 用途                                                        | 可用运行时                                                       | 详细指南                                       |
+| ---------- | ----------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
+| 对象序列化 | 重建对象图，包括共享引用和 Schema 变更                      | 所有运行时                                                       | [对象序列化](../object-serialization/index.md) |
+| Row Format | 对可信分析数据进行零拷贝、随机或部分字段访问                | Java、Python、C++、Rust                                          | [Row Format](../row-format/index.md)           |
+| Fory JSON  | 高性能标准 JSON 映射                                        | Java                                                             | [Fory JSON](../json/index.md)                  |
+| Fory IDL   | 从 Fory、protobuf 或 FlatBuffers IDL 生成原生模型和序列化器 | 所有运行时                                                       | [Fory IDL 与编译器](../compiler/index.md)      |
+| Fory gRPC  | 通过常规 gRPC 传输使用生成的模型和 Fory 编码的消息          | Java、Python、C++、Go、Rust、JavaScript、C#、Dart、Scala、Kotlin | [Fory gRPC](../grpc/index.md)                  |
 
-对象序列化使用 xlang 模式生成可移植的跨语言数据。Java、Python、C++、Go、Rust、Scala 和 Kotlin 还提供 native 模式，用于同一运行时内的数据。如果尚未明确产品应选择哪种格式，请参阅[选择格式](../introduction/choose-a-format.md)。
+对象序列化使用 xlang 模式生成可移植的跨语言数据。Java、Python、C++、Go、Rust、Scala 和 Kotlin 还提供 native 模式，用于同一运行时内的数据。如果尚未确定使用哪种格式，请参阅[选择格式](../introduction/choose-a-format.md)。

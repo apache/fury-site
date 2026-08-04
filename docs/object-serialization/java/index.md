@@ -22,7 +22,7 @@ license: |
 Apache Fory Java provides high-performance binary object serialization. Use xlang mode for payloads
 shared with other supported runtimes and native mode for Java/JVM-only object graphs.
 
-This runtime guide is scoped to Binary Object Serialization. For other Java products, use
+This runtime guide is scoped to Binary Object Serialization. For other Java capabilities, use
 [Row Format](../../row-format/java.md), [Fory JSON](../../json/index.md),
 [Fory IDL and compiler](../../compiler/index.md), or [Fory gRPC](../../grpc/java.md).
 
