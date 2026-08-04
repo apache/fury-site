@@ -240,15 +240,6 @@ html:root {
   overflow-x: auto;
 }
 
-.sidebar-section-label {
-  color: var(--ifm-color-emphasis-600);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-top: 0.9rem;
-  text-transform: uppercase;
-}
-
 .theme-doc-markdown > pre,
 .theme-doc-markdown > table,
 .theme-doc-markdown > .tabs-container,
