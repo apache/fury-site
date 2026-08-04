@@ -1,5 +1,5 @@
 ---
-title: Rust 环境配置
+title: Rust 设置
 sidebar_position: 5
 id: rust
 license: |
@@ -19,8 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory Rust 发布在 crates.io。workspace 支持的最低 Rust 版本为 1.70，并使用 Rust 2021 edition。
-一个应用的所有对等端应使用同一兼容的 Fory 发行版。
+Fory Rust 提供 xlang 和 native 对象序列化、标准 Row Format、生成的模型以及 Fory gRPC。公开的 `fory` crate 发布在 crates.io，支持 Rust 1.70 及更高版本，并使用 Rust 2021 edition。
 
 ## 验证工具链
 
@@ -29,13 +28,43 @@ rustc --version
 cargo --version
 ```
 
-## 选择能力
+## 对象序列化
 
-| 能力                | Crate 或工具                        | 后续文档                                                                                                                                                              |
-| ------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 对象序列化          | `fory`                              | [Rust 对象序列化](../object-serialization/rust/index.md)，然后选择 [xlang](../object-serialization/rust/xlang.md) 或 [native](../object-serialization/rust/native.md) |
-| Standard Row Format | `fory`                              | [Rust Row Format](../row-format/rust.md)                                                                                                                              |
-| Schema 和生成模型   | `fory-compiler`                     | [Fory IDL 和编译器](../compiler/index.md)                                                                                                                             |
-| Fory gRPC           | 生成的配套代码加 `tonic` 和 `bytes` | [Rust gRPC](../grpc/rust.md)                                                                                                                                          |
+添加公开 crate：
 
-每个能力指南都会提供确切的依赖声明和首个可运行示例。
+```toml title="Cargo.toml"
+[dependencies]
+fory = "1.5.0"
+```
+
+```rust
+use fory::{Error, Fory, ForyStruct};
+
+#[derive(ForyStruct, Debug, PartialEq)]
+struct User {
+    id: i64,
+    name: String,
+}
+
+fn main() -> Result<(), Error> {
+    let mut fory = Fory::builder().xlang(true).build();
+    fory.register::<User>(1)?;
+
+    let user = User {
+        id: 1,
+        name: "Alice".to_string(),
+    };
+    let bytes = fory.serialize(&user)?;
+    let decoded: User = fory.deserialize(&bytes)?;
+    assert_eq!(user, decoded);
+    Ok(())
+}
+```
+
+跨语言数据请使用 [xlang 模式](../object-serialization/rust/xlang.md)，仅供 Rust 使用的数据请使用 [native 模式](../object-serialization/rust/native.md)。接下来可阅读 [Rust 对象序列化](../object-serialization/rust/index.md)、[配置](../object-serialization/rust/configuration.md)和[类型注册](../object-serialization/rust/type-registration.md)。
+
+## 其他能力
+
+- **Row Format** 使用标准 Fory Row 布局，为可信分析数据提供零拷贝视图。请参阅 [Rust Row Format](../row-format/rust.md)。
+- **Fory IDL 与编译器** 生成 Rust 模型和注册辅助代码。请参阅[编译器快速入门](../compiler/getting-started.md)和 [Rust 生成代码指南](../compiler/generated-code/rust.md)。
+- **Fory gRPC** 通过 tonic 传输使用 Fory 编码的消息。请参阅 [Rust gRPC](../grpc/rust.md)。

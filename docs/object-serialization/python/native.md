@@ -189,4 +189,4 @@ Keep the payload in native mode. Xlang mode does not execute Python `__reduce__`
 - [Xlang Serialization](xlang.md) - Cross-language Python payloads
 - [Configuration](configuration.md) - Python `Fory` options
 - [Out-of-Band Serialization](out-of-band.md) - Zero-copy buffer support
-- [Configuration](configuration.md#security) - Deserialization policies
+- [Object Serialization Security](../security.md) - Deserialization policies
