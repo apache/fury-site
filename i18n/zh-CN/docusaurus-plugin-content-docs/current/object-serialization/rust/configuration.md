@@ -181,17 +181,10 @@ let fory = Fory::builder()
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信载荷前，注册应用结构体和特征对象实现。
-- 使用 `max_dyn_depth(...)` 拒绝意外过深的动态对象图。
-- 对大多数输入，将 `max_graph_memory_bytes(...)` 保持为固定默认值 `128 MiB`；只有可信工作负载具有不同的合理集合、映射或结构体大小时才设置正字节限制。
-- 除非可信紧凑编解码器需要更大的根限额，否则将 `max_unbacked_container_items(...)` 保持为 `8192`。零会拒绝每个无输入支撑的条目。
-- 除非数据确定无恶意且可信对等端会发送更大的元数据或大量 Schema 版本，否则请保留远端 Schema 元数据限制的默认值。
-- 对不可信输入，优先使用具体类型字段，而非 `dyn Any` 或宽泛的特征对象字段。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [Rust 安全](security.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md) - 使用已配置的 Fory
+- [基本序列化](basic-serialization.md) - 使用已配置的 Fory
 - [Schema 演进](schema-evolution.md) - 兼容模式详情
-- [跨语言序列化](xlang.md) - xlang 模式
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - xlang 模式

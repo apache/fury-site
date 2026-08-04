@@ -100,4 +100,4 @@ assert np.array_equal(array, result)
 ## 相关主题
 
 - [带外序列化](out-of-band.md) - 零拷贝缓冲区
-- [基础序列化](core-api.md) - 标准用法
+- [基础序列化](basic-serialization.md) - 标准用法

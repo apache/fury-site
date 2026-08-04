@@ -21,7 +21,7 @@ license: |
 
 Go 原生序列化是通过 `fory.WithXlang(false)` 选择、仅限 Go 的编码模式。当每个写入端和读取端都是 Go 服务，并且载荷应遵循 Go 类型系统而非可移植的跨语言类型系统时，请使用该模式。
 
-如果字节需要由 Java、Python、C++、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 Go Fory 实现读取，请使用 Go 默认模式[跨语言序列化](xlang.md)。
+如果字节需要由 Java、Python、C++、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 Go Fory 实现读取，请使用 Go 默认模式[跨语言序列化](basic-serialization.md#cross-language-interoperability)。
 
 ## 何时使用原生序列化
 
@@ -192,7 +192,7 @@ _ = data
 
 ## 相关主题
 
-- [跨语言序列化](xlang.md) - 跨语言 Go 载荷
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言 Go 载荷
 - [配置](configuration.md) - Go 选项
 - [类型注册](type-registration.md) - 结构体和枚举注册
 - [引用](references.md) - 共享引用与循环引用

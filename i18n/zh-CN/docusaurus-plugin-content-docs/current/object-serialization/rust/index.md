@@ -97,7 +97,7 @@ fn main() -> Result<(), Error> {
 
 仅限 Rust 的通信应使用原生模式。通过 `.xlang(false)` 选择原生模式，它会让 Rust 对象序列化保持 Rust 原生形式。该模式支持仅限原生模式的具体目标，以及没有跨语言表示的数据枚举形态。当每个选定具体目标都兼容跨语言模式时，也可以在跨语言模式中使用动态 `Any`、应用特征和共享引用载体。兼容模式默认启用。只有每个读取端和写入端都使用相同 Rust Schema，并且希望获得更快序列化和更小体积时，才设置 `.compatible(false)`。
 
-Rust 跨语言注册和互操作规则参见[跨语言序列化](xlang.md)，仅限 Rust 的载荷参见[原生序列化](native.md)。
+Rust 跨语言注册和互操作规则参见[跨语言序列化](basic-serialization.md#cross-language-interoperability)，仅限 Rust 的载荷参见[原生序列化](native.md)。
 
 ## 线程安全
 
@@ -154,8 +154,7 @@ fn main() -> Result<(), Error> {
 ## 后续步骤
 
 - [配置](configuration.md) - Fory 构建器选项和模式
-- [基本序列化](core-api.md) - 对象图序列化
-- [跨语言序列化](xlang.md) - 跨语言模式
+- [基本序列化](basic-serialization.md) - 对象图序列化
 - [原生序列化](native.md) - 仅限 Rust 的序列化
 - [引用](references.md) - 共享引用与循环引用
 - [多态](polymorphism.md) - 特征对象序列化
@@ -163,3 +162,5 @@ fn main() -> Result<(), Error> {
 - [外部类型序列化](external-types.md) - 外部结构化序列化器、自定义序列化器和载体组合
 - [Row Format](../../row-format/rust.md) - 支持借用视图的标准 Row Format
 - [gRPC 支持](../../grpc/rust.md) - 通过 tonic 传输 Fory 载荷
+
+解码来自应用信任边界之外的字节之前，请阅读 [Rust 安全](security.md)。

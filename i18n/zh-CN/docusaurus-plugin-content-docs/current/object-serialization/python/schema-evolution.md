@@ -119,5 +119,5 @@ class SameSchemaMessage:
 ## 相关主题
 
 - [配置](configuration.md) - 兼容模式设置
-- [跨语言序列化](xlang.md) - 跨语言 Schema 演进
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言 Schema 演进
 - [类型注册](type-registration.md) - 注册模式

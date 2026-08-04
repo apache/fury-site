@@ -183,29 +183,6 @@ Java builder 在 xlang 和原生模式下都默认启用兼容模式。当模型
 语言使用相同 Schema 后，或者原生类型由 Fory Schema IDL 生成时，才调用
 `withCompatible(false)`。
 
-## 安全性
+## 安全
 
-Scala 使用 Java 配置接口。在生产环境以及处理任何不可信载荷来源时，请保持启用类注册：
-
-```scala
-val fory = ForyScala.builder()
-  .requireClassRegistration(true)
-  .withMaxDepth(50)
-  .withMaxGraphMemoryBytes(128L * 1024 * 1024)
-  .withMaxUnbackedContainerItems(8192)
-  .withMaxTypeFields(512)
-  .withMaxTypeMetaBytes(4096)
-  .build()
-```
-
-与安全相关的配置：
-
-- 保持 `requireClassRegistration(true)`，并注册应用类或生成的模块。
-- 使用 `withMaxDepth(...)` 拒绝深度异常的对象图。
-- 使用 `withMaxGraphMemoryBytes(...)` 为包含大量集合、map、数组、结构体和对象的载荷
-  设置近似限制。它不是精确的堆上限；叶子值受剩余输入字节限制。
-- 除非可信的紧凑 codec 需要更大的根操作余量，否则将
-  `withMaxUnbackedContainerItems(...)` 保持为 `8192`。零会拒绝每一个无输入支撑的条目。
-- 除非数据没有恶意，且可信对端会发送更大的元数据或许多 Schema 版本，否则请将
-  `withMaxTypeFields(...)`、`withMaxTypeMetaBytes(...)` 和远端 Schema 版本限制保留为默认值。
-- 白名单和未知类控制请遵循[对象序列化安全](../security.md)。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [Scala 安全](security.md)。

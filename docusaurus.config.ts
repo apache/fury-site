@@ -47,6 +47,8 @@ const config: Config = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          // Internal security models and the retired shared image tree must not become website pages.
+          exclude: ['security/**', 'images/**'],
           sidebarCollapsible: true,
           lastVersion: '1.5.0',
           versions: {

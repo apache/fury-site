@@ -20,7 +20,7 @@ license: |
 ---
 
 This page covers serialization of Kotlin-specific JVM types in native mode. For
-cross-language Kotlin models, use [Kotlin Xlang Serialization](xlang.md).
+cross-language Kotlin models, use [Kotlin Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability).
 
 When compatible mode is enabled, Kotlin readers use the JVM compatible-read rules for selected
 scalar field type changes. A matched field can read between `Boolean`, `String`, numeric scalars,

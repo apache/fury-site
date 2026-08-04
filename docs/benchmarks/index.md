@@ -1,5 +1,5 @@
 ---
-title: Benchmarks
+title: Results
 sidebar_position: 1
 id: index
 license: |

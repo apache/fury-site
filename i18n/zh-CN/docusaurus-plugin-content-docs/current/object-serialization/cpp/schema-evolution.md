@@ -411,4 +411,4 @@ Fory fory = Fory.builder()
 
 - [配置](configuration.md) - 启用兼容模式
 - [类型注册](type-registration.md) - 类型 ID 管理
-- [跨语言序列化](xlang.md) - 跨语言注意事项
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言注意事项

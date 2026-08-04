@@ -72,6 +72,6 @@ C# union 包装器不可变，并在读取其 case 载荷后创建。不支持�
 ## 相关主题
 
 - [配置](configuration.md)
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [外部类型](external-types.md)
 - [线程安全](thread-safety.md)

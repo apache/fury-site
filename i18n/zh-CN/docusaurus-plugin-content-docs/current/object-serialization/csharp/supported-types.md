@@ -100,11 +100,11 @@ license: |
 ## 注意事项
 
 - 应显式注册用户定义类型。
-- 跨语言用法请遵循[跨语言指南](../xlang/index.md)。
+- 跨语言用法请遵循[跨语言指南](../xlang.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [外部类型](external-types.md)
 - [类型注册](type-registration.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

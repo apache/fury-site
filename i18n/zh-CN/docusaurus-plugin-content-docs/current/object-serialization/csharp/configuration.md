@@ -186,17 +186,10 @@ ThreadSafeFory fory = Fory.Builder()
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信载荷前，只注册预期类型。
-- 对有意使用的相同 Schema 载荷，使用 `CheckStructVersion(true)` 并配合 `Compatible(false)`。
-- 设置 `MaxDepth(...)`，拒绝深度超出预期的动态对象图。
-- 将 `MaxGraphMemoryBytes(...)` 设为包含大量 collection、map、array、struct 和 object 的载荷的近似限制。它并非精确的堆上限；叶子值受剩余输入字节限制。
-- 保持远程 Schema 元数据限制的默认值，除非数据可信且可信通信方会发送更大的元数据或大量 Schema 版本。
-- 对不可信输入，优先使用生成或注册的具体模型，而不是宽泛的动态字段。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [C# 安全](security.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 演进](schema-evolution.md)
 - [线程安全](thread-safety.md)

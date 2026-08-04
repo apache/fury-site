@@ -106,6 +106,6 @@ console.log(copy.left === copy.right); // true
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 演进](schema-evolution.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

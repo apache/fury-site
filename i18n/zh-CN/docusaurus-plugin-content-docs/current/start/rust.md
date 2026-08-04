@@ -61,7 +61,7 @@ fn main() -> Result<(), Error> {
 }
 ```
 
-跨语言数据请使用 [xlang 模式](../object-serialization/rust/xlang.md)，仅供 Rust 使用的数据请使用 [native 模式](../object-serialization/rust/native.md)。接下来可阅读 [Rust 对象序列化](../object-serialization/rust/index.md)、[配置](../object-serialization/rust/configuration.md)和[类型注册](../object-serialization/rust/type-registration.md)。
+跨语言数据请使用 [xlang 模式](../object-serialization/rust/basic-serialization.md#cross-language-interoperability)，仅供 Rust 使用的数据请使用 [native 模式](../object-serialization/rust/native.md)。接下来可阅读 [Rust 对象序列化](../object-serialization/rust/index.md)、[配置](../object-serialization/rust/configuration.md)和[类型注册](../object-serialization/rust/type-registration.md)。
 
 ## 其他能力
 

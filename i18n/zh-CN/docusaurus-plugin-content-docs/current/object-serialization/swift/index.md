@@ -52,8 +52,7 @@ targets: [
 ## 指南目录
 
 - [配置](configuration.md)
-- [基本序列化](core-api.md)
-- [Xlang 序列化](xlang.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 元数据](schema-metadata.md)
 - [类型注册](type-registration.md)
 - [外部类型序列化](external-types.md)
@@ -83,3 +82,5 @@ let output: User = try fory.deserialize(data)
 
 assert(input == output)
 ```
+
+解码来自应用信任边界之外的字节之前，请阅读 [Swift 安全](security.md)。

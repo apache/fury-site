@@ -87,7 +87,7 @@ Reuse a `Fory` instance within one thread instead of rebuilding it for every
 value. `Fory` is not thread-safe; use `ThreadSafeFory` for shared concurrent
 access. Continue with
 [Java Object Serialization](../object-serialization/java/index.md),
-[xlang mode](../object-serialization/java/xlang.md),
+[xlang mode](../object-serialization/java/basic-serialization.md#cross-language-interoperability),
 [native mode](../object-serialization/java/native.md), or
 [configuration](../object-serialization/java/configuration.md).
 

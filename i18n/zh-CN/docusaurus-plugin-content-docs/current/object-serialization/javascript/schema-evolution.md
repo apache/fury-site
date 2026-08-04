@@ -94,9 +94,9 @@ const fixedType = Type.struct(
 
 ## 跨语言要求
 
-兼容模式只能处理类型*字段*之间的 Schema 差异。各方仍需使用相同的类型标识（相同数字 ID 或相同 `typeName`）。参见[跨语言序列化](xlang.md)。
+兼容模式只能处理类型*字段*之间的 Schema 差异。各方仍需使用相同的类型标识（相同数字 ID 或相同 `typeName`）。参见[跨语言序列化](basic-serialization.md#cross-language-interoperability)。
 
 ## 相关主题
 
 - [类型注册](type-registration.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

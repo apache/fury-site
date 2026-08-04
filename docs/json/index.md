@@ -1,5 +1,5 @@
 ---
-title: Fory JSON
+title: Overview
 sidebar_position: 1
 id: index
 license: |
@@ -63,6 +63,6 @@ native or xlang protocol when reference identity or cycles are required.
 ## Related Java guides
 
 For binary serialization, start with [Java Object Serialization](../object-serialization/java/index.md)
-and choose [xlang](../object-serialization/java/xlang.md) or
+and choose [xlang](../object-serialization/java/basic-serialization.md#cross-language-interoperability) or
 [native](../object-serialization/java/native.md). Binary builder options are documented separately
 in [Java Configuration](../object-serialization/java/configuration.md).

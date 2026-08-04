@@ -279,6 +279,6 @@ Parent decoded = encoder.fromRow(row);
 
 ## Related Topics
 
-- [Xlang Serialization](../object-serialization/java/xlang.md) - xlang mode
+- [Cross-Language Interoperability](../object-serialization/java/basic-serialization.md#cross-language-interoperability) - xlang mode
 - [Java Advanced Features](../object-serialization/java/advanced-features.md) - Zero-copy object serialization
 - [Row Format Specification](https://fory.apache.org/docs/specification/row_format_spec) - Protocol details

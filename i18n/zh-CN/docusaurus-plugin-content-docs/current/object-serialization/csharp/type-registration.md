@@ -87,7 +87,7 @@ fory.Register<Order>(101);
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [外部类型](external-types.md)
 - [自定义序列化器](custom-serializers.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

@@ -147,4 +147,4 @@ Map<String, List<int?>> metrics = <String, List<int?>>{};
 - [代码生成](code-generation.md)
 - [外部类型序列化](external-types.md)
 - [Schema 演进](schema-evolution.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

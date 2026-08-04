@@ -101,7 +101,7 @@ Use xlang mode for cross-language payloads and schemas shared with other Fory im
 
 Use native mode for Rust-only traffic. Native mode is selected with `.xlang(false)` and keeps Rust object serialization in Rust-native form. It supports native-only concrete targets and data-enum shapes that have no xlang representation. Dynamic `Any`, application trait, and shared-reference carriers can also be used in xlang mode when every selected concrete target is xlang-compatible. Compatible mode is enabled by default. Set `.compatible(false)` only when every reader and writer uses the same Rust schema and you want faster serialization and smaller size.
 
-See [Xlang Serialization](xlang.md) for Rust xlang registration and interoperability rules, and [Native Serialization](native.md) for Rust-only payloads.
+See [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability) for Rust xlang registration and interoperability rules, and [Native Serialization](native.md) for Rust-only payloads.
 
 ## Thread Safety
 
@@ -158,8 +158,7 @@ fn main() -> Result<(), Error> {
 ## Next Steps
 
 - [Configuration](configuration.md) - Fory builder options and modes
-- [Basic Serialization](core-api.md) - Object graph serialization
-- [Xlang Serialization](xlang.md) - xlang mode
+- [Basic Serialization](basic-serialization.md) - Default xlang object graphs and interoperability
 - [Native Serialization](native.md) - Rust-only serialization
 - [References](references.md) - Shared and circular references
 - [Polymorphism](polymorphism.md) - Trait object serialization
@@ -168,3 +167,6 @@ fn main() -> Result<(), Error> {
   plus carrier composition
 - [Row Format](../../row-format/rust.md) - Standard Row Format with borrowed views
 - [gRPC Support](../../grpc/rust.md) - Fory payloads over tonic
+
+Before decoding bytes from outside the application trust boundary, read
+[Rust Security](security.md).

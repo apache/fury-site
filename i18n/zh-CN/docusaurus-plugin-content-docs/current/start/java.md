@@ -78,7 +78,7 @@ public final class ForyExample {
 }
 ```
 
-请在单个线程内复用 `Fory` 实例，不要为每个值重新创建实例。`Fory` 不是线程安全的；如需多个线程共享并发访问，请使用 `ThreadSafeFory`。接下来可阅读 [Java 对象序列化](../object-serialization/java/index.md)、[xlang 模式](../object-serialization/java/xlang.md)、[native 模式](../object-serialization/java/native.md)或[配置](../object-serialization/java/configuration.md)。
+请在单个线程内复用 `Fory` 实例，不要为每个值重新创建实例。`Fory` 不是线程安全的；如需多个线程共享并发访问，请使用 `ThreadSafeFory`。接下来可阅读 [Java 对象序列化](../object-serialization/java/index.md)、[xlang 模式](../object-serialization/java/basic-serialization.md#cross-language-interoperability)、[native 模式](../object-serialization/java/native.md)或[配置](../object-serialization/java/configuration.md)。
 
 ## Fory JSON
 

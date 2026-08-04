@@ -192,4 +192,4 @@ ruff check --fix .
 
 - [Configuration](configuration.md) - Fory parameters
 - [Type Registration](type-registration.md) - Registration best practices
-- [Object Serialization Security](../security.md) - Security configuration
+- [Configuration](configuration.md#security) - Security configuration

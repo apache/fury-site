@@ -175,5 +175,5 @@ for buffer_obj in buffer_objects:
 ## 相关主题
 
 - [NumPy 集成](numpy-integration.md) - NumPy 数组序列化
-- [基础序列化](core-api.md) - 标准序列化
+- [基础序列化](basic-serialization.md) - 标准序列化
 - [配置](configuration.md) - Fory 参数

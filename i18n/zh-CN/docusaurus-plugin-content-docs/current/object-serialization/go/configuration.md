@@ -405,16 +405,11 @@ for req := range requests {
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信数据前，只注册预期的结构体。
-- 使用 `WithMaxDepth(...)` 拒绝意外过深的载荷。
-- 除非数据确定无恶意且可信对等端会发送更大的元数据或大量 Schema 版本，否则请保留远端 Schema 元数据限制的默认值。
-- 对不可信输入，优先使用具体结构体字段，而非宽泛的 `any` 或接口类型字段。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [Go 安全](security.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [引用](references.md)
 - [Schema 演进](schema-evolution.md)
 - [线程安全](thread-safety.md)

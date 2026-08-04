@@ -353,4 +353,4 @@ func main() {
 
 - [配置](configuration.md)
 - [结构体标签](schema-metadata.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

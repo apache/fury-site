@@ -233,17 +233,10 @@ auto fory = Fory::builder().build_thread_safe();  // Returns ThreadSafeFory
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信载荷之前，注册所有结构体和多态实现。
-- 对有意使用相同 Schema 的载荷，将 `check_struct_version(true)` 与 `compatible(false)` 配合使用。
-- 对大多数输入，将 `max_graph_memory_bytes(...)` 保持为固定默认值 `128 MiB`；只有可信工作负载需要不同的集合/映射/结构体限制时才设置正值。
-- 在模型允许范围内尽量降低 `max_dyn_depth(...)`，以拒绝意外过深的多态对象图。
-- 除非数据确定无恶意且可信对等端会发送更大的元数据或大量 Schema 版本，否则请保留远端 Schema 元数据限制的默认值。
-- 对不可信输入，优先使用具体字段而非宽泛的多态字段。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [C++ 安全](security.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md) - 使用已配置的 Fory
-- [跨语言序列化](xlang.md) - 跨语言模式详情
+- [基本序列化](basic-serialization.md) - 使用已配置的 Fory
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言模式详情
 - [类型注册](type-registration.md) - 注册类型

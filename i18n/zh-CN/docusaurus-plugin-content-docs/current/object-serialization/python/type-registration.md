@@ -19,7 +19,8 @@ license: |
   limitations under the License.
 ---
 
-本页介绍 Python 类型注册 API。严格模式策略、最大深度限制和可信数据指南参见[对象序列化安全](../security.md)。
+本页介绍 Python 类型注册 API。严格模式策略、最大深度限制和可信数据指南参见
+[Python 安全](security.md)。
 
 ## 类型注册
 
@@ -78,5 +79,5 @@ for model_class in [User, Order, Product, Invoice]:
 ## 相关主题
 
 - [配置](configuration.md) - Fory 参数
-- [对象序列化安全](../security.md) - 严格模式、反序列化策略和最大读取深度
+- [Python 安全](security.md) - 严格模式、反序列化策略和最大读取深度
 - [自定义序列化器](custom-serializers.md) - 自定义序列化

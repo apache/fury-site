@@ -20,7 +20,7 @@ license: |
 ---
 
 Use this matrix to confirm the documented API surface before choosing a capability. A runtime page
-does not imply support for every Fory product.
+does not imply support for every Fory capability.
 
 | Capability                  | Documented runtimes                                                                | Interoperability                                         |
 | --------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -33,5 +33,5 @@ does not imply support for every Fory product.
 | Fory gRPC                   | Java, Python, C++, Go, Rust, JavaScript/TypeScript, C#, Dart, Scala, Kotlin        | Peers must use matching generated Fory service contracts |
 
 Platform constraints such as [Android](../object-serialization/java/android.md) and
-[GraalVM Native Image](../object-serialization/java/graalvm.md) are documented by the owning Java
-object-serialization and Fory JSON products.
+[GraalVM Native Image](../object-serialization/java/graalvm.md) are documented in the Java Object
+Serialization and Fory JSON guides.

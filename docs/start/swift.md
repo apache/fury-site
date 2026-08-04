@@ -37,7 +37,7 @@ Create an executable package:
 swift package init --type executable --name ForyExample
 ```
 
-Add the released package and `Fory` product to the generated `Package.swift`:
+Add the released package and depend on its `Fory` library in the generated `Package.swift`:
 
 ```swift title="Package.swift"
 dependencies: [
@@ -77,7 +77,7 @@ swift run
 
 Swift uses xlang mode. Continue with
 [Swift Object Serialization](../object-serialization/swift/index.md),
-[xlang types](../object-serialization/swift/xlang.md),
+[xlang types](../object-serialization/swift/basic-serialization.md#cross-language-interoperability),
 [configuration](../object-serialization/swift/configuration.md), and
 [schema evolution](../object-serialization/swift/schema-evolution.md).
 

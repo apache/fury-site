@@ -114,6 +114,6 @@ Scala 宏根据 Scala 编译期类型构建描述符元数据，包括嵌套泛�
 
 ## 相关主题
 
-- [Xlang 序列化](xlang.md)
+- [跨语言互操作](basic-serialization.md#cross-language-interoperability)
 - [配置](configuration.md)
 - [默认值](default-values.md)

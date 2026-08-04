@@ -105,4 +105,4 @@ final fory = Fory(compatible: false);
 - [配置](configuration.md)
 - [外部类型序列化](external-types.md)
 - [Schema 元数据](schema-metadata.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

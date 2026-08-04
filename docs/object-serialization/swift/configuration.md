@@ -157,13 +157,4 @@ let fory = Fory(compatible: false)
 
 ## Security
 
-Security-related configuration:
-
-- Register only the expected generated models before deserializing untrusted payloads.
-- Use `checkClassVersion` with `compatible: false` for intentional same-schema payloads.
-- Set `maxDepth` for the largest dynamic `Any` nesting depth your service accepts.
-- Set `maxGraphMemoryBytes` as an approximate gate for collection, map, array, struct, class, and
-  object-heavy payloads. It is not an exact heap cap; leaf values are gated by remaining input
-  bytes.
-- Keep the remote schema metadata limits at their defaults unless the data is not malicious and a
-  trusted peer sends larger metadata or many schema versions.
+See [Swift Security](security.md) for trust boundaries, safe reader configuration, and verification.

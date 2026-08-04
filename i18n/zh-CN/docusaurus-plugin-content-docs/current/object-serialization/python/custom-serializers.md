@@ -135,4 +135,4 @@ fory.register(MyClass, name="com.example.MyClass", serializer=MySerializer(fory.
 
 - [类型注册](type-registration.md) - 注册模式
 - [配置](configuration.md) - Fory 参数
-- [跨语言序列化](xlang.md) - 跨语言模式的类型注册和 Schema 规则
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言模式的类型注册和 Schema 规则

@@ -117,7 +117,7 @@ Kotlin builder 设置请参阅[配置](configuration.md)，完整的 JVM 原生�
 Fory Kotlin 基于 Fory Java 构建。Fory Java 的大多数配置选项、功能和概念都直接适用于 Kotlin。以下内容请参阅 Java 文档：
 
 - [配置](../java/configuration.md) - 所有 ForyBuilder 选项
-- [基本序列化](../java/core-api.md) - 序列化模式和 API
+- [基本序列化](../java/basic-serialization.md) - 序列化模式和 API
 - [类型注册](../java/type-registration.md) - 类注册与安全性
 - [Schema 演进](../java/schema-evolution.md) - 向前/向后兼容性
 - [自定义序列化器](../java/custom-serializers.md) - 实现自定义序列化器
@@ -126,7 +126,7 @@ Fory Kotlin 基于 Fory Java 构建。Fory Java 的大多数配置选项、功�
 
 ## Kotlin 专属文档
 
-- [Xlang 序列化](xlang.md) - 用于直接跨语言对象序列化的 Kotlin API
+- [基础序列化](basic-serialization.md) - 默认 xlang 模式的模型、API 和跨语言互操作
 - [配置](configuration.md) - Kotlin 特有的 Fory 设置要求
 - [原生序列化](native.md) - 在 JVM 原生模式下序列化 Kotlin 类型
 - [Schema 元数据](schema-metadata.md) - Kotlin 注解、可空性、引用和整数元数据
@@ -134,3 +134,5 @@ Fory Kotlin 基于 Fory Java 构建。Fory Java 的大多数配置选项、功�
 - [静态生成的序列化器](static-generated-serializers.md) - 通过 KSP 生成 xlang/Schema 序列化器
 - [Kotlin gRPC 支持](../../grpc/kotlin.md) - Fory IDL 服务的协程桩和服务基类
 - [Android 支持](../java/android.md) - Android 设置、R8 行为和发布构建验证
+
+解码来自应用信任边界之外的字节之前，请阅读 [Kotlin 安全](security.md)。

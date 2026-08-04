@@ -217,7 +217,7 @@ struct Derived : Base {
 
 仅限 C++ 的通信应使用原生模式。通过 `.xlang(false)` 选择原生模式，它会让 C++ 对象序列化保持 C++ 原生形式。载荷不会离开 C++ 时，该模式针对 C++ 类型进行了优化，并避免可移植跨语言类型映射的约束。兼容模式默认启用。只有每个读取端和写入端都使用相同的 C++ Schema，并且希望获得更快的序列化和更小的体积时，才设置 `.compatible(false)`。
 
-C++ 跨语言注册和互操作规则参见[跨语言序列化](xlang.md)，仅限 C++ 的载荷参见[原生序列化](native.md)。
+C++ 跨语言注册和互操作规则参见[跨语言序列化](basic-serialization.md#cross-language-interoperability)，仅限 C++ 的载荷参见[原生序列化](native.md)。
 
 ## 线程安全
 
@@ -259,8 +259,7 @@ std::thread t2([&]() {
 ## 后续步骤
 
 - [配置](configuration.md) - 构建器选项和模式
-- [基本序列化](core-api.md) - 对象图序列化
-- [跨语言序列化](xlang.md) - 跨语言模式和互操作性
+- [基本序列化](basic-serialization.md) - 对象图序列化
 - [原生序列化](native.md) - 仅限 C++ 的序列化
 - [Schema 元数据](schema-metadata.md) - 字段级元数据（可空、引用跟踪）
 - [Schema 演进](schema-evolution.md) - 兼容模式和 Schema 变更
@@ -269,3 +268,5 @@ std::thread t2([&]() {
 - [自定义序列化器](custom-serializers.md) - 扩展序列化行为
 - [行格式](../../row-format/cpp.md) - 零拷贝行格式
 - [gRPC 支持](../../grpc/cpp.md) - 通过 gRPC C++ 传输 Fory 载荷
+
+解码来自应用信任边界之外的字节之前，请阅读 [C++ 安全](security.md)。

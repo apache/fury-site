@@ -504,6 +504,6 @@ int32_t id = row.get_int32(0);
 ## 相关主题
 
 - [C++ 行格式示例](https://github.com/apache/fory/tree/main/examples/cpp/hello_row) - 完整的可运行示例
-- [基本序列化](../object-serialization/cpp/core-api.md) - 对象图序列化
+- [基本序列化](../object-serialization/cpp/basic-serialization.md) - 对象图序列化
 - [C++ 对象序列化配置](../object-serialization/cpp/configuration.md) - 构建器选项
 - [C++ 对象序列化支持的类型](../object-serialization/cpp/supported-types.md) - 对象序列化类型

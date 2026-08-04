@@ -344,7 +344,7 @@ Fory fory = Fory.builder().withXlang(false)
 
 ## 相关主题
 
-- [基础序列化](core-api.md) - Fory 实例创建和核心 API
+- [基础序列化](basic-serialization.md) - Fory 实例创建和核心 API
 - [配置](configuration.md) - 包括 `withRefCopy` 在内的构建器选项
 - [自定义序列化器](custom-serializers.md) - 序列化器设计与注册
 - [虚拟线程](virtual-threads.md) - 线程安全的 Fory 使用指南

@@ -29,10 +29,17 @@ def copy_markdown_file(src_file, dst_file):
         print(f"Skipped {dst_file} (already exists)")
 
 
-def copy_markdown_files(src_folder, dst_folder):
+def copy_markdown_files(src_folder, dst_folder, excluded_top_level=None):
     tasks = []
+    excluded_top_level = excluded_top_level or set()
 
-    for root, _, files in os.walk(src_folder):
+    for root, directories, files in os.walk(src_folder):
+        if os.path.abspath(root) == os.path.abspath(src_folder):
+            directories[:] = [
+                directory
+                for directory in directories
+                if directory not in excluded_top_level
+            ]
         for file in files:
             if file.endswith(".md"):
                 src_file = os.path.join(root, file)
@@ -51,7 +58,7 @@ def execute():
     base_blog_folder = "../../blog/"
     zh_cn_blog_dst = "../../i18n/zh-CN/docusaurus-plugin-content-blog/"
 
-    copy_markdown_files(base_src_folder, zh_cn_docs_dst)
+    copy_markdown_files(base_src_folder, zh_cn_docs_dst, {"security"})
     copy_markdown_files(base_blog_folder, zh_cn_blog_dst)
 
 

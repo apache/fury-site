@@ -105,7 +105,7 @@ See [Configuration](configuration.md) for Scala builder setup and [Java Native S
 Fory Scala is built on top of Fory Java. Most configuration options, features, and concepts from Fory Java apply directly to Scala. Refer to the Java documentation for:
 
 - [Configuration](../java/configuration.md) - All ForyBuilder options
-- [Basic Serialization](../java/core-api.md) - Serialization patterns and APIs
+- [Basic Serialization](../java/basic-serialization.md) - Serialization patterns and APIs
 - [Type Registration](../java/type-registration.md) - Class registration and security
 - [Schema Evolution](../java/schema-evolution.md) - Forward/backward compatibility
 - [Custom Serializers](../java/custom-serializers.md) - Implement custom serializers
@@ -118,5 +118,8 @@ Fory Scala is built on top of Fory Java. Most configuration options, features, a
 - [Native Serialization](native.md) - Serializing Scala types in JVM-native mode
 - [Schema Metadata](schema-metadata.md) - Scala annotations, references, enum IDs, and union metadata
 - [Default Values](default-values.md) - Scala class default values support
-- [Xlang Serialization](xlang.md) - Scala 3 generated models and macro-derived xlang serializers
+- [Basic Serialization](basic-serialization.md) - Models, APIs, and interoperability in the default xlang mode
 - [gRPC Support](../../grpc/scala.md) - Scala 3 generated gRPC service companions
+
+Before decoding bytes from outside the application trust boundary, read
+[Scala Security](security.md).

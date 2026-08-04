@@ -120,19 +120,11 @@ const fory = new Fory({ hps });
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信载荷前，只注册预期 Schema。
-- 将 `maxDepth` 设置为服务允许的最大嵌套深度。
-- 将 `maxGraphMemoryBytes` 设为包含大量 collection、map、array、struct 和 object 的载荷的近似限制。它并非精确的堆上限；叶子值受剩余输入字节限制。
-- 保持 `maxTypeFields` 和 `maxTypeMetaBytes` 的默认值，除非数据可信且可信通信方会发送更大的远程元数据。
-- 保持 `maxSchemaVersionsPerType` 和 `maxAverageSchemaVersionsPerType` 的默认值，除非数据可信且可信通信方会发送大量远程 Schema 版本。
-- 对不可信输入，优先使用显式 `Type.struct(...)` Schema，而不是 `Type.any()`。
-- 只传入来自与 Fory 一起部署的官方包版本的 `hps`。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [JavaScript/TypeScript 安全](security.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 元数据](schema-metadata.md)
 - [Schema 演进](schema-evolution.md)
 - [引用](references.md)

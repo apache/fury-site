@@ -136,6 +136,6 @@ let handles: Vec<_> = (0..4)
 ## Related Topics
 
 - [Configuration](configuration.md) - Fory builder options
-- [Xlang Serialization](xlang.md) - xlang mode registration
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability) - xlang mode registration
 - [Custom Serializers](custom-serializers.md) - Custom serialization
 - [External-Type Serialization](external-types.md) - Third-party targets and carrier roots

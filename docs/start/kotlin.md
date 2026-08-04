@@ -70,7 +70,7 @@ If the project applies Gradle's `application` plugin, run its application task:
 Use xlang mode for data shared with other Fory runtimes or native mode for
 Kotlin/JVM-only data. Continue with
 [Kotlin Object Serialization](../object-serialization/kotlin/index.md),
-[xlang](../object-serialization/kotlin/xlang.md), or
+[xlang](../object-serialization/kotlin/basic-serialization.md#cross-language-interoperability), or
 [native mode](../object-serialization/kotlin/native.md).
 
 ## Other Capabilities

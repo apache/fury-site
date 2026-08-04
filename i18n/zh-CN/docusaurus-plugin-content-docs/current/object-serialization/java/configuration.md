@@ -82,31 +82,7 @@ Fory fory = Fory.builder()
 
 ## 安全
 
-在生产环境以及处理任何不可信载荷来源时，请保持类注册启用：
-
-```java
-Fory fory = Fory.builder()
-    .requireClassRegistration(true)
-    .withMaxDepth(50)
-    .withMaxGraphMemoryBytes(128L * 1024 * 1024)
-    .withMaxUnbackedContainerItems(8192)
-    .build();
-```
-
-安全相关选项：
-
-- `requireClassRegistration(true)` 将反序列化限制为已注册类。
-- `withMaxDepth(...)` 拒绝深度异常的对象图。
-- `withMaxGraphMemoryBytes(...)` 为单次根反序列化期间实例化的对象图内存设置近似门限。估算主要覆盖集合、映射、数组、结构体和对象；Fory core 原始类型数组和原始类型列表根据解码长度计入其原始存储。它会跳过字符串、原始标量和不使用原始类型数组序列化器的专用二进制值等叶子值。实际进程内存可能高于该限制。叶子值仍受字节可用性检查保护：如果未读取的输入没有足够字节，Fory 不会读取或创建该叶子值。默认值固定为 `128 MiB`；可信工作负载需要更大或更小门限时，请设置正数字节限制。
-- `withMaxUnbackedContainerItems(...)` 限制由数量驱动、但重复读取正文没有消耗相应输入的集合和映射工作。默认值为 `8192`；零表示严格限制。
-- `withMaxTypeFields(...)` 和 `withMaxTypeMetaBytes(...)` 限制单个已接收远程元数据正文的字段数与编码正文大小。
-- `withMaxSchemaVersionsPerType(...)` 和
-  `withMaxAverageSchemaVersionsPerType(...)` 限制可接受的远程元数据版本，而不改变注册、动态加载或 Schema 演进语义。
-- `withDeserializeUnknownClass(false)` 避免根据元数据实例化未知类。
-- `checkJdkClassSerializable(true)` 保留对 `java.*` 类的 JDK 可序列化性检查。
-- 类注册警告可用于安全审计；需要暴露意外类型时，请使用 `suppressClassRegistrationWarnings(false)`。
-
-仅对可信载荷使用 `requireClassRegistration(false)`；需要动态类加载时，应同时配置 `TypeChecker` 允许列表。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [Java 安全](security.md)。
 
 ## 相关主题
 

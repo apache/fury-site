@@ -417,17 +417,11 @@ for req := range requests {
 
 ## Security
 
-Security-related configuration:
-
-- Register only the expected structs before deserializing untrusted data.
-- Use `WithMaxDepth(...)` to reject unexpectedly deep payloads.
-- Keep the remote schema metadata limits at their defaults unless the data is not malicious and a
-  trusted peer sends larger metadata or many schema versions.
-- Prefer concrete struct fields over broad `any` or interface-typed fields for untrusted input.
+See [Go Security](security.md) for trust boundaries, safe reader configuration, and verification.
 
 ## Related Topics
 
-- [Basic Serialization](core-api.md)
+- [Basic Serialization](basic-serialization.md)
 - [References](references.md)
 - [Schema Evolution](schema-evolution.md)
 - [Thread Safety](thread-safety.md)
