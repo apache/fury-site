@@ -1,5 +1,5 @@
 ---
-title: 基准测试
+title: 基准结果
 sidebar_position: 1
 id: index
 license: |

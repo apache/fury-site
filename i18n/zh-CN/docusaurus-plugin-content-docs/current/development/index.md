@@ -1,5 +1,5 @@
 ---
-title: 开发
+title: 构建与测试
 sidebar_position: 1
 id: index
 license: |
@@ -22,11 +22,9 @@ license: |
 贡献者文档涵盖仓库设置、构建、测试、调试和面向发布的工作流程。
 这部分文档与已发布构件的用户指南相互独立。
 
-## 构建与测试
-
 从 https://github.com/apache/fory 克隆源代码树。
 
-### Java
+## Java
 
 ```bash
 cd java
@@ -38,7 +36,7 @@ mvn -T16 package
 - JDK 17+
 - Maven 3.6.3+
 
-### Python
+## Python
 
 ```bash
 cd python
@@ -53,7 +51,7 @@ bazel build //:cp_fory_so --@rules_python//python/config_settings:python_version
 - CPython 3.8+
 - Bazel 8+（构建 Cython 扩展时必需）
 
-### C++
+## C++
 
 ```bash
 cd cpp
@@ -65,7 +63,7 @@ bazel build //cpp/...
 - C++17 编译器
 - Bazel 8+
 
-### Go
+## Go
 
 ```bash
 cd go/fory
@@ -83,7 +81,7 @@ FORY_GO_JAVA_CI=1 ENABLE_FORY_DEBUG_OUTPUT=1 mvn test -Dtest=org.apache.fory.xla
 
 环境要求：Go 1.24+。
 
-### Rust
+## Rust
 
 ```bash
 cd rust
@@ -100,7 +98,7 @@ RUST_BACKTRACE=1 FORY_PANIC_ON_ERROR=1 ENABLE_FORY_DEBUG_OUTPUT=1 \
 - 通过 rustup 安装的 Rust 工具链
 - `cargo-expand`（可选，用于调试宏展开）
 
-### JavaScript
+## JavaScript
 
 ```bash
 cd javascript
@@ -115,7 +113,7 @@ node ./node_modules/.bin/jest --ci --reporters=default --reporters=jest-junit
 - Node.js (LTS)
 - npm
 
-### Markdown
+## Markdown
 
 ```bash
 cd docs

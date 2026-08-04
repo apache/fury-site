@@ -1,5 +1,5 @@
 ---
-title: Development
+title: Build and Test
 sidebar_position: 1
 id: index
 license: |
@@ -22,11 +22,9 @@ license: |
 Contributor documentation covers repository setup, builds, tests, debugging, and release-oriented
 workflows. It is separate from the user guides for released artifacts.
 
-## Build and Test
-
 Clone the source tree from https://github.com/apache/fory.
 
-### Java
+## Java
 
 ```bash
 cd java
@@ -38,7 +36,7 @@ Requirements:
 - JDK 17+
 - Maven 3.6.3+
 
-### Python
+## Python
 
 ```bash
 cd python
@@ -53,7 +51,7 @@ Requirements:
 - CPython 3.8+
 - Bazel 8+ (required when building Cython extensions)
 
-### C++
+## C++
 
 ```bash
 cd cpp
@@ -65,7 +63,7 @@ Requirements:
 - C++17 compiler
 - Bazel 8+
 
-### Go
+## Go
 
 ```bash
 cd go/fory
@@ -83,7 +81,7 @@ FORY_GO_JAVA_CI=1 ENABLE_FORY_DEBUG_OUTPUT=1 mvn test -Dtest=org.apache.fory.xla
 
 Requirement: Go 1.24+.
 
-### Rust
+## Rust
 
 ```bash
 cd rust
@@ -100,7 +98,7 @@ Requirements:
 - Rust toolchain via rustup
 - `cargo-expand` (optional, for macro expansion debugging)
 
-### JavaScript
+## JavaScript
 
 ```bash
 cd javascript
@@ -115,7 +113,7 @@ Requirements:
 - Node.js (LTS)
 - npm
 
-### Markdown
+## Markdown
 
 ```bash
 cd docs
