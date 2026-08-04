@@ -266,5 +266,5 @@ public class SameSchemaMessage {
 ## Related Topics
 
 - [Configuration](configuration.md) - All ForyBuilder options
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - xlang mode
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability) - xlang mode
 - [Troubleshooting](troubleshooting.md) - Common schema issues

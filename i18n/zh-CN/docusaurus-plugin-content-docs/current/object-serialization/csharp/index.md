@@ -87,7 +87,7 @@ User decoded = fory.Deserialize<User>(payload);
 | 主题                                    | 说明                                  |
 | --------------------------------------- | ------------------------------------- |
 | [配置](configuration.md)                | 构建器选项和模式设置                  |
-| [基本序列化](core-api.md)               | 类型化和动态序列化 API                |
+| [基本序列化](basic-serialization.md)               | 类型化和动态序列化 API                |
 | [Schema 元数据](schema-metadata.md)     | `[ForyField]` ID 和 Schema 类型描述符 |
 | [类型注册](type-registration.md)        | 注册用户类型和自定义序列化器          |
 | [外部类型](external-types.md)           | 第三方类型的序列化器                  |
@@ -104,3 +104,5 @@ User decoded = fory.Deserialize<User>(payload);
 - [跨语言序列化规范](../../specification/xlang_serialization_spec.md)
 - [跨语言指南](../xlang.md)
 - [C# 源码目录](https://github.com/apache/fory/tree/main/csharp)
+
+解码来自应用信任边界之外的字节之前，请阅读 [C# 安全](security.md)。

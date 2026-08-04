@@ -185,6 +185,6 @@ assert!(scores.get(scores.len()).is_err());
 
 ## Related Topics
 
-- [Basic Serialization](../object-serialization/rust/core-api.md) - Object graph serialization
+- [Basic Serialization](../object-serialization/rust/basic-serialization.md) - Object graph serialization
 - [Standard Row Format](index.md#standard-row) - Shared layout for Java, Python, C++, and Rust
 - [Row Format Specification](../specification/row_format_spec.md) - Protocol details

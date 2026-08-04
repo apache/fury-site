@@ -140,7 +140,7 @@ constructors, mixins, and field inclusion options.
 | Topic                                            | Description                                                    |
 | ------------------------------------------------ | -------------------------------------------------------------- |
 | [Configuration](configuration.md)                | Fory options, compatible mode, and safety limits               |
-| [Basic Serialization](core-api.md)               | Default xlang APIs, registration, and interoperability         |
+| [Basic Serialization](basic-serialization.md)    | Default xlang APIs, registration, and interoperability         |
 | [Code Generation](code-generation.md)            | `@ForyStruct`, build runner, and generated modules             |
 | [Struct Inheritance](inheritance.md)             | Superclasses, mixins, private fields, and constructors         |
 | [External-Type Serialization](external-types.md) | Generated serializers for classes owned by another package     |
@@ -159,3 +159,6 @@ constructors, mixins, and field inclusion options.
 - [Xlang implementation guide](../../specification/xlang_implementation_guide.md)
 - [Cross-language guide](../xlang.md)
 - [Dart implementation source directory](https://github.com/apache/fory/tree/main/dart)
+
+Before decoding bytes from outside the application trust boundary, read
+[Dart Security](security.md).

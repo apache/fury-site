@@ -353,4 +353,4 @@ func main() {
 
 - [Configuration](configuration.md)
 - [Struct Tags](schema-metadata.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)

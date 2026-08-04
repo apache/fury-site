@@ -246,5 +246,5 @@ public class SameSchemaMessage {
 ## 相关主题
 
 - [配置](configuration.md) - 所有 ForyBuilder 选项
-- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言模式
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言模式
 - [故障排除](troubleshooting.md) - 常见 Schema 问题

@@ -149,17 +149,10 @@ final fory = Fory(maxUnbackedContainerItems: 8192);
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信载荷前，只注册预期的生成模型。
-- 对有意使用的相同 Schema 载荷，将 `checkStructVersion: true` 与 `compatible: false` 结合使用。
-- 设置 `maxDepth`，拒绝深度超出预期的载荷结构。
-- 对大多数输入保持 `maxGraphMemoryBytes` 默认值；对于已知可信且包含大量 collection/map/struct 的载荷，也可以设置显式正字节数限制。
-- 保持远程 Schema 元数据限制的默认值，除非数据可信且可信通信方会发送更大的元数据或大量 Schema 版本。
-- 对不可信输入，优先使用生成的 Schema 和显式字段元数据，而不是宽泛的动态字段。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [Dart 安全](security.md)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 演进](schema-evolution.md)
-- [跨语言序列化](core-api.md#cross-language-interoperability)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

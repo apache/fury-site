@@ -208,6 +208,6 @@ for child in &decoded.lock().unwrap().children {
 
 ## 相关主题
 
-- [基本序列化](core-api.md) - 支持的类型
+- [基本序列化](basic-serialization.md) - 支持的类型
 - [多态](polymorphism.md) - 使用 Rc/Arc 的特征对象
 - [配置](configuration.md) - 引用跟踪选项

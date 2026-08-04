@@ -1,6 +1,6 @@
 ---
-title: Cross-Language Interoperability
-sidebar_position: 1
+title: Xlang Serialization
+sidebar_position: 2
 id: xlang
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -23,6 +23,9 @@ Xlang is Fory's default object serialization mode. It uses one portable binary f
 Python, C++, Go, Rust, JavaScript/TypeScript, C#, Swift, Dart, Scala, and Kotlin. Each runtime's
 [Basic Serialization](#runtime-guides) page owns its API and model examples; this page explains the
 rules that peers must share.
+
+Read [Core Concepts](core-concepts.md) first for the object graph, schema, reference, and
+polymorphism concepts shared by xlang and native modes.
 
 ## Overview
 
@@ -330,17 +333,17 @@ hex dump or internal flag value as a stable application API.
 
 ## Runtime Guides
 
-- [Java](java/core-api.md#cross-language-interoperability)
-- [Python](python/core-api.md#cross-language-interoperability)
-- [C++](cpp/core-api.md#cross-language-interoperability)
-- [Go](go/core-api.md#cross-language-interoperability)
-- [Rust](rust/core-api.md#cross-language-interoperability)
-- [JavaScript/TypeScript](javascript/core-api.md#cross-language-interoperability)
-- [C#](csharp/core-api.md#cross-language-interoperability)
-- [Swift](swift/core-api.md#cross-language-interoperability)
-- [Dart](dart/core-api.md#cross-language-interoperability)
-- [Scala](scala/core-api.md#cross-language-interoperability)
-- [Kotlin](kotlin/core-api.md#cross-language-interoperability)
+- [Java](java/basic-serialization.md#cross-language-interoperability)
+- [Python](python/basic-serialization.md#cross-language-interoperability)
+- [C++](cpp/basic-serialization.md#cross-language-interoperability)
+- [Go](go/basic-serialization.md#cross-language-interoperability)
+- [Rust](rust/basic-serialization.md#cross-language-interoperability)
+- [JavaScript/TypeScript](javascript/basic-serialization.md#cross-language-interoperability)
+- [C#](csharp/basic-serialization.md#cross-language-interoperability)
+- [Swift](swift/basic-serialization.md#cross-language-interoperability)
+- [Dart](dart/basic-serialization.md#cross-language-interoperability)
+- [Scala](scala/basic-serialization.md#cross-language-interoperability)
+- [Kotlin](kotlin/basic-serialization.md#cross-language-interoperability)
 
 ## Related Documentation
 
@@ -349,7 +352,6 @@ hex dump or internal flag value as a stable application API.
 - [Fory IDL and Compiler](../compiler/index.md) — schema-first models and code generation
 - [Getting Started](../start/index.md) — installation and first serialization for each runtime
 - [Row Format](../row-format/index.md) — random-access analytical rows for trusted data
-- [Object Serialization Security](security.md) — trust boundaries and deserialization controls
 
 ## Operational Best Practices
 

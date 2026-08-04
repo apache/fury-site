@@ -191,4 +191,4 @@ ruff check --fix .
 
 - [配置](configuration.md) - Fory 参数
 - [类型注册](type-registration.md) - 注册最佳实践
-- [对象序列化安全](../security.md) - 安全配置
+- [Python 安全](security.md) - 安全配置

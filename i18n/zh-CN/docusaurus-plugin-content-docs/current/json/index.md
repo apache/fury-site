@@ -58,5 +58,5 @@ Fory core 的 native 或 xlang 二进制协议。
 ## 相关 Java 指南
 
 二进制序列化请从 [Java 对象序列化](../object-serialization/java/index.md)开始，并选择
-[xlang](../object-serialization/java/core-api.md#cross-language-interoperability) 或 [native](../object-serialization/java/native.md)。
+[xlang](../object-serialization/java/basic-serialization.md#cross-language-interoperability) 或 [native](../object-serialization/java/native.md)。
 二进制 builder 选项另见 [Java 配置](../object-serialization/java/configuration.md)。

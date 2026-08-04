@@ -487,4 +487,4 @@ if (!decoded_result.ok()) {
 - [Schema Metadata](schema-metadata.md) - Field-level metadata and options
 - [Supported Types](supported-types.md) - Smart pointers and collections
 - [Configuration](configuration.md) - `max_dyn_depth` and other settings
-- [Basic Serialization](core-api.md) - Core serialization concepts
+- [Basic Serialization](basic-serialization.md) - Core serialization concepts

@@ -111,7 +111,7 @@ Dynamic object payloads via `Serialize<object?>` / `Deserialize<object?>` suppor
 
 ## Related Topics
 
-- [Basic Serialization](core-api.md)
+- [Basic Serialization](basic-serialization.md)
 - [External Types](external-types.md)
 - [Type Registration](type-registration.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)

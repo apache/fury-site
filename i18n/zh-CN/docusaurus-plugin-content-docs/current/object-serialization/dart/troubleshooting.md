@@ -201,7 +201,7 @@ dart test
 ## 相关主题
 
 - [结构体继承](inheritance.md)
-- [跨语言互操作](core-api.md#cross-language-interoperability)
+- [跨语言互操作](basic-serialization.md#cross-language-interoperability)
 - [代码生成](code-generation.md)
 - [自定义序列化器](custom-serializers.md)
 - [Web 平台支持](web-platform-support.md)

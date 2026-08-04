@@ -20,7 +20,7 @@ license: |
 ---
 
 本页介绍如何在原生模式下序列化 Scala 特有的 JVM 类型。跨语言 Scala 模型请使用
-[跨语言互操作](core-api.md#cross-language-interoperability)中介绍的 xlang 路径。
+[跨语言互操作](basic-serialization.md#cross-language-interoperability)中介绍的 xlang 路径。
 
 启用兼容模式后，Scala 读取端会针对部分标量字段类型变更使用 JVM 兼容读取规则。当转换后
 的值具有相同逻辑值时，匹配字段可以在 `Boolean`、`String`、数值标量和

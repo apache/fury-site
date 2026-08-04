@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-This page covers Python type registration APIs. Use [Object Serialization Security](../security.md) for
+This page covers Python type registration APIs. Use [Configuration](configuration.md#security) for
 strict-mode policy, max-depth limits, and trusted-data guidance.
 
 ## Type Registration
@@ -88,5 +88,5 @@ application object.
 ## Related Topics
 
 - [Configuration](configuration.md) - Fory parameters
-- [Object Serialization Security](../security.md) - Strict mode, deserialization policies, and maximum read depth
+- [Configuration](configuration.md#security) - Strict mode, deserialization policies, and maximum read depth
 - [Custom Serializers](custom-serializers.md) - Custom serialization

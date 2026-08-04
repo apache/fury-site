@@ -343,5 +343,5 @@ go func() {
 ## 相关主题
 
 - [配置](configuration.md)
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [故障排查](troubleshooting.md)

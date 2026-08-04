@@ -21,7 +21,7 @@ license: |
 
 Rust 原生序列化是通过 `.xlang(false)` 选择、仅限 Rust 的编码模式。当每个写入端和读取端都是 Rust，并且载荷应保留 Rust 对象图行为而非可移植的跨语言类型系统时，请使用该模式。
 
-如果字节需要由 Java、Python、C++、Go、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 Rust Fory 实现读取，请使用 Rust 默认模式[跨语言序列化](core-api.md#cross-language-interoperability)。
+如果字节需要由 Java、Python、C++、Go、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 Rust Fory 实现读取，请使用 Rust 默认模式[跨语言序列化](basic-serialization.md#cross-language-interoperability)。
 
 ## 何时使用原生序列化
 
@@ -99,7 +99,7 @@ fory.register::<Order>(100)?;
   `Arc<dyn Any + Send + Sync>` 进行运行时类型分派。请将容器包装在已注册的结构体、枚举或 union 中；当不透明的 EXT/NAMED_EXT 表示合适时，也可以注册精确目标类型的自定义序列化器。
 - 日期和时间载体，包括可选的 `chrono` 支持。
 
-相关示例参见[基本序列化](core-api.md)、[引用](references.md)和[特征对象序列化](polymorphism.md)。
+相关示例参见[基本序列化](basic-serialization.md)、[引用](references.md)和[特征对象序列化](polymorphism.md)。
 
 ## 共享引用与循环引用
 
@@ -234,9 +234,9 @@ fory.register::<CommandSerializer>(101)?;
 
 ## 相关主题
 
-- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言 Rust 载荷
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言 Rust 载荷
 - [配置](configuration.md) - 构建器选项
-- [基本序列化](core-api.md) - 对象图序列化
+- [基本序列化](basic-serialization.md) - 对象图序列化
 - [共享引用与循环引用](references.md) - `Rc`、`Arc` 和弱指针
 - [特征对象序列化](polymorphism.md) - 特征对象和动态分派
 - [Schema 演进](schema-evolution.md) - 兼容模式

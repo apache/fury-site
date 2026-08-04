@@ -387,5 +387,5 @@ type Session struct {
 ## 相关主题
 
 - [引用](references.md)
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 演进](schema-evolution.md)

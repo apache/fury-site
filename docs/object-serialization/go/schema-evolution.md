@@ -389,5 +389,5 @@ func main() {
 ## Related Topics
 
 - [Configuration](configuration.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)
 - [Troubleshooting](troubleshooting.md)

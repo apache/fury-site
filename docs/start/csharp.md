@@ -71,7 +71,7 @@ dotnet run
 
 C# uses xlang mode. Continue with
 [C# Object Serialization](../object-serialization/csharp/index.md),
-[xlang types](../object-serialization/csharp/core-api.md#cross-language-interoperability),
+[xlang types](../object-serialization/csharp/basic-serialization.md#cross-language-interoperability),
 [configuration](../object-serialization/csharp/configuration.md), and
 [schema evolution](../object-serialization/csharp/schema-evolution.md).
 

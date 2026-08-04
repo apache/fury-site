@@ -23,7 +23,7 @@ Rust native serialization is the Rust-only wire mode selected with `.xlang(false
 every writer and reader is Rust and the payload should preserve Rust object-graph behavior instead
 of the portable xlang type system.
 
-Use [Cross-Language Interoperability](core-api.md#cross-language-interoperability), the default Rust mode, when bytes must be read
+Use [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability), the default Rust mode, when bytes must be read
 by Java, Python, C++, Go, JavaScript/TypeScript, C#, Swift, Dart, Scala,
 Kotlin, or another non-Rust Fory implementation.
 
@@ -115,7 +115,7 @@ Native serialization owns the Rust-specific object surface:
   is appropriate.
 - Date and time carriers, including optional `chrono` support.
 
-Use [Basic Serialization](core-api.md), [References](references.md), and
+Use [Basic Serialization](basic-serialization.md), [References](references.md), and
 [Trait Object Serialization](polymorphism.md) for focused examples.
 
 ## Shared And Circular References
@@ -264,9 +264,9 @@ Native serialization defaults to compatible mode. Keep that default when schemas
 
 ## Related Topics
 
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Cross-language Rust payloads
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability) - Cross-language Rust payloads
 - [Configuration](configuration.md) - Builder options
-- [Basic Serialization](core-api.md) - Object graph serialization
+- [Basic Serialization](basic-serialization.md) - Object graph serialization
 - [Shared & Circular References](references.md) - `Rc`, `Arc`, and weak pointers
 - [Trait Object Serialization](polymorphism.md) - Trait objects and dynamic dispatch
 - [Schema Evolution](schema-evolution.md) - Compatible mode

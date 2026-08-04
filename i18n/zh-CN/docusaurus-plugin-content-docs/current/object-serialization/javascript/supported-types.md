@@ -172,6 +172,6 @@ Type.struct("example.node").setTrackingRef(true).setNullable(true);
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [引用](references.md)
-- [跨语言序列化](core-api.md#cross-language-interoperability)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

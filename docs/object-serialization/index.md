@@ -24,14 +24,24 @@ collections, polymorphic values, and optional shared references.
 
 ## Choose a mode
 
-| Mode            | Use it when                                          | Start here                                  |
-| --------------- | ---------------------------------------------------- | ------------------------------------------- |
-| Xlang (default) | Bytes cross runtime boundaries                       | [Cross-language interoperability](xlang.md) |
-| Native          | Every writer and reader uses the same runtime family | [Native serialization](native.md)           |
+| Mode            | Use it when                                          | Start here                        |
+| --------------- | ---------------------------------------------------- | --------------------------------- |
+| Xlang (default) | Bytes cross runtime boundaries                       | [Xlang Serialization](xlang.md)   |
+| Native          | Every writer and reader uses the same runtime family | [Native serialization](native.md) |
 
 Xlang and native are the only object-serialization modes. Row Format is a random-access analytical
 representation, and Fory JSON is a Java JSON codec; use the
 [format chooser](../introduction/choose-a-format.md) when object reconstruction is not your goal.
+
+## Read the concepts and modes
+
+Read these pages before choosing a runtime API:
+
+1. [Core Concepts](core-concepts.md) explains object graphs, types, schemas, references,
+   polymorphism, and schema evolution across both modes.
+2. [Xlang Serialization](xlang.md) explains the portable format used by default and the rules that
+   different language runtimes must share.
+3. [Native Serialization](native.md) explains when a same-runtime native format is appropriate.
 
 ## Browse by runtime
 
@@ -51,12 +61,6 @@ registration, schema behavior, extensions, platforms, and troubleshooting:
 | Dart                  | xlang                | [Dart runtime](./dart/index.md)                        |
 | Scala                 | xlang and JVM native | [Scala runtime](./scala/index.md)                      |
 | Kotlin                | xlang and JVM native | [Kotlin runtime](./kotlin/index.md)                    |
-
-## Security
-
-Before decoding externally supplied bytes, read [Security](security.md). It
-covers accepted-type policy, registration, resource limits, transport responsibilities, and
-negative verification for both modes.
 
 ## Specifications
 

@@ -132,4 +132,4 @@ runtime reference protocol or add a compatibility reader.
 - [Configuration](configuration.md)
 - [External-Type Serialization](external-types.md)
 - [Schema Metadata](schema-metadata.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)

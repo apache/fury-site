@@ -128,6 +128,6 @@ let handles: Vec<_> = (0..4)
 ## 相关主题
 
 - [配置](configuration.md) - Fory 构建器选项
-- [跨语言序列化](core-api.md#cross-language-interoperability) - xlang 模式注册
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - xlang 模式注册
 - [自定义序列化器](custom-serializers.md) - 自定义序列化
 - [外部类型序列化](external-types.md) - 第三方目标和载体根值

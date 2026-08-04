@@ -106,6 +106,6 @@ Reference tracking is part of the Fory binary protocol and works across language
 
 ## Related Topics
 
-- [Basic Serialization](core-api.md)
+- [Basic Serialization](basic-serialization.md)
 - [Schema Evolution](schema-evolution.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)

@@ -60,7 +60,7 @@ decoded = fory.deserialize(data)
 print(decoded)
 ```
 
-Use [xlang mode](../object-serialization/python/core-api.md#cross-language-interoperability) for cross-language
+Use [xlang mode](../object-serialization/python/basic-serialization.md#cross-language-interoperability) for cross-language
 data. Use [native mode](../object-serialization/python/native.md) for Python-only
 objects, including Python callables and serialization hooks. Continue with the
 [Python guide](../object-serialization/python/index.md),

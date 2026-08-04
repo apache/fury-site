@@ -156,7 +156,7 @@ public class Example {
 
 仅限 Java 的流量应使用原生模式。通过 `.withXlang(false)` 选择原生模式；该模式负责 JDK 序列化钩子、`Externalizable`、动态对象图、对象复制和 Java 原生模式零拷贝缓冲区等 Java 专用对象行为。它针对 JVM 类型系统优化，支持比跨语言模式更广泛的 Java 对象。兼容模式默认启用。仅当每个读取端和写入端都使用相同的类 Schema，且希望获得更快速度和更小体积时，才设置 `.withCompatible(false)`。如果要替换 JDK 序列化、Kryo、FST、Hessian 或仅限 Java 的 Protocol Buffers 载荷，请从原生模式开始。
 
-仅限 Java 的序列化详情参见[原生序列化](native.md)，Java 跨语言注册与互操作规则参见[跨语言序列化](core-api.md#cross-language-interoperability)。
+仅限 Java 的序列化详情参见[原生序列化](native.md)，Java 跨语言注册与互操作规则参见[跨语言序列化](basic-serialization.md#cross-language-interoperability)。
 
 ### 线程安全
 
@@ -235,9 +235,9 @@ Fory JSON 具有独立的 [Android](../../json/android.md) 和 [GraalVM 原生�
 
 | 分组          | 页面                                                                                                                                                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 序列化模式    | [基础序列化](core-api.md)、[原生序列化](native.md)                                                                                                                                                                    |
+| 序列化模式    | [基础序列化](basic-serialization.md)、[原生序列化](native.md)                                                                                                                                                                    |
 | 通用          | [配置](configuration.md)、[类型注册](type-registration.md)、[Schema 演进](schema-evolution.md)、[Schema 元数据](schema-metadata.md)、[自定义序列化器](custom-serializers.md)                                          |
 | Java 专用功能 | [高级功能](advanced-features.md)、[压缩](compression.md)、[对象复制](object-copy.md)、[JDK 自定义序列化](jdk-serialization.md)、[静态生成的序列化器](static-generated-serializers.md)、[虚拟线程](virtual-threads.md) |
 | 平台与运维    | [Android](android.md)、[GraalVM 原生镜像](graalvm.md)、[故障排除](troubleshooting.md)                                                                                                                                 |
 
-解码外部提供的二进制载荷前，请阅读[对象序列化安全](../security.md)。
+解码外部提供的二进制载荷前，请阅读 [Java 安全](security.md)。

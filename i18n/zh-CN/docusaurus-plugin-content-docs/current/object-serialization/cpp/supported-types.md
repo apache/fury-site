@@ -287,6 +287,6 @@ auto decoded = fory.deserialize<Color>(bytes).value();
 
 ## 相关主题
 
-- [基本序列化](core-api.md) - 使用这些类型
+- [基本序列化](basic-serialization.md) - 使用这些类型
 - [类型注册](type-registration.md) - 注册类型
-- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言兼容性
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言兼容性

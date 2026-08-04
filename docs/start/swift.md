@@ -77,7 +77,7 @@ swift run
 
 Swift uses xlang mode. Continue with
 [Swift Object Serialization](../object-serialization/swift/index.md),
-[xlang types](../object-serialization/swift/core-api.md#cross-language-interoperability),
+[xlang types](../object-serialization/swift/basic-serialization.md#cross-language-interoperability),
 [configuration](../object-serialization/swift/configuration.md), and
 [schema evolution](../object-serialization/swift/schema-evolution.md).
 

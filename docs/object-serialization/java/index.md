@@ -169,7 +169,7 @@ Use xlang mode for cross-language payloads and schemas shared with non-Java impl
 
 Use native mode for Java-only traffic. Native mode is selected with `.withXlang(false)` and owns Java-specific object behavior such as JDK serialization hooks, `Externalizable`, dynamic object graphs, object copy, and Java native-mode zero-copy buffers. It is optimized for the JVM type system and supports a broader Java object surface than xlang mode. Compatible mode is enabled by default. Set `.withCompatible(false)` only when every reader and writer uses the same class schema and you want faster serialization and smaller size. If you are replacing JDK serialization, Kryo, FST, Hessian, or Java-only Protocol Buffers payloads, start with native mode.
 
-See [Native Serialization](native.md) for Java-only serialization details and [Cross-Language Interoperability](core-api.md#cross-language-interoperability) for Java xlang registration and interoperability rules.
+See [Native Serialization](native.md) for Java-only serialization details and [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability) for Java xlang registration and interoperability rules.
 
 ### Thread Safety
 
@@ -257,10 +257,10 @@ model-discovery workflows differ from Fory Core.
 
 | Group                  | Pages                                                                                                                                                                                                                                                             |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Serialization modes    | [Basic Serialization](core-api.md), [Native Serialization](native.md)                                                                                                                                                                                             |
+| Serialization modes    | [Basic Serialization](basic-serialization.md), [Native Serialization](native.md)                                                                                                                                                                                  |
 | Common                 | [Configuration](configuration.md), [Type Registration](type-registration.md), [Schema Evolution](schema-evolution.md), [Schema Metadata](schema-metadata.md), [Custom Serializers](custom-serializers.md)                                                         |
 | Java-specific features | [Advanced Features](advanced-features.md), [Compression](compression.md), [Object Copy](object-copy.md), [JDK Custom Serialization](jdk-serialization.md), [Static Generated Serializers](static-generated-serializers.md), [Virtual Threads](virtual-threads.md) |
 | Platform and operate   | [Android](android.md), [GraalVM Native Image](graalvm.md), [Troubleshooting](troubleshooting.md)                                                                                                                                                                  |
 
 Before decoding externally supplied binary payloads, read
-[Object Serialization Security](../security.md).
+[Java Security](security.md).

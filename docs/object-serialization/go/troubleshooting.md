@@ -438,6 +438,6 @@ If you encounter issues not covered here:
 ## Related Topics
 
 - [Configuration](configuration.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)
 - [Schema Evolution](schema-evolution.md)
 - [Thread Safety](thread-safety.md)

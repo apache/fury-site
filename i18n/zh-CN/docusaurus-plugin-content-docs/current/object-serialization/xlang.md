@@ -1,6 +1,6 @@
 ---
-title: 跨语言互操作
-sidebar_position: 1
+title: Xlang 序列化
+sidebar_position: 2
 id: xlang
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -23,6 +23,8 @@ Xlang 是 Fory 默认的对象序列化模式。Java、Python、C++、Go、Rust�
 JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 共用同一种可移植二进制格式。
 各运行时的[基础序列化](#runtime-guides)页面负责介绍 API 和模型示例；本页说明所有通信方必须
 共同遵循的规则。
+
+请先阅读[核心概念](core-concepts.md)，了解 xlang 和原生模式共用的对象图、Schema、引用和多态概念。
 
 ## 概述 {#overview}
 
@@ -315,17 +317,17 @@ API。
 
 ## 运行时指南 {#runtime-guides}
 
-- [Java](java/core-api.md#cross-language-interoperability)
-- [Python](python/core-api.md#cross-language-interoperability)
-- [C++](cpp/core-api.md#cross-language-interoperability)
-- [Go](go/core-api.md#cross-language-interoperability)
-- [Rust](rust/core-api.md#cross-language-interoperability)
-- [JavaScript/TypeScript](javascript/core-api.md#cross-language-interoperability)
-- [C#](csharp/core-api.md#cross-language-interoperability)
-- [Swift](swift/core-api.md#cross-language-interoperability)
-- [Dart](dart/core-api.md#cross-language-interoperability)
-- [Scala](scala/core-api.md#cross-language-interoperability)
-- [Kotlin](kotlin/core-api.md#cross-language-interoperability)
+- [Java](java/basic-serialization.md#cross-language-interoperability)
+- [Python](python/basic-serialization.md#cross-language-interoperability)
+- [C++](cpp/basic-serialization.md#cross-language-interoperability)
+- [Go](go/basic-serialization.md#cross-language-interoperability)
+- [Rust](rust/basic-serialization.md#cross-language-interoperability)
+- [JavaScript/TypeScript](javascript/basic-serialization.md#cross-language-interoperability)
+- [C#](csharp/basic-serialization.md#cross-language-interoperability)
+- [Swift](swift/basic-serialization.md#cross-language-interoperability)
+- [Dart](dart/basic-serialization.md#cross-language-interoperability)
+- [Scala](scala/basic-serialization.md#cross-language-interoperability)
+- [Kotlin](kotlin/basic-serialization.md#cross-language-interoperability)
 
 ## 相关文档 {#related-documentation}
 
@@ -334,7 +336,6 @@ API。
 - [Fory IDL 和编译器](../compiler/index.md) — Schema 优先的模型和代码生成
 - [快速开始](../start/index.md) — 各运行时的安装和第一次序列化
 - [行格式](../row-format/index.md) — 用于可信分析数据的随机访问行
-- [对象序列化安全](security.md) — 信任边界和反序列化控制
 
 ## 运维最佳实践 {#operational-best-practices}
 

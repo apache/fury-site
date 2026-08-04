@@ -156,4 +156,4 @@ static {
 - [配置](configuration.md) - 所有 ForyBuilder 选项
 - [原生序列化](native.md) - 仅限 Java 的序列化、JDK 钩子和零拷贝缓冲区
 - [对象复制](object-copy.md) - 深拷贝功能
-- [跨语言序列化](core-api.md#cross-language-interoperability) - Java 跨语言互操作
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - Java 跨语言互操作

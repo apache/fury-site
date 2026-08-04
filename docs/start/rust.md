@@ -63,7 +63,7 @@ fn main() -> Result<(), Error> {
 }
 ```
 
-Use [xlang mode](../object-serialization/rust/core-api.md#cross-language-interoperability) for cross-language data
+Use [xlang mode](../object-serialization/rust/basic-serialization.md#cross-language-interoperability) for cross-language data
 and [native mode](../object-serialization/rust/native.md) for Rust-only data.
 Continue with [Rust Object Serialization](../object-serialization/rust/index.md),
 [configuration](../object-serialization/rust/configuration.md), and

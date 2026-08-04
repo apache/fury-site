@@ -25,12 +25,21 @@ license: |
 
 | 模式          | 适用场景                               | 从这里开始               |
 | ------------- | -------------------------------------- | ------------------------ |
-| Xlang（默认） | 字节需要跨越运行时边界                 | [跨语言互操作](xlang.md) |
+| Xlang（默认） | 字节需要跨越运行时边界                 | [Xlang 序列化](xlang.md) |
 | Native        | 所有写入端和读取端都使用同一运行时系列 | [原生序列化](native.md)  |
 
 Xlang 和原生模式是仅有的两种对象序列化模式。Row Format 是可随机访问的分析表示形式，
 Fory JSON 是 Java JSON codec；如果目标不是重建对象，请使用
 [格式选择指南](../introduction/choose-a-format.md)。
+
+## 阅读核心概念和序列化模式
+
+选择具体运行时 API 之前，请按以下顺序阅读：
+
+1. [核心概念](core-concepts.md)介绍两种模式共用的对象图、类型、Schema、引用、多态和
+   Schema 演进。
+2. [Xlang 序列化](xlang.md)介绍默认使用的可移植格式，以及不同语言运行时必须共同遵守的规则。
+3. [原生序列化](native.md)介绍适合使用同运行时原生格式的场景。
 
 ## 按运行时浏览
 
@@ -50,11 +59,6 @@ Fory JSON 是 Java JSON codec；如果目标不是重建对象，请使用
 | Dart                  | xlang             | [Dart 运行时](./dart/index.md)                        |
 | Scala                 | xlang 和 JVM 原生 | [Scala 运行时](./scala/index.md)                      |
 | Kotlin                | xlang 和 JVM 原生 | [Kotlin 运行时](./kotlin/index.md)                    |
-
-## 安全性
-
-解码外部提供的字节之前，请阅读[安全](security.md)。其中介绍了两种模式下的
-可接受类型策略、注册、资源限制、传输责任和负向验证。
 
 ## 规范
 

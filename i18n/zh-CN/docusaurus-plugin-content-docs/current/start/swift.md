@@ -73,7 +73,7 @@ assert(input == decoded)
 swift run
 ```
 
-Swift 使用 xlang 模式。接下来可阅读 [Swift 对象序列化](../object-serialization/swift/index.md)、[xlang 类型](../object-serialization/swift/core-api.md#cross-language-interoperability)、[配置](../object-serialization/swift/configuration.md)和 [Schema 演进](../object-serialization/swift/schema-evolution.md)。
+Swift 使用 xlang 模式。接下来可阅读 [Swift 对象序列化](../object-serialization/swift/index.md)、[xlang 类型](../object-serialization/swift/basic-serialization.md#cross-language-interoperability)、[配置](../object-serialization/swift/configuration.md)和 [Schema 演进](../object-serialization/swift/schema-evolution.md)。
 
 ## 其他能力
 

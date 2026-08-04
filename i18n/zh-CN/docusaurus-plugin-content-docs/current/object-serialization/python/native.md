@@ -21,7 +21,7 @@ license: |
 
 Python 原生序列化是通过 `xlang=False` 选择的仅限 Python 编码模式。当所有写入端和读取端都是 Python，并且载荷应遵循 Python 对象模型而非可移植的跨语言类型系统时，请使用该模式。
 
-如果字节必须由 Java、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 Python Fory 实现读取，请使用 Python 默认的[跨语言序列化](core-api.md#cross-language-interoperability)模式。
+如果字节必须由 Java、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 Python Fory 实现读取，请使用 Python 默认的[跨语言序列化](basic-serialization.md#cross-language-interoperability)模式。
 
 ## 何时使用原生序列化
 
@@ -167,7 +167,7 @@ print(f"Pickle: {timeit.timeit(lambda: pickle.dumps(obj), number=1000):.3f}s")
 
 ## 相关主题
 
-- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言 Python 载荷
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 跨语言 Python 载荷
 - [配置](configuration.md) - Python `Fory` 选项
 - [带外序列化](out-of-band.md) - 零拷贝缓冲区支持
-- [对象序列化安全](../security.md) - 反序列化策略
+- [Python 安全](security.md) - 反序列化策略

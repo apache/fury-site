@@ -152,12 +152,4 @@ let fory = Fory(compatible: false)
 
 ## 安全
 
-安全相关配置：
-
-- 反序列化不可信载荷前，只注册预期的生成模型。
-- 对有意采用相同 Schema 的载荷，将 `checkClassVersion` 与 `compatible: false` 配合使用。
-- 将 `maxDepth` 设置为服务允许的最大动态 `Any` 嵌套深度。
-- 将 `maxGraphMemoryBytes` 设置为 collection、map、array、struct、class 和对象密集型载荷的
-  近似限制。它不是精确的堆上限；叶子值受剩余输入字节限制。
-- 除非数据确定无恶意，且可信对等端会发送更大的元数据或大量 Schema 版本，否则保留远程
-  Schema 元数据限制的默认值。
+有关信任边界、安全的读取端配置和验证方法，请参阅 [Swift 安全](security.md)。

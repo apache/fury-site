@@ -200,19 +200,10 @@ ThreadSafeFory fory = Fory.Builder()
 
 ## Security
 
-Security-related configuration:
-
-- Register only the expected types before deserializing untrusted payloads.
-- Use `CheckStructVersion(true)` with `Compatible(false)` for intentional same-schema payloads.
-- Set `MaxDepth(...)` to reject unexpectedly deep dynamic object graphs.
-- Set `MaxGraphMemoryBytes(...)` as an approximate gate for collection, map, array, struct, and
-  object-heavy payloads. It is not an exact heap cap; leaf values are gated by remaining input bytes.
-- Keep the remote schema metadata limits at their defaults unless the data is not malicious and a
-  trusted peer sends larger metadata or many schema versions.
-- Prefer generated or registered concrete models over broad dynamic fields for untrusted input.
+See [C# Security](security.md) for trust boundaries, safe reader configuration, and verification.
 
 ## Related Topics
 
-- [Basic Serialization](core-api.md)
+- [Basic Serialization](basic-serialization.md)
 - [Schema Evolution](schema-evolution.md)
 - [Thread Safety](thread-safety.md)

@@ -173,5 +173,5 @@ width is one of the most common cross-language bugs.
 
 - [Struct Inheritance](inheritance.md)
 - [Schema Metadata](schema-metadata.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)
 - [Schema Evolution](schema-evolution.md)

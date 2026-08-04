@@ -60,7 +60,7 @@ console.log(deserialize(bytes));
 node example.cjs
 ```
 
-JavaScript 使用 xlang 模式。接下来可阅读 [JavaScript/TypeScript 对象序列化](../object-serialization/javascript/index.md)、[xlang 类型](../object-serialization/javascript/core-api.md#cross-language-interoperability)、[配置](../object-serialization/javascript/configuration.md)和 [Schema 演进](../object-serialization/javascript/schema-evolution.md)。
+JavaScript 使用 xlang 模式。接下来可阅读 [JavaScript/TypeScript 对象序列化](../object-serialization/javascript/index.md)、[xlang 类型](../object-serialization/javascript/basic-serialization.md#cross-language-interoperability)、[配置](../object-serialization/javascript/configuration.md)和 [Schema 演进](../object-serialization/javascript/schema-evolution.md)。
 
 若要使用可选的 Node.js 字符串快速路径，请安装版本匹配的软件包：
 

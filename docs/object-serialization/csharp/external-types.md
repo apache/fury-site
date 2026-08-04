@@ -220,7 +220,7 @@ long as each concrete annotated child has a legal parameterless construction
 path.
 
 First-party bases use direct `[ForyStruct]` annotations instead. See
-[Class Inheritance](core-api.md#class-inheritance).
+[Class Inheritance](basic-serialization.md#class-inheritance).
 
 ## Declaration and Target Requirements
 

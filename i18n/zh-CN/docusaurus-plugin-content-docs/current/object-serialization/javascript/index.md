@@ -150,7 +150,7 @@ Fory JavaScript 仅支持 xlang。`new Fory()` 默认使用兼容 Schema 演进�
 
 | 主题                                       | 说明                                      |
 | ------------------------------------------ | ----------------------------------------- |
-| [基本序列化](core-api.md)                  | 核心 API 和日常用法                       |
+| [基本序列化](basic-serialization.md)                  | 核心 API 和日常用法                       |
 | [配置](configuration.md)                   | Fory 选项、兼容模式、限制和 HPS           |
 | [类型注册](type-registration.md)           | 数字 ID、名称、装饰器和 Schema 注册       |
 | [Schema 元数据](schema-metadata.md)        | 类型构建器、字段选项和装饰器              |
@@ -165,3 +165,5 @@ Fory JavaScript 仅支持 xlang。`new Fory()` 默认使用兼容 Schema 演进�
 
 - [跨语言序列化规范](../../specification/xlang_serialization_spec.md)
 - [跨语言类型映射](../../specification/xlang_type_mapping.md)
+
+解码来自应用信任边界之外的字节之前，请阅读 [JavaScript/TypeScript 安全](security.md)。

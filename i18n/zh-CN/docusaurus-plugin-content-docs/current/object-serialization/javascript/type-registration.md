@@ -152,11 +152,11 @@ const order = deserialize(bytes);
 
 ## 跨语言
 
-为了让消息在 JavaScript 和另一种语言之间往返，双方必须为给定类型使用相同标识：相同数字 ID 或相同 `typeName`。使用 `.` 在 `typeName` 中添加命名空间前缀。参见[跨语言序列化](core-api.md#cross-language-interoperability)。
+为了让消息在 JavaScript 和另一种语言之间往返，双方必须为给定类型使用相同标识：相同数字 ID 或相同 `typeName`。使用 `.` 在 `typeName` 中添加命名空间前缀。参见[跨语言序列化](basic-serialization.md#cross-language-interoperability)。
 
 ## 相关主题
 
-- [基本序列化](core-api.md)
+- [基本序列化](basic-serialization.md)
 - [Schema 元数据](schema-metadata.md)
 - [Schema 演进](schema-evolution.md)
-- [跨语言序列化](core-api.md#cross-language-interoperability)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)

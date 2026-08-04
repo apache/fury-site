@@ -258,7 +258,7 @@ Two types registered with the same ID will conflict.
 
 ## Related Topics
 
-- [Basic Serialization](core-api.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Basic Serialization](basic-serialization.md)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)
 - [Supported Types](supported-types.md)
 - [Troubleshooting](troubleshooting.md)

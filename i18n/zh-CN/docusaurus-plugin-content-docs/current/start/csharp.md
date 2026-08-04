@@ -67,7 +67,7 @@ public static class Program
 dotnet run
 ```
 
-C# 使用 xlang 模式。接下来可阅读 [C# 对象序列化](../object-serialization/csharp/index.md)、[xlang 类型](../object-serialization/csharp/core-api.md#cross-language-interoperability)、[配置](../object-serialization/csharp/configuration.md)和 [Schema 演进](../object-serialization/csharp/schema-evolution.md)。
+C# 使用 xlang 模式。接下来可阅读 [C# 对象序列化](../object-serialization/csharp/index.md)、[xlang 类型](../object-serialization/csharp/basic-serialization.md#cross-language-interoperability)、[配置](../object-serialization/csharp/configuration.md)和 [Schema 演进](../object-serialization/csharp/schema-evolution.md)。
 
 ## 其他能力
 

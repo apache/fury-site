@@ -1,6 +1,6 @@
 ---
 title: Native Serialization
-sidebar_position: 2
+sidebar_position: 3
 id: native
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more

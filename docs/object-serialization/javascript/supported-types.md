@@ -172,6 +172,6 @@ For types that need completely custom encoding, use `Type.ext(...)` and pass a c
 
 ## Related Topics
 
-- [Basic Serialization](core-api.md)
+- [Basic Serialization](basic-serialization.md)
 - [References](references.md)
-- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
+- [Cross-Language Interoperability](basic-serialization.md#cross-language-interoperability)

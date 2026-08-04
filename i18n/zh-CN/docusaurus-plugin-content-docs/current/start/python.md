@@ -58,7 +58,7 @@ decoded = fory.deserialize(data)
 print(decoded)
 ```
 
-跨语言数据请使用 [xlang 模式](../object-serialization/python/core-api.md#cross-language-interoperability)。仅供 Python 使用的对象（包括 Python 可调用对象和序列化钩子）请使用 [native 模式](../object-serialization/python/native.md)。接下来可阅读 [Python 指南](../object-serialization/python/index.md)、[配置](../object-serialization/python/configuration.md)和[类型注册](../object-serialization/python/type-registration.md)。
+跨语言数据请使用 [xlang 模式](../object-serialization/python/basic-serialization.md#cross-language-interoperability)。仅供 Python 使用的对象（包括 Python 可调用对象和序列化钩子）请使用 [native 模式](../object-serialization/python/native.md)。接下来可阅读 [Python 指南](../object-serialization/python/index.md)、[配置](../object-serialization/python/configuration.md)和[类型注册](../object-serialization/python/type-registration.md)。
 
 ## 其他能力
 

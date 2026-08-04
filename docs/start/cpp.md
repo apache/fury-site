@@ -95,7 +95,7 @@ cmake --build build --parallel
 
 See [C++ Object Serialization](../object-serialization/cpp/index.md) for Bazel,
 Windows, error handling, and thread-safe instances; then continue to
-[xlang](../object-serialization/cpp/core-api.md#cross-language-interoperability) or
+[xlang](../object-serialization/cpp/basic-serialization.md#cross-language-interoperability) or
 [native mode](../object-serialization/cpp/native.md).
 
 ## Other Capabilities

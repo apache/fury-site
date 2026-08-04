@@ -90,7 +90,7 @@ cmake --build build --parallel
 ./build/fory_example
 ```
 
-Bazel、Windows、错误处理和线程安全实例请参阅 [C++ 对象序列化](../object-serialization/cpp/index.md)；然后继续阅读 [xlang](../object-serialization/cpp/core-api.md#cross-language-interoperability)或 [native 模式](../object-serialization/cpp/native.md)。
+Bazel、Windows、错误处理和线程安全实例请参阅 [C++ 对象序列化](../object-serialization/cpp/index.md)；然后继续阅读 [xlang](../object-serialization/cpp/basic-serialization.md#cross-language-interoperability)或 [native 模式](../object-serialization/cpp/native.md)。
 
 ## 其他能力
 

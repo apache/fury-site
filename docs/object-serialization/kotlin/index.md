@@ -117,7 +117,7 @@ See [Configuration](configuration.md) for Kotlin builder setup and [Java Native 
 Fory Kotlin is built on top of Fory Java. Most configuration options, features, and concepts from Fory Java apply directly to Kotlin. Refer to the Java documentation for:
 
 - [Configuration](../java/configuration.md) - All ForyBuilder options
-- [Basic Serialization](../java/core-api.md) - Serialization patterns and APIs
+- [Basic Serialization](../java/basic-serialization.md) - Serialization patterns and APIs
 - [Type Registration](../java/type-registration.md) - Class registration and security
 - [Schema Evolution](../java/schema-evolution.md) - Forward/backward compatibility
 - [Custom Serializers](../java/custom-serializers.md) - Implement custom serializers
@@ -126,7 +126,7 @@ Fory Kotlin is built on top of Fory Java. Most configuration options, features, 
 
 ## Kotlin-Specific Documentation
 
-- [Basic Serialization](core-api.md) - Models, APIs, and interoperability in the default xlang mode
+- [Basic Serialization](basic-serialization.md) - Models, APIs, and interoperability in the default xlang mode
 - [Configuration](configuration.md) - Kotlin-specific Fory setup requirements
 - [Native Serialization](native.md) - Serializing Kotlin types in JVM-native mode
 - [Schema Metadata](schema-metadata.md) - Kotlin annotations, nullability, references, and integer metadata
@@ -134,3 +134,6 @@ Fory Kotlin is built on top of Fory Java. Most configuration options, features, 
 - [Static Generated Serializers](static-generated-serializers.md) - KSP xlang/schema serializer generation
 - [Kotlin gRPC Support](../../grpc/kotlin.md) - Coroutine stubs and service bases for Fory IDL services
 - [Android Support](../java/android.md) - Android setup, R8 behavior, and release-build validation
+
+Before decoding bytes from outside the application trust boundary, read
+[Kotlin Security](security.md).

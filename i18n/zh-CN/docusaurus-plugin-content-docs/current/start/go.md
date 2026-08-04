@@ -78,7 +78,7 @@ func main() {
 go run .
 ```
 
-跨语言数据请使用 [xlang 模式](../object-serialization/go/core-api.md#cross-language-interoperability)，仅供 Go 使用的数据请使用 [native 模式](../object-serialization/go/native.md)。接下来可阅读 [Go 对象序列化](../object-serialization/go/index.md)、[配置](../object-serialization/go/configuration.md)和 [Schema 演进](../object-serialization/go/schema-evolution.md)。
+跨语言数据请使用 [xlang 模式](../object-serialization/go/basic-serialization.md#cross-language-interoperability)，仅供 Go 使用的数据请使用 [native 模式](../object-serialization/go/native.md)。接下来可阅读 [Go 对象序列化](../object-serialization/go/index.md)、[配置](../object-serialization/go/configuration.md)和 [Schema 演进](../object-serialization/go/schema-evolution.md)。
 
 ## 其他能力
 

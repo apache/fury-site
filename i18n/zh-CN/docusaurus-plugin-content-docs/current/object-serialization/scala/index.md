@@ -105,7 +105,7 @@ Scala builder 设置请参阅[配置](configuration.md)，完整的 JVM 原生�
 Fory Scala 基于 Fory Java 构建。Fory Java 的大多数配置选项、功能和概念都直接适用于 Scala。以下内容请参阅 Java 文档：
 
 - [配置](../java/configuration.md) - 所有 ForyBuilder 选项
-- [基本序列化](../java/core-api.md) - 序列化模式和 API
+- [基本序列化](../java/basic-serialization.md) - 序列化模式和 API
 - [类型注册](../java/type-registration.md) - 类注册与安全性
 - [Schema 演进](../java/schema-evolution.md) - 向前/向后兼容性
 - [自定义序列化器](../java/custom-serializers.md) - 实现自定义序列化器
@@ -118,5 +118,7 @@ Fory Scala 基于 Fory Java 构建。Fory Java 的大多数配置选项、功能
 - [原生序列化](native.md) - 在 JVM 原生模式下序列化 Scala 类型
 - [Schema 元数据](schema-metadata.md) - Scala 注解、引用、枚举 ID 和联合元数据
 - [默认值](default-values.md) - Scala 类默认值支持
-- [基础序列化](core-api.md) - 默认 xlang 模式的模型、API 和跨语言互操作
+- [基础序列化](basic-serialization.md) - 默认 xlang 模式的模型、API 和跨语言互操作
 - [gRPC 支持](../../grpc/scala.md) - Scala 3 生成的 gRPC 服务配套代码
+
+解码来自应用信任边界之外的字节之前，请阅读 [Scala 安全](security.md)。

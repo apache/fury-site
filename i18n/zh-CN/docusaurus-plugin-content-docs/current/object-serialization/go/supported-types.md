@@ -351,7 +351,7 @@ data, _ := f.Serialize(status)
 | `time.Time`     | Instant    | datetime  | -                  | -              |
 | `time.Duration` | Duration   | timedelta | -                  | -              |
 
-详细映射参见[跨语言序列化](core-api.md#cross-language-interoperability)。
+详细映射参见[跨语言序列化](basic-serialization.md#cross-language-interoperability)。
 
 ## 不支持的类型
 
@@ -367,5 +367,5 @@ data, _ := f.Serialize(status)
 ## 相关主题
 
 - [类型注册](type-registration.md)
-- [跨语言序列化](core-api.md#cross-language-interoperability)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)
 - [引用](references.md)

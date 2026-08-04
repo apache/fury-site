@@ -694,7 +694,7 @@ public class User {
 
 ## 相关主题
 
-- [基础序列化](core-api.md) - Fory 序列化入门
+- [基础序列化](basic-serialization.md) - Fory 序列化入门
 - [配置](configuration.md) - `ForyBuilder` 选项
 - [Schema 演进](schema-evolution.md) - 兼容模式与 Schema 演进
-- [跨语言序列化](core-api.md#cross-language-interoperability) - 与 Python、Rust、C++、Go 互操作
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability) - 与 Python、Rust、C++、Go 互操作

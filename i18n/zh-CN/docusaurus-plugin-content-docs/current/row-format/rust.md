@@ -184,6 +184,6 @@ assert!(scores.get(scores.len()).is_err());
 
 ## 相关主题
 
-- [基本序列化](../object-serialization/rust/core-api.md) - 对象图序列化
+- [基本序列化](../object-serialization/rust/basic-serialization.md) - 对象图序列化
 - [标准行格式](index.md#standard-row) - Java、Python、C++ 和 Rust 的共享布局
 - [行格式规范](../specification/row_format_spec.md) - 协议详情

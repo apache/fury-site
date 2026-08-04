@@ -438,6 +438,6 @@ func TestSchemaEvolution(t *testing.T) {
 ## 相关主题
 
 - [配置](configuration.md)
-- [跨语言序列化](core-api.md#cross-language-interoperability)
+- [跨语言序列化](basic-serialization.md#cross-language-interoperability)
 - [Schema 演进](schema-evolution.md)
 - [线程安全](thread-safety.md)
