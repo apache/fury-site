@@ -55,7 +55,7 @@ libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.5.0"
 ### JDK25+
 
 Scala uses the Fory Java core when running. On JDK25+, opening `java.lang.invoke` to Fory core is
-not required, but is recommended. It avoids the current-JDK Unsafe fallback and is required when Unsafe
+also recommended. It avoids the current-JDK Unsafe fallback and is required when Unsafe
 access is disabled or unavailable, including with `--sun-misc-unsafe-memory-access=deny`. Use
 `ALL-UNNAMED` when Fory is on the classpath:
 

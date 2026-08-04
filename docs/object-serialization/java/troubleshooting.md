@@ -185,7 +185,7 @@ fory.registerSerializer(MyClass.class, new MyClassSerializer(fory.getTypeResolve
 
 ### JDK25+ access errors
 
-On JDK25+, opening `java.lang.invoke` to Fory core is not required, but is recommended. Add the opening if
+On JDK25+, opening `java.lang.invoke` to Fory core is also recommended. Add the opening if
 an error names `java.base/java.lang.invoke`, or when Unsafe access is disabled or unavailable,
 including with `--sun-misc-unsafe-memory-access=deny`. Use `ALL-UNNAMED` when Fory is on the
 classpath:
