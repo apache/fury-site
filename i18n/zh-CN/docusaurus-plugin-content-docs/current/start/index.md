@@ -1,5 +1,5 @@
 ---
-title: 快速开始
+title: 快速入门
 sidebar_position: 0
 id: index
 license: |
@@ -19,15 +19,23 @@ license: |
   limitations under the License.
 ---
 
-Apache Fory™ 发行版同时提供源代码制品和特定语言的软件包。
+从下面的运行时页面开始。每个页面都提供锁定到具体发行版本的安装方式、可运行的对象序列化往返示例、该运行时支持的模式，以及通往其他可用 Fory 能力的简要入口。
 
-如需下载源代码，请访问 Apache Fory™ [下载](https://fory.apache.org/download)页面。
+Apache Fory™ 以源代码制品和各语言专用软件包的形式发布。若要下载源代码，请访问 Apache Fory™ [下载](https://fory.apache.org/download)页面。
+
+## 五分钟上手
+
+1. 选择应用使用的运行时。
+2. 安装该运行时页面中列出的软件包。
+3. 运行最小序列化/反序列化示例。
+4. 如果两种模式都可用，跨语言数据选择 xlang 模式，同一运行时的数据选择 native 模式。
+5. 前往对应能力指南，了解生产环境配置和高级 API。
 
 ## 选择运行时
 
-每个运行时的环境配置页面都会检查工具链，并引导你前往该运行时支持的能力：
+每个运行时页面都提供锁定到具体发行版本的安装片段、适用于应用项目的最小往返示例，以及后续能力专项步骤：
 
-| 运行时                | 环境配置                               |
+| 运行时                | 设置                                   |
 | --------------------- | -------------------------------------- |
 | Java                  | [Java](java.md)                        |
 | Python                | [Python](python.md)                    |
@@ -41,19 +49,14 @@ Apache Fory™ 发行版同时提供源代码制品和特定语言的软件包�
 | Scala                 | [Scala](scala.md)                      |
 | Kotlin                | [Kotlin](kotlin.md)                    |
 
-## 选择能力
+## 可以构建什么
 
-| 需求                   | 后续文档                                       |
-| ---------------------- | ---------------------------------------------- |
-| 重建对象图             | [对象序列化](../object-serialization/index.md) |
-| 随机或部分访问分析数据 | [Row Format](../row-format/index.md)           |
-| 从 Java 交换标准 JSON  | [Fory JSON](../json/index.md)                  |
-| 根据 Schema 生成模型   | [Fory IDL 和编译器](../compiler/index.md)      |
-| 通过 gRPC 使用生成模型 | [Fory gRPC](../grpc/index.md)                  |
+| 能力       | 用途                                                        | 可用运行时                                                         | 详细指南                                                 |
+| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
+| 对象序列化 | 重建对象图，包括共享引用和 Schema 变更                      | 所有运行时                                                         | [对象序列化](../object-serialization/index.md)            |
+| Row Format | 对可信分析数据进行零拷贝、随机或部分字段访问                | Java、Python、C++、Rust                                            | [Row Format](../row-format/index.md)                     |
+| Fory JSON  | 高性能标准 JSON 映射                                        | Java                                                               | [Fory JSON](../json/index.md)                            |
+| Fory IDL   | 从 Fory、protobuf 或 FlatBuffers IDL 生成原生模型和序列化器 | 所有运行时                                                         | [Fory IDL 与编译器](../compiler/index.md)                |
+| Fory gRPC  | 通过常规 gRPC 传输使用生成的模型和 Fory 编码的消息          | Java、Python、C++、Go、Rust、JavaScript、C#、Dart、Scala、Kotlin | [Fory gRPC](../grpc/index.md)                            |
 
-对象序列化随后要求你在两种模式中选择：可移植跨语言载荷使用 xlang 模式，同运行时载荷使用
-native 模式。如果尚不清楚应选择哪种产品，请参阅
-[选择格式](../introduction/choose-a-format.md)。
-
-所选能力指南会提供确切依赖和首个可成功运行的任务。Schema 兼容性设置和生产配置取决于
-具体运行时。
+对象序列化使用 xlang 模式生成可移植的跨语言数据。Java、Python、C++、Go、Rust、Scala 和 Kotlin 还提供 native 模式，用于同一运行时内的数据。如果尚未明确产品应选择哪种格式，请参阅[选择格式](../introduction/choose-a-format.md)。

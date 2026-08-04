@@ -1,5 +1,5 @@
 ---
-title: Go 环境配置
+title: Go 设置
 sidebar_position: 4
 id: go
 license: |
@@ -19,8 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory Go 以 Go module `github.com/apache/fory/go/fory` 发布，需要 Go 1.24 或更高版本。一个
-应用的所有对等端应使用同一兼容的 Fory 发行版。
+Fory Go 提供 xlang 和 native 对象序列化、生成的模型以及 Fory gRPC。它以 `github.com/apache/fory/go/fory` 发布，需要 Go 1.25 或更高版本。
 
 ## 验证工具链
 
@@ -29,14 +28,59 @@ go version
 go env GOPROXY
 ```
 
-如果 Go proxy 尚未获取新的 submodule tag，请稍后重试，或暂时使用 `GOPROXY=direct`。
+## 对象序列化
 
-## 选择能力
+创建 module 并安装已发布的 Fory module：
 
-| 能力              | Module 或工具                    | 后续文档                                                                                                                                                      |
-| ----------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 对象序列化        | `github.com/apache/fory/go/fory` | [Go 对象序列化](../object-serialization/go/index.md)，然后选择 [xlang](../object-serialization/go/xlang.md) 或 [native](../object-serialization/go/native.md) |
-| Schema 和生成模型 | `fory-compiler`                  | [Fory IDL 和编译器](../compiler/index.md)                                                                                                                     |
-| Fory gRPC         | 生成的配套代码加 grpc-go         | [Go gRPC](../grpc/go.md)                                                                                                                                      |
+```bash
+mkdir fory-example
+cd fory-example
+go mod init example.com/fory-example
+go get github.com/apache/fory/go/fory@v1.5.0
+```
 
-每个能力指南都会提供确切的 module 命令和首个可运行示例。
+如果 Go proxy 尚未收录新的 submodule tag，请稍后重试，或者暂时使用 `GOPROXY=direct`。
+
+```go title="main.go"
+package main
+
+import (
+    "fmt"
+
+    "github.com/apache/fory/go/fory"
+)
+
+type User struct {
+    ID   int64
+    Name string
+}
+
+func main() {
+    f := fory.New(fory.WithXlang(true))
+    if err := f.RegisterStruct(User{}, 1); err != nil {
+        panic(err)
+    }
+
+    bytes, err := f.Serialize(&User{ID: 1, Name: "Alice"})
+    if err != nil {
+        panic(err)
+    }
+
+    var decoded User
+    if err := f.Deserialize(bytes, &decoded); err != nil {
+        panic(err)
+    }
+    fmt.Println(decoded.Name)
+}
+```
+
+```bash
+go run .
+```
+
+跨语言数据请使用 [xlang 模式](../object-serialization/go/xlang.md)，仅供 Go 使用的数据请使用 [native 模式](../object-serialization/go/native.md)。接下来可阅读 [Go 对象序列化](../object-serialization/go/index.md)、[配置](../object-serialization/go/configuration.md)和 [Schema 演进](../object-serialization/go/schema-evolution.md)。
+
+## 其他能力
+
+- **Fory IDL 与编译器** 生成 Go 模型和注册辅助代码。请参阅[编译器快速入门](../compiler/getting-started.md)和 [Go 生成代码指南](../compiler/generated-code/go.md)。
+- **Fory gRPC** 通过 grpc-go 传输使用 Fory 编码的消息。请参阅 [Go gRPC](../grpc/go.md)。

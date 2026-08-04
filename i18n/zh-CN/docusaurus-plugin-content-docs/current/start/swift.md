@@ -1,5 +1,5 @@
 ---
-title: Swift 环境配置
+title: Swift 设置
 sidebar_position: 8
 id: swift
 license: |
@@ -19,9 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory Swift 通过 Swift Package Manager 从 Apache Fory 仓库分发。当前软件包使用 Swift tools
-6.0，目标平台为 macOS 13 或更高版本以及 iOS 16 或更高版本。一个应用的所有对等端应固定
-使用同一 Fory 发行版。
+Fory Swift 提供 xlang 对象序列化和编译器生成的模型。它通过 Swift Package Manager 分发，使用 Swift tools 6.0，目标平台为 macOS 13 及更高版本和 iOS 16 及更高版本。
 
 ## 验证工具链
 
@@ -29,11 +27,54 @@ Fory Swift 通过 Swift Package Manager 从 Apache Fory 仓库分发。当前软
 swift --version
 ```
 
-## 选择能力
+## 对象序列化
 
-| 能力              | 软件包 product 或工具        | 后续文档                                                                                                     |
-| ----------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 对象序列化        | Swift package product `Fory` | [Swift 对象序列化](../object-serialization/swift/index.md)和 [xlang](../object-serialization/swift/xlang.md) |
-| Schema 和生成模型 | `fory-compiler`              | [Fory IDL 和编译器](../compiler/index.md)                                                                    |
+创建可执行软件包：
 
-所选能力指南会提供确切的软件包声明和首个可运行示例。
+```bash
+swift package init --type executable --name ForyExample
+```
+
+在生成的 `Package.swift` 中添加已发布的软件包和 `Fory` 产品：
+
+```swift title="Package.swift"
+dependencies: [
+    .package(url: "https://github.com/apache/fory.git", exact: "1.5.0")
+],
+targets: [
+    .executableTarget(
+        name: "ForyExample",
+        dependencies: [.product(name: "Fory", package: "fory")]
+    )
+]
+```
+
+将 `Sources/main.swift` 替换为：
+
+```swift title="Sources/main.swift"
+import Fory
+
+@ForyStruct
+struct User: Equatable {
+    var id: Int64 = 0
+    var name: String = ""
+}
+
+let fory = Fory()
+try fory.register(User.self, id: 1)
+
+let input = User(id: 1, name: "Alice")
+let bytes = try fory.serialize(input)
+let decoded: User = try fory.deserialize(bytes)
+assert(input == decoded)
+```
+
+```bash
+swift run
+```
+
+Swift 使用 xlang 模式。接下来可阅读 [Swift 对象序列化](../object-serialization/swift/index.md)、[xlang 类型](../object-serialization/swift/xlang.md)、[配置](../object-serialization/swift/configuration.md)和 [Schema 演进](../object-serialization/swift/schema-evolution.md)。
+
+## 其他能力
+
+- **Fory IDL 与编译器** 生成 Swift 模型和注册辅助代码。请参阅[编译器快速入门](../compiler/getting-started.md)和 [Swift 生成代码指南](../compiler/generated-code/swift.md)。

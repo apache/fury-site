@@ -1,5 +1,5 @@
 ---
-title: Kotlin 环境配置
+title: Kotlin 设置
 sidebar_position: 11
 id: kotlin
 license: |
@@ -19,8 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory Kotlin 制品发布到 Maven Central，并运行在 Fory Java 之上。Fory core 支持 Java 8 及
-更高版本。一个应用中的 Kotlin、Java core 和生成代码制品应使用同一 Fory 发行版。
+Fory Kotlin 提供二进制对象序列化、生成的模型、Fory gRPC 和 Android 支持。它基于 Fory Java 运行，支持 Java 8 及更高版本。
 
 ## 验证工具链
 
@@ -30,13 +29,47 @@ java -version
 # or: mvn -version
 ```
 
-## 选择能力
+## 对象序列化
 
-| 能力               | 制品或工具                              | 后续文档                                                                                                                                                                      |
-| ------------------ | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 对象序列化         | `fory-kotlin`                           | [Kotlin 对象序列化](../object-serialization/kotlin/index.md)，然后选择 [xlang](../object-serialization/kotlin/xlang.md) 或 [native](../object-serialization/kotlin/native.md) |
-| Schema 和生成模型  | `fory-compiler` 和 Kotlin KSP 支持      | [Fory IDL 和编译器](../compiler/index.md)                                                                                                                                     |
-| Fory gRPC          | 生成的 coroutine 配套代码加 grpc-kotlin | [Kotlin gRPC](../grpc/kotlin.md)                                                                                                                                              |
-| Android 对象序列化 | `fory-kotlin` 加生成序列化器            | [Android](../object-serialization/java/android.md)                                                                                                                            |
+在应用模块中添加运行时：
 
-每个能力指南都会提供确切的 Maven 或 Gradle 声明和首个可运行示例。
+```kotlin title="build.gradle.kts"
+dependencies {
+  implementation("org.apache.fory:fory-kotlin:1.5.0")
+}
+```
+
+创建 `src/main/kotlin/KotlinExample.kt`：
+
+```kotlin
+import org.apache.fory.ThreadSafeFory
+import org.apache.fory.kotlin.ForyKotlin
+
+data class User(val id: Long, val name: String)
+
+fun main() {
+    val fory: ThreadSafeFory = ForyKotlin.builder()
+        .withXlang(true)
+        .requireClassRegistration(true)
+        .buildThreadSafeFory()
+    fory.register(User::class.java, 1)
+
+    val bytes = fory.serialize(User(1, "Alice"))
+    val decoded = fory.deserialize(bytes) as User
+    println(decoded.name)
+}
+```
+
+如果项目应用了 Gradle 的 `application` 插件，请运行对应的应用任务：
+
+```bash
+./gradlew run
+```
+
+与其他 Fory 运行时共享的数据使用 xlang 模式，仅供 Kotlin/JVM 使用的数据使用 native 模式。接下来可阅读 [Kotlin 对象序列化](../object-serialization/kotlin/index.md)、[xlang](../object-serialization/kotlin/xlang.md)或 [native 模式](../object-serialization/kotlin/native.md)。
+
+## 其他能力
+
+- **Fory IDL 与编译器** 通过 KSP 生成 Kotlin 模型和注册辅助代码。请参阅[编译器快速入门](../compiler/getting-started.md)和 [Kotlin 生成代码指南](../compiler/generated-code/kotlin.md)。
+- **Fory gRPC** 通过 grpc-kotlin 和 grpc-java 传输使用 Fory 编码的消息。请参阅 [Kotlin gRPC](../grpc/kotlin.md)。
+- **Android** 使用生成的序列化器和同一个 Fory Kotlin 运行时。请参阅 [Android 对象序列化](../object-serialization/java/android.md)。
