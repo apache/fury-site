@@ -90,7 +90,7 @@ func main() {
 
 仅限 Go 的通信应使用原生模式。通过 `fory.WithXlang(false)` 选择原生模式，它会让 Go 对象序列化保持 Go 原生形式。该模式针对不需要可移植跨语言映射的 Go 结构体、指针、接口和 Go 专属类型行为进行了优化。兼容模式默认启用。只有每个读取端和写入端都使用相同的 Go 结构体 Schema，并且希望获得更快序列化和更小体积时，才设置 `fory.WithCompatible(false)`。
 
-Go 跨语言注册和互操作规则参见[跨语言序列化](xlang.md)，仅限 Go 的载荷参见[原生序列化](native.md)。
+Go 跨语言注册和互操作规则参见[跨语言序列化](core-api.md#cross-language-interoperability)，仅限 Go 的载荷参见[原生序列化](native.md)。
 
 ## 配置
 
@@ -130,14 +130,13 @@ data, _ := f.Serialize(&User{ID: 1, Name: "Alice"})
 // 'data' can be deserialized by Java, Python, etc.
 ```
 
-类型映射和兼容性详情参见[跨语言序列化](xlang.md)。
+类型映射和兼容性详情参见[跨语言序列化](core-api.md#cross-language-interoperability)。
 
 ## 文档
 
 | 主题                                    | 说明                        |
 | --------------------------------------- | --------------------------- |
 | [基本序列化](core-api.md)               | 核心 API 和使用模式         |
-| [跨语言序列化](xlang.md)                | 多语言序列化                |
 | [原生序列化](native.md)                 | 仅限 Go 的序列化            |
 | [配置](configuration.md)                | 选项和设置                  |
 | [Schema 元数据](schema-metadata.md)     | 字段级配置                  |

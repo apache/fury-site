@@ -191,6 +191,6 @@ pip install pyfory[format]
 
 ## 相关主题
 
-- [Xlang 序列化](../object-serialization/python/xlang.md) - xlang 模式
+- [跨语言互操作](../object-serialization/python/core-api.md#cross-language-interoperability) - xlang 模式
 - [基本序列化](../object-serialization/python/core-api.md) - 对象序列化
 - [行格式规范](https://fory.apache.org/docs/specification/row_format_spec) - 协议详情

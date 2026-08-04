@@ -157,4 +157,4 @@ static {
 - [Configuration](configuration.md) - All ForyBuilder options
 - [Native Serialization](native.md) - Java-only serialization, JDK hooks, and zero-copy buffers
 - [Object Copy](object-copy.md) - Deep copy functionality
-- [Xlang Serialization](xlang.md) - Java xlang interoperability
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Java xlang interoperability

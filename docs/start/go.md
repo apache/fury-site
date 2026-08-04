@@ -81,7 +81,7 @@ func main() {
 go run .
 ```
 
-Use [xlang mode](../object-serialization/go/xlang.md) for cross-language data
+Use [xlang mode](../object-serialization/go/core-api.md#cross-language-interoperability) for cross-language data
 and [native mode](../object-serialization/go/native.md) for Go-only data.
 Continue with [Go Object Serialization](../object-serialization/go/index.md),
 [configuration](../object-serialization/go/configuration.md), and

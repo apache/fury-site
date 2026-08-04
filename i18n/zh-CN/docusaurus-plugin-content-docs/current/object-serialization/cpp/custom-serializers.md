@@ -368,4 +368,4 @@ static MyType read_data(ReadContext &ctx) {
 - [类型注册](type-registration.md) - 注册序列化器
 - [基本序列化](core-api.md) - 使用 FORY_STRUCT 宏
 - [Schema 演进](schema-evolution.md) - 兼容模式
-- [跨语言序列化](xlang.md) - 跨语言序列化
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言序列化

@@ -194,4 +194,4 @@ let fory = Fory::builder()
 
 - [基本序列化](core-api.md) - 使用已配置的 Fory
 - [Schema 演进](schema-evolution.md) - 兼容模式详情
-- [跨语言序列化](xlang.md) - xlang 模式
+- [跨语言序列化](core-api.md#cross-language-interoperability) - xlang 模式

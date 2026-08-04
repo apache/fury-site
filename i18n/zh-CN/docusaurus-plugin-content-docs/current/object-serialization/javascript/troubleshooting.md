@@ -86,4 +86,4 @@ const fory = new Fory({
 
 - [基本序列化](core-api.md)
 - [引用](references.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)

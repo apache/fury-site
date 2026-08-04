@@ -282,4 +282,4 @@ func TestMySerializer(t *testing.T) {
 
 - [类型注册](type-registration.md)
 - [支持的类型](supported-types.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)

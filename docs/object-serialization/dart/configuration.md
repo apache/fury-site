@@ -177,4 +177,4 @@ Security-related configuration:
 
 - [Basic Serialization](core-api.md)
 - [Schema Evolution](schema-evolution.md)
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)

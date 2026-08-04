@@ -297,4 +297,4 @@ Currently not supported:
 
 - [Basic Serialization](core-api.md) - Using these types
 - [Type Registration](type-registration.md) - Registering types
-- [Xlang Serialization](xlang.md) - Cross-language compatibility
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Cross-language compatibility

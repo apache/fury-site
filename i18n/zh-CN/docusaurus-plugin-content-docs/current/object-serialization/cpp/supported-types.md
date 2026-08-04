@@ -289,4 +289,4 @@ auto decoded = fory.deserialize<Color>(bytes).value();
 
 - [基本序列化](core-api.md) - 使用这些类型
 - [类型注册](type-registration.md) - 注册类型
-- [跨语言序列化](xlang.md) - 跨语言兼容性
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言兼容性

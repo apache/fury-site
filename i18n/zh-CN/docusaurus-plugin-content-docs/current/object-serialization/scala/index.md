@@ -118,5 +118,5 @@ Fory Scala 基于 Fory Java 构建。Fory Java 的大多数配置选项、功能
 - [原生序列化](native.md) - 在 JVM 原生模式下序列化 Scala 类型
 - [Schema 元数据](schema-metadata.md) - Scala 注解、引用、枚举 ID 和联合元数据
 - [默认值](default-values.md) - Scala 类默认值支持
-- [Xlang 序列化](xlang.md) - Scala 3 生成的模型和宏派生 xlang 序列化器
+- [基础序列化](core-api.md) - 默认 xlang 模式的模型、API 和跨语言互操作
 - [gRPC 支持](../../grpc/scala.md) - Scala 3 生成的 gRPC 服务配套代码

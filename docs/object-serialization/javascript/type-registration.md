@@ -154,11 +154,11 @@ Use **names** when:
 
 ## Xlang
 
-For a message to round-trip between JavaScript and another language, both sides must use the same identity for a given type: same numeric ID, or same `typeName`. Use `.` inside `typeName` to add a namespace prefix. See [Xlang Serialization](xlang.md).
+For a message to round-trip between JavaScript and another language, both sides must use the same identity for a given type: same numeric ID, or same `typeName`. Use `.` inside `typeName` to add a namespace prefix. See [Cross-Language Interoperability](core-api.md#cross-language-interoperability).
 
 ## Related Topics
 
 - [Basic Serialization](core-api.md)
 - [Schema Metadata](schema-metadata.md)
 - [Schema Evolution](schema-evolution.md)
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)

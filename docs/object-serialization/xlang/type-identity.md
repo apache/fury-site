@@ -290,9 +290,9 @@ easier to coordinate across independently deployed services. Do not mix an
 ID registration on one peer with a name registration on another.
 
 Use the selected runtime guide for the exact registration API:
-[Java](../java/xlang.md), [Python](../python/xlang.md),
-[C++](../cpp/xlang.md), [Go](../go/xlang.md),
-[Rust](../rust/xlang.md), [JavaScript](../javascript/xlang.md),
-[C#](../csharp/xlang.md), [Swift](../swift/xlang.md),
-[Dart](../dart/xlang.md), [Scala](../scala/xlang.md), and
-[Kotlin](../kotlin/xlang.md).
+[Java](../java/core-api.md#cross-language-interoperability), [Python](../python/core-api.md#cross-language-interoperability),
+[C++](../cpp/core-api.md#cross-language-interoperability), [Go](../go/core-api.md#cross-language-interoperability),
+[Rust](../rust/core-api.md#cross-language-interoperability), [JavaScript](../javascript/core-api.md#cross-language-interoperability),
+[C#](../csharp/core-api.md#cross-language-interoperability), [Swift](../swift/core-api.md#cross-language-interoperability),
+[Dart](../dart/core-api.md#cross-language-interoperability), [Scala](../scala/core-api.md#cross-language-interoperability), and
+[Kotlin](../kotlin/core-api.md#cross-language-interoperability).

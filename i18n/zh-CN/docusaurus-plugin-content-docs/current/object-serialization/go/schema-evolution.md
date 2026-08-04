@@ -370,5 +370,5 @@ func main() {
 ## 相关主题
 
 - [配置](configuration.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)
 - [故障排查](troubleshooting.md)

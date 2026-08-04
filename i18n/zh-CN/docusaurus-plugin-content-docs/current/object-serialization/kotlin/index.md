@@ -126,7 +126,7 @@ Fory Kotlin 基于 Fory Java 构建。Fory Java 的大多数配置选项、功�
 
 ## Kotlin 专属文档
 
-- [Xlang 序列化](xlang.md) - 用于直接跨语言对象序列化的 Kotlin API
+- [基础序列化](core-api.md) - 默认 xlang 模式的模型、API 和跨语言互操作
 - [配置](configuration.md) - Kotlin 特有的 Fory 设置要求
 - [原生序列化](native.md) - 在 JVM 原生模式下序列化 Kotlin 类型
 - [Schema 元数据](schema-metadata.md) - Kotlin 注解、可空性、引用和整数元数据

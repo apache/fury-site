@@ -487,5 +487,5 @@ struct User {
 
 - [基本序列化](core-api.md) - 开始使用 Fory 序列化
 - [Schema 演进](schema-evolution.md) - 兼容模式和 Schema 演进
-- [跨语言序列化](xlang.md) - 与 Java、C++、Go、Python 互操作
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 与 Java、C++、Go、Python 互操作
 - [外部类型序列化](external-types.md) - 为第三方字段选择序列化器

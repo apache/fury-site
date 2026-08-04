@@ -21,7 +21,7 @@ license: |
 
 This page covers serialization of Scala-specific JVM types in native mode. For
 cross-language Scala models, use the xlang path described in
-[Xlang Serialization](xlang.md).
+[Cross-Language Interoperability](core-api.md#cross-language-interoperability).
 
 When compatible mode is enabled, Scala readers use the JVM compatible-read rules for selected
 scalar field type changes. A matched field can read between `Boolean`, `String`, numeric scalars,

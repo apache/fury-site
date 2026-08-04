@@ -218,4 +218,4 @@ Security-related configuration:
 
 - [Basic Serialization](core-api.md) - Using configured Fory
 - [Schema Evolution](schema-evolution.md) - Compatible mode details
-- [Xlang Serialization](xlang.md) - xlang mode
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - xlang mode

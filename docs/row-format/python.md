@@ -195,6 +195,6 @@ pip install pyfory[format]
 
 ## Related Topics
 
-- [Xlang Serialization](../object-serialization/python/xlang.md) - xlang mode
+- [Cross-Language Interoperability](../object-serialization/python/core-api.md#cross-language-interoperability) - xlang mode
 - [Basic Serialization](../object-serialization/python/core-api.md) - Object serialization
 - [Row Format Specification](https://fory.apache.org/docs/specification/row_format_spec) - Protocol details

@@ -526,4 +526,4 @@ class User:
 
 - [Basic Serialization](core-api.md) - Getting started with Fory serialization
 - [Schema Evolution](schema-evolution.md) - Compatible mode and schema evolution
-- [Xlang Serialization](xlang.md) - Interoperability with Java, Rust, C++, Go
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Interoperability with Java, Rust, C++, Go

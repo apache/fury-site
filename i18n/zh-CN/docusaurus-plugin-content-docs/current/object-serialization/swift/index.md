@@ -53,7 +53,6 @@ targets: [
 
 - [配置](configuration.md)
 - [基本序列化](core-api.md)
-- [Xlang 序列化](xlang.md)
 - [Schema 元数据](schema-metadata.md)
 - [类型注册](type-registration.md)
 - [外部类型序列化](external-types.md)

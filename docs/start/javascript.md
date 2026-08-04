@@ -65,7 +65,7 @@ node example.cjs
 
 JavaScript uses xlang mode. Continue with
 [JavaScript/TypeScript Object Serialization](../object-serialization/javascript/index.md),
-[xlang types](../object-serialization/javascript/xlang.md),
+[xlang types](../object-serialization/javascript/core-api.md#cross-language-interoperability),
 [configuration](../object-serialization/javascript/configuration.md), and
 [schema evolution](../object-serialization/javascript/schema-evolution.md).
 

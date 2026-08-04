@@ -250,5 +250,5 @@ if (!result.ok()) {
 ## Related Topics
 
 - [Basic Serialization](core-api.md) - Using registered types
-- [Xlang Serialization](xlang.md) - Cross-language considerations
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Cross-language considerations
 - [Supported Types](supported-types.md) - All supported types

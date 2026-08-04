@@ -69,7 +69,7 @@ sbt run
 Use xlang mode for data shared with other Fory runtimes or native mode for
 Scala/JVM-only data. Continue with
 [Scala Object Serialization](../object-serialization/scala/index.md),
-[xlang](../object-serialization/scala/xlang.md), or
+[xlang](../object-serialization/scala/core-api.md#cross-language-interoperability), or
 [native mode](../object-serialization/scala/native.md).
 
 ## Other Capabilities

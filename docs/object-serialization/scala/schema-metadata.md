@@ -119,6 +119,6 @@ reflection is not the source of truth for generated Scala metadata.
 
 ## Related Topics
 
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
 - [Configuration](configuration.md)
 - [Default Values](default-values.md)

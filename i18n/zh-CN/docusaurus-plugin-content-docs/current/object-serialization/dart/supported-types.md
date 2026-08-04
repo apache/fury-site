@@ -139,5 +139,5 @@ Fory 支持 `List<T>`、`Set<T>` 和 `Map<K, V>`。元素和 key 类型也必须
 
 - [Struct 继承](inheritance.md)
 - [Schema 元数据](schema-metadata.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)
 - [Schema 演进](schema-evolution.md)

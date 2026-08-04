@@ -287,9 +287,9 @@ FORY_STRUCT(Zoo,
 每个对等端都必须使用相同的数字 ID，或相同的命名空间和类型名称注册自定义类型。数字 ID 生成的元数据更小；名称则更容易在独立部署的服务之间协调。不要在一个对等端使用 ID 注册，而在另一个对等端使用名称注册。
 
 确切的注册 API 请参阅所选运行时指南：
-[Java](../java/xlang.md)、[Python](../python/xlang.md)、
-[C++](../cpp/xlang.md)、[Go](../go/xlang.md)、
-[Rust](../rust/xlang.md)、[JavaScript](../javascript/xlang.md)、
-[C#](../csharp/xlang.md)、[Swift](../swift/xlang.md)、
-[Dart](../dart/xlang.md)、[Scala](../scala/xlang.md) 和
-[Kotlin](../kotlin/xlang.md)。
+[Java](../java/core-api.md#cross-language-interoperability)、[Python](../python/core-api.md#cross-language-interoperability)、
+[C++](../cpp/core-api.md#cross-language-interoperability)、[Go](../go/core-api.md#cross-language-interoperability)、
+[Rust](../rust/core-api.md#cross-language-interoperability)、[JavaScript](../javascript/core-api.md#cross-language-interoperability)、
+[C#](../csharp/core-api.md#cross-language-interoperability)、[Swift](../swift/core-api.md#cross-language-interoperability)、
+[Dart](../dart/core-api.md#cross-language-interoperability)、[Scala](../scala/core-api.md#cross-language-interoperability) 和
+[Kotlin](../kotlin/core-api.md#cross-language-interoperability)。

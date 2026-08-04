@@ -104,12 +104,12 @@ fory.registerSerializer(
 
 ## 跨语言要求
 
-读写该类型的每个通信方必须使用相同数字 ID 或名称。示例参见[跨语言序列化](xlang.md)。
+读写该类型的每个通信方必须使用相同数字 ID 或名称。示例参见[跨语言序列化](core-api.md#cross-language-interoperability)。
 
 ## 相关主题
 
 - [Struct 继承](inheritance.md)
 - [代码生成](code-generation.md)
 - [外部类型序列化](external-types.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)
 - [自定义序列化器](custom-serializers.md)

@@ -90,4 +90,4 @@ fory.Register<Order>(101);
 - [基本序列化](core-api.md)
 - [外部类型](external-types.md)
 - [自定义序列化器](custom-serializers.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)

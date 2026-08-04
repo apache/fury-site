@@ -145,12 +145,11 @@ print(result)  # Person(name='Alice', age=30)
 
 仅限 Python 的流量使用原生模式。通过 `xlang=False` 选择原生模式；该模式负责函数、lambda、类、方法、`__reduce__`、`__getstate__` 以及 pickle 协议 5 带外缓冲区等 pickle/cloudpickle 风格行为。它针对 Python 类型系统优化，支持比跨语言模式更广泛的 Python 对象，因此适合替代 pickle 或 cloudpickle。兼容模式默认启用。仅当每个读取端和写入端都使用相同的 Python 类 Schema，并且希望获得更快速度和更小体积时，才设置 `compatible=False`。
 
-仅限 Python 的序列化详情参见[原生序列化](native.md)，Python 跨语言注册与互操作规则参见[跨语言序列化](xlang.md)。
+仅限 Python 的序列化详情参见[原生序列化](native.md)，Python 跨语言注册与互操作规则参见[跨语言序列化](core-api.md#cross-language-interoperability)。
 
 ## 后续阅读
 
 - [基础序列化](core-api.md) - 基本使用模式
-- [跨语言序列化](xlang.md) - 跨语言模式
 - [原生序列化](native.md) - 仅限 Python 的序列化
 - [配置](configuration.md) - Fory 参数、模式与安全
 - [类型注册](type-registration.md) - 用户定义类型注册

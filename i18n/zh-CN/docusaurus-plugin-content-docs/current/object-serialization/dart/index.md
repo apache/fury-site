@@ -136,7 +136,6 @@ dart run build_runner build
 | [代码生成](code-generation.md)          | `@ForyStruct`、build runner 和生成模块         |
 | [Struct 继承](inheritance.md)           | 父类、mixin、私有字段和构造函数                |
 | [外部类型序列化](external-types.md)     | 为其他包拥有的类生成序列化器                   |
-| [跨语言序列化](xlang.md)                | 互操作规则和字段对齐                           |
 | [Schema 元数据](schema-metadata.md)     | `@ForyField`、字段 ID、可空性、引用和多态      |
 | [类型注册](type-registration.md)        | 基于 ID 与基于名称的注册及注册规则             |
 | [自定义序列化器](custom-serializers.md) | 自定义 `Serializer<T>` 实现和 union            |

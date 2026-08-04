@@ -245,5 +245,5 @@ auto fory = Fory::builder().build_thread_safe();  // Returns ThreadSafeFory
 ## 相关主题
 
 - [基本序列化](core-api.md) - 使用已配置的 Fory
-- [跨语言序列化](xlang.md) - 跨语言模式详情
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言模式详情
 - [类型注册](type-registration.md) - 注册类型

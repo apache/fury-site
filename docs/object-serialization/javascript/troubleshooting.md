@@ -87,4 +87,4 @@ const fory = new Fory({
 
 - [Basic Serialization](core-api.md)
 - [References](references.md)
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)

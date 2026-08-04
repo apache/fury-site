@@ -23,7 +23,7 @@ Java 原生序列化是通过 `withXlang(false)` 选择的仅限 Java 编码格�
 
 本页所称原生序列化是指 Fory 的 `xlang=false` 编码模式，与 GraalVM 原生镜像支持不同；后者参见 [GraalVM 原生镜像](graalvm.md)。
 
-如果字节需要由非 Java Fory 实现读取，请使用 Java 默认的[跨语言序列化](xlang.md)模式。
+如果字节需要由非 Java Fory 实现读取，请使用 Java 默认的[跨语言序列化](core-api.md#cross-language-interoperability)模式。
 
 ## 何时使用原生序列化
 
@@ -281,7 +281,7 @@ Fory fory = Fory.builder()
 ## 相关主题
 
 - [基础序列化](core-api.md) - 跨语言优先的 Java 快速入门
-- [跨语言序列化](xlang.md) - 跨语言 Java 载荷
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言 Java 载荷
 - [配置](configuration.md) - Java 构建器选项
 - [Schema 演进](schema-evolution.md) - 兼容模式与相同 Schema 优化
 - [类型注册](type-registration.md) - 注册与安全

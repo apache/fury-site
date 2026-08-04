@@ -269,6 +269,6 @@ Parent decoded = encoder.fromRow(row);
 
 ## 相关主题
 
-- [Xlang 序列化](../object-serialization/java/xlang.md) - xlang 模式
+- [跨语言互操作](../object-serialization/java/core-api.md#cross-language-interoperability) - xlang 模式
 - [Java 高级功能](../object-serialization/java/advanced-features.md) - 零拷贝对象序列化
 - [行格式规范](https://fory.apache.org/docs/specification/row_format_spec) - 协议详情

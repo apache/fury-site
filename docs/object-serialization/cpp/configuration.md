@@ -267,5 +267,5 @@ Security-related configuration:
 ## Related Topics
 
 - [Basic Serialization](core-api.md) - Using configured Fory
-- [Xlang Serialization](xlang.md) - xlang mode details
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - xlang mode details
 - [Type Registration](type-registration.md) - Registering types

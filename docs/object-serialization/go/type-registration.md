@@ -259,6 +259,6 @@ Two types registered with the same ID will conflict.
 ## Related Topics
 
 - [Basic Serialization](core-api.md)
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
 - [Supported Types](supported-types.md)
 - [Troubleshooting](troubleshooting.md)

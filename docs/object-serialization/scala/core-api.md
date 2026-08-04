@@ -1,7 +1,7 @@
 ---
-title: Scala Xlang Serialization
+title: Basic Serialization
 sidebar_position: 1
-id: xlang
+id: core-api
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,11 +19,17 @@ license: |
   limitations under the License.
 ---
 
+Xlang is the default serialization mode for Fory Scala. This page covers the basic serialization API and interoperability rules for that default mode.
+
+## Cross-Language Interoperability
+
+The following sections cover model generation, registration, and cross-language round trips in the default xlang mode.
+
 The Fory schema IDL Scala target generates Scala 3 source for xlang payloads.
 The Fory Scala artifact remains cross-built for Scala 2.13 and Scala 3; only the
 schema IDL output and quoted macro derivation require Scala 3.
 
-## Setup
+### Setup
 
 Generated Scala code uses the public macro API in `org.apache.fory.scala` and
 the shared JVM annotations in `org.apache.fory.annotation`. Macro internals live
@@ -55,7 +61,7 @@ serializers or Scala-specific registration state in Java core. Enums and unions
 are registered with their serializers directly because their derived serializers
 own case dispatch.
 
-## Generated Messages
+### Generated Messages
 
 Acyclic messages generate case classes:
 
@@ -107,7 +113,7 @@ supported mutable collection interfaces such as `scala.collection.Seq`
 and `scala.collection.Map`, but concrete mutable collection classes are outside
 the schema IDL surface unless explicitly generated.
 
-## Generated Enums
+### Generated Enums
 
 IDL enums generate Scala 3 enums only. The compiler does not emit Java enum
 files.
@@ -127,7 +133,7 @@ enum Status {
 Generated registration uses `ScalaSerializers.registerEnum(...)` so the stable
 Fory enum IDs from case-level `@ForyEnumId` metadata are used in xlang mode.
 
-## Generated Unions
+### Generated Unions
 
 IDL unions generate Scala 3 ADT enums with macro-derived serializers:
 
@@ -167,7 +173,7 @@ locally.
 The macro writes the existing xlang union envelope directly. It does not
 allocate temporary Java `Union` carriers.
 
-## Manual Scala 3 Derivation
+### Manual Scala 3 Derivation
 
 Manual Scala 3 models can derive the same serializer typeclass:
 
@@ -192,7 +198,7 @@ constructor-owned value that participates in the cycle, such as a Scala enum
 case or case class, the serializer fails with a clear error because no copied
 identity can be published until construction has completed.
 
-## First round trip
+### First round trip
 
 ```scala
 import org.apache.fory.Fory

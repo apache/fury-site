@@ -257,5 +257,5 @@ assert_eq!(data, decoded);
 
 - [配置](configuration.md) - 兼容模式设置
 - [多态](polymorphism.md) - 支持 Schema 演进的特征对象
-- [跨语言序列化](xlang.md) - 跨语言 Schema 演进
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言 Schema 演进
 - [外部类型序列化](external-types.md) - 第三方值的兼容 Schema

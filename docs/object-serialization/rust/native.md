@@ -23,7 +23,7 @@ Rust native serialization is the Rust-only wire mode selected with `.xlang(false
 every writer and reader is Rust and the payload should preserve Rust object-graph behavior instead
 of the portable xlang type system.
 
-Use [Xlang Serialization](xlang.md), the default Rust mode, when bytes must be read
+Use [Cross-Language Interoperability](core-api.md#cross-language-interoperability), the default Rust mode, when bytes must be read
 by Java, Python, C++, Go, JavaScript/TypeScript, C#, Swift, Dart, Scala,
 Kotlin, or another non-Rust Fory implementation.
 
@@ -264,7 +264,7 @@ Native serialization defaults to compatible mode. Keep that default when schemas
 
 ## Related Topics
 
-- [Xlang Serialization](xlang.md) - Cross-language Rust payloads
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Cross-language Rust payloads
 - [Configuration](configuration.md) - Builder options
 - [Basic Serialization](core-api.md) - Object graph serialization
 - [Shared & Circular References](references.md) - `Rc`, `Arc`, and weak pointers

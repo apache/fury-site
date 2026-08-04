@@ -137,5 +137,5 @@ return value;
 
 - [类型注册](type-registration.md)
 - [外部类型序列化](external-types.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)
 - [故障排查](troubleshooting.md)

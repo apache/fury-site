@@ -222,7 +222,7 @@ Use xlang mode for cross-language payloads and schemas shared with other Fory im
 
 Use native mode for C++-only traffic. Native mode is selected with `.xlang(false)` and keeps C++ object serialization in C++-native form. It is optimized for C++ types and avoids portable xlang type-mapping constraints when the payload never leaves C++. Compatible mode is enabled by default. Set `.compatible(false)` only when every reader and writer uses the same C++ schema and you want faster serialization and smaller size.
 
-See [Xlang Serialization](xlang.md) for C++ xlang registration and interoperability rules, and [Native Serialization](native.md) for C++-only payloads.
+See [Cross-Language Interoperability](core-api.md#cross-language-interoperability) for C++ xlang registration and interoperability rules, and [Native Serialization](native.md) for C++-only payloads.
 
 ## Thread Safety
 
@@ -264,8 +264,7 @@ std::thread t2([&]() {
 ## Next Steps
 
 - [Configuration](configuration.md) - Builder options and modes
-- [Basic Serialization](core-api.md) - Object graph serialization
-- [Xlang Serialization](xlang.md) - xlang mode and interoperability
+- [Basic Serialization](core-api.md) - Default xlang object graphs and interoperability
 - [Native Serialization](native.md) - C++-only serialization
 - [Schema Metadata](schema-metadata.md) - Field-level metadata (nullable, ref tracking)
 - [Schema Evolution](schema-evolution.md) - Compatible mode and schema changes

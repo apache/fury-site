@@ -137,22 +137,21 @@ constructors, mixins, and field inclusion options.
 
 ## Documentation
 
-| Topic                                            | Description                                                     |
-| ------------------------------------------------ | --------------------------------------------------------------- |
-| [Configuration](configuration.md)                | Fory options, compatible mode, and safety limits                |
-| [Basic Serialization](core-api.md)               | `serialize`, `deserialize`, generated registration, root graphs |
-| [Code Generation](code-generation.md)            | `@ForyStruct`, build runner, and generated modules              |
-| [Struct Inheritance](inheritance.md)             | Superclasses, mixins, private fields, and constructors          |
-| [External-Type Serialization](external-types.md) | Generated serializers for classes owned by another package      |
-| [Xlang Serialization](xlang.md)                  | Interoperability rules and field alignment                      |
-| [Schema Metadata](schema-metadata.md)            | `@ForyField`, field IDs, nullability, references, polymorphism  |
-| [Type Registration](type-registration.md)        | ID-based vs name-based registration and registration rules      |
-| [Custom Serializers](custom-serializers.md)      | Custom `Serializer<T>` implementations and unions               |
-| [Supported Types](supported-types.md)            | Built-in xlang values, wrappers, collections, and structs       |
-| [Schema Evolution](schema-evolution.md)          | Compatible structs and evolving schemas                         |
-| [Web Platform Support](web-platform-support.md)  | Dart VM/AOT, Flutter, and web support, limits, and validation   |
-| [gRPC Support](../../grpc/dart.md)               | Generated Fory-backed gRPC service companions                   |
-| [Troubleshooting](troubleshooting.md)            | Common errors, diagnostics, and validation steps                |
+| Topic                                            | Description                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------- |
+| [Configuration](configuration.md)                | Fory options, compatible mode, and safety limits               |
+| [Basic Serialization](core-api.md)               | Default xlang APIs, registration, and interoperability         |
+| [Code Generation](code-generation.md)            | `@ForyStruct`, build runner, and generated modules             |
+| [Struct Inheritance](inheritance.md)             | Superclasses, mixins, private fields, and constructors         |
+| [External-Type Serialization](external-types.md) | Generated serializers for classes owned by another package     |
+| [Schema Metadata](schema-metadata.md)            | `@ForyField`, field IDs, nullability, references, polymorphism |
+| [Type Registration](type-registration.md)        | ID-based vs name-based registration and registration rules     |
+| [Custom Serializers](custom-serializers.md)      | Custom `Serializer<T>` implementations and unions              |
+| [Supported Types](supported-types.md)            | Built-in xlang values, wrappers, collections, and structs      |
+| [Schema Evolution](schema-evolution.md)          | Compatible structs and evolving schemas                        |
+| [Web Platform Support](web-platform-support.md)  | Dart VM/AOT, Flutter, and web support, limits, and validation  |
+| [gRPC Support](../../grpc/dart.md)               | Generated Fory-backed gRPC service companions                  |
+| [Troubleshooting](troubleshooting.md)            | Common errors, diagnostics, and validation steps               |
 
 ## Related Resources
 

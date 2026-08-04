@@ -515,4 +515,4 @@ class User:
 
 - [基础序列化](core-api.md) - Fory 序列化入门
 - [Schema 演进](schema-evolution.md) - 兼容模式与 Schema 演进
-- [跨语言序列化](xlang.md) - 与 Java、Rust、C++、Go 互操作
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 与 Java、Rust、C++、Go 互操作

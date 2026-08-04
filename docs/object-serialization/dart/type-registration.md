@@ -119,12 +119,12 @@ See [Custom Serializers](custom-serializers.md) for how to implement a serialize
 
 ## Xlang Requirements
 
-The same numeric ID or name must be used in every peer that reads or writes the type. See [Xlang Serialization](xlang.md) for examples.
+The same numeric ID or name must be used in every peer that reads or writes the type. See [Cross-Language Interoperability](core-api.md#cross-language-interoperability) for examples.
 
 ## Related Topics
 
 - [Struct Inheritance](inheritance.md)
 - [Code Generation](code-generation.md)
 - [External-Type Serialization](external-types.md)
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)
 - [Custom Serializers](custom-serializers.md)

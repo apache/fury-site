@@ -126,7 +126,7 @@ Fory Kotlin is built on top of Fory Java. Most configuration options, features, 
 
 ## Kotlin-Specific Documentation
 
-- [Xlang Serialization](xlang.md) - Kotlin APIs for direct cross-language object serialization
+- [Basic Serialization](core-api.md) - Models, APIs, and interoperability in the default xlang mode
 - [Configuration](configuration.md) - Kotlin-specific Fory setup requirements
 - [Native Serialization](native.md) - Serializing Kotlin types in JVM-native mode
 - [Schema Metadata](schema-metadata.md) - Kotlin annotations, nullability, references, and integer metadata

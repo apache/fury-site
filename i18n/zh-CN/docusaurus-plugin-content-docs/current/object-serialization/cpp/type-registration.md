@@ -250,5 +250,5 @@ if (!result.ok()) {
 ## 相关主题
 
 - [基本序列化](core-api.md) - 使用已注册类型
-- [跨语言序列化](xlang.md) - 跨语言注意事项
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言注意事项
 - [支持的类型](supported-types.md) - 所有支持的类型

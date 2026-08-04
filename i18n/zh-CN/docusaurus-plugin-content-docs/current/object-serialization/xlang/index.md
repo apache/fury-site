@@ -159,17 +159,17 @@ foryc person.fdl --lang java,python,cpp,go,rust,javascript,csharp,swift,dart,sca
 
 有关各语言的详细信息和 API 参考，请参阅：
 
-- [Java 跨语言序列化指南](../java/xlang.md)
-- [Python 跨语言序列化指南](../python/xlang.md)
-- [C++ 跨语言序列化指南](../cpp/xlang.md)
-- [Go 跨语言序列化指南](../go/xlang.md)
-- [Rust 跨语言序列化指南](../rust/xlang.md)
-- [JavaScript/TypeScript 跨语言序列化指南](../javascript/xlang.md)
-- [C# 跨语言序列化指南](../csharp/xlang.md)
-- [Swift 跨语言序列化指南](../swift/xlang.md)
-- [Dart 跨语言序列化指南](../dart/xlang.md)
-- [Scala 跨语言序列化指南](../scala/xlang.md)
-- [Kotlin 跨语言序列化指南](../kotlin/xlang.md)
+- [Java 跨语言序列化指南](../java/core-api.md#cross-language-interoperability)
+- [Python 跨语言序列化指南](../python/core-api.md#cross-language-interoperability)
+- [C++ 跨语言序列化指南](../cpp/core-api.md#cross-language-interoperability)
+- [Go 跨语言序列化指南](../go/core-api.md#cross-language-interoperability)
+- [Rust 跨语言序列化指南](../rust/core-api.md#cross-language-interoperability)
+- [JavaScript/TypeScript 跨语言序列化指南](../javascript/core-api.md#cross-language-interoperability)
+- [C# 跨语言序列化指南](../csharp/core-api.md#cross-language-interoperability)
+- [Swift 跨语言序列化指南](../swift/core-api.md#cross-language-interoperability)
+- [Dart 跨语言序列化指南](../dart/core-api.md#cross-language-interoperability)
+- [Scala 跨语言序列化指南](../scala/core-api.md#cross-language-interoperability)
+- [Kotlin 跨语言序列化指南](../kotlin/core-api.md#cross-language-interoperability)
 
 ## 规范
 

@@ -114,4 +114,4 @@ Dynamic object payloads via `Serialize<object?>` / `Deserialize<object?>` suppor
 - [Basic Serialization](core-api.md)
 - [External Types](external-types.md)
 - [Type Registration](type-registration.md)
-- [Xlang Serialization](xlang.md)
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability)

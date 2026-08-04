@@ -158,14 +158,13 @@ options; see [Configuration](configuration.md).
 
 | Topic                                        | Description                                             |
 | -------------------------------------------- | ------------------------------------------------------- |
-| [Basic Serialization](core-api.md)           | Core APIs and everyday usage                            |
+| [Basic Serialization](core-api.md)           | Default xlang APIs, usage, and interoperability         |
 | [Configuration](configuration.md)            | Fory options, compatible mode, limits, and HPS          |
 | [Type Registration](type-registration.md)    | Numeric IDs, names, decorators, and schema registration |
 | [Schema Metadata](schema-metadata.md)        | Type builders, field options, and decorators            |
 | [Supported Types](supported-types.md)        | Primitive, collection, time, enum, and struct mappings  |
 | [References](references.md)                  | Shared references and circular object graphs            |
 | [Schema Evolution](schema-evolution.md)      | Compatible mode and evolving structs                    |
-| [Xlang Serialization](xlang.md)              | Interop guidance and mapping rules                      |
 | [Fory IDL Compiler](../../compiler/index.md) | Generate TypeScript models from `.fdl` schemas          |
 | [gRPC Support](../../grpc/javascript.md)     | Node.js gRPC and browser gRPC-Web generated clients     |
 | [Troubleshooting](troubleshooting.md)        | Common issues, limits, and debugging tips               |

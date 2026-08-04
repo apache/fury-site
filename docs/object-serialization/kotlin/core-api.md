@@ -1,7 +1,7 @@
 ---
-title: Kotlin Xlang 序列化
+title: Basic Serialization
 sidebar_position: 1
-id: xlang
+id: core-api
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,14 +19,21 @@ license: |
   limitations under the License.
 ---
 
-Kotlin xlang 序列化通过 `ForyKotlin` 使用 JVM Fory 实现。当 Kotlin 载荷需要由其他受支持
-的 Fory 运行时读取时，请使用该模式。在所有对端使用相同身份和字段 Schema 注册可移植
-模型类型。
+Xlang is the default serialization mode for Fory Kotlin. This page covers the basic serialization API and interoperability rules for that default mode.
 
-Kotlin 数据类、枚举和密封类模型会在适用时使用 Kotlin 集成与生成的序列化器。确切的
-可移植载体映射仍由 [xlang 类型映射](../../specification/xlang_type_mapping.md)定义。
+## Cross-Language Interoperability
 
-## 创建 xlang 实例
+The following sections cover model generation, registration, and cross-language round trips in the default xlang mode.
+
+Kotlin xlang serialization uses the JVM Fory implementation through `ForyKotlin`. Use it when
+Kotlin payloads must be read by another supported Fory runtime. Register portable model types with
+the same identity and field schema on every peer.
+
+Kotlin data classes, enums, and sealed-class models use the Kotlin integration and generated
+serializers where applicable. Exact portable carrier mappings remain defined by the
+[xlang type mapping](../../specification/xlang_type_mapping.md).
+
+### Create a Fory Instance
 
 ```kotlin
 import org.apache.fory.kotlin.ForyKotlin
@@ -36,7 +43,7 @@ val fory = ForyKotlin.builder()
     .build()
 ```
 
-## 第一次往返处理
+### First round trip
 
 ```kotlin
 import org.apache.fory.ThreadSafeFory

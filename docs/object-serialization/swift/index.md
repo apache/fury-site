@@ -53,7 +53,6 @@ targets: [
 
 - [Configuration](configuration.md)
 - [Basic Serialization](core-api.md)
-- [Xlang Serialization](xlang.md)
 - [Schema Metadata](schema-metadata.md)
 - [Type Registration](type-registration.md)
 - [External-Type Serialization](external-types.md)

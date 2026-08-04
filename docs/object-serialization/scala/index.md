@@ -118,5 +118,5 @@ Fory Scala is built on top of Fory Java. Most configuration options, features, a
 - [Native Serialization](native.md) - Serializing Scala types in JVM-native mode
 - [Schema Metadata](schema-metadata.md) - Scala annotations, references, enum IDs, and union metadata
 - [Default Values](default-values.md) - Scala class default values support
-- [Xlang Serialization](xlang.md) - Scala 3 generated models and macro-derived xlang serializers
+- [Basic Serialization](core-api.md) - Models, APIs, and interoperability in the default xlang mode
 - [gRPC Support](../../grpc/scala.md) - Scala 3 generated gRPC service companions

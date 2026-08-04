@@ -499,5 +499,5 @@ struct User {
 
 - [Basic Serialization](core-api.md) - Getting started with Fory serialization
 - [Schema Evolution](schema-evolution.md) - Compatible mode and schema evolution
-- [Xlang Serialization](xlang.md) - Interoperability with Java, C++, Go, Python
+- [Cross-Language Interoperability](core-api.md#cross-language-interoperability) - Interoperability with Java, C++, Go, Python
 - [External-Type Serialization](external-types.md) - Selecting serializers for third-party fields

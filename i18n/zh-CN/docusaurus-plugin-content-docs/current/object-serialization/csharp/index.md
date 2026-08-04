@@ -88,7 +88,6 @@ User decoded = fory.Deserialize<User>(payload);
 | --------------------------------------- | ------------------------------------- |
 | [配置](configuration.md)                | 构建器选项和模式设置                  |
 | [基本序列化](core-api.md)               | 类型化和动态序列化 API                |
-| [跨语言序列化](xlang.md)                | 互操作指南                            |
 | [Schema 元数据](schema-metadata.md)     | `[ForyField]` ID 和 Schema 类型描述符 |
 | [类型注册](type-registration.md)        | 注册用户类型和自定义序列化器          |
 | [外部类型](external-types.md)           | 第三方类型的序列化器                  |

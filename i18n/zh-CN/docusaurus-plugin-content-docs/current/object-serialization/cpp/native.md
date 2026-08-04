@@ -21,7 +21,7 @@ license: |
 
 C++ 原生序列化是通过 `.xlang(false)` 选择、仅限 C++ 的编码模式。当所有写入端和读取端都是 C++，并且载荷应遵循 C++ 类型行为而非可移植的跨语言类型系统时，请使用该模式。
 
-如果字节需要由 Java、Python、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 C++ Fory 实现读取，请使用 C++ 默认模式[跨语言序列化](xlang.md)。
+如果字节需要由 Java、Python、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他非 C++ Fory 实现读取，请使用 C++ 默认模式[跨语言序列化](core-api.md#cross-language-interoperability)。
 
 ## 何时使用原生序列化
 
@@ -186,7 +186,7 @@ auto unsigned_value = fory.deserialize<uint64_t>(unsigned_bytes).value();
 
 ## 相关主题
 
-- [跨语言序列化](xlang.md) - 跨语言 C++ 载荷
+- [跨语言序列化](core-api.md#cross-language-interoperability) - 跨语言 C++ 载荷
 - [配置](configuration.md) - 构建器选项
 - [基本序列化](core-api.md) - 对象图序列化
 - [支持的类型](supported-types.md) - C++ 类型支持

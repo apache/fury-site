@@ -1,7 +1,7 @@
 ---
-title: Scala Xlang 序列化
+title: 基础序列化
 sidebar_position: 1
-id: xlang
+id: core-api
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -19,11 +19,17 @@ license: |
   limitations under the License.
 ---
 
+Xlang 是 Fory Scala 的默认序列化模式。本页介绍该默认模式的基础序列化 API 和互操作规则。
+
+## 跨语言互操作 {#cross-language-interoperability}
+
+以下内容介绍默认 xlang 模式的模型生成、注册和跨语言往返。
+
 Fory Schema IDL 的 Scala 目标会为 xlang 载荷生成 Scala 3 源代码。Fory Scala 产物仍然
 针对 Scala 2.13 和 Scala 3 进行交叉构建；只有 Schema IDL 输出和 quoted 宏派生需要
 Scala 3。
 
-## 设置
+### 设置
 
 生成的 Scala 代码使用 `org.apache.fory.scala` 中的公共宏 API，以及
 `org.apache.fory.annotation` 中的共享 JVM 注解。宏内部实现在
@@ -51,7 +57,7 @@ val fory = ForyScala.builder()
 临时序列化器或 Scala 特有注册状态。枚举和联合会直接与其序列化器一起注册，因为派生
 序列化器负责 case 分派。
 
-## 生成的消息
+### 生成的消息
 
 无环消息会生成 case class：
 
@@ -97,7 +103,7 @@ Fory 的 xlang 序列化器也可以重建 `scala.collection.Seq` 和
 `scala.collection.Map` 等受支持的可变集合接口，但除非显式生成，否则具体可变集合类
 不属于 Schema IDL 接口范围。
 
-## 生成的枚举
+### 生成的枚举
 
 IDL 枚举仅生成 Scala 3 枚举。编译器不会生成 Java 枚举文件。
 
@@ -116,7 +122,7 @@ enum Status {
 生成的注册代码使用 `ScalaSerializers.registerEnum(...)`，因此 xlang 模式会使用来自 case
 级 `@ForyEnumId` 元数据的稳定 Fory 枚举 ID。
 
-## 生成的联合
+### 生成的联合
 
 IDL 联合会生成带宏派生序列化器的 Scala 3 ADT 枚举：
 
@@ -152,7 +158,7 @@ Scala 未知 case 载体由 `@ForyUnknownCase` 选择，而不是由 Schema case
 
 宏会直接写入现有的 xlang 联合信封，不会分配临时 Java `Union` 载体。
 
-## 手动 Scala 3 派生
+### 手动 Scala 3 派生
 
 手写 Scala 3 模型可以派生相同的序列化器 typeclass：
 
@@ -173,7 +179,7 @@ Schema IDL 为构造环使用的普通类形式。如果复制从参与环的不
 例如 Scala 枚举 case 或 case class，序列化器会给出明确错误，因为在构造完成前无法发布
 被复制对象的身份。
 
-## 第一次往返处理
+### 第一次往返处理
 
 ```scala
 import org.apache.fory.Fory

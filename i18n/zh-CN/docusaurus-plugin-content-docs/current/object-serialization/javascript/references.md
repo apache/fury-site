@@ -108,4 +108,4 @@ console.log(copy.left === copy.right); // true
 
 - [基本序列化](core-api.md)
 - [Schema 演进](schema-evolution.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)

@@ -259,6 +259,6 @@ error: unknown type encountered
 ## 相关主题
 
 - [基本序列化](core-api.md)
-- [跨语言序列化](xlang.md)
+- [跨语言序列化](core-api.md#cross-language-interoperability)
 - [支持的类型](supported-types.md)
 - [故障排查](troubleshooting.md)

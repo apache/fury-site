@@ -66,7 +66,7 @@ fun main() {
 ./gradlew run
 ```
 
-与其他 Fory 运行时共享的数据使用 xlang 模式，仅供 Kotlin/JVM 使用的数据使用 native 模式。接下来可阅读 [Kotlin 对象序列化](../object-serialization/kotlin/index.md)、[xlang](../object-serialization/kotlin/xlang.md)或 [native 模式](../object-serialization/kotlin/native.md)。
+与其他 Fory 运行时共享的数据使用 xlang 模式，仅供 Kotlin/JVM 使用的数据使用 native 模式。接下来可阅读 [Kotlin 对象序列化](../object-serialization/kotlin/index.md)、[xlang](../object-serialization/kotlin/core-api.md#cross-language-interoperability)或 [native 模式](../object-serialization/kotlin/native.md)。
 
 ## 其他能力
 

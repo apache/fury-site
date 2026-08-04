@@ -89,8 +89,7 @@ User decoded = fory.Deserialize<User>(payload);
 | Topic                                       | Description                                   |
 | ------------------------------------------- | --------------------------------------------- |
 | [Configuration](configuration.md)           | Builder options and mode settings             |
-| [Basic Serialization](core-api.md)          | Typed and dynamic serialization APIs          |
-| [Xlang Serialization](xlang.md)             | Interoperability guidance                     |
+| [Basic Serialization](core-api.md)          | Default xlang APIs and interoperability       |
 | [Schema Metadata](schema-metadata.md)       | `[ForyField]` ids and schema type descriptors |
 | [Type Registration](type-registration.md)   | Registering user types and custom serializers |
 | [External Types](external-types.md)         | Serializers for third-party types             |

@@ -64,7 +64,7 @@ object ScalaExample {
 sbt run
 ```
 
-与其他 Fory 运行时共享的数据使用 xlang 模式，仅供 Scala/JVM 使用的数据使用 native 模式。接下来可阅读 [Scala 对象序列化](../object-serialization/scala/index.md)、[xlang](../object-serialization/scala/xlang.md)或 [native 模式](../object-serialization/scala/native.md)。
+与其他 Fory 运行时共享的数据使用 xlang 模式，仅供 Scala/JVM 使用的数据使用 native 模式。接下来可阅读 [Scala 对象序列化](../object-serialization/scala/index.md)、[xlang](../object-serialization/scala/core-api.md#cross-language-interoperability)或 [native 模式](../object-serialization/scala/native.md)。
 
 ## 其他能力
 

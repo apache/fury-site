@@ -157,7 +157,6 @@ Fory JavaScript 仅支持 xlang。`new Fory()` 默认使用兼容 Schema 演进�
 | [支持的类型](supported-types.md)           | 原始类型、集合、时间、enum 和 struct 映射 |
 | [引用](references.md)                      | 共享引用和循环对象图                      |
 | [Schema 演进](schema-evolution.md)         | 兼容模式和可演进 struct                   |
-| [跨语言序列化](xlang.md)                   | 互操作指南和映射规则                      |
 | [Fory IDL 编译器](../../compiler/index.md) | 从 `.fdl` Schema 生成 TypeScript 模型     |
 | [gRPC 支持](../../grpc/javascript.md)      | Node.js gRPC 和浏览器 gRPC-Web 生成客户端 |
 | [故障排查](troubleshooting.md)             | 常见问题、限制和调试技巧                  |

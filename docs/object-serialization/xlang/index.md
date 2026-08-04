@@ -166,17 +166,17 @@ This generates native language types with consistent field/type mappings across 
 
 For language-specific details and API reference:
 
-- [Java Xlang Serialization Guide](../java/xlang.md)
-- [Python Xlang Serialization Guide](../python/xlang.md)
-- [C++ Xlang Serialization Guide](../cpp/xlang.md)
-- [Go Xlang Serialization Guide](../go/xlang.md)
-- [Rust Xlang Serialization Guide](../rust/xlang.md)
-- [JavaScript/TypeScript Xlang Serialization Guide](../javascript/xlang.md)
-- [C# Xlang Serialization Guide](../csharp/xlang.md)
-- [Swift Xlang Serialization Guide](../swift/xlang.md)
-- [Dart Xlang Serialization Guide](../dart/xlang.md)
-- [Scala Xlang Serialization Guide](../scala/xlang.md)
-- [Kotlin Xlang Serialization Guide](../kotlin/xlang.md)
+- [Java Interoperability Guide](../java/core-api.md#cross-language-interoperability)
+- [Python Interoperability Guide](../python/core-api.md#cross-language-interoperability)
+- [C++ Interoperability Guide](../cpp/core-api.md#cross-language-interoperability)
+- [Go Interoperability Guide](../go/core-api.md#cross-language-interoperability)
+- [Rust Interoperability Guide](../rust/core-api.md#cross-language-interoperability)
+- [JavaScript/TypeScript Interoperability Guide](../javascript/core-api.md#cross-language-interoperability)
+- [C# Interoperability Guide](../csharp/core-api.md#cross-language-interoperability)
+- [Swift Interoperability Guide](../swift/core-api.md#cross-language-interoperability)
+- [Dart Interoperability Guide](../dart/core-api.md#cross-language-interoperability)
+- [Scala Interoperability Guide](../scala/core-api.md#cross-language-interoperability)
+- [Kotlin Interoperability Guide](../kotlin/core-api.md#cross-language-interoperability)
 
 ## Specifications
 
