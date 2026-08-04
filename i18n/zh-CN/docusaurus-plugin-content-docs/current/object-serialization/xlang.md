@@ -61,21 +61,25 @@ pickle 兼容对象等语言特有行为，请改用[原生序列化](native.md)
 
 每个通信方都必须为同一个逻辑类型注册相同的类型标识和兼容字段。下面的示例使用共享类型名称。
 
-Java 写入端：
+Rust 写入端：
 
-```java
-public class Person {
-  public String name;
-  public int age;
+```rust
+use fory::{Fory, ForyStruct};
+
+#[derive(ForyStruct)]
+struct Person {
+    name: String,
+    age: i32,
 }
 
-Fory fory = Fory.builder().withXlang(true).build();
-fory.register(Person.class, "example.Person");
+let mut fory = Fory::builder().xlang(true).build();
+fory.register_by_name::<Person>("example.Person").unwrap();
 
-Person person = new Person();
-person.name = "Alice";
-person.age = 30;
-byte[] bytes = fory.serialize(person);
+let person = Person {
+    name: "Alice".to_string(),
+    age: 30,
+};
+let bytes = fory.serialize(&person).unwrap();
 ```
 
 Python 读取端：
@@ -91,7 +95,7 @@ class Person:
 
 fory = pyfory.Fory(xlang=True)
 fory.register_type(Person, name="example.Person")
-person = fory.deserialize(bytes_from_java)
+person = fory.deserialize(bytes_from_rust)
 ```
 
 虽然 xlang 是默认模式，示例通常仍会显式选择它，以便在应用代码中明确表达传输约定。

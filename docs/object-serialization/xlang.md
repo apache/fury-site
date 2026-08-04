@@ -64,21 +64,25 @@ Python pickle-compatible objects.
 Register the same logical type identity and compatible fields on every peer. The following example
 uses a shared type name.
 
-Java producer:
+Rust producer:
 
-```java
-public class Person {
-  public String name;
-  public int age;
+```rust
+use fory::{Fory, ForyStruct};
+
+#[derive(ForyStruct)]
+struct Person {
+    name: String,
+    age: i32,
 }
 
-Fory fory = Fory.builder().withXlang(true).build();
-fory.register(Person.class, "example.Person");
+let mut fory = Fory::builder().xlang(true).build();
+fory.register_by_name::<Person>("example.Person").unwrap();
 
-Person person = new Person();
-person.name = "Alice";
-person.age = 30;
-byte[] bytes = fory.serialize(person);
+let person = Person {
+    name: "Alice".to_string(),
+    age: 30,
+};
+let bytes = fory.serialize(&person).unwrap();
 ```
 
 Python consumer:
@@ -94,7 +98,7 @@ class Person:
 
 fory = pyfory.Fory(xlang=True)
 fory.register_type(Person, name="example.Person")
-person = fory.deserialize(bytes_from_java)
+person = fory.deserialize(bytes_from_rust)
 ```
 
 Although xlang is the default, examples often select it explicitly so the transport contract is
