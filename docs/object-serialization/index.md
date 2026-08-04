@@ -38,11 +38,23 @@ representation, and Fory JSON is a Java JSON codec; use the
 Choose a runtime to find its installation route, lifecycle, exact APIs, configuration, type
 registration, schema behavior, extensions, platforms, and troubleshooting:
 
-[Browse supported runtimes](runtimes.md)
+| Runtime               | Modes                | Documentation                                          |
+| --------------------- | -------------------- | ------------------------------------------------------ |
+| Java                  | xlang and native     | [Java runtime](./java/index.md)                        |
+| Python                | xlang and native     | [Python runtime](./python/index.md)                    |
+| C++                   | xlang and native     | [C++ runtime](./cpp/index.md)                          |
+| Go                    | xlang and native     | [Go runtime](./go/index.md)                            |
+| Rust                  | xlang and native     | [Rust runtime](./rust/index.md)                        |
+| JavaScript/TypeScript | xlang                | [JavaScript/TypeScript runtime](./javascript/index.md) |
+| C#                    | xlang                | [C# runtime](./csharp/index.md)                        |
+| Swift                 | xlang                | [Swift runtime](./swift/index.md)                      |
+| Dart                  | xlang                | [Dart runtime](./dart/index.md)                        |
+| Scala                 | xlang and JVM native | [Scala runtime](./scala/index.md)                      |
+| Kotlin                | xlang and JVM native | [Kotlin runtime](./kotlin/index.md)                    |
 
 ## Security
 
-Before decoding externally supplied bytes, read [Object Serialization Security](security.md). It
+Before decoding externally supplied bytes, read [Security](security.md). It
 covers accepted-type policy, registration, resource limits, transport responsibilities, and
 negative verification for both modes.
 

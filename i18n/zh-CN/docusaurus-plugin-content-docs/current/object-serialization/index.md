@@ -37,11 +37,23 @@ Fory JSON 是 Java JSON codec；如果目标不是重建对象，请使用
 选择运行时以查看其安装方式、生命周期、具体 API、配置、类型注册、Schema 行为、扩展、
 平台支持和故障排除信息：
 
-[浏览支持的运行时](runtimes.md)
+| 运行时                | 模式              | 文档                                                  |
+| --------------------- | ----------------- | ----------------------------------------------------- |
+| Java                  | xlang 和原生      | [Java 运行时](./java/index.md)                        |
+| Python                | xlang 和原生      | [Python 运行时](./python/index.md)                    |
+| C++                   | xlang 和原生      | [C++ 运行时](./cpp/index.md)                          |
+| Go                    | xlang 和原生      | [Go 运行时](./go/index.md)                            |
+| Rust                  | xlang 和原生      | [Rust 运行时](./rust/index.md)                        |
+| JavaScript/TypeScript | xlang             | [JavaScript/TypeScript 运行时](./javascript/index.md) |
+| C#                    | xlang             | [C# 运行时](./csharp/index.md)                        |
+| Swift                 | xlang             | [Swift 运行时](./swift/index.md)                      |
+| Dart                  | xlang             | [Dart 运行时](./dart/index.md)                        |
+| Scala                 | xlang 和 JVM 原生 | [Scala 运行时](./scala/index.md)                      |
+| Kotlin                | xlang 和 JVM 原生 | [Kotlin 运行时](./kotlin/index.md)                    |
 
 ## 安全性
 
-解码外部提供的字节之前，请阅读[对象序列化安全性](security.md)。其中介绍了两种模式下的
+解码外部提供的字节之前，请阅读[安全](security.md)。其中介绍了两种模式下的
 可接受类型策略、注册、资源限制、传输责任和负向验证。
 
 ## 规范
