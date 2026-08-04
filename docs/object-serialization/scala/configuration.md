@@ -218,5 +218,5 @@ Security-related configuration:
 - Keep `withMaxTypeFields(...)`, `withMaxTypeMetaBytes(...)`, and the remote schema-version limits
   at their defaults unless the data is not malicious and a trusted peer sends larger metadata or
   many schema versions.
-- Follow [Object Serialization Security](../security.md) for allow-listing and unknown-class
+- Follow [Java Configuration](../java/configuration.md#security) for allow-listing and unknown-class
   controls.
