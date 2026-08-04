@@ -1,598 +1,418 @@
-<!doctype html><html lang=zh-CN dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-object-serialization/deserialization-security-model" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Deserialization Security Model | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/zh-CN/docs/next/object-serialization/deserialization-security-model /><meta data-rh=true property=og:locale content=zh_CN /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-CN /><meta data-rh=true name=docsearch:language content=zh-CN /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=current /><meta data-rh=true name=docusaurus_tag content=docs-default-current /><meta data-rh=true name=docsearch:version content=current /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-current /><meta data-rh=true property=og:title content="Deserialization Security Model | Apache Fory™"/><meta data-rh=true name=description content="This document defines the security model for Apache Fory deserialization. It is"/><meta data-rh=true property=og:description content="This document defines the security model for Apache Fory deserialization. It is"/><link data-rh=true rel=icon href=/zh-CN/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/zh-CN/docs/next/object-serialization/deserialization-security-model /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/next/object-serialization/deserialization-security-model hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/next/object-serialization/deserialization-security-model hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/next/object-serialization/deserialization-security-model hreflang=x-default /><link rel=alternate type=application/rss+xml href=/zh-CN/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/zh-CN/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=window.location.pathname.split("/").filter(Boolean),o="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(o<0)&&"next"===i[o+1]){var t={"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","compiler/compiler_guide":"compiler/getting-started","community/development":"development/building"}[i.slice(o+2).join("/")];if(t){var n="/"+i.slice(0,o+2).join("/");window.location.replace(n+"/"+t+"/"+window.location.search)}}}(),function(){var i=window.location.pathname,o=i.split("/").filter(Boolean),t="docs"===o[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(o[0])&&"docs"===o[1]?1:-1;if(!(t<0)){var n=t+1,a=o[n];if(("next"===a||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(a))&&n++,!("docs"!==o[n]||0>["guide","introduction","start"].indexOf(o[n+1]))){o.splice(n,1);var e="/"+o.join("/");i.endsWith("/")&&(e+="/"),window.location.replace(e+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/zh-CN/assets/css/styles.71057b13.css /><script src=/zh-CN/assets/js/runtime~main.f86a1b40.js defer></script><script src=/zh-CN/assets/js/main.a72b8ed9.js defer></script></head><body><svg style="display: none;"><defs>
+<!doctype html><html lang=zh-CN dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-object-serialization/deserialization-security-model" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>反序列化安全模型 | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/zh-CN/docs/next/object-serialization/deserialization-security-model /><meta data-rh=true property=og:locale content=zh_CN /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-CN /><meta data-rh=true name=docsearch:language content=zh-CN /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=current /><meta data-rh=true name=docusaurus_tag content=docs-default-current /><meta data-rh=true name=docsearch:version content=current /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-current /><meta data-rh=true property=og:title content="反序列化安全模型 | Apache Fory™"/><meta data-rh=true name=description content="本文档定义 Apache Fory 反序列化的安全模型。它是用于分类反序列化行为并确定何处需要"/><meta data-rh=true property=og:description content="本文档定义 Apache Fory 反序列化的安全模型。它是用于分类反序列化行为并确定何处需要"/><link data-rh=true rel=icon href=/zh-CN/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/zh-CN/docs/next/object-serialization/deserialization-security-model /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/next/object-serialization/deserialization-security-model hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/next/object-serialization/deserialization-security-model hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/next/object-serialization/deserialization-security-model hreflang=x-default /><link rel=alternate type=application/rss+xml href=/zh-CN/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/zh-CN/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=window.location.pathname.split("/").filter(Boolean),o="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(o<0)&&"next"===i[o+1]){var t={"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","compiler/compiler_guide":"compiler/getting-started","community/development":"development/building"}[i.slice(o+2).join("/")];if(t){var n="/"+i.slice(0,o+2).join("/");window.location.replace(n+"/"+t+"/"+window.location.search)}}}(),function(){var i=window.location.pathname,o=i.split("/").filter(Boolean),t="docs"===o[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(o[0])&&"docs"===o[1]?1:-1;if(!(t<0)){var n=t+1,a=o[n];if(("next"===a||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(a))&&n++,!("docs"!==o[n]||0>["guide","introduction","start"].indexOf(o[n+1]))){o.splice(n,1);var e="/"+o.join("/");i.endsWith("/")&&(e+="/"),window.location.replace(e+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/zh-CN/assets/css/styles.71057b13.css /><script src=/zh-CN/assets/js/runtime~main.6e8aef6a.js defer></script><script src=/zh-CN/assets/js/main.7ee26e15.js defer></script></head><body><svg style="display: none;"><defs>
 <symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
 </defs></svg>
-<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label=跳到主要内容><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>跳到主要内容</a></div><nav aria-label=主导航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切换导航栏 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/zh-CN/><div class=navbar__logo><img src=/zh-CN/img/fory-logo-light.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/zh-CN/img/fory-logo-dark.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/zh-CN/docs/next/introduction/>文档</a><a class="navbar__item navbar__link" href=/zh-CN/docs/next/specification/java_serialization_spec>规范</a><a class="navbar__item navbar__link" href=/zh-CN/docs/next/community/>社区</a><a class="navbar__item navbar__link" href=/zh-CN/user>用户</a><a class="navbar__item navbar__link" href=/zh-CN/download>下载</a><a class="navbar__item navbar__link" href=/zh-CN/blog>博客</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>基金会</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>许可证</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>事件</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>隐私</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>安全</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>赞助</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>感谢</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>行为准则</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/zh-CN/docs/next/object-serialization/deserialization-security-model>dev</a><ul class=dropdown__menu><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/zh-CN/docs/next/object-serialization/deserialization-security-model>dev</a><li><a class=dropdown__link href=/zh-CN/docs/introduction/overview>1.5.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.4.0/introduction/overview>1.4.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.3.0/introduction/overview>1.3.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.2.0/introduction/overview>1.2.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.1.0/introduction/overview>1.1.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.0.0/introduction/overview>1.0.0</a><li><a class=dropdown__link href=/zh-CN/docs/0.17/introduction/overview>0.17</a><li><a class=dropdown__link href=/zh-CN/docs/0.16/introduction/overview>0.16</a><li><a class=dropdown__link href=/zh-CN/docs/0.15/introduction/overview>0.15</a><li><a class=dropdown__link href=/zh-CN/docs/0.14/introduction/overview>0.14</a><li><a class=dropdown__link href=/zh-CN/docs/0.13/introduction/overview>0.13</a><li><a class=dropdown__link href=/zh-CN/docs/0.12/introduction/overview>0.12</a><li><a class=dropdown__link href=/zh-CN/docs/0.11/introduction/overview>0.11</a><li><a class=dropdown__link href=/zh-CN/docs/0.10/introduction/overview>0.10</a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>简体中文</a><ul class=dropdown__menu><li><a href=/docs/next/object-serialization/deserialization-security-model target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/zh-CN/docs/next/object-serialization/deserialization-security-model target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label=回到顶部 class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><main class="docMainContainer_TBSr docMainContainerEnhanced_lQrH"><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role=alert><div>此为 <!-- -->Apache Fory™<!-- --> <b>dev</b> 版尚未发行的文档。</div><div class=margin-top--md>最新的文档请参阅 <b><a href=/zh-CN/docs/introduction/overview>最新版本</a></b> (<!-- -->1.5.0<!-- -->)。</div></div><div class=docItemContainer_Djhp><article><span class="theme-doc-version-badge badge badge--secondary">版本：dev</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>Deserialization Security Model</h1></header><p>This document defines the security model for Apache Fory deserialization. It is
-a public security reference for classifying deserialization behavior and
-deciding where validation is required. It is not a vulnerability disclosure,
-does not describe exploit techniques, and does not document implementation
-history.</p>
-<p>The model is intentionally narrow. Fory should prevent resource and policy
-failures caused by untrusted input, but it should not add hot-path validation
-that only enforces byte-form strictness when doing so does not protect a Fory
-security boundary.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=scope>Scope<a href=#scope class=hash-link aria-label=Scope的直接链接 title=Scope的直接链接 translate=no>​</a></h2>
-<p>This model applies only to deserializing Fory binary object-serialization data
-from untrusted or partially trusted sources. Fory JSON has a separate
-<a class="" href=/zh-CN/docs/next/json/security>security guide</a> because it uses different readers,
-policies, codecs, and resource-accounting rules.</p>
-<p>It does not treat the semantic content of a successfully deserialized value as a
-Fory security boundary. A sender can always construct protocol-valid data whose
-value is chosen by that sender. Application authorization, object-level business
-rules, and domain-specific validation remain application responsibilities.
-The selected business invariant remains an application policy rather than a
-Fory protocol security boundary.</p>
-<p>This model does not govern memory-format paths unless a runtime explicitly
-exposes such a path through an untrusted deserialization API.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=trust-boundaries>Trust Boundaries<a href=#trust-boundaries class=hash-link aria-label="Trust Boundaries的直接链接" title="Trust Boundaries的直接链接" translate=no>​</a></h2>
-<p>Fory deserialization should treat the encoded input as untrusted at API
-boundaries that accept external bytes or streams.</p>
-<p>Fory security boundaries include:</p>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label=跳到主要内容><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>跳到主要内容</a></div><nav aria-label=主导航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切换导航栏 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/zh-CN/><div class=navbar__logo><img src=/zh-CN/img/fory-logo-light.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/zh-CN/img/fory-logo-dark.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/zh-CN/docs/next/introduction/>文档</a><a class="navbar__item navbar__link" href=/zh-CN/docs/next/specification/xlang_serialization_spec>规范</a><a class="navbar__item navbar__link" href=/zh-CN/docs/next/community/>社区</a><a class="navbar__item navbar__link" href=/zh-CN/user>用户</a><a class="navbar__item navbar__link" href=/zh-CN/download>下载</a><a class="navbar__item navbar__link" href=/zh-CN/blog>博客</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>基金会</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>许可证</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>事件</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>隐私</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>安全</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>赞助</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>感谢</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>行为准则</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/zh-CN/docs/next/object-serialization/deserialization-security-model>dev</a><ul class=dropdown__menu><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/zh-CN/docs/next/object-serialization/deserialization-security-model>dev</a><li><a class=dropdown__link href=/zh-CN/docs/introduction/overview>1.5.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.4.0/introduction/overview>1.4.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.3.0/introduction/overview>1.3.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.2.0/introduction/overview>1.2.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.1.0/introduction/overview>1.1.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.0.0/introduction/overview>1.0.0</a><li><a class=dropdown__link href=/zh-CN/docs/0.17/introduction/overview>0.17</a><li><a class=dropdown__link href=/zh-CN/docs/0.16/introduction/overview>0.16</a><li><a class=dropdown__link href=/zh-CN/docs/0.15/introduction/overview>0.15</a><li><a class=dropdown__link href=/zh-CN/docs/0.14/introduction/overview>0.14</a><li><a class=dropdown__link href=/zh-CN/docs/0.13/introduction/overview>0.13</a><li><a class=dropdown__link href=/zh-CN/docs/0.12/introduction/overview>0.12</a><li><a class=dropdown__link href=/zh-CN/docs/0.11/introduction/overview>0.11</a><li><a class=dropdown__link href=/zh-CN/docs/0.10/introduction/overview>0.10</a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>简体中文</a><ul class=dropdown__menu><li><a href=/docs/next/object-serialization/deserialization-security-model target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/zh-CN/docs/next/object-serialization/deserialization-security-model target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label=回到顶部 class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><main class="docMainContainer_TBSr docMainContainerEnhanced_lQrH"><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role=alert><div>此为 <!-- -->Apache Fory™<!-- --> <b>dev</b> 版尚未发行的文档。</div><div class=margin-top--md>最新的文档请参阅 <b><a href=/zh-CN/docs/introduction/overview>最新版本</a></b> (<!-- -->1.5.0<!-- -->)。</div></div><div class=docItemContainer_Djhp><article><span class="theme-doc-version-badge badge badge--secondary">版本：dev</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>反序列化安全模型</h1></header><p>本文档定义 Apache Fory 反序列化的安全模型。它是用于分类反序列化行为并确定何处需要
+验证的公开安全参考。它不是漏洞披露，不描述利用技术，也不记录实现历史。</p>
+<p>该模型有意保持较窄的范围。Fory 应防止不可信输入导致的资源和策略失效，但当验证无法
+保护 Fory 安全边界时，不应在热路径上添加只用于强制字节形式严格性的验证。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=范围>范围<a href=#范围 class=hash-link aria-label=范围的直接链接 title=范围的直接链接 translate=no>​</a></h2>
+<p>该模型仅适用于反序列化来自不可信或部分可信来源的 Fory 二进制对象序列化数据。Fory
+JSON 使用不同的读取器、策略、codec 和资源核算规则，因此有单独的
+<a class="" href=/zh-CN/docs/next/json/security>安全指南</a>。</p>
+<p>该模型不将成功反序列化值的语义内容视为 Fory 安全边界。发送方始终可以构造协议有效、
+但值由其自行选择的数据。应用授权、对象级业务规则和领域特有验证仍由应用负责。所选择
+的业务不变量仍属于应用策略，而不是 Fory 协议安全边界。</p>
+<p>除非某个运行时通过不可信反序列化 API 显式公开内存格式路径，否则该模型不管理此类路径。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=信任边界>信任边界<a href=#信任边界 class=hash-link aria-label=信任边界的直接链接 title=信任边界的直接链接 translate=no>​</a></h2>
+<p>在接受外部字节或流的 API 边界上，Fory 反序列化应将编码输入视为不可信。</p>
+<p>Fory 安全边界包括：</p>
 <ul>
-<li class="">Resource ownership, such as memory, CPU progress, stream buffering, file
-handles, native allocations, callbacks, and retained read-side tables.</li>
-<li class="">Runtime safety, such as avoiding crashes, panics, undefined behavior, and
-out-of-bounds reads or writes.</li>
-<li class="">Explicit Fory policy checks, such as type, function, method, class, or
-registration policies that are intended to restrict what may be materialized.</li>
-<li class="">Cleanup boundaries, where state created during a failed read must be released
-or reset before the next root operation.</li>
+<li class="">资源所有权，例如内存、CPU 进度、流缓冲、文件句柄、原生内存分配、回调和保留的
+读取端表。</li>
+<li class="">运行时安全，例如避免崩溃、panic、未定义行为和越界读写。</li>
+<li class="">显式 Fory 策略检查，例如旨在限制可实体化内容的类型、函数、方法、类或注册策略。</li>
+<li class="">清理边界，即读取失败期间创建的状态必须在下一次根操作前释放或重置。</li>
 </ul>
-<p>Fory security boundaries do not include:</p>
+<p>Fory 安全边界不包括：</p>
 <ul>
-<li class="">The business meaning of a protocol-valid value.</li>
-<li class="">Which protocol-allowed byte form was used for a value.</li>
-<li class="">Whether a map, set, object, or metadata value uses one specific encoding
-shape, unless rejecting other shapes is an explicit owner policy or protects
-one of the boundaries above.</li>
+<li class="">协议有效值的业务含义。</li>
+<li class="">一个值使用了哪一种协议允许的字节形式。</li>
+<li class="">map、set、对象或元数据值是否使用某一种特定编码形状，除非拒绝其他形状属于显式
+所有者策略，或能够保护上述边界之一。</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-and-class-policy>Type And Class Policy<a href=#type-and-class-policy class=hash-link aria-label="Type And Class Policy的直接链接" title="Type And Class Policy的直接链接" translate=no>​</a></h2>
-<p>Type, class, function, method, registration, and deserialization policies are
-security boundaries when they are intended to restrict what untrusted bytes may
-materialize.</p>
-<p>For untrusted data, a bypass is security-relevant when encoded bytes can
-materialize a type, function, method, class, or dynamic object that the active
-Fory policy should reject. This includes bypasses of class or type
-registration, allow-list checkers, strict-mode checks, or language-specific
-deserialization policies.</p>
-<p>An application explicitly trusts a class when it registers that class or
-registers a serializer for that class. Both operations are configuration-time
-trust decisions under the class-registration policy. Explicitly selecting a
-static root serializer or static root target at the deserialization call is
-also an application authorization decision for that root path. Authorization
-of that statically selected root does not depend on a separate registration
-lookup; any registration needed to access registered identity or
-registration-backed metadata remains access-driven.</p>
-<p>Explicitly declaring or selecting a static field codec is itself an application
-authorization decision for that field; the codec does not need to be registered
-separately for authorization. Registering an enclosing class or schema also
-authorizes the statically declared field codecs and serializers that belong to
-that registered owner. This applies equally to declared Array, Set, Map, Struct,
-and other statically composed field paths. Those declared field paths do not
-require independent registration merely because their bodies are decoded
-without another type lookup. Likewise, an encoded declared-type marker does not
-create a registration bypass when it can only invoke the codec already selected
-by the authorized root or enclosing schema.</p>
-<p>These static authorization paths do not authorize an arbitrary alternative
-chosen by encoded type metadata. A dynamic or polymorphic type selected by
-input must still pass the active registration and deserialization-policy checks
-for that type. A serializer that Fory merely discovers or generates, and that
-is not reached through an explicitly selected static root or a registered
-enclosing owner, is serialization mechanics only and does not by itself
-authorize a dynamically selected class.</p>
-<p>Disabling registration or dynamic-type checks for trusted data is a caller
-configuration choice. That choice only removes the arbitrary-type materialization
-claim provided by that policy; it does not remove Fory's runtime-safety,
-resource, cleanup, retained-state, or no-progress-loop requirements for
-untrusted deserialization paths.</p>
-<p>Fory is not a sandbox for application-owned types. If a registered type or
-serializer is allowed by the active policy, the application owns whether that
-type's construction, hooks, setters, finalizers, or other logic is safe for the
-application's trust boundary.</p>
-<p>When policy-approved construction or callable execution is allowed, resource
-accounting should not claim to bound arbitrary code outside Fory's ownership.
-Fory-owned accounting can cover only objects and storage that Fory itself
-clearly creates or copies and that remain reachable from the materialized graph.
-Temporary helper allocations and user-code internals remain outside that
-accounting boundary.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=depth-and-progress>Depth And Progress<a href=#depth-and-progress class=hash-link aria-label="Depth And Progress的直接链接" title="Depth And Progress的直接链接" translate=no>​</a></h2>
-<p>Deserialization paths that recurse through objects, metadata, containers, or
-references should enforce the runtime's configured depth limit before crafted
-nesting can exhaust the call stack or bypass cleanup. A malformed input that
-exceeds the configured depth should fail the root operation instead of
-continuing unbounded recursion.</p>
-<p>Loops that consume encoded data should guarantee byte progress, logical
-progress, or a terminal error. Inputs that can keep a reader in a no-progress
-loop are security-relevant even when they do not allocate memory.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=security-invariants>Security Invariants<a href=#security-invariants class=hash-link aria-label="Security Invariants的直接链接" title="Security Invariants的直接链接" translate=no>​</a></h2>
-<p>Deserialization code must prevent the following outcomes for untrusted input:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=类型与类策略>类型与类策略<a href=#类型与类策略 class=hash-link aria-label=类型与类策略的直接链接 title=类型与类策略的直接链接 translate=no>​</a></h2>
+<p>当类型、类、函数、方法、注册和反序列化策略旨在限制不可信字节可以实体化的内容时，
+这些策略就是安全边界。</p>
+<p>对于不可信数据，如果编码字节能够实体化当前 Fory 策略本应拒绝的类型、函数、方法、类
+或动态对象，则绕过行为与安全相关。这包括绕过类或类型注册、白名单检查器、严格模式
+检查或语言特有的反序列化策略。</p>
+<p>应用注册一个类或为该类注册序列化器时，即显式信任该类。在类注册策略下，这两项操作
+都是配置时信任决策。在反序列化调用处显式选择静态根序列化器或静态根目标，也是应用
+对该根路径的授权决策。静态选择根的授权不依赖单独的注册查找；访问已注册身份或注册
+支持的元数据所需的任何注册，仍由实际访问驱动。</p>
+<p>显式声明或选择静态字段 codec 本身就是应用对该字段的授权决策；该 codec 无需为了授权
+而单独注册。注册外围类或 Schema 也会授权属于该已注册所有者的静态声明字段 codec 和
+序列化器。这同样适用于声明的 Array、Set、Map、Struct 及其他静态组合字段路径。这些
+已声明字段路径不会仅仅因为其主体无需再次查找类型即可解码，就需要独立注册。同样，
+如果编码的声明类型标记只能调用已由授权根或外围 Schema 选择的 codec，它也不会造成
+注册绕过。</p>
+<p>这些静态授权路径不会授权由编码类型元数据选择的任意替代项。输入选择的动态或多态类型
+仍必须通过该类型当前有效的注册和反序列化策略检查。Fory 仅仅发现或生成的序列化器，
+如果不是通过显式选择的静态根或已注册外围所有者到达，就只是序列化机制，本身不会授权
+动态选择的类。</p>
+<p>对可信数据禁用注册或动态类型检查属于调用方配置选择。该选择只会移除相应策略对任意
+类型实体化提供的保证；它不会移除 Fory 对不可信反序列化路径的运行时安全、资源、清理、
+保留状态或无进度循环要求。</p>
+<p>Fory 不是应用拥有类型的沙箱。如果当前策略允许某个已注册类型或序列化器，则该类型的
+构造、hook、setter、finalizer 或其他逻辑对于应用信任边界是否安全，由应用负责。</p>
+<p>允许经过策略批准的构造或可调用对象执行时，资源核算不应声称能够约束 Fory 所有权之外
+的任意代码。Fory 拥有的核算只能覆盖由 Fory 自身明确创建或复制，并且仍可从实体化对象图
+访问的对象和存储。临时辅助分配和用户代码内部资源仍在该核算边界之外。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=深度与进度>深度与进度<a href=#深度与进度 class=hash-link aria-label=深度与进度的直接链接 title=深度与进度的直接链接 translate=no>​</a></h2>
+<p>通过对象、元数据、容器或引用进行递归的反序列化路径，应在恶意构造的嵌套耗尽调用栈或
+绕过清理之前，强制执行运行时配置的深度限制。超过配置深度的格式错误输入应使根操作
+失败，而不是继续无界递归。</p>
+<p>消耗编码数据的循环应保证字节进度、逻辑进度或终止错误。即使不分配内存，能让读取器
+陷入无进度循环的输入也与安全相关。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=安全不变量>安全不变量<a href=#安全不变量 class=hash-link aria-label=安全不变量的直接链接 title=安全不变量的直接链接 translate=no>​</a></h2>
+<p>反序列化代码必须防止不可信输入导致以下结果：</p>
 <ul>
-<li class="">Crash, panic, undefined behavior, or out-of-bounds memory access.</li>
-<li class="">OOM or disproportionate allocation compared with bytes that are already
-supplied or proven readable.</li>
-<li class="">No-progress loops, including loops where neither logical progress nor byte
-progress is guaranteed after malformed input.</li>
-<li class="">Stream-buffer growth to an attacker-declared size before the corresponding
-bytes have been read or skipped exactly.</li>
-<li class="">Resource leaks, including native allocations, handles, callbacks, or
-registered cleanup work that cannot run.</li>
-<li class="">Retained attacker-controlled state after failure when that state can affect a
-later root operation or grow across operations.</li>
-<li class="">Successful bypass of an explicit Fory policy boundary.</li>
+<li class="">崩溃、panic、未定义行为或越界内存访问。</li>
+<li class="">与已经提供或确认可读的字节相比发生 OOM 或不成比例的分配。</li>
+<li class="">无进度循环，包括格式错误输入之后既不能保证逻辑进度也不能保证字节进度的循环。</li>
+<li class="">在准确读取或跳过相应字节之前，将流缓冲区增长到攻击者声明的大小。</li>
+<li class="">资源泄漏，包括无法执行清理的原生内存分配、句柄、回调或已注册清理工作。</li>
+<li class="">失败后保留攻击者控制的状态，且该状态会影响后续根操作或跨操作增长。</li>
+<li class="">成功绕过显式 Fory 策略边界。</li>
 </ul>
-<p>When a path cannot produce one of these outcomes, earlier rejection of malformed
-bytes is normally a correctness or interoperability choice, not a security
-requirement.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=robustness-scope-gate>Robustness Scope Gate<a href=#robustness-scope-gate class=hash-link aria-label="Robustness Scope Gate的直接链接" title="Robustness Scope Gate的直接链接" translate=no>​</a></h2>
-<p>Before reporting or fixing a deserialization robustness finding, establish a
-concrete consequence in the current implementation:</p>
+<p>如果某条路径无法产生上述任何结果，更早拒绝格式错误的字节通常属于正确性或互操作性
+选择，而不是安全要求。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=健壮性范围关卡>健壮性范围关卡<a href=#健壮性范围关卡 class=hash-link aria-label=健壮性范围关卡的直接链接 title=健壮性范围关卡的直接链接 translate=no>​</a></h2>
+<p>报告或修复反序列化健壮性问题之前，请先确认当前实现中存在具体后果：</p>
 <ul>
-<li class="">Crash, panic, undefined behavior, or out-of-bounds access.</li>
-<li class="">Disproportionate allocation, CPU work, or stream growth.</li>
-<li class="">A no-progress loop.</li>
-<li class="">Persistent state, reference-table, or cache pollution.</li>
-<li class="">Later-root corruption or a failed-root cleanup leak.</li>
-<li class="">A concrete type, registration, callable, or deserialization-policy violation.</li>
+<li class="">崩溃、panic、未定义行为或越界访问。</li>
+<li class="">不成比例的分配、CPU 工作量或流增长。</li>
+<li class="">无进度循环。</li>
+<li class="">持久状态、引用表或缓存污染。</li>
+<li class="">后续根操作损坏或失败根操作的清理泄漏。</li>
+<li class="">具体的类型、注册、可调用对象或反序列化策略违规。</li>
 </ul>
-<p>Protocol strictness alone is outside this gate. Do not change code merely
-because a malformed or noncanonical flag, enum value, marker, length form, or
-reserved value is accepted, rejected late, decoded differently, or produces a
-less precise error. Such validation is actionable only when it prevents one of
-the concrete consequences above or implements an explicit public contract.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=controlled-deserialization-errors>Controlled Deserialization Errors<a href=#controlled-deserialization-errors class=hash-link aria-label="Controlled Deserialization Errors的直接链接" title="Controlled Deserialization Errors的直接链接" translate=no>​</a></h2>
-<p>When a decoder determines that input is invalid for the active owner path, the
-root operation must return an error and run its normal failure cleanup. This is
-an outcome requirement, not an error-taxonomy requirement.</p>
-<p>Unless a public API or specification explicitly promises otherwise, Fory does
-not require a particular exception type, error code, message, detection layer,
-input offset, or earliest possible detection point. An existing bounded
-downstream buffer-underflow, type, reference, depth, or serializer error is a
-valid rejection. A decoder does not need a new local check merely to replace
-that controlled failure with a more specific or more uniform error.</p>
-<p>Tests for malformed input should prove that the root operation fails, cleanup
-remains correct, and any relevant security invariant is preserved. They should
-not pin an exact error type or message when doing so would require additional
-successful-path validation that protects no security boundary.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=non-security-semantics>Non-Security Semantics<a href=#non-security-semantics class=hash-link aria-label="Non-Security Semantics的直接链接" title="Non-Security Semantics的直接链接" translate=no>​</a></h2>
-<p>The following patterns are not vulnerabilities by default:</p>
+<p>单纯的协议严格性不属于此关卡。不要仅仅因为格式错误或非规范的标志、枚举值、标记、
+长度形式或保留值被接受、较晚拒绝、以不同方式解码或产生不够精确的错误就修改代码。
+只有当此类验证能防止上述具体后果之一，或实现显式公共契约时，才值得采取行动。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=受控反序列化错误>受控反序列化错误<a href=#受控反序列化错误 class=hash-link aria-label=受控反序列化错误的直接链接 title=受控反序列化错误的直接链接 translate=no>​</a></h2>
+<p>当解码器确定输入对当前所有者路径无效时，根操作必须返回错误并执行正常的失败清理。
+这是结果要求，而不是错误分类体系要求。</p>
+<p>除非公共 API 或规范另有明确承诺，否则 Fory 不要求特定异常类型、错误码、消息、检测层、
+输入偏移量或尽可能早的检测点。现有的有界下游缓冲区下溢、类型、引用、深度或序列化器
+错误都是有效拒绝。解码器无需仅仅为了将这种受控失败替换为更具体或更统一的错误而添加
+新的局部检查。</p>
+<p>格式错误输入的测试应证明根操作失败、清理仍然正确，并且相关安全不变量得到保留。如果
+固定确切错误类型或消息需要增加无法保护任何安全边界的成功路径验证，则不应这样做。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=非安全语义>非安全语义<a href=#非安全语义 class=hash-link aria-label=非安全语义的直接链接 title=非安全语义的直接链接 translate=no>​</a></h2>
+<p>以下模式默认不属于漏洞：</p>
 <ul>
-<li class="">Protocol-allowed collection chunking, map chunking, and field ordering.</li>
-<li class="">Duplicate keys, set elements, or compatible fields that collapse according to
-the target data structure or owning serializer semantics.</li>
-<li class="">Malformed ref, null, or type flags that eventually produce a read error.</li>
-<li class="">Malformed scalar bytes that are consumed linearly and eventually produce a
-read error.</li>
-<li class="">Reading an encoded body before later shape validation when the operation
-ultimately returns an error and does not create a security-invariant failure.</li>
-<li class="">Materializing an array whose component is an interface already allowed as a
-class token. Allocating the reference array does not instantiate or execute
-the interface, and every non-null element must still pass the active policy
-for its concrete type. Treat this as security-relevant only if the array path
-bypasses that concrete element check, invokes a policy-forbidden callback, or
-violates a runtime-safety or resource invariant owned by Fory.</li>
+<li class="">协议允许的集合分块、map 分块和字段顺序。</li>
+<li class="">根据目标数据结构或所属序列化器语义折叠的重复键、set 元素或兼容字段。</li>
+<li class="">最终会产生读取错误的格式错误 ref、null 或类型标志。</li>
+<li class="">线性消耗并最终产生读取错误的格式错误标量字节。</li>
+<li class="">在之后的形状验证前读取编码主体，只要操作最终返回错误且不会造成安全不变量失效。</li>
+<li class="">实体化组件类型是已被允许作为类 token 的接口的数组。分配引用数组不会实例化或执行
+该接口，每个非空元素仍必须针对其具体类型通过当前策略。只有当数组路径绕过该具体
+元素检查、调用策略禁止的回调，或违反 Fory 所有的运行时安全或资源不变量时，才将其
+视为与安全相关。</li>
 </ul>
-<p>Fory may still reject malformed forms for specification strictness or
-interoperability. That validation should be added only when it is required by
-the protocol owner, is effectively free on the relevant path, or protects a
-security invariant listed above. Do not add protocol-layer validation solely to
-reject scalar byte forms whose only effect is extra decode cost.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=value-bearing-ref-flags>Value-bearing ref flags<a href=#value-bearing-ref-flags class=hash-link aria-label="Value-bearing ref flags的直接链接" title="Value-bearing ref flags的直接链接" translate=no>​</a></h3>
-<p>Some read paths intentionally share handling for multiple value-bearing flags.
-For example, when both <code>NotNullValue</code> and <code>RefValue</code> mean that an encoded value
-follows, a reader may merge their hot-path handling. This is not a malformed
-flag bug by itself. Treat it as a bug only if the merged handling loses required
-reference semantics, returns success across an explicit owner policy, or creates
-a resource or runtime-safety failure.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=allocation-and-byte-availability>Allocation And Byte Availability<a href=#allocation-and-byte-availability class=hash-link aria-label="Allocation And Byte Availability的直接链接" title="Allocation And Byte Availability的直接链接" translate=no>​</a></h2>
-<p>Fory should not make large allocations from attacker-declared lengths before
-the required bytes are available or have been read exactly.</p>
-<p>For buffer-backed input:</p>
+<p>Fory 仍可出于规范严格性或互操作性拒绝格式错误的形式。只有当协议所有者要求、在相关
+路径上几乎没有成本，或能保护上述安全不变量时，才应添加此类验证。不要仅仅为了拒绝
+只会增加解码成本的标量字节形式而添加协议层验证。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=携带值的-ref-标志>携带值的 ref 标志<a href=#携带值的-ref-标志 class=hash-link aria-label="携带值的 ref 标志的直接链接" title="携带值的 ref 标志的直接链接" translate=no>​</a></h3>
+<p>某些读取路径有意为多个携带值的标志共享处理。例如，当 <code>NotNullValue</code> 和 <code>RefValue</code> 都
+表示后续是编码值时，读取器可以合并其热路径处理。这本身不是格式错误标志 bug。只有
+当合并处理丢失必需的引用语义、跨越显式所有者策略返回成功，或造成资源或运行时安全
+失效时，才将其视为 bug。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=分配与字节可用性>分配与字节可用性<a href=#分配与字节可用性 class=hash-link aria-label=分配与字节可用性的直接链接 title=分配与字节可用性的直接链接 translate=no>​</a></h2>
+<p>在所需字节可用或已被准确读取之前，Fory 不应根据攻击者声明的长度进行大额分配。</p>
+<p>对于缓冲区支持的输入：</p>
 <ul>
-<li class="">Fixed-size binary values and primitive dense arrays should call the byte
-owner's readability check for the required encoded byte size before allocating
-the destination. For buffer-backed input this is normally a remaining-byte
-comparison.</li>
-<li class="">Multi-byte element arrays should compute the required byte size with overflow
-checks before allocation.</li>
-<li class="">Container readers that allocate backing storage or size-hint from a declared
-logical element count should call the byte owner's readability check for that
-count before that backing allocation or capacity reservation. This is not a
-full container-body validation; it is the allocation proof that the sender has
-supplied at least proportional input bytes before the reader preallocates from
-the count. Estimated memory-budget accounting may reserve budget before this
-byte check because it does not allocate backing storage.</li>
-<li class="">Readers should not add count-based readability checks merely because a loop
-will read that many values when the destination grows incrementally and each
-item read still uses the normal byte-owner checks. The security boundary is
-direct preallocation from an untrusted count, not the existence of a counted
-loop.</li>
+<li class="">固定大小的二进制值和基本类型稠密数组应在分配目标之前，针对所需编码字节大小调用
+字节所有者的可读性检查。对于缓冲区支持的输入，这通常是剩余字节比较。</li>
+<li class="">多字节元素数组应在分配前通过溢出检查计算所需字节大小。</li>
+<li class="">根据声明的逻辑元素计数分配后备存储或提供大小提示的容器读取器，应在分配后备存储
+或预留容量前，针对该计数调用字节所有者的可读性检查。这不是完整的容器主体验证；
+它用于证明在读取器根据计数预分配之前，发送方至少提供了成比例的输入字节。估算的
+内存预算核算可以在此字节检查前预留预算，因为它不分配后备存储。</li>
+<li class="">当目标逐步增长且每个条目的读取仍使用常规字节所有者检查时，读取器不应仅仅因为循环
+将读取相应数量的值，就添加基于计数的可读性检查。安全边界是根据不可信计数直接
+预分配，而不是存在计数循环本身。</li>
 </ul>
-<p>For stream-backed input:</p>
+<p>对于流支持的输入：</p>
 <ul>
-<li class="">Reading or skipping a large byte region is the proof that the bytes exist.</li>
-<li class="">Byte-counted variable-length result allocation should use the byte owner's
-readability check before allocation. Skip paths may use bounded skip without
-materializing the skipped value.</li>
-<li class="">A stream-backed buffer may hold the full requested encoded body after that
-body has been read from the stream. It must not reserve the attacker-declared
-length before input bytes prove that length exists.</li>
-<li class="">Stream-backed fill buffers should grow geometrically from the current proven
-buffer size, such as by doubling current capacity. Growth must not be capped
-to the immediate fill target: for small fills the target is barely above the
-current capacity, so cap-to-target degenerates into constant-size growth
-steps that copy the whole buffer on every small read and make stream
-deserialization O(n^2) overall. A byte owner may use an owner-local
-availability signal as a one-shot growth hint when the stream implementation
-itself is caller-owned trusted code, and may then reserve the full immediate
-target at once while keeping at least the geometric growth step; if that hint
-is absent or insufficient, the reader must fall back to bounded geometric
-growth from already buffered bytes. Serializers should not add their own
-availability branches.</li>
-<li class="">A truncated stream should fail before allocating the final deserialized value
-and should allocate only for bytes actually read plus bounded spare capacity.</li>
+<li class="">读取或跳过较大的字节区域，就是这些字节存在的证明。</li>
+<li class="">按字节计数的可变长度结果分配应在分配前使用字节所有者的可读性检查。跳过路径可以
+使用有界跳过，而无需实体化被跳过的值。</li>
+<li class="">从流中读取完整请求编码主体后，流支持的缓冲区可以保存该主体。但在输入字节证明
+攻击者声明的长度确实存在之前，不得预留该长度。</li>
+<li class="">流支持的填充缓冲区应从当前已证明的缓冲区大小按几何级数增长，例如将当前容量翻倍。
+增长不得限制为当前填充目标：对于较小填充，目标仅略高于当前容量，因此限制到目标
+会退化为固定大小的增长步骤，在每次小读取时复制整个缓冲区，使流反序列化总体成为
+O(n^2)。当流实现本身是调用方拥有的可信代码时，字节所有者可以使用所有者局部可用性
+信号作为一次性增长提示，随后可以一次预留完整的当前目标，同时至少保留几何增长步长；
+如果该提示不存在或不足，读取器必须回退到基于已缓冲字节的有界几何增长。序列化器
+不应添加自己的可用性分支。</li>
+<li class="">截断的流应在分配最终反序列化值前失败，并且只为实际读取的字节加上有界备用容量
+进行分配。</li>
 </ul>
-<p>The byte owner should stay byte-oriented. Buffer, reader, or read-context APIs
-may expose byte read and byte skip operations, but string decoding, decimal
-parsing, primitive-array encoding, compression modes, and collection capacity
-policy belong to the owning serializers.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=collection-and-map-capacity>Collection And Map Capacity<a href=#collection-and-map-capacity class=hash-link aria-label="Collection And Map Capacity的直接链接" title="Collection And Map Capacity的直接链接" translate=no>​</a></h2>
-<p>Large valid collection inputs are allowed. If the input contains many encoded
-elements, proportional deserialization is expected.</p>
-<p>The security requirement is to avoid disproportionate preallocation from a
-declared logical count before enough input bytes justify that capacity. When
-the repeated element or entry body is proven to consume at least one byte, a
-reader that allocates or reserves from the declared count should call
-<code>checkReadableBytes(logicalCount)</code> or the runtime equivalent before that
-allocation. When the body may consume no bytes, the readable-byte requirement
-may exclude the root operation's remaining unbacked-container allowance. The
-reader must still account for actual input progress while reading the
-container. The byte check does not decode the whole container, validate element
-semantics, or replace chunk validation. Readers that do not preallocate from
-the logical count may still grow proportionally as elements are actually read.</p>
-<p>Map or collection chunk validation is security-relevant only when missing
-validation can cause a no-progress loop, unbounded resource growth, retained
-state, or success across a Fory policy boundary. Protocol-allowed chunk
-segmentation is normal input and is not a security issue by itself.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=unbacked-container-work-budget>Unbacked Container Work Budget<a href=#unbacked-container-work-budget class=hash-link aria-label="Unbacked Container Work Budget的直接链接" title="Unbacked Container Work Budget的直接链接" translate=no>​</a></h2>
-<p>Runtimes enforce a root-scoped limit on count-driven collection elements and
-map entries whose repeated read bodies are not backed by input progress. The
-public option is named <code>maxUnbackedContainerItems</code> or the language-equivalent
-spelling. Its default is <code>8192</code>; values must be non-negative, and zero is a
-strict limit rather than an unlimited sentinel.</p>
-<p>The allowance is shared by all nested collections, maps, and compatible field
-skip operations in one root read. Collection readers account for completed
-items every 1024 elements and at the final partial window. Map readers account
-at existing protocol chunk boundaries. Bytes actually consumed by the repeated
-item bodies offset the completed item count in the same window. The budget does
-not add framing, reject values on write, change reference publication, or
-replace graph-memory accounting.</p>
-<p>Readers whose exact repeated operation is known to consume at least one byte
-retain their direct loop and proportional readable-byte check. Generated and
-compiled serializers should remove budget access and periodic branches from
-those proven-positive paths.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=graph-memory-budget>Graph Memory Budget<a href=#graph-memory-budget class=hash-link aria-label="Graph Memory Budget的直接链接" title="Graph Memory Budget的直接链接" translate=no>​</a></h2>
-<p>Runtimes should enforce a per-operation approximate gate for estimated memory created by one
-materialized graph. This is cumulative accounting for graph owners created by one top-level
-deserialization operation; it is not exact heap measurement and it is not a raw element-slot limit.
-Actual process memory can be higher than the configured gate.</p>
-<p>The public configuration is <code>maxGraphMemoryBytes</code>. The default is a fixed <code>128 MiB</code> for all input
-forms; positive user configuration overrides the default. Explicit non-positive configuration is
-invalid and should be rejected when the runtime is created. The budget is not derived from input
-size, and stream budgeting should not depend on dynamic bytes-read accounting.</p>
-<p>Graph budget accounting should:</p>
+<p>字节所有者应保持面向字节。缓冲区、读取器或读取上下文 API 可以公开字节读取和字节跳过
+操作，但字符串解码、十进制解析、基本类型数组编码、压缩模式和集合容量策略属于各自的
+所属序列化器。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=集合与-map-容量>集合与 Map 容量<a href=#集合与-map-容量 class=hash-link aria-label="集合与 Map 容量的直接链接" title="集合与 Map 容量的直接链接" translate=no>​</a></h2>
+<p>允许较大的有效集合输入。如果输入包含许多编码元素，应进行成比例的反序列化工作。</p>
+<p>安全要求是在足够输入字节证明该容量合理之前，避免根据声明的逻辑计数进行不成比例的
+预分配。当重复的元素或条目主体经证明至少消耗一个字节时，根据声明计数进行分配或预留
+的读取器应在分配前调用 <code>checkReadableBytes(logicalCount)</code> 或运行时等价方法。当主体可能
+不消耗字节时，可读字节要求可以排除根操作剩余的无输入支撑容器余量。读取器在读取容器
+时仍必须核算实际输入进度。字节检查不会解码整个容器、验证元素语义，也不能替代分块
+验证。不根据逻辑计数预分配的读取器，仍可随实际读取元素而成比例增长。</p>
+<p>只有当缺少验证会导致无进度循环、无界资源增长、保留状态或跨越 Fory 策略边界返回成功
+时，map 或集合分块验证才与安全相关。协议允许的分块划分属于正常输入，本身不是安全问题。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=无输入支撑容器工作量预算>无输入支撑容器工作量预算<a href=#无输入支撑容器工作量预算 class=hash-link aria-label=无输入支撑容器工作量预算的直接链接 title=无输入支撑容器工作量预算的直接链接 translate=no>​</a></h2>
+<p>运行时会对由计数驱动、且重复读取主体没有输入进度支撑的集合元素和 map 条目执行根操作
+范围限制。公共选项名为 <code>maxUnbackedContainerItems</code>，或使用相应语言中的等价拼写。
+默认值为 <code>8192</code>；值必须非负，零是严格限制，而不是表示无限制的哨兵值。</p>
+<p>一次根读取中的所有嵌套集合、map 和兼容字段跳过操作共享此余量。集合读取器每完成 1024
+个元素以及在最终不完整窗口处核算已完成条目。Map 读取器在现有协议分块边界处核算。
+重复条目主体实际消耗的字节会抵消同一窗口内的已完成条目数。该预算不会添加成帧、在
+写入时拒绝值、改变引用发布，也不会替代对象图内存核算。</p>
+<p>如果读取器确切的重复操作已知至少消耗一个字节，则保留直接循环和成比例的可读字节检查。
+生成和编译的序列化器应从这些已证明为正的路径中移除预算访问和周期性分支。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=对象图内存预算>对象图内存预算<a href=#对象图内存预算 class=hash-link aria-label=对象图内存预算的直接链接 title=对象图内存预算的直接链接 translate=no>​</a></h2>
+<p>运行时应对一个实体化对象图创建的估算内存执行每操作近似限制。这是对一次顶层反序列化
+操作创建的对象图所有者进行累计核算；它不是精确的堆测量，也不是原始元素槽位限制。
+实际进程内存可能高于配置的限制。</p>
+<p>公共配置为 <code>maxGraphMemoryBytes</code>。所有输入形式的默认值固定为 <code>128 MiB</code>；用户配置的正值
+会覆盖默认值。显式的非正配置无效，应在创建运行时时拒绝。预算不从输入大小派生，流预算
+也不应依赖动态已读字节核算。</p>
+<p>对象图预算核算应：</p>
 <ul>
-<li class="">be initialized in top-level read state, with cleanup owned by the top-level deserialization
-<code>finally</code>;</li>
-<li class="">account only for Fory-created objects or storage that are retained by the
-returned value graph; temporary helper objects used only during construction
-are outside the graph budget;</li>
-<li class="">not claim to budget arbitrary constructor, callable, descriptor, finalizer,
-or state-restoration internals that run after an explicit policy allows that
-code;</li>
-<li class="">keep read context/read state limited to raw byte reservation; counted arithmetic and collection,
-map, array, struct, and object storage formulas belong in the concrete serializer or generated
-serializer owner;</li>
-<li class="">reject arithmetic overflow before comparing budget or allocating;</li>
-<li class="">estimate lower-bound shallow owner storage: reference-backed or heap-materialized collections,
-maps, sets, and reference arrays reserve nonzero shallow self cost plus
-backing/reference/inline storage, and reference-backed or heap-materialized struct, record,
-POJO, tuple/product, compatible, generated, and dynamic object owners reserve a nonzero shallow
-self cost plus shallow field storage;</li>
-<li class="">use a 4-byte reference slot when the actual reference slot size is not cheap or reliable to query,
-and use primitive/value field widths for inline storage;</li>
-<li class="">preserve existing byte-availability checks before backing allocation or capacity reservation;</li>
-<li class="">skip enum/union as separate owners and skip dedicated string, binary, primitive scalar, primitive
-array, and primitive dense-array leaf owners unless a runtime-specific owner section explicitly
-includes them.</li>
+<li class="">在顶层读取状态中初始化，并由顶层反序列化 <code>finally</code> 负责清理；</li>
+<li class="">只核算 Fory 创建并由返回值对象图保留的对象或存储；仅在构造期间使用的临时辅助对象
+不属于对象图预算；</li>
+<li class="">不声称能够预算显式策略允许相应代码后执行的任意构造函数、可调用对象、描述符、
+finalizer 或状态恢复内部资源；</li>
+<li class="">将读取上下文/读取状态限制为原始字节预留；计数运算以及集合、map、数组、结构体和对象
+存储公式属于具体序列化器或生成序列化器所有者；</li>
+<li class="">在比较预算或分配前拒绝算术溢出；</li>
+<li class="">估算浅层所有者存储的下限：引用支持或堆实体化的集合、map、set 和引用数组预留非零
+浅层自身成本加上后备/引用/内联存储；引用支持或堆实体化的 struct、record、POJO、
+tuple/product、兼容、生成和动态对象所有者预留非零浅层自身成本加上浅层字段存储；</li>
+<li class="">当实际引用槽位大小无法低成本或可靠查询时，使用 4 字节引用槽位；内联存储使用基本
+类型/值字段宽度；</li>
+<li class="">在分配后备存储或预留容量前保留现有字节可用性检查；</li>
+<li class="">跳过作为独立所有者的 enum/union，并跳过专用的 string、binary、基本类型标量、基本
+类型数组和基本类型稠密数组叶子所有者，除非运行时特有所有者章节明确将其纳入。</li>
 </ul>
-<p>Skipped leaf owners must still be gated by remaining input bytes. If the unread input does not
-contain enough bytes for a string, binary value, primitive scalar, primitive array, or primitive
-dense array, the runtime must not read or create that leaf value.</p>
-<p>Each runtime must inspect the concrete owner path before choosing formulas. Reserve self storage
-exactly once at the owner that stores, boxes, or allocates the value. Deserialization facades may
-reset the budget for each operation, but must not pre-reserve the top-level result type, self bytes,
-or value storage.
-Reference-backed paths reserve parent owner self cost plus reference storage, while each referenced
-heap owner reserves its own shallow self cost when materialized. Inline/value paths reserve inline
-element, field, or boxed storage in the holder/allocation owner; top-level value serializers and
-generated struct/product read paths must not charge their own self storage.
-For inline/value collection or map runtimes, the top-level value container itself is not charged by
-the deserialization facade or by the container serializer only because it is the returned value.
-Nested value containers are charged as inline slots of the parent holder or as backing storage
-elements of the outer collection that actually owns those slots. Pointer, box, smart-pointer, or
-type-erased materialization paths reserve the shallow storage for the heap value they allocate.
-Parents must not recursively include child object, collection, map, string, binary, or primitive
-dense-array contents; the child owner reserves its own shallow memory when it is materialized.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=java-fory-core>Java Fory Core<a href=#java-fory-core class=hash-link aria-label="Java Fory Core的直接链接" title="Java Fory Core的直接链接" translate=no>​</a></h3>
-<p>Java Fory core primitive-array serializers reserve the portable array header plus the logical
-length multiplied by the primitive storage width. Primitive-list serializers reserve the returned
-list's shallow owner, the backing-array header, and the same primitive storage. These known-length
-paths reserve once after their existing proportional readable-byte check and before allocation;
-they do not use incremental batches. Compressed inputs use the decompressed logical length, while
-temporary compressed arrays remain construction scratch outside the retained graph budget.
-Float16 and BFloat16 dense-array carriers also include their wrapper's shallow owner. When a boxed
-list conversion first decodes a primitive array, the array's reservation remains as credit toward
-the final list estimate, and the conversion reserves only a positive remaining difference.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=generated-structural-targets>Generated Structural Targets<a href=#generated-structural-targets class=hash-link aria-label="Generated Structural Targets的直接链接" title="Generated Structural Targets的直接链接" translate=no>​</a></h3>
-<p>Wire members and physical storage are separate inputs. Properties, accessors, interfaces, and
-logical schema aliases are not physical fields and must not be charged as storage. A field that is
-both serialized and stored is counted once. A storage-only declaration contributes its field width
-but must not enter wire metadata or generated reads and writes.</p>
-<p>For C# ordinary classes, each directly annotated class owns the physical instance fields declared
-by that class. An inheritable class provider publishes the cumulative parent-provider value plus
-those direct fields. A sealed concrete serializer uses the same cumulative expression privately.
-A concrete descendant uses the immediate accessible provider value and its own direct fields; it
-must not enumerate referenced private metadata or reconstruct parent storage. The concrete object
-serializer reserves one shallow object owner plus this cumulative field storage.</p>
-<p>A C# external class declaration owns the exact third-party physical fields it lists. An exact
-field mapping contributes storage. A visible property mapping does not, so its backing field must
-be listed separately. An ignored mapping must identify one exact class field and is storage-only.
-External struct declarations support visible member mappings only.
-Discoverable unmapped public instance fields may be added once. A <code>BaseOnly</code> declaration can own
-the complete target and target-ancestor prefix used by an ordinary child. It must list every
-non-public physical field in that prefix; the generator does not scan the referenced assembly for
-private layout.</p>
-<p>Exact external private identities are version-pinned package ABI assertions. Runtime wire access
-uses exact accessors and must not fall back to reflection, layout probing, or a different member.
-Storage-only private declarations have no runtime accessor, so the application must validate them
-against the pinned package version.</p>
-<p>Dart generators may additionally include public instance fields visible on the target at
-generation time. Swift macros cannot inspect another type's stored layout and therefore use only
-the external declaration. In every runtime, these formulas are resolved during generation and
-must not add reflection, layout probing, allocation, or field enumeration to deserialization hot
-paths. The normal owner rules still apply: a reference target reserves its shallow owner and field
-storage, while an inline value target is charged by the holder that owns its storage.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=runtime-specific-owner-notes>Runtime-Specific Owner Notes<a href=#runtime-specific-owner-notes class=hash-link aria-label="Runtime-Specific Owner Notes的直接链接" title="Runtime-Specific Owner Notes的直接链接" translate=no>​</a></h3>
+<p>被跳过的叶子所有者仍必须受剩余输入字节限制。如果未读输入没有足够字节表示 string、
+binary 值、基本类型标量、基本类型数组或基本类型稠密数组，运行时不得读取或创建该叶子值。</p>
+<p>每个运行时都必须在选择公式前检查具体所有者路径。在存储、装箱或分配值的所有者处恰好
+预留一次自身存储。反序列化 facade 可以为每次操作重置预算，但不得预留顶层结果类型、
+自身字节或值存储。引用支持的路径预留父所有者自身成本加上引用存储，而每个被引用的堆
+所有者在实体化时预留自己的浅层自身成本。内联/值路径在持有者/分配所有者中预留内联
+元素、字段或装箱存储；顶层值序列化器和生成的 struct/product 读取路径不得计算自身存储。
+对于内联/值集合或 map 运行时，反序列化 facade 或容器序列化器不得仅仅因为顶层值容器
+是返回值就对其计费。嵌套值容器作为父持有者的内联槽位，或作为实际拥有这些槽位的外层
+集合后备存储元素计费。指针、box、智能指针或类型擦除实体化路径为其分配的堆值预留浅层
+存储。父所有者不得递归包含子对象、集合、map、string、binary 或基本类型稠密数组的内容；
+子所有者在实体化时预留自己的浅层内存。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=java-fory-核心>Java Fory 核心<a href=#java-fory-核心 class=hash-link aria-label="Java Fory 核心的直接链接" title="Java Fory 核心的直接链接" translate=no>​</a></h3>
+<p>Java Fory 核心基本类型数组序列化器预留可移植数组头部，加上逻辑长度乘以基本类型存储
+宽度。基本类型 list 序列化器预留返回 list 的浅层所有者、后备数组头部以及相同的基本
+类型存储。这些已知长度路径在现有成比例可读字节检查后、分配前预留一次；它们不使用
+增量批次。压缩输入使用解压后的逻辑长度，而临时压缩数组仍是保留对象图预算之外的构造
+暂存。Float16 和 BFloat16 稠密数组载体还包括其包装器的浅层所有者。当装箱 list 转换
+首先解码基本类型数组时，数组预留仍作为最终 list 估算的抵扣，转换只预留正的剩余差值。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=生成的结构化目标>生成的结构化目标<a href=#生成的结构化目标 class=hash-link aria-label=生成的结构化目标的直接链接 title=生成的结构化目标的直接链接 translate=no>​</a></h3>
+<p>编码成员和物理存储是不同的输入。属性、访问器、接口和逻辑 Schema 别名不是物理字段，
+不得作为存储计费。既序列化又存储的字段只计数一次。仅存储声明贡献其字段宽度，但不得
+进入编码元数据或生成的读写操作。</p>
+<p>对于 C# 普通类，每个直接带注解的类拥有该类声明的物理实例字段。可继承类提供方发布
+累计父提供方值加上这些直接字段。密封具体序列化器在内部使用相同累计表达式。具体后代
+使用可立即访问的提供方值及其自身直接字段；不得枚举被引用的私有元数据或重建父存储。
+具体对象序列化器预留一个浅层对象所有者加上此累计字段存储。</p>
+<p>C# 外部类声明拥有其列出的确切第三方物理字段。确切字段映射贡献存储。可见属性映射不
+贡献存储，因此其后备字段必须单独列出。忽略的映射必须标识一个确切类字段，且仅用于
+存储。外部 struct 声明仅支持可见成员映射。可发现但未映射的公共实例字段可以添加一次。
+<code>BaseOnly</code> 声明可以拥有普通子类使用的完整目标和目标祖先前缀。它必须列出该前缀中的
+每个非公共物理字段；生成器不会扫描被引用 assembly 的私有布局。</p>
+<p>确切外部私有身份是固定到版本的软件包 ABI 断言。运行时编码访问使用确切访问器，不得
+回退到反射、布局探测或其他成员。仅存储的私有声明没有运行时访问器，因此应用必须根据
+固定的软件包版本验证它们。</p>
+<p>Dart 生成器还可以包含生成时在目标上可见的公共实例字段。Swift 宏无法检查其他类型的
+存储布局，因此只使用外部声明。在每个运行时中，这些公式都在生成期间解析，不得向
+反序列化热路径添加反射、布局探测、分配或字段枚举。常规所有者规则仍然适用：引用目标
+预留其浅层所有者和字段存储，而内联值目标由拥有其存储的持有者计费。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=运行时特有所有者说明>运行时特有所有者说明<a href=#运行时特有所有者说明 class=hash-link aria-label=运行时特有所有者说明的直接链接 title=运行时特有所有者说明的直接链接 translate=no>​</a></h3>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=c>C++<a href=#c class=hash-link aria-label=C++的直接链接 title=C++的直接链接 translate=no>​</a></h4>
-<p>C++ plain structs, products, and standard-library containers are value storage unless a pointer,
-smart pointer, or type-erased owner allocates them on the heap. Top-level deserialization initializes
-the remaining graph budget but does not reserve <code>sizeof(T)</code> for the returned value. Plain value
-serializers must not reserve their own <code>sizeof(T)</code> only because they are reading a value.</p>
-<p>Generic collection and map serializers reserve the lower-bound element, key, and value storage
-owned by the container path. Nested value container headers are charged when they are inline slots
-of a parent object or elements in an outer container backing store. Smart-pointer and type-erased
-materialization paths reserve the shallow storage for the heap value they allocate before publishing
-or returning it. Generic C++ paths must not invent standard-library header, node, bucket, allocator,
-or debug-layout overheads.</p>
+<p>C++ 普通 struct、product 和标准库容器属于值存储，除非指针、智能指针或类型擦除所有者
+在堆上分配它们。顶层反序列化会初始化剩余对象图预算，但不会为返回值预留 <code>sizeof(T)</code>。
+普通值序列化器不得仅仅因为正在读取值，就预留自身的 <code>sizeof(T)</code>。</p>
+<p>泛型集合和 map 序列化器预留容器路径拥有的元素、键和值存储下限。嵌套值容器头部作为
+父对象的内联槽位或外层容器后备存储中的元素时计费。智能指针和类型擦除实体化路径在
+发布或返回其分配的堆值前，为该值预留浅层存储。泛型 C++ 路径不得臆造标准库头部、
+节点、桶、分配器或调试布局开销。</p>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=rust>Rust<a href=#rust class=hash-link aria-label=Rust的直接链接 title=Rust的直接链接 translate=no>​</a></h4>
-<p>Rust structs, tuples, enums, and collection values are inline value storage unless a <code>Box</code>, <code>Rc</code>,
-<code>Arc</code>, or type-erased owner allocates them. Top-level and derived value read paths initialize or
-consume the budget but do not reserve <code>size_of::&lt;Self>()</code> for the value being read. <code>Vec</code>, <code>HashMap</code>,
-<code>BTreeMap</code>, and similar serializers reserve backing or entry value storage that they allocate from
-counts; nested value container headers are charged as parent inline fields or outer backing elements.</p>
-<p>Boxed, reference-counted, and type-erased materialization paths reserve <code>size_of::&lt;T>()</code> for the heap
-payload they create. Compile-time <code>size_of::&lt;T>()</code> formulas are acceptable in those allocation
-owners, but value serializers should not add a parallel self-reserve for the same <code>T</code>.</p>
-<p>Before count-derived allocation, Rust owners whose exact repeated operation is proven to consume at
-least one byte retain the full readable-byte gate. Uncertain owners require readable bytes only for
-the portion of the count not covered by the remaining unbacked-item allowance. Apply the selected
-gate exactly once at the allocation owner; do not repeat it after reading shared metadata. Writers
-continue to encode legal compact or empty bodies and do not enforce this reader-side allowance.</p>
-<p>Fixed arrays do not allocate from their validated wire count and omit the allocation gate. <code>Vec</code>,
-<code>VecDeque</code>, and <code>BinaryHeap</code> also omit it for zero-sized elements because they create no
-count-derived backing allocation in that case. Node, bucket, and entry owners retain the gate where
-the declared count drives allocation. Implementations must not substitute guessed allocation costs,
-padding bytes, a global compact-body bypass, or a second collection or map codec.</p>
+<p>Rust struct、tuple、enum 和集合值属于内联值存储，除非由 <code>Box</code>、<code>Rc</code>、<code>Arc</code> 或类型擦除
+所有者分配。顶层和派生值读取路径初始化或消耗预算，但不为正在读取的值预留
+<code>size_of::&lt;Self>()</code>。<code>Vec</code>、<code>HashMap</code>、<code>BTreeMap</code> 及类似序列化器预留其根据计数分配的
+后备或条目值存储；嵌套值容器头部作为父内联字段或外层后备元素计费。</p>
+<p>装箱、引用计数和类型擦除实体化路径为其创建的堆载荷预留 <code>size_of::&lt;T>()</code>。这些分配
+所有者可以使用编译期 <code>size_of::&lt;T>()</code> 公式，但值序列化器不应为同一个 <code>T</code> 添加并行
+自身预留。</p>
+<p>在根据计数分配前，如果 Rust 所有者的确切重复操作已证明至少消耗一个字节，则保留完整
+可读字节关卡。不确定的所有者只需对计数中未被剩余无输入支撑条目余量覆盖的部分要求
+可读字节。在分配所有者处恰好应用一次所选关卡；读取共享元数据后不要重复。写入端继续
+编码合法的紧凑或空主体，不执行此读取端余量。</p>
+<p>固定数组不根据经过验证的编码计数进行分配，因此省略分配关卡。对于零大小元素，<code>Vec</code>、
+<code>VecDeque</code> 和 <code>BinaryHeap</code> 也省略该关卡，因为在这种情况下它们不会创建根据计数派生的
+后备分配。在声明计数驱动分配时，节点、桶和条目所有者保留该关卡。实现不得以猜测的
+分配成本、填充字节、全局紧凑主体绕过或第二个集合/map codec 取而代之。</p>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=swift>Swift<a href=#swift class=hash-link aria-label=Swift的直接链接 title=Swift的直接链接 translate=no>​</a></h4>
-<p>Swift structs, enums, tuples, and collection values are value storage. Top-level value reads and
-nested value serializers should not reserve their own self storage. The holder that owns the value,
-such as a struct field, array backing store, dictionary entry storage, or boxed/dynamic
-materialization path, owns the corresponding graph-budget reservation.</p>
-<p>Array, dictionary, and set serializers may reserve lower-bound backing storage using stable Swift
-type-size information, such as <code>MemoryLayout&lt;T>.stride</code>, when they allocate or reserve that storage.
-Class, existential, or boxed materialization paths reserve owner storage when Fory creates the
-retained object or box. Runtime object-layout probing should not be added to hot read paths.</p>
+<p>Swift struct、enum、tuple 和集合值属于值存储。顶层值读取和嵌套值序列化器不应预留
+自身存储。拥有该值的持有者（例如 struct 字段、数组后备存储、dictionary 条目存储或
+装箱/动态实体化路径）拥有相应的对象图预算预留。</p>
+<p>数组、dictionary 和 set 序列化器分配或预留后备存储时，可以使用稳定的 Swift 类型大小
+信息（例如 <code>MemoryLayout&lt;T>.stride</code>）预留后备存储下限。当 Fory 创建保留的对象或 box
+时，类、existential 或装箱实体化路径预留所有者存储。不应向读取热路径添加运行时对象
+布局探测。</p>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=go>Go<a href=#go class=hash-link aria-label=Go的直接链接 title=Go的直接链接 translate=no>​</a></h4>
-<p>Go structs and slice or map headers are value storage unless a pointer, interface materialization, or
-other heap owner allocates them. Top-level deserialization and struct value serializers should not
-reserve the returned struct or a nested inline struct by themselves. Pointer serializers reserve the
-concrete struct storage when they allocate a retained <code>*T</code>.</p>
-<p>Slice, array, map, and set serializers reserve the backing or entry storage they allocate from
-declared counts. Element and entry widths should come from stable type information captured by the
-serializer or resolver when possible; read loops should not recompute reflective size information
-when the owner already knows the concrete type. Interface or dynamic paths reserve only storage that
-Fory clearly materializes and retains.</p>
+<p>Go struct 以及 slice 或 map 头部属于值存储，除非由指针、接口实体化或其他堆所有者分配。
+顶层反序列化和 struct 值序列化器不应自行预留返回的 struct 或嵌套内联 struct。指针
+序列化器在分配保留的 <code>*T</code> 时预留具体 struct 存储。</p>
+<p>Slice、array、map 和 set 序列化器预留其根据声明计数分配的后备或条目存储。元素和条目
+宽度应尽可能来自序列化器或解析器捕获的稳定类型信息；如果所有者已经知道具体类型，读取
+循环不应重新计算反射大小信息。接口或动态路径只预留
+Fory 明确实体化并保留的存储。</p>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=c-1>C#<a href=#c-1 class=hash-link aria-label=C#的直接链接 title=C#的直接链接 translate=no>​</a></h4>
-<p>C# combines reference owners and inline value types. Classes, arrays, lists, dictionaries, hash sets,
-and other heap containers reserve a nonzero shallow owner cost plus direct backing, reference-slot,
-or inline element storage. A dictionary is a reference-type container even when its key or value type
-is a struct, so the dictionary owner is still charged separately from its entry storage.</p>
-<p>Value structs do not reserve their own self storage when read inline; the holder that stores the
-struct, such as an object field, array element, list backing store, dictionary entry, box, or dynamic
-materialization path, owns that reservation. Boxing, <code>object</code>, and dynamic materialization paths
-reserve a boxed owner when Fory creates the retained box. Owner constants should be real portable
-lower bounds for the relevant C# object or container shape, not placeholder markers.</p>
-<p>Runtimes should not guess object headers, array headers, allocator headers, debug-mode fields, hash
-buckets, tree links, hash-chain links, node headers, map-entry objects, spare blocks, or runtime
-table layouts unless the owner path has a cheap, stable, explicit lower-bound storage signal and
-documents the formula. Owner constants should be real lower bounds for the owner shape, not
-placeholder markers.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=skip-semantics>Skip Semantics<a href=#skip-semantics class=hash-link aria-label="Skip Semantics的直接链接" title="Skip Semantics的直接链接" translate=no>​</a></h2>
-<p>Skipping unknown or incompatible data is classified by concrete impact, not by
-whether the runtime materializes a temporary value.</p>
-<p>Directly consuming encoded contents is useful when it is simple and owned by the
-current runtime path. It is not a security requirement for complex fields such
-as lists, sets, and maps. A runtime may materialize a value and discard it when
-that preserves the existing serializer ownership model.</p>
-<p>For extension, dynamic, or user-owned types, the owning runtime may not always
-have enough information to skip without invoking a registered serializer. In
-that case, classify the behavior by concrete impact:</p>
+<p>C# 同时包含引用所有者和内联值类型。类、数组、list、dictionary、hash set 和其他堆容器
+预留非零浅层所有者成本，加上直接后备、引用槽位或内联元素存储。即使 dictionary 的键
+或值类型是 struct，dictionary 也是引用类型容器，因此 dictionary 所有者仍与其条目存储
+分开计费。</p>
+<p>值 struct 内联读取时不预留自身存储；存储该 struct 的持有者（例如对象字段、数组元素、
+list 后备存储、dictionary 条目、box 或动态实体化路径）拥有该预留。当 Fory 创建保留的
+box 时，装箱、<code>object</code> 和动态实体化路径预留一个装箱所有者。所有者常量应是相关 C#
+对象或容器形状真正可移植的下限，而不是占位标记。</p>
+<p>运行时不应猜测对象头部、数组头部、分配器头部、调试模式字段、hash 桶、树链接、hash 链
+链接、节点头部、map 条目对象、备用块或运行时表布局，除非所有者路径具有低成本、稳定、
+显式的存储下限信号并记录了公式。所有者常量应是所有者形状的真实下限，而不是占位标记。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=跳过语义>跳过语义<a href=#跳过语义 class=hash-link aria-label=跳过语义的直接链接 title=跳过语义的直接链接 translate=no>​</a></h2>
+<p>跳过未知或不兼容数据时，应根据具体影响进行分类，而不是根据运行时是否实体化临时值。</p>
+<p>当直接消耗编码内容很简单且由当前运行时路径负责时，这样做很有用。对于 list、set 和 map
+等复杂字段，这不是安全要求。如果能够保留现有序列化器所有权模型，运行时可以实体化值
+然后将其丢弃。</p>
+<p>对于扩展、动态或用户拥有的类型，所属运行时可能不总是有足够信息在不调用已注册序列化器
+的情况下跳过。此时应根据具体影响分类行为：</p>
 <ul>
-<li class="">Resource leak, retained state, no-progress loop, or policy bypass is
-security-relevant.</li>
-<li class="">Bounded materialization followed by an error or discard is allowed unless it
-creates meaningful memory or CPU pressure.</li>
-<li class="">Pure strictness about whether a skipped value used one specific encoding shape
-is not a security issue.</li>
+<li class="">资源泄漏、保留状态、无进度循环或策略绕过与安全相关。</li>
+<li class="">允许有界实体化后返回错误或丢弃，除非它造成显著内存或 CPU 压力。</li>
+<li class="">仅要求被跳过值使用某一种特定编码形状的严格性，不是安全问题。</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=metadata-and-type-resolution>Metadata And Type Resolution<a href=#metadata-and-type-resolution class=hash-link aria-label="Metadata And Type Resolution的直接链接" title="Metadata And Type Resolution的直接链接" translate=no>​</a></h2>
-<p>Metadata parsing is security-sensitive when it affects retained read-side state,
-type dispatch, or policy decisions.</p>
-<p>Metadata readers should:</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=元数据与类型解析>元数据与类型解析<a href=#元数据与类型解析 class=hash-link aria-label=元数据与类型解析的直接链接 title=元数据与类型解析的直接链接 translate=no>​</a></h2>
+<p>当元数据解析影响保留的读取端状态、类型分派或策略决策时，它对安全敏感。</p>
+<p>元数据读取器应：</p>
 <ul>
-<li class="">Avoid unbounded recursion in nested metadata structures.</li>
-<li class="">Avoid unbounded table growth from attacker-controlled metadata streams.</li>
-<li class="">Validate metadata bodies before using them to bypass or replace existing
-policy decisions.</li>
-<li class="">For Java metadata paths, keep name-level checks such as <code>TypeChecker</code> and the
-disallowed-class list before <code>Class.forName</code> by routing remote class-name
-loading through the existing <code>TypeResolver.loadClass</code> owner. Do not bypass
-that owner with direct class loading from TypeDef or TypeMeta names. A rejected
-input name must not cause class loading. Preserve registration, dynamic-loading,
-and unknown-type semantics while moving this decision before loading. Checks
-that require a materialized <code>Class&lt;?></code> remain after loading; do not replace
-them with string-only approximations.</li>
-<li class="">Pass a complete input array descriptor to <code>TypeChecker</code>. Input may derive up
-to six array dimensions from an accepted component class. Higher-dimensional
-arrays require an exact trusted full-array registration or checked name-cache
-entry so input cannot make the JVM derive an unbounded family of array classes.</li>
-<li class="">Reset or release metadata state at the correct root-operation boundary.</li>
+<li class="">避免嵌套元数据结构中的无界递归。</li>
+<li class="">避免攻击者控制的元数据流导致表无界增长。</li>
+<li class="">在使用元数据主体绕过或替换现有策略决策前验证它们。</li>
+<li class="">对于 Java 元数据路径，将 <code>TypeChecker</code> 等名称级检查和禁止类列表保持在
+<code>Class.forName</code> 之前；为此，通过现有 <code>TypeResolver.loadClass</code> 所有者路由远端类名加载。不要通过直接从
+TypeDef 或 TypeMeta 名称加载类来绕过该所有者。被拒绝的输入名称不得导致类加载。
+将此决策移动到加载前时，应保留注册、动态加载和未知类型语义。需要实体化
+<code>Class&lt;?></code> 的检查仍在加载后执行；不要用仅基于字符串的近似检查替代它们。</li>
+<li class="">将完整的输入数组描述符传给 <code>TypeChecker</code>。输入最多可从已接受组件类派生六维数组。
+更高维数组要求精确可信的完整数组注册或经过检查的名称缓存条目，使输入无法让 JVM
+派生无界的数组类系列。</li>
+<li class="">在正确的根操作边界重置或释放元数据状态。</li>
 </ul>
-<p>A class-resolution cache reachable from untrusted deserialization may publish
-an entry only from explicit trusted configuration or after the active class
-policy has accepted the resolved class. A cache hit therefore represents an
-already trusted and validated <code>Class&lt;?></code> and should use that cached class
-without repeating class loading or name-level <code>TypeChecker</code> work. Only a cache
-miss performs those name-level checks and publishes the accepted result.
-Checks that require the materialized <code>Class&lt;?></code> remain owned by their existing
-caller. A cache entry that stores a data-only unknown-class placeholder may
-return that same placeholder on an exact hit, but must not authorize loading the
-original missed wire name.
-Exact registered-name-table hits are trusted for both ID and name registrations,
-and exact checked name-cache hits are trusted. After both exact lookups miss, a
-reader must not infer another accepted name from inverse registration,
-class-keyed state, or <code>Class.getName()</code>. A custom-name registration does not by
-itself publish the Java class name as an additional alias; ID registration does
-publish the Java class name.</p>
-<p>Remote metadata that can create persistent read state must be bounded before
-that state is retained. The check is resource control only: it must not change
-wire compatibility, type registration, dynamic class loading, unknown-type
-handling, deserialization policy, or schema-evolution semantics. Failed or
-incompatible metadata must not consume schema-version limits, and metadata
-cache hits or generated field readers must not add validation, hashing,
-allocation, or policy work for these limits. The concrete sequence for metadata
-parsing, cache publishing, exact-local matching, and counting belongs to the
-<a class="" href=/zh-CN/docs/next/specification/xlang_implementation_guide>xlang implementation guide</a>.</p>
-<p>The checked metadata cache is the only owner of whether a received TypeDef or
-TypeMeta header has already been validated. A metadata cache hit means the
-header was previously parsed, body/hash-validated, policy-checked, and
-published by the owning cache, so the reader must skip the remaining metadata
-body and use the cached metadata without repeating body validation, hash
-validation, limit checks, exact-local checks, or policy work. A metadata cache
-miss is the only path that parses the metadata body, validates its hash and
-shape, enforces metadata limits, performs exact-local byte comparison, and
-publishes to the cache. Do not add separate nullable flags, sentinel headers,
-per-TypeInfo acceptance markers, or parallel state to represent this decision.</p>
-<p>Only metadata that is actually carried as a TypeDef or TypeMeta body is subject
-to metadata body and schema-version limits. Compatible named enum, ext, and
-union metadata normally has one version, but still counts against remote
-metadata total limits when it is sent as shared metadata. Pure id-based enum,
-ext, and typed-union values use type id plus user type id and must not be moved
-onto this metadata body path.</p>
-<p>Remote metadata bodies and struct field lists must also be bounded on the cold
-metadata parse path. <code>maxTypeMetaBytes</code> limits the encoded metadata body bytes
-for one received TypeDef or TypeMeta body, excluding the 8-byte header and any
-extended-size varint. <code>maxTypeFields</code> limits the number of fields declared by
-one received struct metadata body. For Java native TypeDef class layers, the
-field limit applies to the total field count across the class layers in that
-one TypeDef. These limits are checked before copying, decompressing, reserving,
-or allocating from attacker-declared metadata sizes or field counts.</p>
-<p>The default limits are <code>maxTypeFields = 512</code> and <code>maxTypeMetaBytes = 4096</code>.
-Runtimes should report limit failures as possible malicious data and tell users
-to increase the exact option only when the data is not malicious. These limits
-must not introduce validation on metadata cache-hit, generated serializer, or
-already-resolved type-id hot paths.</p>
-<p>Metadata byte-form strictness alone is not a security requirement. Rejecting a
-metadata shape is useful only when the owner wants that strictness or when the
-shape changes type identity, retained state, resource use, or policy behavior.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-tracking>Reference Tracking<a href=#reference-tracking class=hash-link aria-label="Reference Tracking的直接链接" title="Reference Tracking的直接链接" translate=no>​</a></h2>
-<p>Reference tracking is part of the wire protocol and is performance-sensitive.
-Readers may use sentinel values and shared value-bearing branches to keep hot
-paths compact.</p>
-<p>Reference tracking validation is security-relevant when malformed input can:</p>
+<p>不可信反序列化可以访问的类解析缓存，只能从显式可信配置发布条目，或在当前类策略接受
+解析出的类后发布条目。因此，缓存命中表示已经可信且验证过的 <code>Class&lt;?></code>，应直接使用
+缓存类，而不重复类加载或名称级 <code>TypeChecker</code> 工作。只有缓存未命中才执行这些名称级
+检查并发布接受的结果。需要实体化 <code>Class&lt;?></code> 的检查仍由其现有调用方负责。存储纯数据
+未知类占位符的缓存条目可以在精确命中时返回同一个占位符，但不得授权加载最初未命中的
+编码名称。对于 ID 注册和名称注册，精确的已注册名称表命中都是可信的；经过检查的名称
+缓存精确命中也是可信的。两个精确查找都未命中后，读取器不得从反向注册、以类为键的
+状态或 <code>Class.getName()</code> 推断另一个已接受名称。自定义名称注册本身不会将 Java 类名发布
+为额外别名；ID 注册会发布 Java 类名。</p>
+<p>能够创建持久读取状态的远端元数据，必须在保留该状态前受到限制。该检查仅用于资源控制：
+不得改变编码兼容性、类型注册、动态类加载、未知类型处理、反序列化策略或 Schema 演进
+语义。失败或不兼容的元数据不得消耗 Schema 版本限制；元数据缓存命中或生成的字段读取器
+不得为这些限制添加验证、hash、分配或策略工作。元数据解析、缓存发布、精确本地匹配和
+计数的具体顺序属于 <a class="" href=/zh-CN/docs/next/specification/xlang_implementation_guide>xlang 实现指南</a>。</p>
+<p>经过检查的元数据缓存，是判断接收的 TypeDef 或 TypeMeta 头部是否已经验证的唯一所有者。
+元数据缓存命中意味着该头部先前已被解析、通过主体/hash 验证和策略检查，并由所属缓存
+发布，因此读取器必须跳过剩余元数据主体并使用缓存元数据，不重复主体验证、hash 验证、
+限制检查、精确本地检查或策略工作。元数据缓存未命中是唯一会解析元数据主体、验证其
+hash 和形状、执行元数据限制、进行精确本地字节比较并发布到缓存的路径。不要添加单独的
+可空标志、哨兵头部、每 TypeInfo 接受标记或并行状态来表示此决策。</p>
+<p>只有实际作为 TypeDef 或 TypeMeta 主体携带的元数据才受元数据主体和 Schema 版本限制。
+兼容的命名 enum、ext 和 union 元数据通常只有一个版本，但当它作为共享元数据发送时，
+仍计入远端元数据总量限制。纯基于 ID 的 enum、ext 和 typed-union 值使用 type id 加 user
+type id，不得移到此元数据主体路径。</p>
+<p>远端元数据主体和 struct 字段列表也必须在冷元数据解析路径上受到限制。
+<code>maxTypeMetaBytes</code> 限制一个接收的 TypeDef 或 TypeMeta 主体中的编码元数据主体字节数，
+不包括 8 字节头部和任何扩展大小 varint。<code>maxTypeFields</code> 限制一个接收的 struct 元数据
+主体声明的字段数量。对于 Java 原生 TypeDef 类层级，字段限制适用于该 TypeDef 所有类
+层级的字段总数。这些限制在根据攻击者声明的元数据大小或字段计数进行复制、解压、预留
+或分配之前检查。</p>
+<p>默认限制为 <code>maxTypeFields = 512</code> 和 <code>maxTypeMetaBytes = 4096</code>。运行时应将限制失败报告为
+可能的恶意数据，并告知用户只有在数据没有恶意时才提高确切选项。这些限制不得在元数据
+缓存命中、生成的序列化器或已解析 type-id 热路径上引入验证。</p>
+<p>单纯的元数据字节形式严格性不是安全要求。只有当所有者需要这种严格性，或该形状会改变
+类型身份、保留状态、资源使用或策略行为时，拒绝元数据形状才有意义。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=引用跟踪>引用跟踪<a href=#引用跟踪 class=hash-link aria-label=引用跟踪的直接链接 title=引用跟踪的直接链接 translate=no>​</a></h2>
+<p>引用跟踪是编码协议的一部分，并且对性能敏感。读取器可以使用哨兵值和共享的携带值分支，
+以保持热路径紧凑。</p>
+<p>当格式错误输入能够导致以下结果时，引用跟踪验证与安全相关：</p>
 <ul>
-<li class="">Access an out-of-range reference without reporting an error.</li>
-<li class="">Leave retained reference state after a failed root operation.</li>
-<li class="">Register unbounded callbacks or resolver state before the referenced value is
-available.</li>
-<li class="">Cause a no-progress loop or crash.</li>
+<li class="">访问越界引用而不报告错误。</li>
+<li class="">根操作失败后留下保留的引用状态。</li>
+<li class="">在引用值可用之前注册无界回调或解析器状态。</li>
+<li class="">导致无进度循环或崩溃。</li>
 </ul>
-<p>Reference tracking validation is not required merely because a malformed flag is
-not rejected at the earliest possible byte. Lazy rejection is acceptable when
-the root operation still returns an error and no security invariant is violated.
-The downstream error does not need to be a dedicated reference-protocol error.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=error-propagation-and-cleanup>Error Propagation And Cleanup<a href=#error-propagation-and-cleanup class=hash-link aria-label="Error Propagation And Cleanup的直接链接" title="Error Propagation And Cleanup的直接链接" translate=no>​</a></h2>
-<p>Fory runtimes may intentionally use lazy error propagation. After a read records
-an error, later read steps may continue until the outer operation observes and
-returns the error.</p>
-<p>This is acceptable when the continued work cannot:</p>
+<p>不能仅仅因为格式错误的标志没有在最早可能的字节处被拒绝，就要求进行引用跟踪验证。
+只要根操作仍返回错误且没有违反安全不变量，延迟拒绝就是可接受的。下游错误无需是专用
+引用协议错误。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=错误传播与清理>错误传播与清理<a href=#错误传播与清理 class=hash-link aria-label=错误传播与清理的直接链接 title=错误传播与清理的直接链接 translate=no>​</a></h2>
+<p>Fory 运行时可以有意使用延迟错误传播。读取记录错误后，后续读取步骤可以继续，直到外层
+操作观察到并返回该错误。</p>
+<p>如果继续执行的工作不会导致以下结果，则可以接受：</p>
 <ul>
-<li class="">Crash or panic.</li>
-<li class="">Allocate or retain attacker-controlled state.</li>
-<li class="">Leak resources.</li>
-<li class="">Bypass required cleanup.</li>
-<li class="">Return success across an explicit validation or policy boundary.</li>
+<li class="">崩溃或 panic。</li>
+<li class="">分配或保留攻击者控制的状态。</li>
+<li class="">泄漏资源。</li>
+<li class="">绕过必需的清理。</li>
+<li class="">跨越显式验证或策略边界返回成功。</li>
 </ul>
-<p>Nested <code>try</code>/<code>finally</code> or equivalent cleanup should be added only when the
-outer root-operation cleanup cannot cover the state or resource owned by the
-nested path.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=performance-requirements>Performance Requirements<a href=#performance-requirements class=hash-link aria-label="Performance Requirements的直接链�接" title="Performance Requirements的直接链接" translate=no>​</a></h2>
-<p>Security validation must preserve Fory hot-path performance. Do not add
-validation solely for strictness when it introduces:</p>
+<p>只有当外层根操作清理无法覆盖嵌套路径拥有的状态或资源时，才应添加嵌套
+<code>try</code>/<code>finally</code> 或等价清理。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=性能要求>性能要求<a href=#性能要求 class=hash-link aria-label=性能要求的直接链接 title=性能要求的直接链接 translate=no>​</a></h2>
+<p>安全验证必须保持 Fory 热路径性能。如果验证仅用于严格性且会引入以下内容，请勿添加：</p>
 <ul>
-<li class="">Per-element object allocation.</li>
-<li class="">Dynamic dispatch or callbacks in hot loops.</li>
-<li class="">Wrapper objects or result carriers on success paths.</li>
-<li class="">Extra copying for buffer-backed string, binary, or primitive-array reads.</li>
-<li class="">Branches that do not protect a security invariant.</li>
-<li class="">Helper calls or generated-code expansion whose only purpose is to normalize
-an eventual error's type, message, location, or timing.</li>
+<li class="">每元素对象分配。</li>
+<li class="">热循环中的动态分派或回调。</li>
+<li class="">成功路径上的包装对象或结果载体。</li>
+<li class="">缓冲区支持的 string、binary 或基本类型数组读取所需的额外复制。</li>
+<li class="">无法保护安全不变量的分支。</li>
+<li class="">唯一目的只是统一最终错误类型、消息、位置或时机的辅助调用或生成代码膨胀。</li>
 </ul>
-<p>Prefer owner-local checks that can be inlined and that already use information
-available in the current serializer. Do not move serializer-owned semantics into
-generic read-context helpers.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=classification-guide>Classification Guide<a href=#classification-guide class=hash-link aria-label="Classification Guide的直接链接" title="Classification Guide的直接链接" translate=no>​</a></h2>
-<p>Use the following questions when reviewing deserialization behavior:</p>
+<p>优先使用可以内联、且已经利用当前序列化器可用信息的所有者局部检查。不要将序列化器
+拥有的语义移入通用读取上下文辅助方法。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=分类指南>分类指南<a href=#分类指南 class=hash-link aria-label=分类指南的直接链接 title=分类指南的直接链接 translate=no>​</a></h2>
+<p>审查反序列化行为时，请使用以下问题：</p>
 <ol>
-<li class="">Can this input crash, panic, or access memory out of bounds?</li>
-<li class="">Can a small or unproven input length cause disproportionate allocation?</li>
-<li class="">Can a stream-backed reader grow a buffer before exact read or skip proves the
-bytes exist?</li>
-<li class="">Can a loop continue without byte progress or logical progress?</li>
-<li class="">Can the path retain attacker-controlled state after the root operation fails?</li>
-<li class="">Can the path leak resources or skip required cleanup?</li>
-<li class="">Can the path return success across an explicit Fory policy boundary?</li>
-<li class="">Is the proposed validation effectively free in the relevant hot path?</li>
+<li class="">此输入能否导致崩溃、panic 或越界内存访问？</li>
+<li class="">较小或未经证明的输入长度能否导致不成比例的分配？</li>
+<li class="">流支持的读取器能否在精确读取或跳过证明字节存在之前增长缓冲区？</li>
+<li class="">循环能否在没有字节进度或逻辑进度的情况下继续？</li>
+<li class="">根操作失败后，该路径能否保留攻击者控制的状态？</li>
+<li class="">该路径能否泄漏资源或跳过必需的清理？</li>
+<li class="">该路径能否跨越显式 Fory 策略边界返回成功？</li>
+<li class="">所提议的验证在相关热路径上是否几乎没有成本？</li>
 </ol>
-<p>If the answer to the first seven questions is no, the issue is normally not a
-security finding. If the validation is not effectively free, avoid adding it
-unless the protocol owner explicitly requires it.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=documentation-boundaries>Documentation Boundaries<a href=#documentation-boundaries class=hash-link aria-label="Documentation Boundaries的直接链接" title="Documentation Boundaries的直接链接" translate=no>​</a></h2>
-<p>Security model documents must not include exploit samples, CVE narratives,
-line-level vulnerability candidates, branch history, migration timelines, or
-cleanup plans. Keep those details in private reports, issues, or pull requests
-as appropriate.</p>
-<p>Public security documentation should describe durable boundaries and invariants,
-not the history of how the implementation reached them.</div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/i18n/zh-CN/docusaurus-plugin-content-docs/current/object-serialization/deserialization-security-model.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label=文件选项卡></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#scope class="table-of-contents__link toc-highlight">Scope</a><li><a href=#trust-boundaries class="table-of-contents__link toc-highlight">Trust Boundaries</a><li><a href=#type-and-class-policy class="table-of-contents__link toc-highlight">Type And Class Policy</a><li><a href=#depth-and-progress class="table-of-contents__link toc-highlight">Depth And Progress</a><li><a href=#security-invariants class="table-of-contents__link toc-highlight">Security Invariants</a><li><a href=#robustness-scope-gate class="table-of-contents__link toc-highlight">Robustness Scope Gate</a><li><a href=#controlled-deserialization-errors class="table-of-contents__link toc-highlight">Controlled Deserialization Errors</a><li><a href=#non-security-semantics class="table-of-contents__link toc-highlight">Non-Security Semantics</a><ul><li><a href=#value-bearing-ref-flags class="table-of-contents__link toc-highlight">Value-bearing ref flags</a></ul><li><a href=#allocation-and-byte-availability class="table-of-contents__link toc-highlight">Allocation And Byte Availability</a><li><a href=#collection-and-map-capacity class="table-of-contents__link toc-highlight">Collection And Map Capacity</a><li><a href=#unbacked-container-work-budget class="table-of-contents__link toc-highlight">Unbacked Container Work Budget</a><li><a href=#graph-memory-budget class="table-of-contents__link toc-highlight">Graph Memory Budget</a><ul><li><a href=#java-fory-core class="table-of-contents__link toc-highlight">Java Fory Core</a><li><a href=#generated-structural-targets class="table-of-contents__link toc-highlight">Generated Structural Targets</a><li><a href=#runtime-specific-owner-notes class="table-of-contents__link toc-highlight">Runtime-Specific Owner Notes</a></ul><li><a href=#skip-semantics class="table-of-contents__link toc-highlight">Skip Semantics</a><li><a href=#metadata-and-type-resolution class="table-of-contents__link toc-highlight">Metadata And Type Resolution</a><li><a href=#reference-tracking class="table-of-contents__link toc-highlight">Reference Tracking</a><li><a href=#error-propagation-and-cleanup class="table-of-contents__link toc-highlight">Error Propagation And Cleanup</a><li><a href=#performance-requirements class="table-of-contents__link toc-highlight">Performance Requirements</a><li><a href=#classification-guide class="table-of-contents__link toc-highlight">Classification Guide</a><li><a href=#documentation-boundaries class="table-of-contents__link toc-highlight">Documentation Boundaries</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>社区</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>邮件列表<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>文档</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/install>安装</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/usage>使用</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/introduction/benchmark>基准测试</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>代码库</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>网站<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+<p>如果前七个问题的答案都是否，该问题通常不属于安全问题。如果验证并非几乎没有成本，
+除非协议所有者明确要求，否则请避免添加。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=文档边界>文档边界<a href=#文档边界 class=hash-link aria-label=文档边界的直接链接 title=文档边界的直接链接 translate=no>​</a></h2>
+<p>安全模型文档不得包含利用样例、CVE 叙述、行级潜在漏洞、分支历史、迁移时间线或清理计划。
+请根据需要将这些细节保留在私有报告、issue 或 pull request 中。</p>
+<p>公开安全文档应描述持久边界和不变量，而不是实现如何达到这些状态的历史。</div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/i18n/zh-CN/docusaurus-plugin-content-docs/current/object-serialization/deserialization-security-model.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label=文件选项卡></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#范围 class="table-of-contents__link toc-highlight">范围</a><li><a href=#信任边界 class="table-of-contents__link toc-highlight">信任边界</a><li><a href=#类型与类策略 class="table-of-contents__link toc-highlight">类型与类策略</a><li><a href=#深度与进度 class="table-of-contents__link toc-highlight">深度与进度</a><li><a href=#安全不变量 class="table-of-contents__link toc-highlight">安全不变量</a><li><a href=#健壮性范围关卡 class="table-of-contents__link toc-highlight">健壮性范围关卡</a><li><a href=#受控反序列化错误 class="table-of-contents__link toc-highlight">受控反序列化错误</a><li><a href=#非安全语义 class="table-of-contents__link toc-highlight">非安全语义</a><ul><li><a href=#携带值的-ref-标志 class="table-of-contents__link toc-highlight">携带值的 ref 标志</a></ul><li><a href=#分配与字节可用性 class="table-of-contents__link toc-highlight">分配与字节可用性</a><li><a href=#集合与-map-容量 class="table-of-contents__link toc-highlight">集合与 Map 容量</a><li><a href=#无输入支撑容器工作量预算 class="table-of-contents__link toc-highlight">无输入支撑容器工作量预算</a><li><a href=#对象图内存预算 class="table-of-contents__link toc-highlight">对象图内存预算</a><ul><li><a href=#java-fory-核心 class="table-of-contents__link toc-highlight">Java Fory 核心</a><li><a href=#生成的结构化目标 class="table-of-contents__link toc-highlight">生成的结构化目标</a><li><a href=#运行时特有所有者说明 class="table-of-contents__link toc-highlight">运行时特有所有者说明</a></ul><li><a href=#跳过语义 class="table-of-contents__link toc-highlight">跳过语义</a><li><a href=#元数据与类型解析 class="table-of-contents__link toc-highlight">元数据与类型解析</a><li><a href=#引用跟踪 class="table-of-contents__link toc-highlight">引用跟踪</a><li><a href=#错误传播与清理 class="table-of-contents__link toc-highlight">错误传播与清理</a><li><a href=#性能要求 class="table-of-contents__link toc-highlight">性能要求</a><li><a href=#分类指南 class="table-of-contents__link toc-highlight">分类指南</a><li><a href=#文档边界 class="table-of-contents__link toc-highlight">文档边界</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>社区</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>邮件列表<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>文档</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/install>安装</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/usage>使用</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/introduction/benchmark>基准测试</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>代码库</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>网站<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
       <p> 版权所有 © 2025 The Apache Software Foundation，许可证：Apache License, Version 2.0。 <br/>
         Apache Fory、Fory、Apache、Apache Logo、Apache Fory Logo 是 Apache 软件基金会在美国和/或其他国家的注册商标或商标。
       </p>
