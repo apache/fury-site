@@ -1,108 +1,105 @@
 ---
-title: 如何加入 Apache Fory™ 社区
+title: 如何加入 Apache Fory™
 sidebar_position: 0
 id: how_to_join_community
 ---
 
-首先为你选择加入开源贡献行列的行为点赞 👍🏻。再者，十分感谢你选择参与到 Apache Fory™ 社区，为这个开源项目做出贡献。
+首先，为您选择加入开源贡献者行列点赞。其次，非常感谢您选择参与 Fory 社区，并为这个开源项目贡献力量。
 
-## Apache Fory™ 贡献指南
+## Fory 贡献指南
 
-Apache Fory™ 团队通常在 github 上进行开发和 issue 维护，请打开 [Github 网站](https://github.com/)，点击右上角 `Sign up` 按钮，注册一个自己的账号，开启你开源之旅的第一步。
+Fory 团队通常在 GitHub 上进行开发和维护 Issue。请打开 [GitHub 网站](https://github.com/)，点击右上角的 `Sign up` 按钮，注册自己的账号，迈出开源之旅的第一步。
 
-在 [Apache Fory™ 仓库](https://github.com/apache/fory)中，我们有一份面向所有开源贡献者的[指南](https://fory.apache.org/zh-CN/docs/community/)，介绍了有关版本管理、分支管理等内容，**请花几分钟时间阅读了解一下**。
+在 [Fory 仓库](https://github.com/apache/fory)中，我们为所有开源贡献者准备了一份[指南](https://fory.apache.org/zh-CN/docs/community/)，其中介绍了版本管理和分支管理等内容。**请花几分钟时间阅读并理解它**。
 
-## 你的第一个 Pull Request
+## 您的第一个 Pull Request
 
-### Step0：安装 Git
+### 第 0 步：安装 Git
 
-Git 是一种版本控制系统，用于跟踪和管理软件开发项目中的代码变更。它帮助开发者记录和管理代码的历史记录，方便团队协作、代码版本控制、合并代码等操作。通过 Git，您可以追踪每个文件的每个版本，并轻松地在不同版本之间进行切换和比较。Git 还提供了分支管理功能，使得可以同时进行多个并行开发任务。
+Git 是一种版本控制系统，用于跟踪和管理软件开发项目中的代码变更。它可以帮助开发者记录和管理代码历史，便于团队协作、代码版本控制、代码合并等操作。借助 Git，您可以跟踪每个文件的各个版本，并轻松切换和比较不同版本。Git 还提供分支管理功能，允许同时开展多个并行开发任务。
 
-- 访问 Git 官方网站：[https://git-scm.com](https://git-scm.com)
+- 访问 Git 官方网站：[https://git-scm.com/] (https://git-scm.com/)
 - 下载最新版本的 Git 安装程序。
-- 运行下载的安装程序，按照安装向导的提示进行安装。
-- 安装完成后，你可以通过命令行使用 `git version` 命令确认安装成功。
+- 运行下载的安装程序，并按照安装向导的提示完成安装。
+- 安装完成后，可以在命令行中使用 `git version` 命令确认是否安装成功。
 
-### Step1：Fork 项目
+### 第 1 步：Fork 项目
 
-- 首先需要 fork 这个项目，进入[Apache Fory™ 项目页面](https://github.com/apache/fory)，点击右上角的 Fork 按钮
-- 你的 github 帐号中会出现 xxxx(你的 github 用户名)/fory 这个项目
-- 在本地电脑上使用以下命令: 得到一个 fory 文件夹
+- 首先，您需要 Fork 此项目。进入 [Fory 项目页面](https://github.com/apache/fory)，然后点击右上角的 Fork 按钮。
+- 在您的 GitHub 账号中，将会出现 xxxx（您的 GitHub 用户名）/fory 项目。
+- 在本地计算机上，使用以下命令获取 fory 文件夹：
 
 ```
 // ssh
-git clone git@github.com:xxxx(你的github用户名)/fory.git
+git clone git@github.com:xxxx (your GitHub username)/fory.git
 // https
-git clone https://github.com/xxxx(你的github用户名)/fory.git
+git clone https://github.com/xxxx (your GitHub username)/fory.git
 ```
 
-### Step2：获取项目代码
+### 第 2 步：获取项目代码
 
-- 进入 fory 文件夹，添加 fory 的远程地址
+- 进入 fory 文件夹，并添加 fory 的远程地址：
 
 ```
 git remote add upstream https://github.com/apache/fory.git
 ```
 
-### Step3：创建分支
+### 第 3 步：创建分支
 
-- 好了，现在可以开始贡献我们的代码了。fory 默认分支为 main 分支。无论是功能开发、bug 修复、文档编写，都请新建立一个分支，再合并到 main 分支上。使用以下代码创建分支：
+- 现在，您可以开始贡献代码了。Fory 的默认分支是 main 分支。无论是开发功能、修复 Bug 还是编写文档，请先创建新分支，再将其合并到 main 分支。使用以下代码创建分支：
 
-```shell
-// 创建功能开发分支
+```
+// Create a function development branch
 git checkout -b feat/xxxx
 
-// 创建问题修复开发分支
+// Create a problem-fixing development branch
 git checkout -b fix/xxxx
 
-// 创建文档、demo分支
+// Create a documentation, demo branch
 git checkout -b docs/add-java-demo
 ```
 
-假设我们创建了文档修改分支 `docs/add-java-demo`
+假设我们已创建文档修改分支 `docs/add-java-demo`，添加了一些代码并将其提交到了代码仓库。
 
-- 假设我们已经添加了一些代码，提交到代码库
+- `git add .`
+- `git commit -a -m "docs: add java demo and related docs"`
 
-- git add .
+### 第 4 步：合并修改
 
-- git commit -a -m "docs: add java demo and related docs" 。
-
-### Step4：合并修改
-
-- 切换回自己的开发分支:
+- 切换回您的开发分支：
 
 ```
 git checkout docs/add-java-demo
 ```
 
-- 把更新代码提交到自己的分支中:
+- 将更新后的代码提交到您的分支：
 
 ```
 git push origin docs/add-java-demo
 ```
 
-### Step5：提交 Pull Request
+### 第 5 步：提交 Pull Request
 
-你可以在你的 github 代码仓库页面点击 `Compare & pull request` 按钮。或通过 `contribute` 按钮创建。
+您可以在 GitHub 代码仓库页面点击 `Compare & pull request` 按钮，也可以通过 `contribute` 按钮创建。
 
-- 填写这是什么类型的修改
-- 填写关联的 issue
-- 若有复杂变更，请说明背景和解决方案
+- 填写此次修改的类型。
+- 填写关联的 Issue。
+- 如果变更较为复杂，请说明背景和解决方案。
 
-相关信息填写完成后，点击 Create pull request 提交。
+填写相关信息后，点击 Create pull request 提交。
 
-## **轻松步入 Apache Fory™ 开源贡献之旅**
+## **轻松开启 Fory 开源贡献之旅**
 
-"**good first issue**" 是一个在开源社区常见的标签，这个标签的目的是帮助新贡献者找到适合入门的问题。
+“**good first issue**”是开源社区中的常见标签，目的是帮助新贡献者找到适合入门的 Issue。
 
-Apache Fory™ 的入门问题，你可以通过 [issue 列表](https://github.com/apache/fory/issues)查看。
+您可以通过 [Issue 列表](https://github.com/apache/fory/issues)查看 Fory 的入门 Issue。
 
-如果你当前**有时间和意愿**参与到社区贡献，可以在 issue 里看一看 **good first issue**，选择一个感兴趣、适合自己的认领。
+如果您目前**有时间也有意愿**参与社区贡献，可以查看 Issue 中的 **good first issue**，选择一个自己感兴趣且适合认领的 Issue。
 
-## 拥抱 Apache Fory™ 社区
+## 融入 Apache Fory™ 社区
 
-在你为 Apache Fory™ 贡献代码之余，我们鼓励你参与其他让社区更加繁荣的事情，比如：
+在为 Fory 贡献代码的同时，我们也鼓励您参与其他有助于社区繁荣的活动，例如：
 
-- 为项目的发展、功能规划 等提建议。
-- 创作文章、视频，开办讲座来宣传 Apache Fory™
-- 撰写推广计划，同团队一同执行。
+- 为项目发展、功能规划等提出建议。
+- 创作文章和视频，举办讲座来推广 Fory。
+- 编写推广计划，并与团队共同执行。

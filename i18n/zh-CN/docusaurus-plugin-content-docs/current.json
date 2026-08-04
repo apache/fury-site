@@ -4,7 +4,7 @@
     "description": "The label for version current"
   },
   "sidebar.docsSidebar.category.Introduction": {
-    "message": "介绍",
+    "message": "简介",
     "description": "The label for category Introduction in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.Getting Started": {
@@ -12,7 +12,7 @@
     "description": "The label for category Getting Started in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.Benchmarks": {
-    "message": "性能测试",
+    "message": "基准测试",
     "description": "The label for category Benchmarks in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.Object Serialization": {
@@ -20,7 +20,7 @@
     "description": "The label for category Object Serialization in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.Row Format": {
-    "message": "Row 格式",
+    "message": "行格式",
     "description": "The label for category Row Format in sidebar docsSidebar"
   },
   "sidebar.docsSidebar.category.Fory JSON": {
