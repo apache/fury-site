@@ -41,8 +41,8 @@ npm install @apache-fory/core@1.5.0
 
 Define a schema and run an xlang round trip:
 
-```js title="example.mjs"
-import Fory, { Type } from "@apache-fory/core";
+```js title="example.cjs"
+const { default: Fory, Type } = require("@apache-fory/core");
 
 const userType = Type.struct(
   { typeName: "example.User" },
@@ -60,7 +60,7 @@ console.log(deserialize(bytes));
 ```
 
 ```bash
-node example.mjs
+node example.cjs
 ```
 
 JavaScript uses xlang mode. Continue with

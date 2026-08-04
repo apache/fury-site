@@ -38,8 +38,8 @@ npm install @apache-fory/core@1.5.0
 
 定义 Schema 并运行 xlang 往返示例：
 
-```js title="example.mjs"
-import Fory, { Type } from "@apache-fory/core";
+```js title="example.cjs"
+const { default: Fory, Type } = require("@apache-fory/core");
 
 const userType = Type.struct(
   { typeName: "example.User" },
@@ -57,7 +57,7 @@ console.log(deserialize(bytes));
 ```
 
 ```bash
-node example.mjs
+node example.cjs
 ```
 
 JavaScript 使用 xlang 模式。接下来可阅读 [JavaScript/TypeScript 对象序列化](../object-serialization/javascript/index.md)、[xlang 类型](../object-serialization/javascript/xlang.md)、[配置](../object-serialization/javascript/configuration.md)和 [Schema 演进](../object-serialization/javascript/schema-evolution.md)。
