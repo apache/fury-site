@@ -382,7 +382,7 @@ dart test
 - [Type Registration](type-registration.md)
 - [External-Type Serialization](external-types.md)
 - [Schema Evolution](schema-evolution.md)
-- [Xlang guide](../xlang/index.md)
+- [Cross-language guide](../xlang.md)
 
 ## Related Topics
 

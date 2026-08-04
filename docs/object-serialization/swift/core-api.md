@@ -335,7 +335,7 @@ print("\(result.name) \(result.age)")
 
 For more cross-language rules and examples, see:
 
-- [Cross-Language Serialization Guide](../xlang/index.md)
+- [Cross-Language Interoperability](../xlang.md)
 - [Java Guide](../java/index.md)
 - [Python Guide](../python/index.md)
 - [Dart Guide](../dart/index.md)

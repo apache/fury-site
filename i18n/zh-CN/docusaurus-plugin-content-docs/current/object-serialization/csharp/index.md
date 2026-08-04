@@ -102,5 +102,5 @@ User decoded = fory.Deserialize<User>(payload);
 ## 相关资源
 
 - [跨语言序列化规范](../../specification/xlang_serialization_spec.md)
-- [跨语言指南](../xlang/index.md)
+- [跨语言指南](../xlang.md)
 - [C# 源码目录](https://github.com/apache/fory/tree/main/csharp)

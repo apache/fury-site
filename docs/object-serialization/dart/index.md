@@ -157,5 +157,5 @@ constructors, mixins, and field inclusion options.
 
 - [Xlang serialization specification](../../specification/xlang_serialization_spec.md)
 - [Xlang implementation guide](../../specification/xlang_implementation_guide.md)
-- [Xlang guide](../xlang/index.md)
+- [Cross-language guide](../xlang.md)
 - [Dart implementation source directory](https://github.com/apache/fory/tree/main/dart)

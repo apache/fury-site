@@ -26,7 +26,7 @@ system. It is not one shared cross-language protocol.
 
 Use native mode for same-runtime traffic that needs language-specific object shapes, migration from
 a host serializer, or a smaller/faster format without xlang type-mapping constraints. Use
-[xlang mode](xlang/index.md) whenever a different runtime must read the bytes.
+[xlang mode](xlang.md) whenever a different runtime must read the bytes.
 
 ## Supported runtime families
 

@@ -24,10 +24,10 @@ collections, polymorphic values, and optional shared references.
 
 ## Choose a mode
 
-| Mode   | Use it when                                          | Start here                   |
-| ------ | ---------------------------------------------------- | ---------------------------- |
-| Xlang  | Bytes cross runtime boundaries                       | [Xlang mode](xlang/index.md) |
-| Native | Every writer and reader uses the same runtime family | [Native mode](native.md)     |
+| Mode            | Use it when                                          | Start here                                  |
+| --------------- | ---------------------------------------------------- | ------------------------------------------- |
+| Xlang (default) | Bytes cross runtime boundaries                       | [Cross-language interoperability](xlang.md) |
+| Native          | Every writer and reader uses the same runtime family | [Native serialization](native.md)           |
 
 Xlang and native are the only object-serialization modes. Row Format is a random-access analytical
 representation, and Fory JSON is a Java JSON codec; use the

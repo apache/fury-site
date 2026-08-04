@@ -91,7 +91,7 @@ User decoded = fory.deserialize(bytes, User.class);
 ```
 
 When xlang bytes cross languages, every peer must register the same type identity and compatible
-field metadata. The shared rules live in [Xlang](../xlang/index.md), and the Java-specific
+field metadata. The shared rules live in [Cross-Language Interoperability](../xlang.md), and the Java-specific
 interoperability requirements are covered below.
 
 ## Use Native Serialization For Java-Only Traffic

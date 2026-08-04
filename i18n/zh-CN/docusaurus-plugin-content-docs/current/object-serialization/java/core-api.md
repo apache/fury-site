@@ -84,7 +84,7 @@ User decoded = fory.deserialize(bytes, User.class);
 ```
 
 跨语言字节在不同语言之间传递时，每个对等端都必须注册相同的类型标识和兼容的字段元数据。
-共享规则参见[跨语言序列化](../xlang/index.md)，Java 特定的互操作要求见下文。
+共享规则参见[跨语言互操作](../xlang.md)，Java 特定的互操作要求见下文。
 
 ## 对仅限 Java 的流量使用原生序列化
 

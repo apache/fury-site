@@ -19,12 +19,12 @@ license: |
   limitations under the License.
 ---
 
-| Format or mode | Data model                           | Use it when                                                   | Interoperability                                                            | Start here                                                     |
-| -------------- | ------------------------------------ | ------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Xlang binary   | Portable object graphs               | Data crosses language boundaries                              | Shared wire format across supported runtimes                                | [Cross-language guide](../object-serialization/xlang/index.md) |
-| Native binary  | Runtime-native object graphs         | Producer and consumer use the same language                   | Same runtime family only                                                    | [Object Serialization](../object-serialization/index.md)       |
-| Row Format     | Random-access binary rows            | You need random field access or analytics-style partial reads | Standard Row is shared by Java, Python, C++, and Rust; Compact is Java-only | [Row Format guide](../row-format/index.md)                     |
-| Fory JSON      | Standard JSON mapped to Java objects | Java applications need high-performance standard JSON         | Standard JSON text                                                          | [Fory JSON guide](../json/index.md)                            |
+| Format or mode | Data model                           | Use it when                                                   | Interoperability                                                            | Start here                                               |
+| -------------- | ------------------------------------ | ------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Xlang binary   | Portable object graphs               | Data crosses language boundaries                              | Shared wire format across supported runtimes                                | [Cross-language guide](../object-serialization/xlang.md) |
+| Native binary  | Runtime-native object graphs         | Producer and consumer use the same language                   | Same runtime family only                                                    | [Object Serialization](../object-serialization/index.md) |
+| Row Format     | Random-access binary rows            | You need random field access or analytics-style partial reads | Standard Row is shared by Java, Python, C++, and Rust; Compact is Java-only | [Row Format guide](../row-format/index.md)               |
+| Fory JSON      | Standard JSON mapped to Java objects | Java applications need high-performance standard JSON         | Standard JSON text                                                          | [Fory JSON guide](../json/index.md)                      |
 
 Xlang and native are sibling modes of Object Serialization. Use them when the receiver needs to
 reconstruct an object graph. Row Format and Fory JSON are separate formats, not additional Object

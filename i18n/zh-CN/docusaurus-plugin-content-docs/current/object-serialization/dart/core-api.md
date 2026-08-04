@@ -374,7 +374,7 @@ dart test
 - [类型注册](type-registration.md)
 - [外部类型序列化](external-types.md)
 - [Schema 演进](schema-evolution.md)
-- [Xlang 指南](../xlang/index.md)
+- [跨语言互操作](../xlang.md)
 
 ## 相关主题
 

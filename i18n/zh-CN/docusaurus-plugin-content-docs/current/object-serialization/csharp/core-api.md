@@ -222,7 +222,7 @@ value = fory.deserialize(payload_from_csharp)
 
 ### 类型映射参考
 
-完整映射参见[跨语言指南](../xlang/index.md)。
+完整映射参见[跨语言指南](../xlang.md)。
 
 对于低精度数值载荷，使用 `Half` / `Half[]` 或 `List<Half>` 表示 xlang `float16`，使用 `BFloat16` / `BFloat16[]` 或 `List<BFloat16>` 表示 xlang `bfloat16`。
 

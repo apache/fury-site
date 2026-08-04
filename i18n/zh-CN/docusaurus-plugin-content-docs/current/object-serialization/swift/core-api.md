@@ -324,7 +324,7 @@ print("\(result.name) \(result.age)")
 
 更多跨语言规则和示例请参阅：
 
-- [跨语言序列化指南](../xlang/index.md)
+- [跨语言互操作](../xlang.md)
 - [Java 指南](../java/index.md)
 - [Python 指南](../python/index.md)
 - [Dart 指南](../dart/index.md)
