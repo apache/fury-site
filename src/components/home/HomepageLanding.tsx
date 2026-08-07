@@ -138,10 +138,10 @@ const runtimeExamples: RuntimeExample[] = [
     install: `<dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
 </dependency>`,
     codeLanguage: "java",
-    guide: "/docs/guide/java/",
+    guide: "/docs/object-serialization/java/",
     summary: "Java supports xlang and native modes, JIT serializers, schema evolution, and Java-native object graph features.",
     code: `import org.apache.fory.Fory;
 
@@ -159,9 +159,9 @@ Person out = (Person) fory.deserialize(bytes);`,
     id: "python",
     label: "Python",
     installLanguage: "bash",
-    install: `pip install pyfory`,
+    install: `pip install pyfory==1.6.0`,
     codeLanguage: "python",
-    guide: "/docs/guide/python/",
+    guide: "/docs/object-serialization/python/",
     summary: "pyfory supports xlang, Python native mode, dataclasses, row format, and out-of-band buffers.",
     code: `from dataclasses import dataclass
 import pyfory
@@ -181,9 +181,9 @@ out = fory.deserialize(data)`,
     id: "rust",
     label: "Rust",
     installLanguage: "bash",
-    install: `cargo add fory@1.5.0`,
+    install: `cargo add fory@1.6.0`,
     codeLanguage: "rust",
-    guide: "/docs/guide/rust/",
+    guide: "/docs/object-serialization/rust/",
     summary: "Rust uses derive macros for type-safe structs and supports both xlang and native payloads.",
     code: `use fory::{Error, Fory, ForyStruct};
 
@@ -206,9 +206,9 @@ fn main() -> Result<(), Error> {
     id: "go",
     label: "Go",
     installLanguage: "bash",
-    install: `go get github.com/apache/fory/go/fory`,
+    install: `go get github.com/apache/fory/go/fory@v1.6.0`,
     codeLanguage: "go",
-    guide: "/docs/guide/go/",
+    guide: "/docs/object-serialization/go/",
     summary: "Go supports xlang and native modes with exported structs, circular references, and schema-aware serializers.",
     code: `type Person struct {
     Name string
@@ -230,12 +230,12 @@ _ = f.Deserialize(payload, &out)`,
 FetchContent_Declare(
   fory
   GIT_REPOSITORY https://github.com/apache/fory.git
-  GIT_TAG v1.5.0
+  GIT_TAG v1.6.0
   SOURCE_SUBDIR cpp
 )
 FetchContent_MakeAvailable(fory)`,
     codeLanguage: "cpp",
-    guide: "/docs/guide/cpp/",
+    guide: "/docs/object-serialization/cpp/",
     summary: "C++17 support covers xlang/native payloads, macro-based type registration, and row-format APIs.",
     code: `struct Person {
   std::string name;
@@ -257,9 +257,9 @@ auto out = fory.deserialize<Person>(bytes).value();`,
     id: "javascript",
     label: "JavaScript",
     installLanguage: "bash",
-    install: `npm install @apache-fory/core @apache-fory/hps`,
+    install: `npm install @apache-fory/core@1.6.0 @apache-fory/hps@1.6.0`,
     codeLanguage: "typescript",
-    guide: "/docs/guide/javascript/",
+    guide: "/docs/object-serialization/javascript/",
     summary: "JavaScript/TypeScript is xlang-only, schema-driven, and runs in Node.js or browsers.",
     code: `import Fory, { Type } from "@apache-fory/core";
 
@@ -278,9 +278,9 @@ const out = deserialize(payload);`,
     id: "csharp",
     label: "C#",
     installLanguage: "bash",
-    install: `dotnet add package Apache.Fory --version 1.5.0`,
+    install: `dotnet add package Apache.Fory --version 1.6.0`,
     codeLanguage: "csharp",
-    guide: "/docs/guide/csharp/",
+    guide: "/docs/object-serialization/csharp/",
     summary: ".NET support uses source-generated serializers for Fory structs, enums, and unions.",
     code: `using Apache.Fory;
 
@@ -301,9 +301,9 @@ Person out = fory.Deserialize<Person>(payload);`,
     id: "swift",
     label: "Swift",
     installLanguage: "swift",
-    install: `.package(url: "https://github.com/apache/fory.git", exact: "1.5.0")`,
+    install: `.package(url: "https://github.com/apache/fory.git", exact: "1.6.0")`,
     codeLanguage: "swift",
-    guide: "/docs/guide/swift/",
+    guide: "/docs/object-serialization/swift/",
     summary: "Swift uses @ForyStruct, @ForyEnum, and @ForyUnion macros for xlang-compatible models.",
     code: `import Fory
 
@@ -324,12 +324,12 @@ let out: Person = try fory.deserialize(payload)`,
     label: "Dart",
     installLanguage: "yaml",
     install: `dependencies:
-  fory: ^1.5.0
+  fory: ^1.6.0
 
 dev_dependencies:
   build_runner: ^2.4.13`,
     codeLanguage: "dart",
-    guide: "/docs/guide/dart/",
+    guide: "/docs/object-serialization/dart/",
     summary: "Dart uses generated serializers across Dart VM, Flutter, AOT, and web targets.",
     code: `import 'package:fory/fory.dart';
 
@@ -359,9 +359,9 @@ final out = fory.deserialize<Person>(payload);`,
     id: "scala",
     label: "Scala",
     installLanguage: "sbt",
-    install: `libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.5.0"`,
+    install: `libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.6.0"`,
     codeLanguage: "scala",
-    guide: "/docs/guide/scala/",
+    guide: "/docs/object-serialization/scala/",
     summary: "Scala builds on Fory Java with optimized serializers for case classes, collections, tuples, and Option.",
     code: `import org.apache.fory.scala.ForyScala
 
@@ -379,10 +379,10 @@ val out = fory.deserialize(payload).asInstanceOf[Person]`,
     id: "kotlin",
     label: "Kotlin",
     installLanguage: "kotlin",
-    install: `implementation("org.apache.fory:fory-kotlin:1.5.0")
-ksp("org.apache.fory:fory-kotlin-ksp:1.5.0")`,
+    install: `implementation("org.apache.fory:fory-kotlin:1.6.0")
+ksp("org.apache.fory:fory-kotlin-ksp:1.6.0")`,
     codeLanguage: "kotlin",
-    guide: "/docs/guide/kotlin/",
+    guide: "/docs/object-serialization/kotlin/",
     summary: "Kotlin adds data-class support, Android guidance, and KSP static serializers for xlang/schema mode.",
     code: `import org.apache.fory.kotlin.ForyKotlin
 
@@ -407,7 +407,7 @@ const capabilities = [
     description:
       "Serialize in one supported runtime and deserialize in another with the xlang wire format.",
     zhDescription: "通过 xlang 线格式，在一个受支持运行时序列化，在另一个运行时反序列化。",
-    link: "/docs/guide/xlang/",
+    link: "/docs/object-serialization/xlang/",
   },
   {
     title: "Domain objects first",
@@ -416,7 +416,7 @@ const capabilities = [
     description:
       "Work with Java classes, Python dataclasses, Go structs, Rust/C++ structs, and generated or annotated models.",
     zhDescription: "直接使用 Java 类、Python dataclass、Go struct、Rust/C++ struct，以及生成或注解模型。",
-    link: "/docs/start/usage",
+    link: "/docs/start/",
   },
   {
     title: "Reference-aware Schema IDL",
@@ -434,7 +434,7 @@ const capabilities = [
     description:
       "Read fields, arrays, and nested values without deserializing the whole object; integrate with Arrow where supported.",
     zhDescription: "无需反序列化完整对象即可读取字段、数组和嵌套值，并在支持语言中对接 Arrow。",
-    link: "/docs/guide/xlang/row_format",
+    link: "/docs/row-format/",
   },
   {
     title: "Optimized runtimes",
@@ -449,7 +449,7 @@ const capabilities = [
         {" JIT serializer、Rust/C++/Swift macro、C# source generator、Kotlin KSP 和 Dart build_runner 输出。"}
       </>
     ),
-    link: "/docs/guide/java/",
+    link: "/docs/object-serialization/java/",
   },
   {
     title: "Broad platform support",
@@ -464,7 +464,7 @@ const capabilities = [
         {"、C#、Swift、Dart、Scala、Kotlin 和 Android。"}
       </>
     ),
-    link: "/docs/start/usage",
+    link: "/docs/start/",
   },
 ];
 
@@ -476,7 +476,7 @@ const heroSurfaces = [
     zhTitle: "原生对象",
     text: "Serialize existing domain objects directly in the target language.",
     zhText: "在目标语言内直接序列化已有领域对象，无需额外手动转换代码。",
-    link: "/docs/start/usage",
+    link: "/docs/start/",
   },
   {
     label: "XLANG",
@@ -485,7 +485,7 @@ const heroSurfaces = [
     zhTitle: "跨语言编码",
     text: "Unified cross-language type system and binary encoding.",
     zhText: "统一的跨语言类型系统与二进制编码。",
-    link: "/docs/guide/xlang/",
+    link: "/docs/object-serialization/xlang/",
   },
   {
     label: "IDL",
@@ -503,7 +503,7 @@ const heroSurfaces = [
     zhTitle: "高性能",
     text: "Highly optimized JIT and statically generated serializers.",
     zhText: "高度优化的 JIT serializer 与静态生成 serializer。",
-    link: "/docs/introduction/benchmark",
+    link: "/docs/benchmarks/",
   },
 ];
 
@@ -560,12 +560,12 @@ const schemaLinks = [
   {
     label: "Compiler Guide",
     zhLabel: "编译器指南",
-    link: "/docs/compiler/compiler_guide",
+    link: "/docs/compiler/getting-started",
   },
   {
     label: "Generated Code",
     zhLabel: "生成代码",
-    link: "/docs/compiler/generated_code",
+    link: "/docs/compiler/generated-code/",
   },
 ];
 
@@ -616,7 +616,7 @@ const adoptionPaths = [
     zhCta: "使用指南",
     action: "Usage guide",
     zhAction: "使用指南",
-    link: "/docs/start/usage",
+    link: "/docs/start/",
   },
   {
     label: "02",
@@ -640,7 +640,7 @@ const adoptionPaths = [
     zhCta: "Benchmark",
     action: "Benchmark charts",
     zhAction: "Benchmark 图表",
-    link: "/docs/introduction/benchmark",
+    link: "/docs/benchmarks/",
   },
 ];
 
@@ -668,10 +668,10 @@ function HomepageLanding(): JSX.Element {
           <h1>{copy.heroTitle}</h1>
           <p className={styles.heroSubtitle}>{copy.heroSubtitle}</p>
           <div className={styles.heroActions}>
-            <Link className={styles.primaryButton} to="/docs/start/install">
+            <Link className={styles.primaryButton} to="/docs/start/">
               {copy.heroPrimary}
             </Link>
-            <Link className={styles.secondaryButton} to="/docs/introduction/overview">
+            <Link className={styles.secondaryButton} to="/docs/introduction/">
               {copy.heroSecondary}
             </Link>
             <Link className={styles.ghostButton} to="https://github.com/apache/fory">
@@ -798,7 +798,7 @@ function HomepageLanding(): JSX.Element {
           <span>{copy.performanceEyebrow}</span>
           <h2>{copy.performanceTitle}</h2>
           <p>{copy.performanceSubtitle}</p>
-          <Link className={styles.secondaryButton} to="/docs/introduction/benchmark">
+          <Link className={styles.secondaryButton} to="/docs/benchmarks/">
             {copy.benchmarkCta}
           </Link>
         </div>
