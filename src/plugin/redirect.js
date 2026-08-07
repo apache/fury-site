@@ -1,4 +1,10 @@
 export default function (context, options) {
+  const archivedDocsVersions = Array.isArray(options.archivedDocsVersions)
+    ? options.archivedDocsVersions.filter(
+        (version) => typeof version === 'string',
+      )
+    : [];
+
   return {
     name: "redirect-plugin",
     injectHtmlTags({ content }) {
@@ -13,6 +19,39 @@ export default function (context, options) {
               if (window.location.host === 'fury.apache.org') {
                 window.location.href = 'https://fory.apache.org';
               }
+
+              // Archived docs own their HTML and hashed assets under
+              // /archive/. This runs on the generated 404 page so existing
+              // pre-1.0 deep links keep working after those versions are no
+              // longer part of the current Docusaurus build.
+              (function() {
+                var archivedVersions = ${JSON.stringify(archivedDocsVersions)};
+                if (archivedVersions.length === 0) {
+                  return;
+                }
+
+                var segments = window.location.pathname.split('/').filter(Boolean);
+                var locale = /^[a-z]{2}-[A-Z]{2}$/.test(segments[0])
+                  ? segments[0]
+                  : null;
+                var docsIndex = locale ? 1 : 0;
+                if (
+                  segments[docsIndex] !== 'docs' ||
+                  archivedVersions.indexOf(segments[docsIndex + 1]) < 0
+                ) {
+                  return;
+                }
+
+                var destination = ['/archive'];
+                if (locale) {
+                  destination.push(locale);
+                }
+                destination.push.apply(destination, segments.slice(docsIndex));
+                var suffix = window.location.pathname.endsWith('/') ? '/' : '';
+                window.location.replace(
+                  destination.join('/') + suffix + window.location.search + window.location.hash
+                );
+              })();
 
               // Redirect current/latest and dev entry pages that moved in the
               // capability-first documentation restructure. Explicit released

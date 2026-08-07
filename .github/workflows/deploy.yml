@@ -22,6 +22,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
@@ -32,6 +33,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check archived docs availability
+        id: docs-archive
+        run: |
+          if git ls-remote --exit-code --heads origin docs-archive-pre-1.0 >/dev/null 2>&1; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Archive branch is not ready; keeping the existing all-version build."
+          fi
+
+      - name: Checkout archived docs
+        if: steps.docs-archive.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: docs-archive-pre-1.0
+          path: archived-docs-output
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24.x
@@ -59,9 +77,16 @@ jobs:
           key: ${{ runner.os }}-node24-docusaurus-${{ hashFiles('package-lock.json') }}
 
       - name: Build
+        env:
+          DOCS_ARCHIVE_READY: ${{ steps.docs-archive.outputs.ready }}
         run: |
           npm run download-avatars
           npm run build
+          if [ "$DOCS_ARCHIVE_READY" = "true" ]; then
+            mkdir -p build/archive
+            rsync -a --delete --exclude=.git/ archived-docs-output/ build/archive/
+            ./scripts/verify-docs-archive.sh build/archive
+          fi
           cp .asf.yaml build/.asf.yaml
 
       - uses: peaceiris/actions-gh-pages@v3
