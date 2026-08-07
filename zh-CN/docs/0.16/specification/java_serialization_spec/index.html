@@ -1,0 +1,316 @@
+<!doctype html><html lang=zh-CN dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-0.16 docs-doc-page docs-doc-id-specification/java_serialization_spec" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Java Serialization Format | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/archive/zh-CN/docs/0.16/specification/java_serialization_spec /><meta data-rh=true property=og:locale content=zh_CN /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-CN /><meta data-rh=true name=docsearch:language content=zh-CN /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=0.16 /><meta data-rh=true name=docusaurus_tag content=docs-default-0.16 /><meta data-rh=true name=docsearch:version content=0.16 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-0.16 /><meta data-rh=true property=og:title content="Java Serialization Format | Apache Fory™"/><meta data-rh=true name=description content="Spec overview"/><meta data-rh=true property=og:description content="Spec overview"/><link data-rh=true rel=icon href=/archive/zh-CN/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/archive/zh-CN/docs/0.16/specification/java_serialization_spec /><link data-rh=true rel=alternate href=https://fory.apache.org/archive/docs/0.16/specification/java_serialization_spec hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/archive/zh-CN/docs/0.16/specification/java_serialization_spec hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/archive/docs/0.16/specification/java_serialization_spec hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/archive/zh-CN/docs/0.16/specification/java_serialization_spec","name":"Java Serialization Format","position":1}]}</script><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=[];if(0!==i.length){var t=window.location.pathname.split("/").filter(Boolean),a=/^[a-z]{2}-[A-Z]{2}$/.test(t[0])?t[0]:null,e=+!!a;if(!("docs"!==t[e]||0>i.indexOf(t[e+1]))){var o=["/archive"];a&&o.push(a),o.push.apply(o,t.slice(e));var n=window.location.pathname.endsWith("/")?"/":"";window.location.replace(o.join("/")+n+window.location.search+window.location.hash)}}}(),function(){var i=window.location.pathname.split("/").filter(Boolean),t="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(t<0)){var a=t+1,e=i[a];if(!/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(e)){"next"===e&&a++;var o={"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","guide/rust/external_types":"object-serialization/rust/external-types","guide/dart/external_types":"object-serialization/dart/external-types","guide/swift/external_types":"object-serialization/swift/external-types","guide/csharp/external_types":"object-serialization/csharp/external-types","guide/csharp/basic_serialization":"object-serialization/csharp/basic-serialization","guide/dart/inheritance":"object-serialization/dart/inheritance","benchmarks/rust":"benchmarks/object-serialization/xlang/rust","compiler/compiler_guide":"compiler/getting-started","community/development":"development"}[i.slice(a).join("/")];if(o){var n="/"+i.slice(0,a).join("/");window.location.replace(n+"/"+o+"/"+window.location.search+window.location.hash)}}}}(),function(){var i=window.location.pathname,t=i.split("/").filter(Boolean),a="docs"===t[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(t[0])&&"docs"===t[1]?1:-1;if(!(a<0)){var e=a+1,o=t[e];if(("next"===o||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(o))&&e++,!("docs"!==t[e]||0>["guide","introduction","start"].indexOf(t[e+1]))){t.splice(e,1);var n="/"+t.join("/");i.endsWith("/")&&(n+="/"),window.location.replace(n+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/archive/zh-CN/assets/css/styles.6b99b146.css /><script src=/archive/zh-CN/assets/js/runtime~main.242ef7e9.js defer></script><script src=/archive/zh-CN/assets/js/main.9d2ec06a.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label=跳到主要内容><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>跳到主要内容</a></div><nav aria-label=主导航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切换导航栏 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a href=https://fory.apache.org/ target=_blank rel="noopener noreferrer" class=navbar__brand><div class=navbar__logo><img src=/archive/zh-CN/img/fory-logo-light.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/archive/zh-CN/img/fory-logo-dark.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/archive/zh-CN/docs/0.16/introduction/overview>文档</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/archive/zh-CN/docs/0.16/specification/xlang_serialization_spec>规范</a><a class="navbar__item navbar__link" href=/archive/zh-CN/docs/0.16/community/>社区</a><a href=https://fory.apache.org/user target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">用户<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><a href=https://fory.apache.org/download target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">下载<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><a href=https://fory.apache.org/blog target=_blank rel="noopener noreferrer" class="navbar__item navbar__link">博客<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>基金会</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>许可证</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>事件</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>隐私</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>安全</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>赞助</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>感谢</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>行为准则</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/archive/zh-CN/docs/0.16/specification/java_serialization_spec>0.16</a><ul class=dropdown__menu><li><a class=dropdown__link href=/archive/zh-CN/docs/0.17/specification/java_serialization_spec>0.17</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/archive/zh-CN/docs/0.16/specification/java_serialization_spec>0.16</a><li><a class=dropdown__link href=/archive/zh-CN/docs/0.15/specification/java_serialization_spec>0.15</a><li><a class=dropdown__link href=/archive/zh-CN/docs/0.14/specification/java_serialization_spec>0.14</a><li><a class=dropdown__link href=/archive/zh-CN/docs/0.13/specification/java_serialization_spec>0.13</a><li><a class=dropdown__link href=/archive/zh-CN/docs/0.12/specification/java_serialization_spec>0.12</a><li><a class=dropdown__link href=/archive/zh-CN/docs/0.11/specification/java_serialization_spec>0.11</a><li><a class=dropdown__link href=/archive/zh-CN/docs/0.10/specification/java_serialization_spec>0.10</a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>简体中文</a><ul class=dropdown__menu><li><a href=/archive/docs/0.16/specification/java_serialization_spec target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/archive/zh-CN/docs/0.16/specification/java_serialization_spec target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label=回到顶部 class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label=文档侧边栏 class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/archive/zh-CN/docs/0.16/specification/xlang_serialization_spec><span title="Xlang Serialization Format" class=linkLabel_WmDU>Xlang Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/archive/zh-CN/docs/0.16/specification/java_serialization_spec><span title="Java Serialization Format" class=linkLabel_WmDU>Java Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/archive/zh-CN/docs/0.16/specification/row_format_spec><span title="Row Format" class=linkLabel_WmDU>Row Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/archive/zh-CN/docs/0.16/specification/xlang_type_mapping><span title="Xlang Type Mapping" class=linkLabel_WmDU>Xlang Type Mapping</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/archive/zh-CN/docs/0.16/specification/xlang_implementation_guide><span title="Xlang Implementation Guide" class=linkLabel_WmDU>Xlang Implementation Guide</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=页面路径><ul class=breadcrumbs><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Java Serialization Format</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">版本：0.16</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>Java Serialization Format</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=spec-overview>Spec overview<a href=#spec-overview class=hash-link aria-label="Spec overview的直接链接" title="Spec overview的直接链接" translate=no>​</a></h2>
+<p>Apache Fory Java serialization is a dynamic binary format for Java object graphs. It supports
+shared references, circular references, polymorphism, and optional schema evolution. The format is
+stream friendly: shared type metadata is written inline when needed and there is no meta start
+offset.</p>
+<p>The Java native format is an extension of the xlang wire format and reuses the same core framing
+and encodings; see <code>docs/specification/xlang_serialization_spec.md</code> for the shared baseline.</p>
+<p>Overall layout:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| fory header | object ref meta | object type meta | object value data |</span><br/></div></code></pre></div></div>
+<p>All data is encoded in little endian byte order. When running on a big endian platform, array
+serializers swap byte order on write/read so the on-wire layout remains little endian.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=fory-header>Fory header<a href=#fory-header class=hash-link aria-label="Fory header的直接链接" title="Fory header的直接链接" translate=no>​</a></h2>
+<p>Java native serialization writes a one byte bitmap header. The header layout mirrors the xlang
+bitmap and uses the same flag bits.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">|     5 bits    | 1 bit | 1 bit | 1 bit |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">+--------------+-------+-------+-------+</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| reserved     |  oob  | xlang | null  |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">null flag: 1 when object is null, 0 otherwise. If object is null, other bits are not set.</li>
+<li class="">xlang flag: 1 when serialization uses xlang format, 0 when serialization uses Java native format.</li>
+<li class="">oob flag: 1 when <code>BufferCallback</code> is not null, 0 otherwise.</li>
+</ul>
+<p>The header is always a single byte; no language ID is written.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-meta>Reference meta<a href=#reference-meta class=hash-link aria-label="Reference meta的直接链接" title="Reference meta的直接链接" translate=no>​</a></h2>
+<p>Reference tracking uses the same flags as the xlang specification.</p>
+<table><thead><tr><th>Flag<th>Byte Value<th>Description<tbody><tr><td>NULL FLAG<td><code>-3</code><td>Object is null. No further bytes are written for this object.<tr><td>REF FLAG<td><code>-2</code><td>Object was already serialized. Followed by unsigned varint32 reference ID.<tr><td>NOT_NULL VALUE FLAG<td><code>-1</code><td>Object is non-null but reference tracking is disabled for this type. Object data follows immediately.<tr><td>REF VALUE FLAG<td><code>0</code><td>Object is referencable and this is its first occurrence. Object data follows. Assigns next reference ID.</table>
+<p>When reference tracking is disabled globally or for a specific field/type, only <code>NULL FLAG</code> and
+<code>NOT_NULL VALUE FLAG</code> are used.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-system-and-type-ids>Type system and type IDs<a href=#type-system-and-type-ids class=hash-link aria-label="Type system and type IDs的直接链接" title="Type system and type IDs的直接链接" translate=no>​</a></h2>
+<p>Java native serialization uses the unified type ID layout shared with xlang:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">full_type_id = (user_type_id &lt;&lt; 8) | internal_type_id</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><code>internal_type_id</code> is the low 8 bits describing the kind (enum/struct/ext, named variants, or a
+built-in type).</li>
+<li class=""><code>user_type_id</code> is the numeric registration ID (0-based) for user-defined enum/struct/ext types.</li>
+<li class="">Named types use <code>NAMED_*</code> internal IDs and carry names in metadata rather than embedding a user
+ID.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=shared-internal-type-ids-0-63>Shared internal type IDs (0-63)<a href=#shared-internal-type-ids-0-63 class=hash-link aria-label="Shared internal type IDs (0-63)的直接链接" title="Shared internal type IDs (0-63)的直接链接" translate=no>​</a></h3>
+<p>Java native mode shares the xlang internal IDs for all values below 64. IDs <code>0~56</code> are defined by
+the xlang spec, while <code>57~63</code> are reserved for future internal use. These IDs are stable across
+languages.</p>
+<p>See the internal type ID table in
+<a class="" href=/archive/zh-CN/docs/0.16/specification/xlang_serialization_spec#internal-type-id-table>Xlang Serialization Format</a>.
+Java shares all IDs <code>&lt; 64</code>, with <code>57~63</code> reserved for future internal use.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=java-native-built-in-type-ids>Java native built-in type IDs<a href=#java-native-built-in-type-ids class=hash-link aria-label="Java native built-in type IDs的直接链接" title="Java native built-in type IDs的直接链接" translate=no>​</a></h3>
+<p>Java native serialization assigns Java-specific built-ins starting at
+<code>Types.BOUND + 5</code> (<code>Types.BOUND</code> is 64; 5 IDs are reserved for future use).
+Type IDs in <code>0~56</code> are shared with xlang; <code>57~63</code> are reserved; <code>64+</code> are only
+valid in Java native mode.</p>
+<table><thead><tr><th>Type ID<th>Name<th>Description<tbody><tr><td>69<td>VOID_ID<td>java.lang.Void<tr><td>70<td>CHAR_ID<td>java.lang.Character<tr><td>71<td>PRIMITIVE_VOID_ID<td>void<tr><td>72<td>PRIMITIVE_BOOL_ID<td>boolean<tr><td>73<td>PRIMITIVE_INT8_ID<td>byte<tr><td>74<td>PRIMITIVE_CHAR_ID<td>char<tr><td>75<td>PRIMITIVE_INT16_ID<td>short<tr><td>76<td>PRIMITIVE_INT32_ID<td>int<tr><td>77<td>PRIMITIVE_FLOAT32_ID<td>float<tr><td>78<td>PRIMITIVE_INT64_ID<td>long<tr><td>79<td>PRIMITIVE_FLOAT64_ID<td>double<tr><td>80<td>PRIMITIVE_BOOLEAN_ARRAY_ID<td>boolean[]<tr><td>81<td>PRIMITIVE_BYTE_ARRAY_ID<td>byte[]<tr><td>82<td>PRIMITIVE_CHAR_ARRAY_ID<td>char[]<tr><td>83<td>PRIMITIVE_SHORT_ARRAY_ID<td>short[]<tr><td>84<td>PRIMITIVE_INT_ARRAY_ID<td>int[]<tr><td>85<td>PRIMITIVE_FLOAT_ARRAY_ID<td>float[]<tr><td>86<td>PRIMITIVE_LONG_ARRAY_ID<td>long[]<tr><td>87<td>PRIMITIVE_DOUBLE_ARRAY_ID<td>double[]<tr><td>88<td>STRING_ARRAY_ID<td>String[]<tr><td>89<td>OBJECT_ARRAY_ID<td>Object[]<tr><td>90<td>ARRAYLIST_ID<td>java.util.ArrayList<tr><td>91<td>HASHMAP_ID<td>java.util.HashMap<tr><td>92<td>HASHSET_ID<td>java.util.HashSet<tr><td>93<td>CLASS_ID<td>java.lang.Class<tr><td>94<td>EMPTY_OBJECT_ID<td>empty object stub<tr><td>95<td>LAMBDA_STUB_ID<td>lambda stub<tr><td>96<td>JDK_PROXY_STUB_ID<td>JDK proxy stub<tr><td>97<td>REPLACE_STUB_ID<td>writeReplace/readResolve stub<tr><td>98<td>NONEXISTENT_META_SHARED_ID<td>meta-shared unknown class stub</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=registration-and-named-types>Registration and named types<a href=#registration-and-named-types class=hash-link aria-label="Registration and named types的直接链接" title="Registration and named types的直接链接" translate=no>​</a></h3>
+<p>User-defined enum/struct/ext types can be registered by numeric ID or by name.</p>
+<ul>
+<li class="">Numeric registration: <code>full_type_id = (user_id &lt;&lt; 8) | internal_type_id</code>.</li>
+<li class="">Name registration: type meta uses namespace and type name (see below).</li>
+<li class="">Unregistered types are encoded as named types using namespace = package name and type name =
+simple class name.</li>
+</ul>
+<p>Named type selection rules for unregistered types:</p>
+<ul>
+<li class="">enum -> NAMED_ENUM</li>
+<li class="">struct-like serializers -> NAMED_STRUCT (or NAMED_COMPATIBLE_STRUCT in compatible mode)</li>
+<li class="">all other custom serializers -> NAMED_EXT</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-meta-encoding>Type meta encoding<a href=#type-meta-encoding class=hash-link aria-label="Type meta encoding的直接链接" title="Type meta encoding的直接链接" translate=no>​</a></h2>
+<p>Every value is written with a type ID followed by optional type metadata:</p>
+<ol>
+<li class="">Write <code>type_id</code> using varuint32 small7 encoding.</li>
+<li class="">For <code>NAMED_ENUM</code>, <code>NAMED_STRUCT</code>, <code>NAMED_EXT</code>, <code>NAMED_COMPATIBLE_STRUCT</code>:<!-- -->
+<ul>
+<li class="">If meta share is enabled: write shared class meta (streaming format).</li>
+<li class="">Otherwise: write namespace and type name as meta strings.</li>
+</ul>
+</li>
+<li class="">For <code>COMPATIBLE_STRUCT</code>:<!-- -->
+<ul>
+<li class="">If meta share is enabled: write shared class meta (streaming format).</li>
+<li class="">Otherwise: no extra meta (type ID is sufficient).</li>
+</ul>
+</li>
+<li class="">All other types: no extra meta.</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=shared-class-meta-streaming>Shared class meta (streaming)<a href=#shared-class-meta-streaming class=hash-link aria-label="Shared class meta (streaming)的直接链接" title="Shared class meta (streaming)的直接链接" translate=no>​</a></h3>
+<p>When meta share is enabled, Java uses the streaming shared meta protocol and writes TypeDef
+bytes inline on first use.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32: index_marker | [class def bytes if new] |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">index_marker = (index &lt;&lt; 1) | flag</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">flag = 1 -> reference</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">flag = 0 -> new type</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">If <code>flag == 1</code>, this is a reference to a previously written type. No class def bytes follow.</li>
+<li class="">If <code>flag == 0</code>, this is a new type definition and class def bytes are written inline.</li>
+</ul>
+<p>The index is assigned sequentially in the order types are first encountered.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=schema-modes>Schema modes<a href=#schema-modes class=hash-link aria-label="Schema modes的直接链接" title="Schema modes的直接链接" translate=no>​</a></h2>
+<p>Java native serialization supports two schema modes:</p>
+<ul>
+<li class="">Schema consistent (compatible mode disabled): fields are serialized in a fixed order and no
+ClassDef is required. Type meta uses <code>STRUCT</code> or <code>NAMED_STRUCT</code> for user-defined classes.</li>
+<li class="">Schema evolution (compatible mode enabled): fields are serialized with schema evolution metadata
+(ClassDef). Type meta uses <code>COMPATIBLE_STRUCT</code> or <code>NAMED_COMPATIBLE_STRUCT</code>.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=classdef-format-compatible-mode>ClassDef format (compatible mode)<a href=#classdef-format-compatible-mode class=hash-link aria-label="ClassDef format (compatible mode)的直接链接" title="ClassDef format (compatible mode)的直接链接" translate=no>​</a></h2>
+<p>ClassDef is the schema evolution metadata encoded for compatible structs. It is written inline
+when shared meta is enabled, or referenced by index when already seen.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=binary-layout>Binary layout<a href=#binary-layout class=hash-link aria-label="Binary layout的直接链接" title="Binary layout的直接链接" translate=no>​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| 8 bytes header | [varuint32 extra size] | class meta bytes |</span><br/></div></code></pre></div></div>
+<p>Header layout (lower bits on the right):</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| 50-bit hash | 4 bits reserved | 1 bit compress | 1 bit has_fields_meta | 8-bit size |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">size: lower 8 bits. If size equals the mask (0xFF), write extra size as varuint32 and add it.</li>
+<li class="">compress: set when payload is compressed.</li>
+<li class="">has_fields_meta: set when field metadata is present.</li>
+<li class="">reserved: bits 10-13 are reserved for future use and must be zero.</li>
+<li class="">hash: 50-bit hash of the payload and flags.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=class-meta-bytes>Class meta bytes<a href=#class-meta-bytes class=hash-link aria-label="Class meta bytes的直接链接" title="Class meta bytes的直接链接" translate=no>​</a></h3>
+<p>Class meta encodes a linearized class hierarchy (from parent to leaf) and field metadata:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| num_classes | class_layer_0 | class_layer_1 | ... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">class_layer:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| num_fields &lt;&lt; 1 | registered_flag | [type_id if registered] |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| namespace | type_name | field_infos |</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><code>num_classes</code> stores <code>(num_layers - 1)</code> in a single byte.<!-- -->
+<ul>
+<li class="">If it equals <code>0b1111</code>, read an extra varuint32 small7 and add it.</li>
+<li class="">The actual number of layers is <code>num_classes + 1</code>.</li>
+</ul>
+</li>
+<li class=""><code>registered_flag</code> is 1 if the class is registered by numeric ID.</li>
+<li class="">If registered by ID, the class type ID follows (varuint32 small7).</li>
+<li class="">If registered by name or unregistered, namespace and type name are written as meta strings.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-info>Field info<a href=#field-info class=hash-link aria-label="Field info的直接链接" title="Field info的直接链接" translate=no>​</a></h3>
+<p>Each field uses a compact header followed by its name bytes (omitted when TAG_ID is used) and its
+type info:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| field_header | [field_name_bytes] | field_type |</span><br/></div></code></pre></div></div>
+<p><code>field_header</code> bits:</p>
+<ul>
+<li class="">bit 0: trackingRef</li>
+<li class="">bit 1: nullable</li>
+<li class="">bits 2-3: field name encoding</li>
+<li class="">bits 4-6: name length (len-1), or tag ID when TAG_ID is used; value 7 indicates extended length</li>
+<li class="">bit 7: reserved (0)</li>
+</ul>
+<p>Field name encoding:</p>
+<ul>
+<li class="">0: UTF8</li>
+<li class="">1: ALL_TO_LOWER_SPECIAL</li>
+<li class="">2: LOWER_UPPER_DIGIT_SPECIAL</li>
+<li class="">3: TAG_ID (field name omitted, tag ID stored in size field)</li>
+</ul>
+<p>If length is extended (size==7), an extra varuint32 small7 storing <code>(len-1) - 7</code> follows.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-type-encoding>Field type encoding<a href=#field-type-encoding class=hash-link aria-label="Field type encoding的直接链接" title="Field type encoding的直接链接" translate=no>​</a></h3>
+<p>Field types are encoded with a type tag and optional nested type info. For nested types, the header
+includes nullable/trackingRef flags in the low bits.
+Top-level field types use the tag only (no flags).</p>
+<p>Type tags:</p>
+<table><thead><tr><th>Tag<th>Field type<tbody><tr><td>0<td>Object (ObjectFieldType)<tr><td>1<td>Map (MapFieldType)<tr><td>2<td>Collection/List/Set (CollectionFieldType)<tr><td>3<td>Array (ArrayFieldType)<tr><td>4<td>Enum (EnumFieldType)<tr><td>5+<td>Registered type (RegisteredFieldType)</table>
+<p>Encoding rules:</p>
+<ul>
+<li class="">ObjectFieldType: write tag 0.</li>
+<li class="">MapFieldType: write tag 1, then key type, then value type.</li>
+<li class="">CollectionFieldType: write tag 2, then element type.</li>
+<li class="">ArrayFieldType: write tag 3, then dimensions, then component type.</li>
+<li class="">EnumFieldType: write tag 4.</li>
+<li class="">RegisteredFieldType: write tag <code>5 + type_id</code>.</li>
+</ul>
+<p>For nested types, nullable/trackingRef flags are stored in the low bits of the header as
+<code>(type_tag &lt;&lt; 2) | (nullable &lt;&lt; 1) | tracking_ref</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-string-encoding>Meta string encoding<a href=#meta-string-encoding class=hash-link aria-label="Meta string encoding的直接链接" title="Meta string encoding的直接链接" translate=no>​</a></h2>
+<p>Namespace, type names, and field names use the same meta string encodings as the xlang spec.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=package-and-type-names>Package and type names<a href=#package-and-type-names class=hash-link aria-label="Package and type names的直接链接" title="Package and type names的直接链接" translate=no>​</a></h3>
+<p>Header format:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| 6 bits size | 2 bits encoding |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">size is the byte length of the encoded name.</li>
+<li class="">if size == 63, write extra length <code>(size - 63)</code> as varuint32 small7.</li>
+</ul>
+<p>Encodings:</p>
+<ul>
+<li class="">Package name: UTF8, ALL_TO_LOWER_SPECIAL, LOWER_UPPER_DIGIT_SPECIAL</li>
+<li class="">Type name: UTF8, LOWER_UPPER_DIGIT_SPECIAL, FIRST_TO_LOWER_SPECIAL, ALL_TO_LOWER_SPECIAL</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-names>Field names<a href=#field-names class=hash-link aria-label="Field names的直接链接" title="Field names的直接链接" translate=no>​</a></h3>
+<p>Field name encoding is described in the ClassDef field header section. When using TAG_ID, the
+field name bytes are omitted and the tag ID is stored in the size field.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=encoding-algorithms>Encoding algorithms<a href=#encoding-algorithms class=hash-link aria-label="Encoding algorithms的直接链接" title="Encoding algorithms的直接链接" translate=no>​</a></h3>
+<p>See the xlang specification for encoding algorithms and tables:
+<code>docs/specification/xlang_serialization_spec.md#meta-string</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=value-encodings>Value encodings<a href=#value-encodings class=hash-link aria-label="Value encodings的直接链接" title="Value encodings的直接链接" translate=no>​</a></h2>
+<p>This section describes the byte layouts for common built-in serializers used in Java native
+serialization. Custom serializers (EXT) may define additional formats but must still follow the
+reference and type meta rules described above.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=primitives>Primitives<a href=#primitives class=hash-link aria-label=Primitives的直接链接 title=Primitives的直接链接 translate=no>​</a></h3>
+<ul>
+<li class="">boolean: 1 byte (0x00 or 0x01).</li>
+<li class="">byte: 1 byte.</li>
+<li class="">short: 2 bytes little endian.</li>
+<li class="">char: 2 bytes little endian (UTF-16 code unit).</li>
+<li class="">int:<!-- -->
+<ul>
+<li class="">fixed: 4 bytes little endian.</li>
+<li class="">varint: signed varint32 (ZigZag) when <code>compressInt</code> is enabled.</li>
+</ul>
+</li>
+<li class="">long:<!-- -->
+<ul>
+<li class="">fixed: 8 bytes little endian.</li>
+<li class="">varint: signed varint64 (ZigZag) when <code>longEncoding=VARINT</code>.</li>
+<li class="">tagged: tagged int64 when <code>longEncoding=TAGGED</code>.</li>
+</ul>
+</li>
+<li class="">float: IEEE 754 float32, little endian.</li>
+<li class="">double: IEEE 754 float64, little endian.</li>
+</ul>
+<p>Varint encodings follow the xlang spec:
+<code>docs/specification/xlang_serialization_spec.md#unsigned-varint32</code>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=string>String<a href=#string class=hash-link aria-label=String的直接链接 title=String的直接链接 translate=no>​</a></h3>
+<p>Strings are encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint36_small: (num_bytes &lt;&lt; 2) | coder | string bytes |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">coder: 2-bit value<!-- -->
+<ul>
+<li class="">0: LATIN1</li>
+<li class="">1: UTF16</li>
+<li class="">2: UTF8</li>
+</ul>
+</li>
+<li class="">num_bytes: byte length of the encoded string payload.</li>
+</ul>
+<p>UTF16 is encoded as little endian 2-byte code units.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=enum>Enum<a href=#enum class=hash-link aria-label=Enum的直接链接 title=Enum的直接链接 translate=no>​</a></h3>
+<ul>
+<li class="">If <code>serializeEnumByName</code> is enabled: write enum name as a meta string.</li>
+<li class="">Otherwise: write enum ordinal as varuint32 small7.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=binary-byte>Binary (byte[])<a href=#binary-byte class=hash-link aria-label="Binary (byte[])的直接链接" title="Binary (byte[])的直接链接" translate=no>​</a></h3>
+<p>Primitive byte arrays are encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32: num_bytes | raw bytes |</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=primitive-arrays>Primitive arrays<a href=#primitive-arrays class=hash-link aria-label="Primitive arrays的直接链接" title="Primitive arrays的直接链接" translate=no>​</a></h3>
+<p>Primitive arrays use <code>writePrimitiveArrayWithSize</code> unless compression is enabled:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32: byte_length | raw bytes |</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><code>compressIntArray</code>: int[] encoded as <code>| varuint32: length | varint32... |</code>.</li>
+<li class=""><code>compressLongArray</code>: long[] encoded as <code>| varuint32: length | varint64/tagged... |</code>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=object-arrays>Object arrays<a href=#object-arrays class=hash-link aria-label="Object arrays的直接链接" title="Object arrays的直接链接" translate=no>​</a></h3>
+<p>Object arrays encode length and a monomorphic flag:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7: (length &lt;&lt; 1) | mono_flag |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">If <code>mono_flag == 1</code>, all elements share a known component serializer. Each element uses ref
+flags and the component serializer writes the value.</li>
+<li class="">If <code>mono_flag == 0</code>, each element uses ref flags and writes its own class info and data.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=collections-listset>Collections (List/Set)<a href=#collections-listset class=hash-link aria-label="Collections (List/Set)的直接链接" title="Collections (List/Set)的直接链接" translate=no>​</a></h3>
+<p>Collections encode length and a one-byte elements header:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7: length | elements_header | [elem_class_info] | elements... |</span><br/></div></code></pre></div></div>
+<p><code>elements_header</code> bits (see <code>CollectionFlags</code>):</p>
+<ul>
+<li class="">bit 0: TRACKING_REF</li>
+<li class="">bit 1: HAS_NULL</li>
+<li class="">bit 2: IS_DECL_ELEMENT_TYPE</li>
+<li class="">bit 3: IS_SAME_TYPE</li>
+</ul>
+<p>If <code>IS_SAME_TYPE</code> is set and <code>IS_DECL_ELEMENT_TYPE</code> is not set, the element class info is written
+once before the elements. Element values then follow with either ref flags (if TRACKING_REF) or
+per-element null flags (if HAS_NULL).</p>
+<p>If <code>IS_SAME_TYPE</code> is not set, each element is written with its own class info and data (and
+optionally ref flags).</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=maps>Maps<a href=#maps class=hash-link aria-label=Maps的直接链接 title=Maps的直接链接 translate=no>​</a></h3>
+<p>Maps encode entry count and then a sequence of chunks. Each chunk groups entries that share key
+and value types.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7: size | chunk_1 | chunk_2 | ... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">chunk (non-null entries):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| header | chunk_size | [key_class_info] | [value_class_info] | entries... |</span><br/></div></code></pre></div></div>
+<p><code>header</code> bits (see <code>MapFlags</code>):</p>
+<ul>
+<li class="">bit 0: TRACKING_KEY_REF</li>
+<li class="">bit 1: KEY_HAS_NULL</li>
+<li class="">bit 2: KEY_DECL_TYPE</li>
+<li class="">bit 3: TRACKING_VALUE_REF</li>
+<li class="">bit 4: VALUE_HAS_NULL</li>
+<li class="">bit 5: VALUE_DECL_TYPE</li>
+</ul>
+<p>If <code>KEY_DECL_TYPE</code> or <code>VALUE_DECL_TYPE</code> is unset, the corresponding class info is written once at
+the start of the chunk. <code>chunk_size</code> is a single byte (1..255) and <code>MAX_CHUNK_SIZE</code> is 255.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=null-keyvalue-entries>Null key/value entries<a href=#null-keyvalue-entries class=hash-link aria-label="Null key/value entries的直接链接" title="Null key/value entries的直接链接" translate=no>​</a></h4>
+<p>Entries with null key or null value are encoded as special single-entry chunks without a
+<code>chunk_size</code> byte:</p>
+<ul>
+<li class="">null key, non-null value: <code>NULL_KEY_VALUE_DECL_TYPE*</code> flags, then value payload</li>
+<li class="">null value, non-null key: <code>NULL_VALUE_KEY_DECL_TYPE*</code> flags, then key payload</li>
+<li class="">null key and null value: <code>KV_NULL</code> header only</li>
+</ul>
+<p>These chunks always represent exactly one entry.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=objects-and-structs>Objects and structs<a href=#objects-and-structs class=hash-link aria-label="Objects and structs的直接链接" title="Objects and structs的直接链接" translate=no>​</a></h3>
+<p>Object values are encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| ref meta | type meta | field data |</span><br/></div></code></pre></div></div>
+<p>Field data is written by the serializer selected by the class info. For standard object
+serialization:</p>
+<ul>
+<li class="">Fields are sorted deterministically using <code>DescriptorGrouper</code> order:
+primitives, boxed primitives, built-ins, collections, maps, then other fields, with names sorted
+within each category.</li>
+<li class="">For compatible mode, <code>MetaSharedSerializer</code> uses ClassDef field metadata to read and skip
+unknown fields.</li>
+<li class="">For each field, the serializer uses field metadata (nullable, trackingRef, polymorphic) to decide
+whether to write ref flags and/or type meta before the field value.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=extensions-ext>Extensions (EXT)<a href=#extensions-ext class=hash-link aria-label="Extensions (EXT)的直接链接" title="Extensions (EXT)的直接链接" translate=no>​</a></h3>
+<p>Extension types are encoded by their registered serializer. Type meta is still written before the
+value as described above. The serializer is responsible for the value layout.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=out-of-band-buffers>Out-of-band buffers<a href=#out-of-band-buffers class=hash-link aria-label="Out-of-band buffers的直接链接" title="Out-of-band buffers的直接链接" translate=no>​</a></h2>
+<p>When a <code>BufferCallback</code> is provided, the oob flag is set in the header and serializers may emit
+buffer references instead of inline bytes (for example, large primitive arrays). The out-of-band
+buffer protocol is specific to the callback implementation; the main stream only contains
+references to those buffers.</div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/i18n/zh-CN/docusaurus-plugin-content-docs/version-0.16/specification/java_serialization_spec.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label=文件选项卡><a class="pagination-nav__link pagination-nav__link--prev" href=/archive/zh-CN/docs/0.16/specification/xlang_serialization_spec><div class=pagination-nav__sublabel>上一页</div><div class=pagination-nav__label>Xlang Serialization Format</div></a><a class="pagination-nav__link pagination-nav__link--next" href=/archive/zh-CN/docs/0.16/specification/row_format_spec><div class=pagination-nav__sublabel>下一页</div><div class=pagination-nav__label>Row Format</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#spec-overview class="table-of-contents__link toc-highlight">Spec overview</a><li><a href=#fory-header class="table-of-contents__link toc-highlight">Fory header</a><li><a href=#reference-meta class="table-of-contents__link toc-highlight">Reference meta</a><li><a href=#type-system-and-type-ids class="table-of-contents__link toc-highlight">Type system and type IDs</a><ul><li><a href=#shared-internal-type-ids-0-63 class="table-of-contents__link toc-highlight">Shared internal type IDs (0-63)</a><li><a href=#java-native-built-in-type-ids class="table-of-contents__link toc-highlight">Java native built-in type IDs</a><li><a href=#registration-and-named-types class="table-of-contents__link toc-highlight">Registration and named types</a></ul><li><a href=#type-meta-encoding class="table-of-contents__link toc-highlight">Type meta encoding</a><ul><li><a href=#shared-class-meta-streaming class="table-of-contents__link toc-highlight">Shared class meta (streaming)</a></ul><li><a href=#schema-modes class="table-of-contents__link toc-highlight">Schema modes</a><li><a href=#classdef-format-compatible-mode class="table-of-contents__link toc-highlight">ClassDef format (compatible mode)</a><ul><li><a href=#binary-layout class="table-of-contents__link toc-highlight">Binary layout</a><li><a href=#class-meta-bytes class="table-of-contents__link toc-highlight">Class meta bytes</a><li><a href=#field-info class="table-of-contents__link toc-highlight">Field info</a><li><a href=#field-type-encoding class="table-of-contents__link toc-highlight">Field type encoding</a></ul><li><a href=#meta-string-encoding class="table-of-contents__link toc-highlight">Meta string encoding</a><ul><li><a href=#package-and-type-names class="table-of-contents__link toc-highlight">Package and type names</a><li><a href=#field-names class="table-of-contents__link toc-highlight">Field names</a><li><a href=#encoding-algorithms class="table-of-contents__link toc-highlight">Encoding algorithms</a></ul><li><a href=#value-encodings class="table-of-contents__link toc-highlight">Value encodings</a><ul><li><a href=#primitives class="table-of-contents__link toc-highlight">Primitives</a><li><a href=#string class="table-of-contents__link toc-highlight">String</a><li><a href=#enum class="table-of-contents__link toc-highlight">Enum</a><li><a href=#binary-byte class="table-of-contents__link toc-highlight">Binary (byte[])</a><li><a href=#primitive-arrays class="table-of-contents__link toc-highlight">Primitive arrays</a><li><a href=#object-arrays class="table-of-contents__link toc-highlight">Object arrays</a><li><a href=#collections-listset class="table-of-contents__link toc-highlight">Collections (List/Set)</a><li><a href=#maps class="table-of-contents__link toc-highlight">Maps</a><li><a href=#objects-and-structs class="table-of-contents__link toc-highlight">Objects and structs</a><li><a href=#extensions-ext class="table-of-contents__link toc-highlight">Extensions (EXT)</a></ul><li><a href=#out-of-band-buffers class="table-of-contents__link toc-highlight">Out-of-band buffers</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>社区</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>邮件列表<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>文档</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://fory.apache.org/docs/start/ target=_blank rel="noopener noreferrer" class=footer__link-item>安装<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://fory.apache.org/docs/start/ target=_blank rel="noopener noreferrer" class=footer__link-item>使用<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://fory.apache.org/docs/benchmarks/ target=_blank rel="noopener noreferrer" class=footer__link-item>基准测试<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>代码库</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>网站<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/archive/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/archive/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+      <p> 版权所有 © 2025 The Apache Software Foundation，许可证：Apache License, Version 2.0。 <br/>
+        Apache Fory、Fory、Apache、Apache Logo、Apache Fory Logo 是 Apache 软件基金会在美国和/或其他国家的注册商标或商标。
+      </p>
+      </div></div></div></div></footer></div></body>

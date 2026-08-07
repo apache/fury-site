@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfory_site=self.webpackChunkfory_site||[]).push([["12704"],{84141(e,s,t){t.d(s,{A:()=>f});let f=t(58291)},34967(){}}]);
