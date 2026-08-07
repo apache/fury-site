@@ -64,7 +64,7 @@ public final class JsonExample {
 }
 ```
 
-See the [Fory JSON documentation](/docs/guide/java/json_support) for the complete type model, annotations and mix-ins, dynamic properties, custom serializers, security controls, and Android or GraalVM setup.
+See the [Fory JSON documentation](/docs/json/) for the complete type model, annotations and mix-ins, dynamic properties, custom serializers, security controls, and Android or GraalVM setup.
 
 ## Features
 
