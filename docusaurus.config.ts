@@ -39,7 +39,7 @@ const archivedVersionOptions = Object.fromEntries(
     {
       label: version,
       path: version,
-      banner: 'unmaintained' as const,
+      banner: 'none' as const,
     },
   ]),
 );
@@ -273,8 +273,8 @@ const config: Config = {
                   {
                     label:
                       currentLocale === 'zh-CN'
-                        ? '历史版本'
-                        : 'Archived versions',
+                        ? '更多版本'
+                        : 'More versions',
                     href: `https://fory.apache.org/archive/${archiveLocalePath}docs/0.17/introduction/overview/`,
                   },
                 ]
