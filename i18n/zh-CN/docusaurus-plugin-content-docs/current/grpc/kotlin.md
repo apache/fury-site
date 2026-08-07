@@ -211,7 +211,7 @@ stub.chat(
 }
 ```
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务代码只替换请求和响应的序列化方式。标准 gRPC 的所有运行能力仍由 grpc-java 和 grpc-kotlin 负责：
 

@@ -21,14 +21,14 @@ license: |
 
 Xlang 是 Fory 默认的对象序列化模式。Java、Python、C++、Go、Rust、
 JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 共用同一种可移植二进制格式。
-各运行时的[基础序列化](#runtime-guides)页面负责介绍 API 和模型示例；本页说明所有通信方必须
+各语言的[基础序列化](#language-guides)页面介绍相应 API 和模型示例；本页说明所有通信方必须
 共同遵循的规则。
 
 请先阅读[核心概念](core-concepts.md)，了解 xlang 和原生模式共用的对象图、Schema、引用和多态概念。
 
 ## 概述 {#overview}
 
-当字节需要跨运行时传输时，应使用 xlang 序列化，例如多语言服务、数据管道以及前后端通信。
+当字节需要跨语言边界传输时，应使用 xlang 序列化，例如多语言服务、数据管道以及前后端通信。
 它提供以下能力：
 
 - 直接序列化各语言的原生模型，无需预先定义 IDL。
@@ -36,14 +36,14 @@ JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 共用同一种可�
 - 使用兼容模式支持独立部署的通信方演进 Schema。
 - 按需保留共享引用和循环引用。
 - 当每个具体类型都有可移植映射时支持多态值。
-- 在运行时支持的情况下，通过带外缓冲区传输大型二进制和数值数据。
+- 在 Fory 实现支持的情况下，通过带外缓冲区传输大型二进制和数值数据。
 
-如果写入端和读取端始终使用同一种受支持的运行时，并且对象图需要 Java 序列化钩子、Python
-pickle 兼容对象等语言特有行为，请改用[原生序列化](native.md)。
+如果写入端和读取端始终使用同一个受支持的 Fory 实现系列，并且对象图需要 Java 序列化钩子、
+Python pickle 兼容对象等语言特有行为，请改用[原生序列化](native.md)。
 
-### 支持的运行时 {#supported-runtimes}
+### 支持的语言 {#supported-languages}
 
-| 运行时                | 包或目标                                  | 模式         |
+| 语言                  | 包或目标                                  | 模式         |
 | --------------------- | ----------------------------------------- | ------------ |
 | Java                  | `org.apache.fory:fory-core`               | xlang/native |
 | Python                | `pyfory`                                  | xlang/native |
@@ -120,7 +120,7 @@ message Person {
 }
 ```
 
-使用 `foryc` 生成所需的运行时目标；生成的模型在这些目标之间使用一致的字段和类型元数据。
+使用 `foryc` 生成所需的语言目标；生成的模型在这些目标之间使用一致的字段和类型元数据。
 
 ## 类型系统和类型标识 {#type-system-and-type-identity}
 
@@ -135,8 +135,8 @@ message Person {
 
 - 当 Python 原生类型无法表达所需位宽时，使用 `pyfory.Int32`、`pyfory.Float16`、
   `pyfory.BFloat16` 等标记。
-- 当一个宿主类型能够表示多个 xlang 类型时，Java、Dart 等运行时使用注解或 Schema 元数据区分。
-- `float16`、`bfloat16` 及其稠密数组使用运行时特有的载体。
+- 当一个宿主类型能够表示多个 xlang 类型时，Java、Dart 等语言使用注解或 Schema 元数据区分。
+- `float16`、`bfloat16` 及其稠密数组使用语言特有的载体。
 - `list<T>` 和稠密 `array<T>` 是不同的 Schema。在兼容模式下，如果元素域兼容，直接结构体字段
   可以在列表和稠密布尔值/数值数组之间适配，但实际列表不能包含目标数组无法表示的 null 或
   引用跟踪元素。
@@ -154,11 +154,11 @@ message Person {
 
 ### 静态字段和动态字段 {#static-and-dynamic-fields}
 
-静态已知字段直接使用声明类型的序列化器，不写入具体运行时类型；动态字段则携带足够的类型信息，
+静态已知字段直接使用声明类型的序列化器，不写入具体类型；动态字段则携带足够的类型信息，
 用于选择已注册的具体类型。接口、抽象类型、trait object 和其他多态位置需要动态元数据；原始类型
 和准确的 final 类型不需要。
 
-| 运行时 | 动态字段模型                                         |
+| 语言   | 动态字段模型                                         |
 | ------ | ---------------------------------------------------- |
 | Java   | `@ForyField(dynamic = ...)` 控制自动或强制写入元数据 |
 | Python | `pyfory.field(dynamic=...)` 控制对象字段元数据       |
@@ -167,7 +167,7 @@ message Person {
 | Rust   | trait object 载体表达动态值                          |
 
 写入动态元数据会增加空间和类型解析开销。只有在字段绝不可能包含其他具体类型时才能禁用它。准确的
-注解和注册示例请参阅各运行时的 Schema 元数据、类型注册和多态文档。
+注解和注册示例请参阅各语言的 Schema 元数据、类型注册和多态文档。
 
 ## 可空性和引用跟踪 {#nullability-and-reference-tracking}
 
@@ -178,8 +178,8 @@ message Person {
 | 可空性   | 允许字段或值位置不包含值     |
 | 引用跟踪 | 保留重复对象身份并支持对象环 |
 
-线格式帧由 [xlang 序列化规范](../specification/xlang_serialization_spec.md)定义。应用应通过运行时 API
-配置语义行为，不要依赖具体的标志值。
+线格式帧由 [xlang 序列化规范](../specification/xlang_serialization_spec.md)定义。应用应通过各语言专用的
+Fory API 配置语义行为，不要依赖具体的标志值。
 
 ### 可空性 {#nullability}
 
@@ -216,9 +216,9 @@ Fory fory = Fory.builder()
     .build();
 ```
 
-全局引用跟踪启用运行时机制，字段元数据决定哪些位置参与跟踪。常见的字段级控制包括 Java 和
+全局引用跟踪启用引用跟踪机制，字段元数据决定哪些位置参与跟踪。常见的字段级控制包括 Java 和
 Scala `@Ref`、Go `fory:"ref"` 标签、Rust `#[fory(ref = true)]`，以及 C++ 智能指针或
-`fory::F().ref()` 元数据。不同语言和载体的默认行为不同，请参阅对应运行时指南。
+`fory::F().ref()` 元数据。不同语言和载体的默认行为不同，请参阅对应语言指南。
 
 引用支持还受宿主语言所有权模型约束。例如 Rust 可以保留受支持的共享引用载体，但循环引用必须
 使用可表达的所有权和弱引用形状。
@@ -230,11 +230,11 @@ Scala `@Ref`、Go `fory:"ref"` 标签、Rust `#[fory(ref = true)]`，以及 C++ 
 
 1. 注册相同的具体类型标识。
 2. 为该具体类型提供兼容字段 Schema。
-3. 当运行时无法推断时，将该位置标记或建模为动态。
+3. 当 Fory 实现无法推断时，将该位置标记或建模为动态。
 4. 使用具有可移植 xlang 映射的具体类型。
 
-仅有宿主语言继承关系并不能让类型自动变得可移植。如果某种形状没有 xlang 映射，请为同语言流量
-使用原生模式，或者定义可移植模型。接口、trait object、联合和生成代码的语法请参阅各运行时的
+仅有宿主语言继承关系并不能让类型自动变得可移植。如果某种形状没有 xlang 映射，请对同一个
+Fory 实现系列内的流量使用原生模式，或者定义可移植模型。接口、trait object、联合和生成代码的语法请参阅各语言的
 多态文档。
 
 ## Schema 演进 {#schema-evolution}
@@ -256,7 +256,7 @@ Scala `@Ref`、Go `fory:"ref"` 标签、Rust `#[fory(ref = true)]`，以及 C++ 
 
 ## 零拷贝序列化 {#zero-copy-serialization}
 
-部分运行时可以把大型二进制或数值缓冲区移出主序列化字节流，从而避免将这些缓冲区复制到一个连续
+部分 Fory 实现可以把大型二进制或数值缓冲区移出主序列化字节流，从而避免将这些缓冲区复制到一个连续
 载荷中。
 
 传输流程如下：
@@ -285,8 +285,8 @@ buffers = [obj.to_buffer() for obj in objects]
 decoded = fory.deserialize(metadata, buffers=buffers)
 ```
 
-Go 通过其序列化和缓冲区 API 提供等价的回调缓冲区流程。当前方法名和支持的缓冲区载体请以运行时
-文档为准。
+Go 通过其序列化和缓冲区 API 提供等价的回调缓冲区流程。当前方法名和支持的缓冲区载体请以语言
+指南为准。
 
 当缓冲区很大并且传输层能够避免额外复制时，带外序列化收益明显。对于小数组，回调和多缓冲区传输
 的开销可能高于复制。应用负责缓冲区顺序、生命周期和传输帧。Python 和 NumPy 的详细用法请参阅
@@ -302,7 +302,7 @@ Go 通过其序列化和缓冲区 API 提供等价的回调缓冲区流程。当
 | 字段解码错误           | 字段 ID、名称或类型不同               | 对齐字段元数据，或从同一份 IDL 重新生成所有通信方 |
 | 循环对象图出现栈溢出   | 未启用引用跟踪                        | 启用全局和字段级引用跟踪                          |
 | 共享对象被复制         | 值位置不跟踪引用                      | 为对应载体或字段启用引用跟踪                      |
-| 宿主类型不受支持       | 类型没有可移植的 xlang 表示           | 改用可移植模型，或为同语言流量使用原生模式        |
+| 宿主类型不受支持       | 类型没有可移植的 xlang 表示           | 改用可移植模型，或在同一个 Fory 实现系列内使用原生模式 |
 | Schema/hash 不匹配     | 同 Schema 通信方使用了不同 Schema     | 对齐所有通信方，或恢复兼容模式                    |
 | 升级后失败             | 通信方运行了不兼容的协议版本          | 对齐受支持的 Fory 版本并查看发布说明              |
 | 载荷立即被拒绝         | 一端写入原生字节，另一端按 xlang 读取 | 跨语言契约的所有通信方都应使用 xlang              |
@@ -311,15 +311,15 @@ Go 通过其序列化和缓冲区 API 提供等价的回调缓冲区流程。当
 
 1. 确认每个通信方都使用 xlang 模式和相互支持的 Fory 版本。
 2. 比较注册的类型标识、字段 ID 或名称、数值位宽、可空性和引用元数据。
-3. 在测试跨运行时方向前，先复现同运行时往返。
+3. 在测试跨语言方向前，先在每个 Fory 实现中复现本地往返。
 4. 对生产环境使用的每一种语言组合测试双向传输。
 5. 将值缩减为一个类型和一个字段，然后逐步恢复字段，直到差异再次出现。
-6. 对于生成代码、平台或 API 错误，请查看对应运行时的故障排除页面。
+6. 对于生成代码、平台或 API 错误，请查看对应语言的故障排除页面。
 
-诊断二进制布局时，应使用规范和运行时调试工具。不要把十六进制转储或内部标志值当作稳定的应用
+诊断二进制布局时，应使用规范和具体实现提供的调试工具。不要把十六进制转储或内部标志值当作稳定的应用
 API。
 
-## 运行时指南 {#runtime-guides}
+## 语言指南 {#language-guides}
 
 - [Java](java/basic-serialization.md#cross-language-interoperability)
 - [Python](python/basic-serialization.md#cross-language-interoperability)
@@ -336,9 +336,9 @@ API。
 ## 相关文档 {#related-documentation}
 
 - [Xlang 序列化格式](../specification/xlang_serialization_spec.md) — 规范性的线格式
-- [Xlang 类型映射](../specification/xlang_type_mapping.md) — 各运行时准确的载体映射
+- [Xlang 类型映射](../specification/xlang_type_mapping.md) — 各宿主语言准确的载体映射
 - [Fory IDL 和编译器](../compiler/index.md) — Schema 优先的模型和代码生成
-- [快速开始](../start/index.md) — 各运行时的安装和第一次序列化
+- [快速开始](../start/index.md) — 各语言的安装和第一次序列化
 - [行格式](../row-format/index.md) — 用于可信分析数据的随机访问行
 
 ## 运维最佳实践 {#operational-best-practices}

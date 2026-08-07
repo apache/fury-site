@@ -25,7 +25,7 @@ Schema 驱动的模型以及由 Fory 支持的 gRPC 服务。
 ## 从这里开始
 
 1. 阅读[介绍](introduction/index.md)并[选择格式](introduction/choose-a-format.md)。
-2. 按照[快速开始](start/index.md)安装所选运行时。
+2. 按照[快速开始](start/index.md)安装所选语言的 Fory 实现。
 3. 查看[基准测试](benchmarks/index.md)及其方法论，了解相关性能依据。
 4. 继续阅读对应能力的指南。
 
@@ -33,15 +33,15 @@ Schema 驱动的模型以及由 Fory 支持的 gRPC 服务。
 
 | 功能              | 适用场景                               | 文档                                        |
 | ----------------- | -------------------------------------- | ------------------------------------------- |
-| 对象序列化        | 重建 xlang 或运行时原生对象图          | [对象序列化](object-serialization/index.md) |
+| 对象序列化        | 重建 xlang 或语言原生对象图            | [对象序列化](object-serialization/index.md) |
 | Row Format        | 随机和部分访问可信分析数据             | [行格式](row-format/index.md)               |
 | Fory JSON         | 将高吞吐量标准 JSON 映射到 Java 对象   | [Fory JSON](json/index.md)                  |
-| Fory IDL 与编译器 | 从共享 Schema 生成运行时原生模型       | [编译器](compiler/index.md)                 |
+| Fory IDL 与编译器 | 从共享 Schema 生成语言原生模型         | [编译器](compiler/index.md)                 |
 | Fory gRPC         | 生成用于编组 Fory 模型的 gRPC 配套代码 | [Fory gRPC](grpc/index.md)                  |
 
-## 运行时文档
+## 语言指南
 
-二进制对象序列化为以下运行时提供多页指南：
+二进制对象序列化为以下语言提供多页指南：
 [Java](object-serialization/java/index.md)、[Python](object-serialization/python/index.md)、
 [C++](object-serialization/cpp/index.md)、[Go](object-serialization/go/index.md)、
 [Rust](object-serialization/rust/index.md)、

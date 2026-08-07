@@ -115,7 +115,7 @@ final fory = Fory(
 final fory = Fory(maxGraphMemoryBytes: 256 * 1024 * 1024);
 ```
 
-创建运行时时会拒绝显式的非正值。
+创建 Fory 实例时会拒绝显式的非正值。
 
 ### `maxUnbackedContainerItems`
 

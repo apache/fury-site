@@ -21,7 +21,7 @@ license: |
 
 从 Android API level 26 开始，Fory JSON 可通过常规的 `fory-json` artifact 支持普通类。运行时 JSON 代码生成和异步编译会被自动禁用，因此 `ForyJson.builder().build()` 会使用解释执行的对象映射器。
 
-## 安装与运行时模型
+## 安装与 Codec 模型
 
 将 Fory JSON 添加到应用中：
 
@@ -83,7 +83,7 @@ public final class Invoice {
 
 ## Mixin
 
-同一个处理器也支持 Fory JSON Mixin。Mixin 声明一个明确的目标，并在需要使用它的运行时上注册：
+同一个处理器也支持 Fory JSON Mixin。Mixin 声明一个明确的目标，并在需要使用它的 `ForyJson` builder 上注册：
 
 ```java
 import org.apache.fory.json.ForyJson;
@@ -99,13 +99,13 @@ ForyJson json =
     ForyJson.builder().registerMixin(ThirdPartyInvoiceMixin.class).build();
 ```
 
-使用 `fory-annotation-processor` 编译每个非空 Mixin 源。处理器会生成精确的 R8 规则，以及运行时可使用的、特定于该 Mixin 与目标配对的操作。已注册的 Codec、有效的类型 Codec 和内置映射仍遵循其常规的运行时优先级。空 Mixin 不会生成任何输出。
+使用 `fory-annotation-processor` 编译每个非空 Mixin 源。处理器会生成精确的 R8 规则，以及构建完成的 `ForyJson` 实例可使用的、特定于该 Mixin 与目标配对的操作。已注册的 Codec、有效的类型 Codec 和内置映射仍遵循其常规的 Codec 选择优先级。空 Mixin 不会生成任何输出。
 
 Mixin 可以将 `JsonValidator` 放在一个 public abstract、无参数、返回 `void` 的方法上，该方法必须与目标类中的一个 public 方法完全匹配。生成的配对代码会直接调用该目标方法。目标类不需要仅为了 Mixin validator 而添加 `JsonType`。
 
-目标类也不需要仅因为拥有 Mixin 而添加 `JsonType`。`JsonMixin` 本身就是该配对的处理器入口。如果目标类同时使用 `JsonType`，运行时会为已注册的非空 Mixin 选择特定于该配对的 companion，而不是将 overlay 与目标类的直接 companion 组合起来。
+目标类也不需要仅因为拥有 Mixin 而添加 `JsonType`。`JsonMixin` 本身就是该配对的处理器入口。如果目标类同时使用 `JsonType`，构建完成的 `ForyJson` 实例会为已注册的非空 Mixin 选择特定于该配对的 companion，而不是将 overlay 与目标类的直接 companion 组合起来。
 
-在一次构建出的运行时中，一个明确的目标只能启用一个源。在 builder 上，针对该目标的后续注册会替换先前注册，`build()` 会对选定映射生成快照。处理器可以为多个候选源生成 artifact；运行时只使用最后注册的源。
+在一个构建完成的 `ForyJson` 实例中，一个明确的目标只能启用一个源。在 builder 上，针对该目标的后续注册会替换先前注册，`build()` 会对选定映射生成快照。处理器可以为多个候选源生成 artifact；构建完成的实例只使用最后注册的源。
 
 对于非空 Mixin，请使用处理器生成的 R8 规则，而不要使用宽泛的 package keep 规则。
 

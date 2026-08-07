@@ -239,7 +239,7 @@ const fory = new Fory({
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 Fory JavaScript 序列化为与 Java、Python、C++、Go、Rust、C#、Swift、Dart、Scala 和 Kotlin Fory 实现相同的二进制格式。无需转换层，即可在 JavaScript 中写入消息并在 Java 中读取，也支持任意其他方向。
 

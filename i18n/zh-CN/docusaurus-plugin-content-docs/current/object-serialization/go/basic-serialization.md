@@ -400,7 +400,7 @@ func main() {
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 Fory Go 支持与 Java、Python、C++、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 无缝交换数据。本指南介绍跨语言兼容性和类型映射。
 

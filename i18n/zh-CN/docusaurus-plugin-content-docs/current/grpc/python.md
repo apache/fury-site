@@ -256,7 +256,7 @@ with grpc.insecure_channel("localhost:50051") as channel:
 
 同步流式调用遵循常规的 `grpcio` 迭代器和生成器约定。
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务配套代码只提供 Fory 序列化回调。运维行为仍遵循标准的 `grpcio` 行为：
 

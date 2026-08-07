@@ -98,7 +98,7 @@ const fory = new Fory({
 });
 ```
 
-创建运行时时会拒绝显式的非正值。
+创建 Fory 实例时会拒绝显式的非正值。
 
 String、binary 和专用 dense primitive array 载荷保留普通字节大小检查，不消费此对象图预算。仅对确实包含非常紧凑对象图的可信工作负载提高限制。
 

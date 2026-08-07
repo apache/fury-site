@@ -101,7 +101,7 @@ Apache Fory™ xlang 序列化支持自动进行跨语言对象序列化，并�
 - 这种等价性也包括规范的专用载体映射。例如，基于规范 `i32` 序列化器的 Rust vector 载体序列化器使用 `INT32_ARRAY`，基于规范 `u8` 序列化器的载体使用 BINARY，基于外部结构化序列化器或自定义序列化器的载体使用 LIST。嵌套载体 MUST 保留所选子项的类型 ID 和递归 `FieldType`；序列化器组合 MUST NOT 用 LIST 替换规范的原始类型数组或二进制映射。相对地，Swift `Array` 载体序列化器 MUST 保持为 LIST，因为这是 Swift 静态选择 `Array` 时的规范映射。Swift 稠密 `@ArrayField` 映射和动态精确原始类型数组映射是彼此独立的规范选择；序列化器的目标恰好是数值类型，并不会使其获得其中任何一种映射。
 - 异构 tuple/product 载体序列化器 MUST 保留该语言绑定现有的直接 tuple 编码和现有的 xlang LIST 编码。所选子项位置 MUST NOT 增加序列化器名称、位置索引、泛型 Schema 节点或直接支持的 tuple 不会编码的其他标记。缺失或额外的兼容位置遵循该语言绑定通常的 tuple 规则。
 - 对通常不会访问子项身份或注册元数据的缺失或空载体分支，MUST NOT 仅为验证所选序列化器而添加合成的子项元数据。仅当正常的 Schema 路径或值路径确实使用了已注册的子项身份时，才需要注册。声明类型的子项 body 继续使用静态选择的行为，不增加编码身份，也不重复查找注册信息；所属的 Schema 元数据负责此前的身份验证。无论何种情况，载体序列化器自身都保持未注册状态。
-- 如果自定义序列化器不是运行时对现有内置类型的规范实现，则 MUST 使用现有 EXT 或 NAMED_EXT 形式。序列化器提供者与目标值分离的机制不会取代运行时拥有的内置映射。
+- 如果自定义序列化器不是 Fory 实现对现有内置类型的规范序列化器，则 MUST 使用现有 EXT 或 NAMED_EXT 形式。序列化器提供者与目标值分离的机制不会取代实现所拥有的内置映射。
 - 序列化器提供者、外部结构化序列化器或代码生成类型的名称 MUST NOT 改变编码后的类型 ID、注册的用户 ID 或名称、TypeDef、字段顺序、Schema 哈希、引用帧或值字节。
 - 即使序列化行为由另一个宿主类型提供，注册和多态分派仍 MUST 标识被序列化的目标值。
 
@@ -172,7 +172,7 @@ float16, bfloat16, float32, float64
 
 仅在 Schema 兼容模式下，匹配的 struct/class 字段可以在直接的顶层 `list<T>` 与直接的顶层 `array<T>` Schema 之间进行读取，前提是 `T` 属于上述有效稠密数组元素域。具有相同有符号性和位宽域的整数 list 元素编码与相应稠密数组元素域匹配。这是一种读取适配，并不是合并 Schema 类型：写入方仍会写出本地规范的 `list<T>` 或 `array<T>` 载荷；TypeDef/ClassDef 编码、指纹、动态根序列化、相同 Schema 模式以及未知字段跳过仍会将 `list<T>` 与 `array<T>` 视为不同类型。
 
-该适配仅限于匹配兼容字段的直接 Schema。当 `list<T>` 或 `array<T>` 出现在另一个字段类型内部时，不适用该适配；这包括集合元素、map 键或值、数组元素、union 备选项或其他泛型/容器位置。对端 `list<T?>` 的 TypeDef 元素 Schema 对于本地匹配的 `array<T>` 字段不会立即构成 Schema 不兼容。如果元素域匹配且元素 Schema 之间唯一的差异是可空元数据，分类阶段必须接受该匹配字段。读取器必须根据集合载荷作出判断：如果载荷实际包含空元素，本地 `array<T>` 字段必须抛出兼容读取错误。不得将 list 中的空元素强制转换为稠密数组默认值。进行引用跟踪的 list 元素帧与可空元素 Schema 是两个不同概念。如果某运行时无法在不经过泛型/引用路径的情况下将引用跟踪的 list 元素具体化为稠密数组，它可以在兼容分类时拒绝该字段；如果接受了该字段，则无法表示为稠密数组元素值的引用载荷必须在读取时失败。
+该适配仅限于匹配兼容字段的直接 Schema。当 `list<T>` 或 `array<T>` 出现在另一个字段类型内部时，不适用该适配；这包括集合元素、map 键或值、数组元素、union 备选项或其他泛型/容器位置。对端 `list<T?>` 的 TypeDef 元素 Schema 对于本地匹配的 `array<T>` 字段不会立即构成 Schema 不兼容。如果元素域匹配且元素 Schema 之间唯一的差异是可空元数据，分类阶段必须接受该匹配字段。读取器必须根据集合载荷作出判断：如果载荷实际包含空元素，本地 `array<T>` 字段必须抛出兼容读取错误。不得将 list 中的空元素强制转换为稠密数组默认值。进行引用跟踪的 list 元素帧与可空元素 Schema 是两个不同概念。如果某个 Fory 实现无法在不经过泛型/引用路径的情况下将引用跟踪的 list 元素具体化为稠密数组，它可以在兼容分类时拒绝该字段；如果接受了该字段，则无法表示为稠密数组元素值的引用载荷必须在读取时失败。
 
 上述稠密数组错误规则适用于稠密数组目标。将匹配的 `list<T?>` 字段读入本地 `list<T?>` 目标时，必须继续使用 list 语义并保留实际的空元素；实现不得让该载荷经过会拒绝空值的稠密原始类型数组具体化路径。
 
@@ -1349,7 +1349,7 @@ Date 表示不带时区的日期。其编码如下：
 
 - `days`（varint64）：自 Unix 纪元（`1970-01-01`）起的有符号天数
 
-该值重建为 `LocalDate.ofEpochDay(days)`，或目标语言实现中等价的日历日期构造结果。
+该值重建为 `LocalDate.ofEpochDay(days)`，或目标 Fory 实现中等价的日历日期构造结果。
 
 此 `varint64` 编码仅适用于 xlang 序列化。特定语言的原生本地日期编码保持不变。
 
@@ -1557,7 +1557,7 @@ Union 载荷如下：
 | case_id (varuint32) | case_value (Any-style value) |
 ```
 
-`case_id` 是 union 备选项的 tag 编号。运行时 APIs MAY 为通用 union 载体公开从零开始的 ordinal index；当这些 ordinal 是 Schema 的备选项 ID 时，就是有效的编码 `case_id` 值。
+`case_id` 是 union 备选项的 tag 编号。Fory APIs MAY 为通用 union 载体公开从零开始的 ordinal index；当这些 ordinal 是 Schema 的备选项 ID 时，就是有效的编码 `case_id` 值。
 
 `case_value` MUST 编码为完整的 xlang 值：
 
@@ -1567,7 +1567,7 @@ Union 载荷如下：
 
 即使是原始类型，也必须采用这种编码，以便安全跳过未知备选项。
 
-如果读取器看到本地 union Schema 中不存在的 `case_id`，并且目标语言为其提供语言无关的载体，则 SHOULD 保留未知 case。该载体 MUST 公开原始 case ID 和解码后的值，并且 MUST 只保留重新序列化所需的实现内部编码类型 ID 状态。它 MUST NOT 存储 resolver 拥有的类型元数据或其他上下文拥有的状态。写入器 MUST 将存储的原始 case ID 用于 union envelope，而不是任何生成的载体 marker。unknown-case 载荷写入器 MUST 按编码顺序写入 Any 风格的 payload body：先写引用元数据，再写完整的值类型元数据，最后写值字节。对于内部数值类型 ID，类型 ID 字节就是完整的值类型元数据；当解码值具有预期的具体值类型时，载荷写入器 MAY 使用存储的编码类型 ID 保留定长、变长或 tagged 整数编码。这些标量数值载荷不进行引用跟踪，因此其引用元数据为 `NotNullValue`。否则，它 MUST 回退到语言实现普通的多态 Any 值写入器。未知载体是由实现提供的前向兼容容器，而不是本地 Schema case 表中的条目；由 Schema 定义的 union case MAY 使用 `0..N`。写回未知载体时，union envelope MUST 原样使用载体中来自原始对端 Schema 的 case ID，包括原始对端 Schema case ID 为 `0` 的情况。
+如果读取器看到本地 union Schema 中不存在的 `case_id`，并且目标语言为其提供语言无关的载体，则 SHOULD 保留未知 case。该载体 MUST 公开原始 case ID 和解码后的值，并且 MUST 只保留重新序列化所需的实现内部编码类型 ID 状态。它 MUST NOT 存储 resolver 拥有的类型元数据或其他上下文拥有的状态。写入器 MUST 将存储的原始 case ID 用于 union envelope，而不是任何生成的载体 marker。unknown-case 载荷写入器 MUST 按编码顺序写入 Any 风格的 payload body：先写引用元数据，再写完整的值类型元数据，最后写值字节。对于内部数值类型 ID，类型 ID 字节就是完整的值类型元数据；当解码值具有预期的具体值类型时，载荷写入器 MAY 使用存储的编码类型 ID 保留定长、变长或 tagged 整数编码。这些标量数值载荷不进行引用跟踪，因此其引用元数据为 `NotNullValue`。否则，它 MUST 回退到 Fory 实现普通的多态 Any 值写入器。未知载体是由实现提供的前向兼容容器，而不是本地 Schema case 表中的条目；由 Schema 定义的 union case MAY 使用 `0..N`。写回未知载体时，union envelope MUST 原样使用载体中来自原始对端 Schema 的 case ID，包括原始对端 Schema case ID 为 `0` 的情况。
 
 #### 编码布局
 

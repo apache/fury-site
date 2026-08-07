@@ -1,6 +1,5 @@
 {
   "position": 1,
-  "key": "benchmark-object-serialization-xlang",
   "label": "Xlang",
   "collapsible": true,
   "collapsed": true

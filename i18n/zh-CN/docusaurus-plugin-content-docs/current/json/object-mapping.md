@@ -22,7 +22,7 @@ license: |
 ## 线程安全、复用与代码生成
 
 `ForyJson` 在调用 `build()` 后不可变且线程安全。应复用同一个实例，而不是为每次操作都创建
-builder 和运行时。已注册及通过注解选定的 `JsonValueCodec` 实例和 `JsonTypeChecker` 可能被
+builder 和 `ForyJson` 实例。已注册及通过注解选定的 `JsonValueCodec` 实例和 `JsonTypeChecker` 可能被
 并发调用，因此也必须是线程安全的。
 
 默认启用代码生成和异步编译。在诊断问题或运行环境禁止运行时编译时，可以禁用代码生成：
@@ -113,7 +113,7 @@ Schema 仍应声明预期的 Java 类型。
 `LinkedHashMap`、`TreeMap`、`ConcurrentHashMap` 或 `ConcurrentSkipListMap`。无法重建
 `ArrayBlockingQueue`、`Arrays.asList` 的结果、JDK 不可变集合、空集合/单例集合/不可修改包装器、
 受构造函数约束的实现，以及未列出的 Guava 不可变实现。Guava 支持是可选的，并不会使 Guava
-成为必需的运行时依赖。
+成为必需的应用依赖。
 
 非有限 float 和 double 值使用带引号的字符串 `"NaN"`、`"Infinity"` 和 `"-Infinity"`。
 需要保留任意精度时，请使用显式的 `BigInteger` 或 `BigDecimal` 目标类型。
@@ -195,7 +195,7 @@ JSON 对象成员名都是字符串。声明的 Map 键支持 `String`、`byte`�
 有关类加载、类型策略、嵌套深度、对象图内存限制和外部输入控制，请参阅
 [Fory JSON 安全](security.md)。
 
-调用 `build()` 之后再修改 builder，不会改变已有的 `ForyJson` 运行时。
+调用 `build()` 之后再修改 builder，不会改变已有的 `ForyJson` 实例。
 
 在 Android 上，运行时代码生成和异步编译会被禁用。在 GraalVM native image 中，运行时编译不可用；
 可达 `ForyJsonProvider` 返回的配置会使用构建 image 时生成的编解码器，其他配置则使用带有构建时

@@ -350,7 +350,7 @@ final class StreamingClient {
 
 生成的描述符会为 gRPC 路径保留 IDL 中准确的服务名和方法名。
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务代码只会替换请求和响应的序列化方式。所有常规的 gRPC 运维功能仍由 grpc-java 负责：
 

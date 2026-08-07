@@ -36,7 +36,7 @@ gRPC 客户端、服务基类、方法描述符、元数据、截止时间、取
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.5.0" />
+  <PackageReference Include="Apache.Fory" Version="1.6.0" />
   <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
 </ItemGroup>
 ```
@@ -45,7 +45,7 @@ gRPC 客户端、服务基类、方法描述符、元数据、截止时间、取
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.5.0" />
+  <PackageReference Include="Apache.Fory" Version="1.6.0" />
   <PackageReference Include="Grpc.Core.Api" Version="2.71.0" />
   <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
 </ItemGroup>
@@ -275,7 +275,7 @@ C# Schema 模块名称来自源文件的主文件名，而不是 `csharp_namespa
 模块名称。这样，多个 Schema 文件就可以指向同一个 C# 命名空间而不会发生冲突。生成器
 不会生成基于命名空间或服务名派生的模块别名。
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务代码只替换请求和响应的序列化。所有常规 gRPC 运行功能仍由你的 gRPC 技术栈
 负责：

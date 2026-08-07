@@ -189,6 +189,6 @@ println(fory.deserialize(fory.serialize(uuid)))
 
 请使用 `ForyKotlin.builder()` 处理无符号值、范围和 `Duration` 等 Kotlin 特有类型。
 
-对于仅限 Kotlin/JVM 且需要在 JVM 运行时路径上使用 Kotlin 数据类、可空类型、范围、
-无符号值或 Kotlin 集合的通信，请使用原生模式。请在
+对于仅限 Kotlin/JVM 且使用 Kotlin 数据类、可空类型、范围、无符号值或 Kotlin 集合的通信，
+请使用原生模式。请在
 [Kotlin 配置](configuration.md)中为应用选择注册和线程安全设置。

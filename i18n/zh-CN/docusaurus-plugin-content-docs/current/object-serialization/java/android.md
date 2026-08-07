@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-## Android 运行时
+## Android 支持
 
 Fory Java 通过常规 `fory-core` 构件支持 Android 8.0+（API 级别 26+）。核心对象序列化无需单独的 Android 构件。
 

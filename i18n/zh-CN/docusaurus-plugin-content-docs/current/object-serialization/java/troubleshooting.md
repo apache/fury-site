@@ -176,7 +176,7 @@ fory.registerSerializer(MyClass.class, new MyClassSerializer(fory.getTypeResolve
 
 ### JDK25+ 访问错误
 
-在 JDK25+ 上，如果错误中出现 `java.base/java.lang.invoke`，请向 Fory 开放 `java.lang.invoke`。Fory 位于 classpath 时使用 `ALL-UNNAMED`：
+在 JDK25+ 上，建议向 Fory core 开放 `java.lang.invoke`。如果错误中出现 `java.base/java.lang.invoke`，或者 Unsafe 访问被禁用或不可用（包括使用 `--sun-misc-unsafe-memory-access=deny` 时），请添加此开放配置。Fory 位于 classpath 时使用 `ALL-UNNAMED`：
 
 ```bash
 --add-opens=java.base/java.lang.invoke=ALL-UNNAMED

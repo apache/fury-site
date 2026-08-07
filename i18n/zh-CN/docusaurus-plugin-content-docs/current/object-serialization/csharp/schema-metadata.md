@@ -25,7 +25,7 @@ license: |
 
 使用 `[ForyStruct]` 启用源码生成序列化器。使用 `[ForyField]` 分配可选、稳定的非负字段 ID，或覆盖字段所用的 Fory Schema 类型。
 
-外部类型序列化在本地抽象序列化器声明上设置 `Target`。该声明的属性定义字段名称、ID、Schema 描述符和可空性。独立声明还定义其 `Evolving` 设置。外部 `BaseOnly` 声明不能设置 `Evolving`；该设置由每个具体派生类型负责。目标提供运行时值和直接访问的成员。
+外部类型序列化在本地抽象序列化器声明上设置 `Target`。该声明的属性定义字段名称、ID、Schema 描述符和可空性。独立声明还定义其 `Evolving` 设置。外部 `BaseOnly` 声明不能设置 `Evolving`；该设置由每个具体派生类型负责。目标提供目标类型的值和直接访问的成员。
 
 ```csharp
 [ForyStruct(Target = typeof(ThirdParty.User))]

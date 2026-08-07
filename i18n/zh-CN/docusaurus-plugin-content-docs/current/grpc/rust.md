@@ -29,7 +29,7 @@ license: |
 
 ```toml
 [dependencies]
-fory = "1.5.0"
+fory = "1.6.0"
 bytes = "1"
 tonic = { version = "0.14", features = ["transport"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
@@ -277,7 +277,7 @@ while let Some(reply) = chat.message().await? {
 
 生成的 Rust gRPC 载荷必须满足 `Send + 'static`，以便 tonic 能够跨异步任务移动请求值和响应值。如果某个 Schema 对请求或响应类型使用了非线程安全的引用元数据，Rust gRPC 代码生成会拒绝该服务。请为 gRPC 载荷使用线程安全的引用形式，或者不要让非线程安全类型跨越 RPC 边界。
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务配套代码只提供 Fory 序列化和 tonic 绑定。运行时行为仍遵循标准 tonic 行为：
 

@@ -193,7 +193,7 @@ Object? value;
 
 注册每个可能动态出现的具体外部类型。
 
-非空根 list、set 和 map 会将其元素、key 和 value 解码为已注册外部目标。Dart 根集合保留现有运行时结构，因此请将根集合作为 `Object?` 读取，再转换其外层载体：
+非空根 list、set 和 map 会将其元素、key 和 value 解码为已注册外部目标。Dart 根集合保留现有的无类型外层结构，因此请将根集合作为 `Object?` 读取，再转换其外层载体：
 
 ```dart
 final decoded =

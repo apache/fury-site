@@ -104,7 +104,7 @@ for obj in objects:
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有受支持的 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 `pyfory` 支持跨语言对象图序列化，可以在 Python 中序列化数据，再由 Java、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin 或其他受支持语言进行反序列化。
 

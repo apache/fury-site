@@ -73,7 +73,7 @@ fory.register_serializer::<UuidSerializer>(100)?;
 fory.register::<UserSerializer>(101)?;
 ```
 
-序列化器的 `Target` 是运行时值类型。注册不需要单独的外部类型 API。在字段上，`with` 可以选择 `VecSerializer<UserSerializer>` 等确切载体序列化器，而递归 `list`、`map` 或 `tuple` 注解在子节点选择序列化器。在根上组合相同的载体序列化器。载体序列化器不注册。
+序列化器的 `Target` 是 Rust 值类型。注册不需要单独的外部类型 API。在字段上，`with` 可以选择 `VecSerializer<UserSerializer>` 等确切载体序列化器，而递归 `list`、`map` 或 `tuple` 注解在子节点选择序列化器。在根上组合相同的载体序列化器。载体序列化器不注册。
 
 ## 注册一致性
 

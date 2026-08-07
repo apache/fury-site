@@ -140,7 +140,7 @@ PersonForyModule.register(
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 Apache Fory™ Dart 与 Java、Go、C#、Python、Rust 和 Swift 的 Fory 实现使用相同的二进制格式进行序列化。你可以在 Dart 中写入消息并在 Java 中读取，反之亦然，无需任何转换层。
 

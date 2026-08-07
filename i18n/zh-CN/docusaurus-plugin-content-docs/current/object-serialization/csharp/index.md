@@ -44,7 +44,7 @@ Apache Fory™ C# 是面向 .NET 的高性能跨语言序列化库。它支持�
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.5.0" />
+  <PackageReference Include="Apache.Fory" Version="1.6.0" />
 </ItemGroup>
 ```
 

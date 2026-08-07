@@ -64,9 +64,9 @@ ModelsForyModule.register(
 UserModelsForyModule.register(fory, User, id: 100);
 ```
 
-对于普通继承类型，请注册带注解的具体子类。其生成序列化器已经拥有完整的扁平子类 Schema；父类或 mixin 仅仅提供字段时，Fory 不要求在运行时注册它们。
+对于普通继承类型，请注册带注解的具体子类。其生成序列化器已经拥有完整的扁平子类 Schema；父类或 mixin 仅仅提供字段时，Fory 不要求单独注册它们。
 
-仅当运行时类型为独立带注解具体父类的值也会被序列化时，才注册该父类。仅作为提供方的 `@ForyStruct(exposePrivateFields: true)` 边界提供生成字段访问，自身没有注册条目。边界和子类 Schema 选项参见 [Struct 继承](inheritance.md)。
+仅当实际类型就是该独立带注解具体父类的值也会被序列化时，才注册该父类。仅作为提供方的 `@ForyStruct(exposePrivateFields: true)` 边界提供生成字段访问，自身没有注册条目。边界和子类 Schema 选项参见 [Struct 继承](inheritance.md)。
 
 外部结构化序列化器使用相同的生成注册 API。请传入外部目标类型：
 

@@ -114,7 +114,7 @@ Fory fory = Fory.builder()
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有受支持的 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 Apache Fory™ 跨语言序列化是 Java 为必须由 Python、Rust、Go、JavaScript/TypeScript、C++、C#、Swift、Dart、Scala、Kotlin 或其他非 Java Fory 实现读取的载荷提供的编码模式。Java 默认使用支持兼容 Schema 演进的跨语言模式，但示例会显式设置模式，以便在代码中清楚表达载荷契约。
 

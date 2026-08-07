@@ -171,7 +171,7 @@ let decoded = try fory.deserialize(
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 Fory Swift 可以使用 xlang 协议与其他 Fory 实现交换载荷。
 

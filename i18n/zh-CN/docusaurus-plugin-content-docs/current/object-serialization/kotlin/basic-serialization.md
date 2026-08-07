@@ -26,7 +26,7 @@ Xlang 是 Fory Kotlin 的默认序列化模式。本页介绍该默认模式的�
 以下内容介绍默认 xlang 模式的模型生成、注册和跨语言往返。
 
 Kotlin xlang 序列化通过 `ForyKotlin` 使用 JVM Fory 实现。当 Kotlin 载荷需要由其他受支持
-的 Fory 运行时读取时，请使用该模式。在所有对端使用相同身份和字段 Schema 注册可移植
+的 Fory 实现读取时，请使用该模式。在所有对端使用相同身份和字段 Schema 注册可移植
 模型类型。
 
 Kotlin 数据类、枚举和密封类模型会在适用时使用 Kotlin 集成与生成的序列化器。确切的

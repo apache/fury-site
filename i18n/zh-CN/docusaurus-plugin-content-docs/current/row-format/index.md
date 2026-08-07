@@ -28,7 +28,7 @@ Row Format 仅用于可信的分析数据，包括内存映射数据、选择性
 
 ## 选择布局
 
-| 布局         | 运行时支持              | 兼容性                      |
+| 布局         | 语言支持                | 兼容性                      |
 | ------------ | ----------------------- | --------------------------- |
 | Standard Row | Java、Python、C++、Rust | 共享的 Standard Row 布局    |
 | Compact Row  | Java                    | 仅 Java、面向空间优化的布局 |
@@ -50,16 +50,16 @@ Standard Row 内联存储固定宽度值，并通过偏移量和大小存储变�
 Schema 解析字段位置和元素类型。规范性的字节布局、对齐规则、类型表和字节序由
 [Row Format 规范](../specification/row_format_spec.md)定义。
 
-### 运行时支持
+### 语言支持
 
-| 运行时 | Standard Row 兼容性 | 运行时指南          | 其他集成                       |
+| 语言   | Standard Row 兼容性 | 语言指南            | 其他集成                       |
 | ------ | ------------------- | ------------------- | ------------------------------ |
 | Java   | 兼容                | [Java](java.md)     | Arrow 转换；接口和扩展类型映射 |
 | Python | 兼容                | [Python](python.md) | PyArrow Schema 和 table 转换   |
 | C++    | 兼容                | [C++](cpp.md)       | 原生 Row 读取器和写入器        |
 | Rust   | 兼容                | [Rust](rust.md)     | 借用式结构体、数组和 Map 视图  |
 
-安装、Schema 构建、编码、随机访问、部分读取和特定语言集成请参阅各运行时指南。
+安装、Schema 构建、编码、随机访问、部分读取和特定语言集成请参阅各语言指南。
 
 ## Compact Row
 

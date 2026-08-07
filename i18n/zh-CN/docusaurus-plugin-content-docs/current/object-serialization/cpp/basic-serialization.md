@@ -345,7 +345,7 @@ fory.register_struct<Outer>(2);
 
 ## 跨语言互操作 {#cross-language-interoperability}
 
-以下内容说明默认 xlang 格式的跨语言类型映射、类型标识和互操作要求。
+所有受支持的 Fory 实现都共用默认 xlang 格式。以下内容说明它的跨语言类型映射、类型标识和互操作要求。
 
 本文说明如何在 C++ 与其他语言之间使用 Fory 跨语言序列化。
 

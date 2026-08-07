@@ -33,7 +33,7 @@ npm --version
 安装 core 软件包：
 
 ```bash
-npm install @apache-fory/core@1.5.0
+npm install @apache-fory/core@1.6.0
 ```
 
 定义 Schema 并运行 xlang 往返示例：
@@ -65,7 +65,7 @@ JavaScript 使用 xlang 模式。接下来可阅读 [JavaScript/TypeScript 对�
 若要使用可选的 Node.js 字符串快速路径，请安装版本匹配的软件包：
 
 ```bash
-npm install @apache-fory/core@1.5.0 @apache-fory/hps@1.5.0
+npm install @apache-fory/core@1.6.0 @apache-fory/hps@1.6.0
 ```
 
 ## 其他能力

@@ -36,9 +36,9 @@ Rust 实现通过自动内存管理和编译期类型安全提供灵活的高性
 
 | Crate                                                                       | 说明                               | 版本                                          |
 | --------------------------------------------------------------------------- | ---------------------------------- | --------------------------------------------- |
-| [`fory`](https://github.com/apache/fory/blob/main/rust/fory)                | 面向用户的 API、运行时类型和派生宏 | [1.5.0](https://crates.io/crates/fory)        |
-| [`fory-core`](https://github.com/apache/fory/blob/main/rust/fory-core/)     | 用于高级集成的底层运行时 crate     | [1.5.0](https://crates.io/crates/fory-core)   |
-| [`fory-derive`](https://github.com/apache/fory/blob/main/rust/fory-derive/) | 供直接使用运行时的底层过程宏 crate | [1.5.0](https://crates.io/crates/fory-derive) |
+| [`fory`](https://github.com/apache/fory/blob/main/rust/fory)                | 面向用户的 API、运行时类型和派生宏 | [1.6.0](https://crates.io/crates/fory)        |
+| [`fory-core`](https://github.com/apache/fory/blob/main/rust/fory-core/)     | 用于高级集成的底层运行时 crate     | [1.6.0](https://crates.io/crates/fory-core)   |
+| [`fory-derive`](https://github.com/apache/fory/blob/main/rust/fory-derive/) | 供直接使用运行时的底层过程宏 crate | [1.6.0](https://crates.io/crates/fory-derive) |
 
 大多数应用程序只需依赖 `fory`。它重新导出生成代码所需的派生宏和公共运行时类型。只有明确要基于底层运行时 crate 构建时，才直接使用 `fory-core` 或 `fory-derive`。
 
@@ -48,7 +48,7 @@ Rust 实现通过自动内存管理和编译期类型安全提供灵活的高性
 
 ```toml
 [dependencies]
-fory = "1.5.0"
+fory = "1.6.0"
 ```
 
 ### 基本示例

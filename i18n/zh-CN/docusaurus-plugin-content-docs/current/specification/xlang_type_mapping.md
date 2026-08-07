@@ -113,7 +113,7 @@ license: |
 
 - C# 外部类型序列化通过本地的 `ForyStruct(Target = typeof(...))` 或
   `ForyEnum(Target = typeof(...))` 序列化器声明映射第三方 class/struct 或 enum。
-  运行时目标仍采用上表所示的 C# 映射；声明的归属方不会造成编码格式上的差异。
+  目标类型仍采用上表所示的 C# 映射；声明的归属方不会造成编码格式上的差异。
 - Python 的 `pyfory.Float16` 和 `pyfory.BFloat16` 是预留的注解标记；标量值反序列化为 Python 原生 `float`。
 - Python 的 `BoolArray`、`Int8Array`、`Int16Array`、`Int32Array`、`Int64Array`、`UInt8Array`、`UInt16Array`、`UInt32Array`、`UInt64Array`、`Float16Array`、`BFloat16Array`、`Float32Array` 和 `Float64Array` 是公开的稠密数组包装器，具有类似列表的序列行为。
 - JavaScript 的 `BoolArray`、回退实现 `Float16Array` 和 `BFloat16Array` 是基于 `Uint8Array` 或 `Uint16Array` 的公开稠密数组包装器。`float16` 和 `bfloat16` 标量值使用 `number`。原生支持 `Float16Array` 的 JavaScript 环境可以为 `array<float16>` 返回该原生载体。
@@ -145,7 +145,7 @@ license: |
   稠密数组元素域匹配。该规则不适用于嵌套 collection、map、array、union 或泛型位置。
   对等端的 `list<T?>` 元素 Schema 对本地 `array<T>` 字段仍属于兼容的 Schema 匹配；如果实际
   载荷包含 null 元素，稠密数组读取器会抛出兼容读取错误，而不会强制转换该值。列表元素的引用
-  跟踪帧与可空元素 Schema 相互独立；如果本地匹配字段为 `array<T>`，且运行时无法在不使用泛型
+  跟踪帧与可空元素 Schema 相互独立；如果本地匹配字段为 `array<T>`，且 Fory 实现无法在不使用泛型
   或引用路径的情况下将其物化，则可以在兼容字段分类阶段拒绝引用跟踪的列表元素帧。
 - `binary` 与 `array<uint8>` 始终是不同的 Schema 类型。仅在兼容 Schema 的 struct/class
   字段匹配中，顶层直接 `binary` 字段可以读取为顶层直接 `array<uint8>` 字段，反向读取也会得到

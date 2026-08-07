@@ -96,7 +96,7 @@ fory.register::<Order>(100)?;
 - `RefCell<T>` 和 `Mutex<T>`。
 - `Box<dyn Trait>`、`Rc<dyn Trait>` 和 `Arc<dyn Trait>` 等特征对象。
 - 对已注册的非容器载荷，通过 `Box<dyn Any>`、`Rc<dyn Any>` 和
-  `Arc<dyn Any + Send + Sync>` 进行运行时类型分派。请将容器包装在已注册的结构体、枚举或 union 中；当不透明的 EXT/NAMED_EXT 表示合适时，也可以注册精确目标类型的自定义序列化器。
+  `Arc<dyn Any + Send + Sync>` 进行动态类型分派。请将容器包装在已注册的结构体、枚举或 union 中；当不透明的 EXT/NAMED_EXT 表示合适时，也可以注册精确目标类型的自定义序列化器。
 - 日期和时间载体，包括可选的 `chrono` 支持。
 
 相关示例参见[基本序列化](basic-serialization.md)、[引用](references.md)和[特征对象序列化](polymorphism.md)。

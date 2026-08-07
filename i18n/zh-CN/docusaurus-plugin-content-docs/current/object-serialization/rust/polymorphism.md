@@ -59,7 +59,7 @@ impl Animal for Cat {
 register_trait_type!(Animal, Dog, Cat);
 ```
 
-具体类型列表包含运行时值类型。每个类型还必须向 `Fory` 实例注册：
+具体类型列表包含具体的 Rust 值类型。每个类型还必须向 `Fory` 实例注册：
 
 ```rust
 let mut fory = Fory::builder().xlang(false).build();

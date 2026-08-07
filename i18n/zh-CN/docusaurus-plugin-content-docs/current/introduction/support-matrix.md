@@ -19,13 +19,13 @@ license: |
   limitations under the License.
 ---
 
-选择能力前，请使用此矩阵确认文档所覆盖的 API。存在某个运行时页面，并不表示该运行时
+选择能力前，请使用此矩阵确认文档所覆盖的 API。存在某个语言页面，并不表示该语言
 支持所有 Fory 能力。
 
-| 能力                | 已有文档的运行时                                                                   | 互操作能力                             |
+| 能力                | 已有文档的语言                                                                     | 互操作能力                             |
 | ------------------- | ---------------------------------------------------------------------------------- | -------------------------------------- |
 | Xlang 对象序列化    | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin | 共享一种 xlang 编码格式                |
-| Native 对象序列化   | Java、Python、C++、Go、Rust、Scala、Kotlin                                         | 仅限同一运行时家族                     |
+| Native 对象序列化   | Java、Python、C++、Go、Rust、Scala、Kotlin                                         | 仅限一个 Fory 实现家族                 |
 | Standard Row Format | Java、Python、C++、Rust                                                            | 共享 Standard Row 布局                 |
 | Compact Row Format  | Java                                                                               | 仅供 Java 使用的紧凑布局               |
 | Fory JSON           | Java                                                                               | 标准 JSON 文本                         |

@@ -176,6 +176,6 @@ val employee = Employee(
 println(fory.deserialize(fory.serialize(employee)))
 ```
 
-对于仅限 Scala/JVM 且需要在 JVM 运行时路径上使用 Scala case class、集合、tuple、option
-或枚举的通信，请使用原生模式。生产环境 builder 设置请参阅
+对于仅限 Scala/JVM 且使用 Scala case class、集合、tuple、option 或枚举的通信，
+请使用原生模式。生产环境 builder 设置请参阅
 [Scala 配置](configuration.md)。

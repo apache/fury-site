@@ -84,7 +84,7 @@ enum ValueSerializer {
 }
 ```
 
-为了无损读取 xlang union，目标必须表示相同的运行时未知 case 载体。第三方 crate 可以通过声明 `Value<U>` 等泛型枚举来保持对 Fory 的独立；应用将序列化器目标设置为 `Value<UnknownCase>`。无法承载未知 case 的目标不能用于无损外部 xlang union 序列化。
+为了无损读取 xlang union，目标必须表示相同的内存中未知 case 载体。第三方 crate 可以通过声明 `Value<U>` 等泛型枚举来保持对 Fory 的独立；应用将序列化器目标设置为 `Value<UnknownCase>`。无法承载未知 case 的目标不能用于无损外部 xlang union 序列化。
 
 ### 原生结构体风格枚举
 

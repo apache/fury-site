@@ -24,8 +24,8 @@ Fory gRPC 将标准 gRPC 传输语义与 Fory 编译器生成的请求和响应�
 
 ## 适用场景
 
-当每个对端都基于同一份 Fory IDL、protobuf IDL 或 FlatBuffers IDL 契约生成，并支持匹配的
-Fory 运行时时，请使用 Fory gRPC。如果需要通用 protobuf 客户端、反射工具或 protobuf 消息字节，
+当每个对端都基于同一份 Fory IDL、protobuf IDL 或 FlatBuffers IDL 契约生成，并支持对应语言的
+匹配 Fory 实现时，请使用 Fory gRPC。如果需要通用 protobuf 客户端、反射工具或 protobuf 消息字节，
 请使用普通 protobuf gRPC。
 
 ## Schema 前端
@@ -43,7 +43,7 @@ Fory gRPC 配套代码可以从以下输入生成：
 
 1. 在受支持的编译器前端中定义消息和服务。
 2. 使用 `foryc` 生成模型和 gRPC 配套代码。
-3. 添加所选运行时的标准 gRPC 依赖。
+3. 添加所选语言的标准 gRPC 依赖。
 4. 实现生成的 server base，并调用生成的客户端。
 5. 验证生成对端之间的一元调用和流式调用。
 
@@ -58,15 +58,15 @@ JavaScript 在 Node.js 中使用 `@grpc/grpc-js`；浏览器客户端通过 `--g
 
 ### 职责边界
 
-Fory 可以为应用提供的 gRPC 运行时生成服务配套代码。这些代码为请求和响应对象提供 Fory 序列化；
+Fory 可以为应用提供的 gRPC 实现生成服务配套代码。这些代码为请求和响应对象提供 Fory 序列化；
 listener、channel、credential、身份认证、授权、deadline、重试和传输生命周期仍由应用和 gRPC 技术栈负责。
 
-Fory 软件包不会将某个 gRPC 实现作为强制依赖。应用负责选择和配置运行时的 gRPC 库。
+Fory 软件包不会将某个 gRPC 实现作为强制依赖。应用负责选择和配置相应的 gRPC 库。
 
 ### 生成的服务接口
 
-编译器会生成符合运行时习惯的 service base、client 或 stub、方法元数据和 Fory marshaller。
-模型生成详见[生成代码](../compiler/generated-code/index.md)；各运行时页面介绍 server 与 client 集成。
+编译器会生成符合语言习惯的 service base、client 或 stub、方法元数据和 Fory marshaller。
+模型生成详见[生成代码](../compiler/generated-code/index.md)；各语言页面介绍 server 与 client 集成。
 
 ## 互操作性
 
@@ -83,13 +83,13 @@ Fory 软件包不会将某个 gRPC 实现作为强制依赖。应用负责选择
 至少测试一个一元调用，以及服务使用的每种流式调用形式。protobuf `UNIMPLEMENTED` 或解码失败
 通常表示对端使用了普通 protobuf stub，或使用了不同的生成服务契约。
 
-## 运行时指南
+## 语言指南
 
 Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Dart、Scala 和 Kotlin 均有相应的
 gRPC 配套代码文档。当前依赖和流式调用支持请参阅[支持矩阵](../introduction/support-matrix.md)
-以及所选运行时页面。
+以及所选语言页面。
 
-| 运行时                | 指南                                 |
+| 语言                  | 指南                                 |
 | --------------------- | ------------------------------------ |
 | Java                  | [Java](java.md)                      |
 | Python                | [Python](python.md)                  |

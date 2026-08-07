@@ -233,7 +233,7 @@ while (reader->Read(&reply)) {
 
 生成的描述符会为 gRPC 路径保留 IDL 中准确的服务名和方法名。
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务配套代码只提供 Fory 序列化和 gRPC C++ 绑定。运行行为仍遵循标准 gRPC C++
 行为：

@@ -93,7 +93,7 @@ service AnimalService {
 foryc animals.fdl --java_out=./generated/java --python_out=./generated/python --go_out=./generated/go --rust_out=./generated/rust --cpp_out=./generated/cpp --csharp_out=./generated/csharp --dart_out=./generated/dart --scala_out=./generated/scala --kotlin_out=./generated/kotlin --javascript_out=./generated/javascript --grpc
 ```
 
-生成的服务代码使用常规 gRPC API，但请求和响应对象通过 Fory 序列化。运行时依赖项、
+生成的服务代码使用常规 gRPC API，但请求和响应对象通过 Fory 序列化。各语言的依赖项、
 服务端和客户端设置、流式模式、浏览器支持及互操作性边界请参阅
 [Fory gRPC](../grpc/index.md)。
 

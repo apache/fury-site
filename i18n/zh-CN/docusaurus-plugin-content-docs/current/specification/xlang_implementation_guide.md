@@ -21,9 +21,9 @@ license: |
 
 ## 概述
 
-本指南介绍当前各 xlang 运行时采用的 xlang 实现所有权模型。
+本指南介绍当前各 Fory 实现采用的 xlang 所有权模型。
 
-编码格式由 [Xlang 序列化规范](xlang_serialization_spec.md)定义。本文讨论服务边界、操作流程和内部所有权。新的语言实现不必采用相同的类名，但应保持相同的控制流：
+编码格式由 [Xlang 序列化规范](xlang_serialization_spec.md)定义。本文讨论服务边界、操作流程和内部所有权。新的 Fory 实现不必采用相同的类名，但应保持相同的控制流：
 
 - 根操作保留在 `Fory` 门面上
 - 嵌套载荷的工作保留在显式读写上下文中
@@ -175,7 +175,7 @@ xlang 引用标记为：
 所有权划分如下：
 
 - 序列化器提供方拥有静态序列化行为；对于外部结构化序列化器，它还拥有本地 Schema 声明
-- 目标拥有运行时值、宿主类型身份、存储大小和动态向下转型
+- 目标拥有目标类型的值、宿主类型身份、存储大小和动态向下转型
 - 值序列化器拥有目标体、完整根值、默认值、值类型身份、根/动态类型信息和值级多态
 - 内部字段 codec 针对同一目标扩展值序列化器，并拥有 `FieldType`、字段 null/引用分帧、字段容量提示、远程字段元数据、兼容字段组合和递归载体字段 Schema
 - 一个载体实现拥有由根序列化器和字段 codec 复用的主体、分配、插入和引用算法
@@ -228,7 +228,7 @@ internal static class StatusSerializer
 }
 ```
 
-外部声明仅作为编译期生成器输入。它们绝不会被实例化、由运行时反射、注册、发布引用或用作编码身份。运行时类型位置、构造、`TypeInfo`、元数据、引用发布、生成工厂键、根、字段、动态值和载体均使用目标类型。
+外部声明仅作为编译期生成器输入。它们绝不会被实例化、在运行时被反射、注册、发布引用或用作编码身份。所有序列化器类型位置、构造、`TypeInfo`、元数据、引用发布、生成工厂键、根、字段、动态值和载体均使用目标类型。
 
 外部成员可以绑定可见的同名字段或属性。对于外部类目标，设置 `TargetDeclaringType` 和 `TargetMemberName` 则会声明目标或其非 `object` 祖先上的一个确切字段。确切编码映射也会提供物理存储；`Ignore = true` 只提供浅层存储。外部 struct 目标仅支持可见成员映射。未映射的可见 public 实例字段只会被加入外部类浅层存储一次。生成器绝不会发现引用程序集中 private 字段。
 
@@ -240,7 +240,7 @@ internal static class StatusSerializer
 
 每个生成的普通或外部 struct 都使用 `TypeResolver.RegisterGeneratedStruct<T, TSerializer>(bool evolving)`，将生成器所有的 `Evolving` 传入目标 `TypeInfo`。生成的 enum 和 union 使用 `TypeResolver.RegisterGenerated<T, TSerializer>()`。抽象普通提供方和 `BaseOnly` 提供方不注册。一个目标有多个生成所有者时，会在生成期间或跨程序集工厂注册的冷路径上确定性拒绝。替换自定义序列化器时仍遵循解析器的正常目标规则。
 
-C# 载体组合仍以目标为基础。解析器递归绑定 `Nullable<T>`、一维 `T[]`、`List<T>`、`LinkedList<T>`、`Queue<T>`、`Stack<T>`、`HashSet<T>`、`SortedSet<T>`、`ImmutableHashSet<T>`、`Dictionary<TKey, TValue>`、`SortedDictionary<TKey, TValue>`、`SortedList<TKey, TValue>`、`ConcurrentDictionary<TKey, TValue>` 和 `NullableKeyDictionary<TKey, TValue>`。普通、外部和自定义序列化器使用相同的载体主体。不存在继承层次运行时查找、提供方对象、回调、Schema 树、逐元素分派或额外的值分配。
+C# 载体组合仍以目标为基础。解析器递归绑定 `Nullable<T>`、一维 `T[]`、`List<T>`、`LinkedList<T>`、`Queue<T>`、`Stack<T>`、`HashSet<T>`、`SortedSet<T>`、`ImmutableHashSet<T>`、`Dictionary<TKey, TValue>`、`SortedDictionary<TKey, TValue>`、`SortedList<TKey, TValue>`、`ConcurrentDictionary<TKey, TValue>` 和 `NullableKeyDictionary<TKey, TValue>`。普通、外部和自定义序列化器使用相同的载体主体。不存在继承层次的运行时查找、提供方对象、回调、Schema 树、逐元素分派或额外的值分配。
 
 动态 `object` 值和 union 通过 `TypeResolver` 解析具体目标类型。任意静态类型的接口或基类多态仍不受支持。除目标/成员元数据 token 外，扁平普通和外部生成热主体保持相同的工作量与分配形状；继承层次组合属于静态初始化和编译期元数据工作。
 
@@ -253,7 +253,7 @@ Rust 明确命名了这些序列化器操作边界：
 Rust 在 `Serializer` 上用五个关联常量表示不可变的值序列化器属性：
 
 - `IS_OPTIONAL` 表示所选值形状带有 Option 语义；
-- `IS_POLYMORPHIC` 表示其具体目标由运行时值选择；
+- `IS_POLYMORPHIC` 表示其具体目标由应用值选择；
 - `IS_SHARED_REF` 表示它使用现有共享引用编码行为；
 - `IS_WRAPPER` 表示它是 Fory 所有、没有独立注册身份的包装序列化器；以及
 - `REQUIRES_SCOPED_ACCESS` 表示检查或使用其中的动态值需要借用、锁或 weak upgrade。
@@ -262,7 +262,7 @@ Rust 在 `Serializer` 上用五个关联常量表示不可变的值序列化器�
 
 `Serializer` 没有字段 API 或字段 Schema 参数。尤其是，它不公开 `FieldType`、字段兼容读取、已声明字段泛型状态、字段 null/引用策略或字段编码选择。Rust 的内部 `Codec<T>` 扩展 `Serializer<Target = T>` 并拥有这些字段操作。叶级 `SerializerCodec<S>` 通过转发到 `S` 实现值行为，并自行实现字段行为；它绝不调用 `S` 上的字段钩子。其值容量提示原样转发。生成字段和字段模式载体主体使用 codec 所有的字段容量提示；该提示会添加或转发字段分帧，但不改变根或值组合。
 
-序列化器提供方身份是宿主实现细节，绝不会编码。外部结构化序列化器使用与等价直接支持目标相同的 STRUCT、ENUM 或 UNION 元数据和值格式。并非运行时现有内置类型规范实现的自定义序列化器使用 EXT 或 NAMED_EXT。分离序列化器提供方并不取代运行时所有的内置映射。
+序列化器提供方身份是宿主实现细节，绝不会编码。外部结构化序列化器使用与等价直接支持目标相同的 STRUCT、ENUM 或 UNION 元数据和值格式。并非 Fory 实现对现有内置类型的规范序列化器的自定义序列化器使用 EXT 或 NAMED_EXT。分离序列化器提供方并不取代实现所拥有的内置映射。
 
 静态生成字段和由序列化器选择的根，应直接分派给其 Schema 选择的序列化器。Rust 字段 `with = S` 选择确切字段节点，并要求 `S::Target` 等于声明的字段类型。它接受普通、外部结构化、自定义或载体序列化器。例如，`with = VecSerializer<UserSerializer>` 选择结构化 `Vec<User>` 字段节点，而 `list(element(with = UserSerializer))` 递归选择子节点。透明字段选择其确切载体序列化器，如 `OptionSerializer<UserSerializer>`。字段代码生成会将两种形式都递归降低为载体 codec。
 
@@ -376,9 +376,9 @@ Rust 1.70 无法从关联 const 选择 codec 类型，因此现有 Vec 和定长
 
 注册由拥有方序列化器或字段 codec 的访问驱动。在 Schema 构造或值处理访问所选用户序列化器的已注册身份或注册支撑元数据前，该序列化器必须已注册。缺失的 Option、空集合或 map、空 weak 值、零长度定长数组或等价递归分支，在其所有路径没有进行这种访问时，可以不注册子项而完成。声明类型主体路径调用其静态选择的序列化器而不查找注册；如果包含 Schema 提供该声明，它的元数据构造已拥有唯一必需的注册/不匹配检查。现有外层 `FieldType` 不声明位置的异构 tuple，则通过正常的逐位置类型元数据操作触达任何必需子注册。绑定不得添加急切递归根验证遍历、已到达主体检查、选择器树、组合目标查找、逐元素序列化器分派、分配、回调或热路径分支来改变该行为。完整容器的确切自定义序列化器仍是独立不透明 EXT/NAMED_EXT 选择。它拥有已注册动态目标身份，而未注册载体序列化器继续拥有显式静态结构组合。
 
-载体序列化器没有独立注册身份。结构化注册要求现有结构化序列化器契约以及匹配的 STRUCT/ENUM/UNION 类别。自定义注册要求独立 EXT/NAMED_EXT 序列化器并拒绝 `IS_WRAPPER`。Option、Box、Rc、Arc、RcWeak、ArcWeak、RefCell 和 Mutex 载体序列化器会独立于其子类别设置此属性。list、set、map、定长数组和 tuple 保持 false，并通过自身编码类别被拒绝。以相同 Rust 形状之一为目标的自定义序列化器也保持 false，因为它拥有独立不透明 EXT 主体。private 内置注册只验证预期的内部 type ID。这些语义检查使用现有序列化器契约和编码类别。自定义 EXT 注册是 `IS_WRAPPER` 的唯一运行时使用方。
+载体序列化器没有独立注册身份。结构化注册要求现有结构化序列化器契约以及匹配的 STRUCT/ENUM/UNION 类别。自定义注册要求独立 EXT/NAMED_EXT 序列化器并拒绝 `IS_WRAPPER`。Option、Box、Rc、Arc、RcWeak、ArcWeak、RefCell 和 Mutex 载体序列化器会独立于其子类别设置此属性。list、set、map、定长数组和 tuple 保持 false，并通过自身编码类别被拒绝。以相同 Rust 形状之一为目标的自定义序列化器也保持 false，因为它拥有独立不透明 EXT 主体。private 内置注册只验证预期的内部 type ID。这些语义检查使用现有序列化器契约和编码类别。自定义 EXT 注册是 `IS_WRAPPER` 的唯一使用方。
 
-动态值应按具体目标身份解析。当运行时需要两个方向时，其序列化器提供方到类型信息、以及目标到类型信息的索引，必须指向相同的不可变注册元数据和序列化器 harness，而不是创建并行元数据或序列化路径。内部上下文和解析器入口必须命名方向；Rust 对静态 Schema 身份使用 `write_provider_type_info`/`get_provider_type_info`，对动态值身份使用 `write_target_type_info`/`get_target_type_info`。含糊查找不得探测一个 map 后回退到另一个。编码读取仍将编码的 ID 或名称解析到同一元数据。
+动态值应按具体目标身份解析。当 Fory 实现需要两个方向时，其序列化器提供方到类型信息、以及目标到类型信息的索引，必须指向相同的不可变注册元数据和序列化器 harness，而不是创建并行元数据或序列化路径。内部上下文和解析器入口必须命名方向；Rust 对静态 Schema 身份使用 `write_provider_type_info`/`get_provider_type_info`，对动态值身份使用 `write_target_type_info`/`get_target_type_info`。含糊查找不得探测一个 map 后回退到另一个。编码读取仍将编码的 ID 或名称解析到同一元数据。
 
 当现有同构 LIST/SET 或 MAP 头发出一个动态选择的具体类型时，该头所有者会解析并验证目标一次，并为编码 chunk 保留已解析注册元数据。每个主体都借用该确切元数据调用现有动态 harness；不得为每个元素或条目重复目标查找或克隆引用计数元数据句柄。异构 chunk 保留现有逐值元数据路径。该传递不增加编码字段、运行时序列化器实例、回调、Schema 树、缓存或静态路径分支。
 
@@ -521,7 +521,7 @@ return result
 - 在流慢路径中扩展或反复复制最终结果容器
 - 当字节所有者能够一次证明可读性并公开正常缓冲读取时，仍添加序列化器本地分块缓冲区
 
-当目标表示并非直接字节目标时，暂存缓冲区仍然合适，例如字符串转码、压缩、非原地字节序转换、位打包值，或流 API 无法读取到调用方提供目标的运行时。
+当目标表示并非直接字节目标时，暂存缓冲区仍然合适，例如字符串转码、压缩、非原地字节序转换、位打包值，或流 API 无法读取到调用方提供目标的实现。
 
 对于定长原语数组，在确切编码字节数读取成功前，最终结果不得对调用方可见。
 
@@ -529,7 +529,7 @@ return result
 
 此检查不是完整的容器主体验证。它只防止较小或截断的输入造成按大计数预分配。chunk 大小、重复键、元素值语义和协议严格性仍归容器/map 序列化器所有，并且只应在保护真实所有者不变量时验证。
 
-物化读取器还应在分配或设置 size hint 前，预留根操作的估算对象图内存预算。预算状态属于 `ReadContext` 或等价根读取状态，而不是环境线程局部状态。根门面只设置或重置单次操作预算；不得预留根类型或根自身字节。`maxGraphMemoryBytes` 默认为固定 `128 MiB`；正值配置会覆盖默认值；显式非正配置无效，必须在创建运行时时拒绝。不要从根输入大小推导该预算，也不要为该预算添加动态流已读字节计量。
+物化读取器还应在分配或设置 size hint 前，预留根操作的估算对象图内存预算。预算状态属于 `ReadContext` 或等价根读取状态，而不是环境线程局部状态。根门面只设置或重置单次操作预算；不得预留根类型或根自身字节。`maxGraphMemoryBytes` 默认为固定 `128 MiB`；正值配置会覆盖默认值；显式非正配置无效，必须在配置期间或创建 Fory 实例时拒绝。不要从根输入大小推导该预算，也不要为该预算添加动态流已读字节计量。
 
 由于每个根的预算固定，读取状态不应把配置的最大值镜像到第二个活动限制字段。使用现有配置；如果其他地方无法取得配置，则使用一个已配置最大值字段和可变剩余预算。
 
@@ -537,11 +537,11 @@ return result
 
 读取状态不得为该功能扩展任何非内存预算 API，包括引用发布控制、临时所有者控制、序列化器所有者控制、转换辅助方法，或编码正在物化哪类值的 API。这些决策属于具体序列化器和生成序列化器。
 
-该预算是物化对象图所有者的近似门禁，主要涵盖集合、map、array、struct 和 object。它不测量确切堆字节，实际进程内存可能更高。只在存储或分配值的所有者处预留一次自身存储。根门面只重置预算，不得预留根值存储。引用支撑的容器、map、set 和对象/引用数组预留非零所有者自身成本以及引用槽；每个被引用堆所有者在物化时再预留自己的浅层自身成本。内联/值容器预留元素存储；内联/值 map 预留键和值存储；指针、box 和动态物化所有者预留其分配的堆或装箱存储。值序列化器，包括根和生成的 struct/product 读取路径，不预留自身存储。struct/record/POJO/tuple、compatible、generated 和 dynamic object 所有者，仅在引用对象运行时或动态/装箱物化路径中，预留非零浅层自身成本和浅层字段存储。
+该预算是物化对象图所有者的近似门禁，主要涵盖集合、map、array、struct 和 object。它不测量确切堆字节，实际进程内存可能更高。只在存储或分配值的所有者处预留一次自身存储。根门面只重置预算，不得预留根值存储。引用支撑的容器、map、set 和对象/引用数组预留非零所有者自身成本以及引用槽；每个被引用堆所有者在物化时再预留自己的浅层自身成本。内联/值容器预留元素存储；内联/值 map 预留键和值存储；指针、box 和动态物化所有者预留其分配的堆或装箱存储。值序列化器，包括根和生成的 struct/product 读取路径，不预留自身存储。struct/record/POJO/tuple、compatible、generated 和 dynamic object 所有者，仅在引用对象实现或动态/装箱物化路径中，预留非零浅层自身成本和浅层字段存储。
 
-父项不得递归包含子 object、collection、map、string、binary 或原语密集数组内容。跳过作为独立所有者的 enum/union，也跳过专用 string、binary、原语标量、原语数组和原语密集数组叶所有者，但不要跳过 vector 或值对象 list 等一般内联值容器。如果引用槽大小不易或无法可靠查询，使用 4 字节引用槽。原生运行时可以使用保守下界估计，而不是猜测不可移植的 object、container、allocator、table、node、entry 或 debug 布局细节。在预算比较或分配前拒绝算术溢出，并在后备分配或容量预留前保留现有 `checkReadableBytes` 证明。
+父项不得递归包含子 object、collection、map、string、binary 或原语密集数组内容。跳过作为独立所有者的 enum/union，也跳过专用 string、binary、原语标量、原语数组和原语密集数组叶所有者，但不要跳过 vector 或值对象 list 等一般内联值容器。如果引用槽大小不易或无法可靠查询，使用 4 字节引用槽。原生代码实现可以使用保守下界估计，而不是猜测不可移植的 object、container、allocator、table、node、entry 或 debug 布局细节。在预算比较或分配前拒绝算术溢出，并在后备分配或容量预留前保留现有 `checkReadableBytes` 证明。
 
-被跳过的叶所有者仍必须受剩余输入字节约束。如果未读字节不足以容纳 string、binary value、原语标量、原语数组或原语密集数组，运行时不得读取或创建该叶值。
+被跳过的叶所有者仍必须受剩余输入字节约束。如果未读字节不足以容纳 string、binary value、原语标量、原语数组或原语密集数组，读取器不得读取或创建该叶值。
 
 对于 TypeDef 或 TypeMeta 主体，先通过字节所有者证明编码元数据主体字节可读。字段列表分配应发生在该主体可读性检查之后，不应把单独的小初始容量上限当作安全规则。
 
@@ -551,7 +551,7 @@ return result
 
 编码字节与本地已注册元数据完全匹配的远程元数据，在选择该本地类型的现有类型和反序列化策略检查运行后，可以使用本地元数据且不消费远程 Schema 版本限制。这种 exact-local 绕过不只适用于 struct；当具名 enum、ext 和 union 元数据主体存在且与本地编码字节匹配时，也适用。纯基于 id 的 enum、ext 和 typed-union 值不携带 TypeDef 或 TypeMeta 主体，必须保留在正常 type-id 加 user-type-id 路径。兼容的具名 enum、ext 和 union 元数据通常只有一个版本，但当它作为共享元数据发送且不与本地元数据完全匹配时，仍计入已接受远程元数据总数。`maxTypeFields` 只适用于 struct 字段列表。
 
-exact-local 候选必须在元数据所有路径内从解码的元数据身份导出：按 id 注册的元数据使用 `userTypeId`，按名称注册的元数据使用 `(namespace, typeName)`。不要仅为此检查而在线程中传递额外预期类型参数。该规则适用于每个运行时。Java 和 Python 可以在该身份查找选出本地类，并且针对该类的现有 class、registration 和 deserialization-policy 检查运行后，才延迟构建本地编码元数据。
+exact-local 候选必须在元数据所有路径内从解码的元数据身份导出：按 id 注册的元数据使用 `userTypeId`，按名称注册的元数据使用 `(namespace, typeName)`。不要仅为此检查而在线程中传递额外预期类型参数。该规则适用于每个 Fory 实现。Java 和 Python 可以在该身份查找选出本地类，并且针对该类的现有 class、registration 和 deserialization-policy 检查运行后，才延迟构建本地编码元数据。
 
 当静态声明的兼容具名 enum、ext 或 union 字段读取共享元数据时，解码元数据必须匹配已声明 type id、namespace 和 type name，之后元数据所有者才能将其发布到持久缓存或记录 Schema 计数。已接受的头或引用缓存命中仍会跳过主体，并且不得重新运行主体哈希、Schema 限制或注册检查；但字段读取器不得把另一个已声明具名类型的元数据视为当前字段元数据。
 
@@ -595,7 +595,7 @@ struct 专用 Schema/版本分帧和兼容字段布局属于 struct 序列化器
 - Schema 完全匹配的字段使用与同 Schema 读取相同的直接读取形状，不得接收远程兼容元数据
 - 只有当布局把远程/本地顶层标量对分类为可无损转换，且两个字段 Schema 的 `trackingRef = false` 时，匹配标量字段才可使用兼容标量转换
 - 兼容标量转换只适用于立即匹配字段。不得通过向子 Schema 递归应用标量转换来接纳嵌套 collection、array、map key 和 map value Schema。
-- 当元素域匹配时，直接顶层 `list<T?>` 到密集 `array<T>` 的匹配字段必须分类为兼容；可空元素 Schema 位本身不能导致 Schema 对被拒绝。实际 null 元素载荷会在密集数组读取器中失败。当运行时无法在不使用泛型/引用路径的情况下物化引用跟踪 list 元素时，引用跟踪 list 元素分帧是独立问题，仍可拒绝。
+- 当元素域匹配时，直接顶层 `list<T?>` 到密集 `array<T>` 的匹配字段必须分类为兼容；可空元素 Schema 位本身不能导致 Schema 对被拒绝。实际 null 元素载荷会在密集数组读取器中失败。当实现无法在不使用泛型/引用路径的情况下物化引用跟踪 list 元素时，引用跟踪 list 元素分帧是独立问题，仍可拒绝。
 
 当禁用 `compatible` 且启用 `checkStructVersion` 时：
 
@@ -635,7 +635,7 @@ struct 专用 Schema/版本分帧和兼容字段布局属于 struct 序列化器
 
 在 C# 中，enum 的底层数值就是 xlang tag。对于稀疏 C# enum，Java 对端必须声明匹配的 `@ForyEnumId` 值，而不能依赖声明 ordinal。
 
-其他语言实现即使配置或注解表面不同，也应保持相同编码规则。
+其他 Fory 实现即使配置或注解表面不同，也应保持相同编码规则。
 
 Rust 携带数据的 enum 只有在每个已知 variant 是 unit，或恰好携带一个备选值并满足 union case 规则时，才是 xlang union。Rust 原生模式（`xlang = false`）还可以通过原生 enum 格式编码具有多个字段的 tuple 或 named variant。这些 struct 风格 enum 形状没有隐式 xlang 映射。xlang 模式注册必须在发布解析器状态前的冷 Schema/类型选择路径上拒绝它们；生成代码不得丢弃字段、合成未声明的 variant struct 或回退到 EXT。
 
@@ -667,7 +667,7 @@ public 辅助方法应是 Fory 注册 API 上的精简生成包装器，而不�
 
 ### Dart 普通 Struct 继承
 
-Dart 普通 `ForyStruct` 继承是代码生成期的字段发现、规范化、访问、构造和扁平化变更。它不会重新设计运行时引用协议。
+Dart 普通 `ForyStruct` 继承是代码生成期的字段发现、规范化、访问、构造和扁平化变更。它不会重新设计引用协议。
 
 对于具体已注解子类，生成器遍历实例化的父类和已应用 mixin 存储链，而不是只查看子类直接的 `element.fields`。每一层的 `InterfaceType.element.fields` 都公开其声明元素，包括另一库中的 private 声明。Dart 可见性控制哪种生成表达式可以访问元素，而不控制是否发现元素。
 
@@ -730,7 +730,7 @@ selected concrete-child constructor parameter
 
 连接到所选构造器参数的可变字段，通过同一确切身份流初始化一次。其余可变字段要求确切 setter，并在构造后恢复。required 构造器参数必须有一个无歧义字段来源。optional named 参数可以省略；被省略的 optional positional 参数之后不能再有已传入 positional 参数。构造器参数和赋值按已解析存储字段身份匹配，而不是按字段名称字符串匹配。如果省略移除了 required 参数唯一的序列化来源，生成会失败；生成器不得发明值或放宽身份证明。
 
-具体子类拥有一个 `GeneratedStructSchema`、一套规范字段排序、一个序列化器和描述符缓存、一次重建、一条引用发布路径和一个对象图内存所有者。父序列化器既不嵌套也不调用，不要求父运行时注册。单独注解的具体父类只为该确切类型的值拥有自己独立扁平化的 Schema。
+具体子类拥有一个 `GeneratedStructSchema`、一套规范字段排序、一个序列化器和描述符缓存、一次重建、一条引用发布路径和一个对象图内存所有者。父序列化器既不嵌套也不调用，不要求父类型注册。单独注解的具体父类只为该确切类型的值拥有自己独立扁平化的 Schema。
 
 被包含的直接字段和继承字段会进入同一规范化列表，再进行现有递归引用分析和 `needsRootRef` 计算。被包含的继承 `ref: true` 和嵌套容器元数据的行为，与等价直接子类字段相同；被省略字段不进入该列表。继承不会增加引用状态、`ReadContext` API、序列化器签名、调用契约变更、运行时分支、槽位、哨兵、回调、包装器、兼容布局状态或父引用所有者。等价扁平模型也存在的失败属于独立的引用子系统问题。
 
@@ -756,7 +756,7 @@ Java 只为该功能提供扁平模型比较：它的对象序列化器跨继承
 
 Dart 外部类型序列化扩展 `ForyStruct`，增加可选的编译期 `target` 和具名生成式 `constructor`。被注解的 `abstract final` 类仅是 Schema 声明。它没有运行时值或注册身份。
 
-生成器必须通过一个 struct 模型和一个 emitter 分析普通与外部 struct。private 生成符号名来自声明名称。每个运行时类型位置都使用目标类型：`Serializer<Target>`、`GeneratedStructSchema<Target>`、读写签名、构造器调用、Schema `type` 和生成模块分派。
+生成器必须通过一个 struct 模型和一个 emitter 分析普通与外部 struct。private 生成符号名来自声明名称。每个生成序列化器类型位置都使用目标类型：`Serializer<Target>`、`GeneratedStructSchema<Target>`、读写签名、构造器调用、Schema `type` 和生成模块分派。
 
 对于每个序列化声明字段，解析同名且实例化 Dart 类型完全相同的可访问目标 getter。构造器参数和任何构造后 setter 也必须完全匹配。只有注解命名 public named generative constructor 时才选择它。factory constructor、abstract target、开放目标类型，以及回到目标的基于构造器的引用跟踪路径，都在生成期间拒绝。递归检查包含受支持 list、set 和 map 字段元数据中嵌套的目标元素、键和值。
 
@@ -766,7 +766,7 @@ Dart 外部类型序列化扩展 `ForyStruct`，增加可选的编译期 `target
 
 生成代码直接读取 getter，并调用目标构造器或 setter。它不得分配声明、通过中间对象复制值、调用运行时回调、执行成员名称查找，或根据 struct 是否外部进行分支。现有生成 struct、注册、解析器、字段、集合、map、兼容读取和引用路径仍是唯一运行时路径。
 
-注册由生成模块和现有生成注册 API 按 `Target` 索引。直接根、生成字段、动态值以及递归 collection/map 子项解析到同一个目标注册。Dart 根集合保留现有无类型外部运行时形状。
+注册由生成模块和现有生成注册 API 按 `Target` 索引。直接根、生成字段、动态值以及递归 collection/map 子项解析到同一个目标注册。Dart 根集合保留现有无类型外层形状。
 
 ## 目录布局
 

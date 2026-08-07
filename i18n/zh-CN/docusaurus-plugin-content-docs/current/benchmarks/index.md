@@ -122,5 +122,5 @@ Java 基准测试使用 `docs/benchmarks/object-serialization/native/java` 中�
 
 ## 正确解读结果
 
-请先阅读[方法论](methodology.md)，再打开能力、运行时、Schema、模式和操作均与自身工作负载匹配的报告。
+请先阅读[方法论](methodology.md)，再打开能力、语言、Schema、模式和操作均与自身工作负载匹配的报告。
 仓库中保存的结果只是其记录环境下的历史证据，并不保证适用于其他应用或当前 main 分支。

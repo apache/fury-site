@@ -82,7 +82,7 @@ provider 类必须是 public 的具体类，并且具有 public 无参数构造�
 
 Provider 对象仅在镜像构建期间存在。建议像上例一样使用带有实例字段和方法的专用配置类；不需要应用添加 `native-image.properties` 条目，也不需要将 provider package export 或 open 给 Fory。不支持 static provider 方法和字段。
 
-只有 provider 返回的配置会获得生成的 Codec。默认配置不会隐式生成。如果某项启用了代码生成的运行时配置未被包含，Fory JSON 会使用已准备好的解释执行 Codec，并在整个进程范围内记录一条警告，建议提供可达的 `@ForyJsonProvider`。`withCodegen(false)` 会明确选择解释执行的 Codec，且不会请求查找生成的 Codec。原生可执行文件中会禁用异步编译。
+只有 provider 返回的配置会获得生成的 Codec。默认配置不会隐式生成。如果某项启用了代码生成的 `ForyJson` 配置未被包含，Fory JSON 会使用已准备好的解释执行 Codec，并在整个进程范围内记录一条警告，建议提供可达的 `@ForyJsonProvider`。`withCodegen(false)` 会明确选择解释执行的 Codec，且不会请求查找生成的 Codec。原生可执行文件中会禁用异步编译。
 
 ## Mixin
 
@@ -111,11 +111,11 @@ public class JsonExample {
 
 `JsonMixin` 是其明确声明目标的构建时入口，因此目标类不需要仅为了使用 Mixin 而添加 `JsonType`。已注册的 Mixin 类字面量必须从应用代码中可达。Native Image Feature 会保留目标元数据，并准备与直接 `JsonType` 模型相同的访问方式。仅当返回的 `ForyJson` 中注册了该明确的 Mixin 时，provider 配置才会为 Mixin 的目标生成代码。
 
-在构建出的一个 `ForyJson` 中，一个明确的目标只能启用一个源。后续注册会替换先前的源，并影响之后的 `build()` 调用；运行时会保留构建时生成的不可变快照。
+在构建出的一个 `ForyJson` 中，一个明确的目标只能启用一个源。后续注册会替换先前的源，并影响之后的 `build()` 调用；每个构建完成的 `ForyJson` 实例都会保留构建时生成的不可变快照。
 
 ## 类型发现与构造
 
-`fory-json` artifact 会自动激活其 Native Image Feature。`@JsonType` 不会被继承，因此请标注每个具体的运行时模型。带有 class-literal `@JsonSubTypes` 表的已标注基类会自动注册表中列出的子类型。专门支持的容器（包括 `EnumMap` 和 `EnumSet`）使用其内置 factory。其他可达的具体 `Collection` 和 `Map` 根类型需要 public 无参数构造函数。仅由运行时字符串引用的类是不可达的；因此原生镜像不支持 `JsonSubTypes.Type.className`。
+`fory-json` artifact 会自动激活其 Native Image Feature。`@JsonType` 不会被继承，因此请标注每个具体的应用模型。带有 class-literal `@JsonSubTypes` 表的已标注基类会自动注册表中列出的子类型。专门支持的容器（包括 `EnumMap` 和 `EnumSet`）使用其内置 factory。其他可达的具体 `Collection` 和 `Map` 根类型需要 public 无参数构造函数。仅由运行时解析的类名引用的类是不可达的；因此原生镜像不支持 `JsonSubTypes.Type.className`。
 
 不要添加应用反射配置来替代生成的配置。原生可执行文件会解析与 JVM 相同的有效注解。
 

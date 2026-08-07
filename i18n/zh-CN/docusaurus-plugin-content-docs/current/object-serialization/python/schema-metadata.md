@@ -314,7 +314,7 @@ class Counters:
     values: Dict[pyfory.FixedInt32, List[pyfory.TaggedInt64]] = field(default_factory=dict)
 ```
 
-对于 `values`，映射键以定长 int32 值写入，每个嵌套列表元素以 tagged int64 写入。运行时类型推断仅用于动态或未知容器 Schema。
+对于 `values`，映射键以定长 int32 值写入，每个嵌套列表元素以 tagged int64 写入。基于值的类型推断仅用于动态或未知容器 Schema。
 
 在兼容模式下，读取端使用远程 Schema 元数据消费字段字节。只有解码值能安全满足本地声明的 Schema 时，Python 才进行赋值。标量转换和整数编码适配仅适用于直接匹配的字段 Schema。除命名与未命名结构体元数据等用户类型族归一化外，嵌套集合元素、映射键和映射值必须保持精确的可空性、引用跟踪和类型形态元数据。
 

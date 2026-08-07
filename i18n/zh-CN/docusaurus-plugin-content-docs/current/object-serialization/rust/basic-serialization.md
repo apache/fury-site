@@ -145,7 +145,7 @@ Rust 启用 `chrono::NaiveDate`、`chrono::NaiveDateTime` 和 `chrono::Duration`
 
 ```toml
 [dependencies]
-fory = { version = "1.5.0", features = ["chrono"] }
+fory = { version = "1.6.0", features = ["chrono"] }
 ```
 
 ### 自定义类型

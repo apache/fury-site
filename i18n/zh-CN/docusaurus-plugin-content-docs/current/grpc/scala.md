@@ -320,7 +320,7 @@ final class GreeterService extends GreeterGrpc.GreeterImplBase {
 
 服务器流式、客户端流式和双向流式服务器方法使用 grpc-java `StreamObserver` API，因为流的完成、请求流量控制、取消和背压都遵循 grpc-java 行为。
 
-## gRPC 运行时行为
+## gRPC 栈行为
 
 生成的服务代码只会替换请求和响应的序列化方式。所有常规 gRPC 运行功能仍由 grpc-java 负责：
 
