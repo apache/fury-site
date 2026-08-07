@@ -1,0 +1,42 @@
+{
+  "version.label": {
+    "message": "1.6.0",
+    "description": "The label for version 1.6.0"
+  },
+  "sidebar.docsSidebar.category.Introduction": {
+    "message": "简介",
+    "description": "The label for category Introduction in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Getting Started": {
+    "message": "快速开始",
+    "description": "The label for category Getting Started in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Benchmarks": {
+    "message": "基准测试",
+    "description": "The label for category Benchmarks in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Object Serialization": {
+    "message": "对象序列化",
+    "description": "The label for category Object Serialization in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Row Format": {
+    "message": "行格式",
+    "description": "The label for category Row Format in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Fory JSON": {
+    "message": "Fory JSON",
+    "description": "The label for category Fory JSON in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Fory IDL & Compiler": {
+    "message": "Fory IDL 与编译器",
+    "description": "The label for category Fory IDL & Compiler in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Fory gRPC": {
+    "message": "Fory gRPC",
+    "description": "The label for category Fory gRPC in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Development": {
+    "message": "开发",
+    "description": "The label for category Development in sidebar docsSidebar"
+  }
+}

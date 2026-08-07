@@ -50,7 +50,7 @@ const config: Config = {
           // Internal security models and the retired shared image tree must not become website pages.
           exclude: ['security/**', 'images/**'],
           sidebarCollapsible: true,
-          lastVersion: '1.5.0',
+          lastVersion: '1.6.0',
           versions: {
             current: {
               label: 'dev',
@@ -244,15 +244,15 @@ const config: Config = {
           items: [
             {
               label: 'Install',
-              to: '/docs/start/install',
+              to: '/docs/start/',
             },
             {
               label: 'Usage',
-              to: '/docs/start/usage',
+              to: '/docs/start/',
             },
             {
               label: 'Benchmark',
-              to: '/docs/introduction/benchmark',
+              to: '/docs/benchmarks/',
             },
           ],
         },

@@ -359,7 +359,7 @@ The current Rust benchmark suite measures serialization and deserialization thro
 
 ![Rust serialization benchmark throughput](../docs/benchmarks/object-serialization/xlang/rust/throughput.png)
 
-The chart shows why Fory is built for performance-sensitive systems: its generated serializers, compact binary layout, and specialized collection paths deliver high throughput without giving up the features required by complex Rust applications. See the [complete Rust benchmark report](/docs/benchmarks/rust/) for the environment, workload definitions, payload sizes, and detailed results.
+The chart shows why Fory is built for performance-sensitive systems: its generated serializers, compact binary layout, and specialized collection paths deliver high throughput without giving up the features required by complex Rust applications. See the [complete Rust benchmark report](/docs/benchmarks/object-serialization/xlang/rust/) for the environment, workload definitions, payload sizes, and detailed results.
 
 ## When to Use Apache Fory Rust
 

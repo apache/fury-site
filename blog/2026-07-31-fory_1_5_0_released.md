@@ -106,7 +106,7 @@ fory.Register<ThirdParty.User>(100);
 byte[] bytes = fory.Serialize(user);
 ```
 
-For construction requirements, nested containers, dynamic values, and advanced mappings, see the dedicated guides for [Rust](/docs/guide/rust/external_types), [Dart](/docs/guide/dart/external_types), [Swift](/docs/guide/swift/external_types), and [C#](/docs/guide/csharp/external_types).
+For construction requirements, nested containers, dynamic values, and advanced mappings, see the dedicated guides for [Rust](/docs/object-serialization/rust/external-types), [Dart](/docs/object-serialization/dart/external-types), [Swift](/docs/object-serialization/swift/external-types), and [C#](/docs/object-serialization/csharp/external-types).
 
 ## Class Inheritance for C# and Dart
 
@@ -152,7 +152,7 @@ class TextMessage extends MessageBase {
 
 The generated `TextMessage` schema contains `sequence` and `text`, but not the inherited private `_cache`. The option does not omit inherited public fields or private fields declared by the child itself.
 
-See [C# class inheritance](/docs/guide/csharp/basic_serialization#class-inheritance) and [Dart inheritance](/docs/guide/dart/inheritance) for constructor rules, private-field access across packages, mixins, generics, references, and schema compatibility.
+See [C# class inheritance](/docs/object-serialization/csharp/basic-serialization#class-inheritance) and [Dart inheritance](/docs/object-serialization/dart/inheritance) for constructor rules, private-field access across packages, mixins, generics, references, and schema compatibility.
 
 ## Features
 

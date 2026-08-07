@@ -14,9 +14,9 @@ export default function (context, options) {
                 window.location.href = 'https://fory.apache.org';
               }
 
-              // Redirect a small set of current/dev entry pages that moved in the
-              // capability-first documentation restructure. Released versions keep
-              // their original routes, and old fragments are intentionally dropped.
+              // Redirect current/latest and dev entry pages that moved in the
+              // capability-first documentation restructure. Explicit released
+              // versions keep their original routes.
               (function() {
                 var segments = window.location.pathname.split('/').filter(Boolean);
                 var docsIndex = segments[0] === 'docs'
@@ -24,11 +24,20 @@ export default function (context, options) {
                   : /^[a-z]{2}-[A-Z]{2}$/.test(segments[0]) && segments[1] === 'docs'
                     ? 1
                     : -1;
-                if (docsIndex < 0 || segments[docsIndex + 1] !== 'next') {
+                if (docsIndex < 0) {
                   return;
                 }
 
-                var oldPath = segments.slice(docsIndex + 2).join('/');
+                var pathIndex = docsIndex + 1;
+                var version = segments[pathIndex];
+                if (/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(version)) {
+                  return;
+                }
+                if (version === 'next') {
+                  pathIndex++;
+                }
+
+                var oldPath = segments.slice(pathIndex).join('/');
                 var routes = {
                   'introduction/overview': 'introduction',
                   'introduction/benchmark': 'benchmarks',
@@ -38,17 +47,24 @@ export default function (context, options) {
                   'guide/xlang/getting_started': 'object-serialization/xlang',
                   'guide/xlang/serialization': 'object-serialization/xlang',
                   'guide/java/json_support': 'json',
+                  'guide/rust/external_types': 'object-serialization/rust/external-types',
+                  'guide/dart/external_types': 'object-serialization/dart/external-types',
+                  'guide/swift/external_types': 'object-serialization/swift/external-types',
+                  'guide/csharp/external_types': 'object-serialization/csharp/external-types',
+                  'guide/csharp/basic_serialization': 'object-serialization/csharp/basic-serialization',
+                  'guide/dart/inheritance': 'object-serialization/dart/inheritance',
+                  'benchmarks/rust': 'benchmarks/object-serialization/xlang/rust',
                   'compiler/compiler_guide': 'compiler/getting-started',
-                  'community/development': 'development/building',
+                  'community/development': 'development',
                 };
                 var destination = routes[oldPath];
                 if (!destination) {
                   return;
                 }
 
-                var prefix = '/' + segments.slice(0, docsIndex + 2).join('/');
+                var prefix = '/' + segments.slice(0, pathIndex).join('/');
                 window.location.replace(
-                  prefix + '/' + destination + '/' + window.location.search
+                  prefix + '/' + destination + '/' + window.location.search + window.location.hash
                 );
               })();
 

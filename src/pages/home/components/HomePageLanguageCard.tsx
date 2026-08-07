@@ -23,10 +23,18 @@ export default function HomePageLanguageCard() {
   }, []);
 
   const getLanguageUrl = (language) => {
+    const guidePaths = {
+      java: "java",
+      python: "python",
+      golang: "go",
+      javascript: "javascript",
+      rust: "rust",
+      more: "",
+    };
     const baseUrl = locale.startsWith("zh-CN")
-      ? "https://fory.apache.org/zh-CN/docs/start/usage/#"
-      : "https://fory.apache.org/docs/start/usage/#";
-    return `${baseUrl}${language}`;
+      ? "https://fory.apache.org/zh-CN/docs/object-serialization/"
+      : "https://fory.apache.org/docs/object-serialization/";
+    return `${baseUrl}${guidePaths[language]}/`;
   };
 
   return (
@@ -54,13 +62,7 @@ export default function HomePageLanguageCard() {
               key={key}
               className={styles.languageCard}
               onClick={() =>
-                (window.location.href = getLanguageUrl(
-                  key === "java"
-                    ? "java-serialization"
-                    : key === "more"
-                    ? "cross-language-serialization"
-                    : key
-                ))
+                (window.location.href = getLanguageUrl(key))
               }
             >
               <img
