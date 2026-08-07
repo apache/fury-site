@@ -1,6 +1,48 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import versions from './versions.json';
+
+const archivedDocsVersions = [
+  '0.17',
+  '0.16',
+  '0.15',
+  '0.14',
+  '0.13',
+  '0.12',
+  '0.11',
+  '0.10',
+] as const;
+const isArchiveBuild = process.env.DOCS_ARCHIVE === 'true';
+// Local and post-migration builds default to the archive-enabled layout. The
+// deploy workflow explicitly disables it until the immutable archive branch
+// exists, so the migration cannot remove the live 0.x pages prematurely.
+const isArchiveReady = process.env.DOCS_ARCHIVE_READY !== 'false';
+// Docusaurus sets this before loading the config for each locale. Archive
+// entries use absolute hrefs because excluded versions are not valid internal
+// routes during broken-link validation.
+const currentLocale = process.env.DOCUSAURUS_CURRENT_LOCALE ?? 'en-US';
+const archiveLocalePath =
+  currentLocale === 'en-US' ? '' : `${currentLocale}/`;
+const activeDocsVersions = [
+  'current',
+  ...versions.filter(
+    (version) =>
+      !archivedDocsVersions.includes(
+        version as (typeof archivedDocsVersions)[number],
+      ),
+  ),
+];
+const archivedVersionOptions = Object.fromEntries(
+  archivedDocsVersions.map((version) => [
+    version,
+    {
+      label: version,
+      path: version,
+      banner: 'none' as const,
+    },
+  ]),
+);
 
 const config: Config = {
   title: 'Apache Fory™',
@@ -11,7 +53,7 @@ const config: Config = {
   url: 'https://fory.apache.org/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: isArchiveBuild ? '/archive/' : '/',
 
   onBrokenLinks: 'throw',
   markdown: {
@@ -50,23 +92,24 @@ const config: Config = {
           // Internal security models and the retired shared image tree must not become website pages.
           exclude: ['security/**', 'images/**'],
           sidebarCollapsible: true,
-          lastVersion: '1.6.0',
+          includeCurrentVersion: !isArchiveBuild,
+          lastVersion: isArchiveBuild ? '0.17' : '1.6.0',
+          onlyIncludeVersions: isArchiveBuild
+            ? [...archivedDocsVersions]
+            : isArchiveReady
+              ? activeDocsVersions
+              : undefined,
           versions: {
-            current: {
-              label: 'dev',
-            },
-            '0.13': {
-              label: '0.13',
-            },
-            '0.12': {
-              label: '0.12',
-            },
-            '0.11': {
-              label: '0.11',
-            },
-            '0.10': {
-              label: '0.10',
-            },
+            ...(isArchiveBuild
+              ? {}
+              : {
+                  current: {
+                    label: 'dev',
+                  },
+                }),
+            ...(isArchiveBuild || !isArchiveReady
+              ? archivedVersionOptions
+              : {}),
           },
           sidebarPath: './sidebars.ts',
           editUrl: ({ locale, version, docPath }) => {
@@ -82,7 +125,7 @@ const config: Config = {
             return editUrl;
           },
         },
-        blog: {
+        blog: isArchiveBuild ? false : {
           blogSidebarCount: 'ALL',
           blogSidebarTitle: 'All our posts',
           onUntruncatedBlogPosts: 'ignore',
@@ -99,6 +142,7 @@ const config: Config = {
             return editUrl;
           },
         },
+        pages: isArchiveBuild ? false : undefined,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -107,7 +151,13 @@ const config: Config = {
   ],
   plugins: [
     require.resolve('docusaurus-lunr-search'),
-    require.resolve('./src/plugin/redirect')
+    [
+      require.resolve('./src/plugin/redirect'),
+      {
+        archivedDocsVersions:
+          !isArchiveBuild && isArchiveReady ? archivedDocsVersions : [],
+      },
+    ],
   ],
 
   themeConfig: {
@@ -126,6 +176,7 @@ const config: Config = {
         alt: 'Apache Fory™ Logo',
         src: 'img/fory-logo-light.png',
         srcDark: 'img/fory-logo-dark.png',
+        href: isArchiveBuild ? 'https://fory.apache.org/' : '/',
       },
       items: [
         // {
@@ -153,16 +204,26 @@ const config: Config = {
           label: 'Community',
         },
         {
-          to: '/user',
+          ...(isArchiveBuild
+            ? { href: 'https://fory.apache.org/user' }
+            : { to: '/user' }),
           label: 'Users',
           position: "left",
         },
         {
           position: 'left',
-          to: '/download',
+          ...(isArchiveBuild
+            ? { href: 'https://fory.apache.org/download' }
+            : { to: '/download' }),
           label: 'Download',
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
+        {
+          ...(isArchiveBuild
+            ? { href: 'https://fory.apache.org/blog' }
+            : { to: '/blog' }),
+          label: 'Blog',
+          position: 'left',
+        },
         {
           type: 'dropdown',
           label: 'ASF',
@@ -206,6 +267,18 @@ const config: Config = {
           type: 'docsVersionDropdown',
           position: 'right',
           dropdownActiveClassDisabled: true,
+          dropdownItemsAfter:
+            !isArchiveBuild && isArchiveReady
+              ? [
+                  {
+                    label:
+                      currentLocale === 'zh-CN'
+                        ? '更多版本'
+                        : 'More versions',
+                    href: `https://fory.apache.org/archive/${archiveLocalePath}docs/0.17/introduction/overview/`,
+                  },
+                ]
+              : [],
         },
         {
           href: 'https://github.com/apache/fory',
@@ -244,15 +317,21 @@ const config: Config = {
           items: [
             {
               label: 'Install',
-              to: '/docs/start/',
+              ...(isArchiveBuild
+                ? { href: 'https://fory.apache.org/docs/start/' }
+                : { to: '/docs/start/' }),
             },
             {
               label: 'Usage',
-              to: '/docs/start/',
+              ...(isArchiveBuild
+                ? { href: 'https://fory.apache.org/docs/start/' }
+                : { to: '/docs/start/' }),
             },
             {
               label: 'Benchmark',
-              to: '/docs/benchmarks/',
+              ...(isArchiveBuild
+                ? { href: 'https://fory.apache.org/docs/benchmarks/' }
+                : { to: '/docs/benchmarks/' }),
             },
           ],
         },

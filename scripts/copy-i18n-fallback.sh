@@ -7,6 +7,26 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 ZH_CN_DOCS="$ROOT_DIR/i18n/zh-CN/docusaurus-plugin-content-docs"
+ARCHIVED_VERSIONS=" 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 "
+IS_ARCHIVE_BUILD="${DOCS_ARCHIVE:-false}"
+IS_ARCHIVE_READY="${DOCS_ARCHIVE_READY:-true}"
+
+should_copy_version() {
+  local version_name="${1#version-}"
+  local is_archived=false
+
+  if [[ "$ARCHIVED_VERSIONS" == *" $version_name "* ]]; then
+    is_archived=true
+  fi
+
+  if [ "$IS_ARCHIVE_BUILD" = "true" ]; then
+    [ "$is_archived" = "true" ]
+  elif [ "$IS_ARCHIVE_READY" = "false" ]; then
+    return 0
+  else
+    [ "$is_archived" = "false" ]
+  fi
+}
 
 copy_fallback_file() {
   local source_file="$1"
@@ -53,7 +73,7 @@ copy_versioned_folder_to_zh() {
   echo "Copying versioned $folder_name docs to Chinese i18n..."
 
   for version_dir in "$ROOT_DIR/versioned_docs"/version-*; do
-    if [ -d "$version_dir/$folder_name" ]; then
+    if [ -d "$version_dir/$folder_name" ] && should_copy_version "$(basename "$version_dir")"; then
       local version
       version=$(basename "$version_dir")
       local version_target="$ZH_CN_DOCS/$version/$folder_name"
@@ -64,24 +84,26 @@ copy_versioned_folder_to_zh() {
   done
 }
 
-for folder_name in \
-  introduction \
-  start \
-  benchmarks \
-  object-serialization \
-  row-format \
-  json \
-  compiler \
-  grpc \
-  development \
-  specification; do
-  copy_current_folder_to_zh "$folder_name"
-done
+if [ "$IS_ARCHIVE_BUILD" != "true" ]; then
+  for folder_name in \
+    introduction \
+    start \
+    benchmarks \
+    object-serialization \
+    row-format \
+    json \
+    compiler \
+    grpc \
+    development \
+    specification; do
+    copy_current_folder_to_zh "$folder_name"
+  done
+fi
 
 copy_versioned_folder_to_zh "specification"
 copy_versioned_folder_to_zh "benchmarks"
 
-if [ -f "$ROOT_DIR/docs/index.md" ]; then
+if [ "$IS_ARCHIVE_BUILD" != "true" ] && [ -f "$ROOT_DIR/docs/index.md" ]; then
   copy_fallback_file "$ROOT_DIR/docs/index.md" "$ZH_CN_DOCS/current/index.md"
 fi
 

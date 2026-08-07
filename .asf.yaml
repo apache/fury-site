@@ -31,6 +31,7 @@ github:
   protected_branches:
     main: {}
     deploy: {}
+    docs-archive-pre-1.0: {}
 
 publish:
   whoami: deploy

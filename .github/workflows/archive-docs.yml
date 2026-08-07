@@ -1,0 +1,83 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements. See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership. The ASF licenses this file
+# to you under the Apache License, Version 2.0.
+
+name: Archive pre-1.0 docs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: archive-pre-1.0-docs
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refuse to replace an existing archive
+        run: |
+          if git ls-remote --exit-code --heads origin docs-archive-pre-1.0 >/dev/null 2>&1; then
+            echo "docs-archive-pre-1.0 already exists; the archive is immutable." >&2
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: NPM Install
+        run: npm ci --prefer-offline --fund=false
+
+      - name: Restore Docusaurus cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache
+          key: ${{ runner.os }}-node24-docusaurus-archive-${{ hashFiles('package-lock.json') }}
+
+      - name: Build archived docs once
+        env:
+          DOCS_ARCHIVE: "true"
+        run: npm run build
+
+      - name: Verify archived docs
+        run: ./scripts/verify-docs-archive.sh build
+
+      - name: Record immutable source tag
+        env:
+          SOURCE_TAG: docs-archive-pre-1.0-source
+        run: |
+          remote_sha=$(git ls-remote --tags origin "refs/tags/$SOURCE_TAG" | cut -f1)
+          if [ -n "$remote_sha" ] && [ "$remote_sha" != "$GITHUB_SHA" ]; then
+            echo "$SOURCE_TAG already points to a different commit." >&2
+            exit 1
+          fi
+          if [ -z "$remote_sha" ]; then
+            git tag "$SOURCE_TAG" "$GITHUB_SHA"
+            git push origin "refs/tags/$SOURCE_TAG"
+          fi
+
+      - name: Publish immutable archive branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: docs-archive-pre-1.0
+          force_orphan: true
+
+      - name: Deploy the site with the new archive
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref main
