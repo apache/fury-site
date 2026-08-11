@@ -5,11 +5,11 @@ authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON is a high-performance Java framework for mapping application objects to standard JSON text and UTF-8 bytes. It supports ordinary Java models and runs on JDK 8+, Android, and GraalVM Native Image. In the published benchmark configurations below, Fory JSON is the fastest Java JSON serialization framework: up to **10.91× faster than Jackson and 10.89× faster than Gson** with 1,000 KB payloads, and up to **5.55× faster than Jackson and 10.00× faster than Gson** in the `jvm-serializers` MediaContent benchmark.
+**TL;DR**: Apache Fory JSON is a high-performance Java framework for mapping application objects to standard JSON text and UTF-8 bytes. It supports ordinary Java models and runs on JDK 8+, Android, and GraalVM Native Image. In the published benchmark configurations below, Fory JSON is the fastest Java JSON serialization framework: up to **10.91× faster than Jackson and 10.89× faster than Gson** with 1000 KB payloads, and up to **5.55× faster than Jackson and 10.00× faster than Gson** in the `jvm-serializers` MediaContent benchmark.
 
 - GitHub: [apache/fory](https://github.com/apache/fory)
 - Documentation: [Fory JSON](/docs/json/)
-- Wider 1,000 KB benchmark context: [java-json-benchmark PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129)
+- Wider 1000 KB benchmark context: [java-json-benchmark PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129)
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
@@ -89,19 +89,19 @@ The public API preserves those fast paths. A service that already needs network 
 
 ## The fastest Java JSON framework in these benchmarks
 
-Any useful performance claim needs a workload. We use two views here: the three-thread `java-json-benchmark` run with one 1,000 KB object per invocation, followed by the single-thread `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better.
+Any useful performance claim needs a workload. We use two views here: the three-thread `java-json-benchmark` run with one 1000 KB object per invocation, followed by the single-thread `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better.
 
 The tables intentionally compare Fory JSON only with Jackson and Gson. For the wider large-payload matrix, exact payload setup, and the benchmark integration, see [PR #129 in `java-json-benchmark`](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 
-### `java-json-benchmark`: 1,000 KB payloads
+### `java-json-benchmark`: 1000 KB payloads
 
-The 1,000 KB suite asks what happens when each invocation has substantial parsing, traversal, and output work.
+The 1000 KB suite asks what happens when each invocation has substantial parsing, traversal, and output work.
 
-The 1,000 KB run used Fory JSON 1.6.0, Jackson Databind 2.17.1, and Gson 2.11.0 with the databind API. JMH ran two forks and three threads. Each fork used five 3-second warmup iterations and five 3-second measurement iterations. The Users and Clients payloads each contained one 1,000 KB object per invocation.
+The 1000 KB run used Fory JSON 1.6.0, Jackson Databind 2.17.1, and Gson 2.11.0 with the databind API. JMH ran two forks and three threads. Each fork used five 3-second warmup iterations and five 3-second measurement iterations. The Users and Clients payloads each contained one 1000 KB object per invocation.
 
-![Fory JSON, Jackson, and Gson serialization and deserialization throughput for a 1,000 KB Users payload](./users-throughput.png)
+![Fory JSON, Jackson, and Gson serialization and deserialization throughput for a 1000 KB Users payload](./users-throughput.png)
 
-![Fory JSON, Jackson, and Gson serialization and deserialization throughput for a 1,000 KB Clients payload](./clients-throughput.png)
+![Fory JSON, Jackson, and Gson serialization and deserialization throughput for a 1000 KB Clients payload](./clients-throughput.png)
 
 | Payload | Operation       | Fory JSON ops/s       | Jackson ops/s         | Gson ops/s            | vs. Jackson | vs. Gson |
 | ------- | --------------- | --------------------: | --------------------: | --------------------: | ----------: | -------: |
@@ -116,7 +116,7 @@ The [PR #129 benchmark report](https://github.com/fabienrenaud/java-json-benchma
 
 ### `jvm-serializers` MediaContent benchmark
 
-The second view uses the [`jvm-serializers` MediaContent model](https://github.com/eishay/jvm-serializers/blob/master/tpc/src/data/media/MediaContent.java), which contains a media object and a list of images. This benchmark covers much smaller objects than the 1,000 KB suite and separates Java String APIs from UTF-8 byte-array APIs.
+The second view uses the [`jvm-serializers` MediaContent model](https://github.com/eishay/jvm-serializers/blob/master/tpc/src/data/media/MediaContent.java), which contains a media object and a list of images. This benchmark covers much smaller objects than the 1000 KB suite and separates Java String APIs from UTF-8 byte-array APIs.
 
 The `jvm-serializers` benchmark ran on an Apple M4 Pro with JDK 26.0.1. It used one JMH fork and one thread, with three 2-second warmup iterations followed by five 2-second measurement iterations.
 
@@ -245,7 +245,7 @@ The fastest route to a useful evaluation is to replace one representative Jackso
 - Read the [Fory JSON overview](/docs/json/).
 - Run the [Getting Started example](/docs/json/getting-started).
 - Inspect the [complete `jvm-serializers` MediaContent benchmark](/docs/benchmarks/json/java/).
-- Review the [1,000 KB benchmark and broader matrix in PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
+- Review the [1000 KB benchmark and broader matrix in PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 - Join development at [apache/fory](https://github.com/apache/fory).
 
 Fory JSON keeps the format everyone already understands. The difference is how little time your Java service has to spend on it.
