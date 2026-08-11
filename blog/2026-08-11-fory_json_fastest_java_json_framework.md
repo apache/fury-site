@@ -5,7 +5,7 @@ authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON is a high-performance serialization framework that maps Java objects to and from standard JSON text and UTF-8 bytes. It supports common Java models and runs on JDK 8+, Android, and GraalVM Native Image. In the published benchmark configurations below, Fory JSON is the fastest Java JSON serialization framework: up to **10.91× the throughput of Jackson and 10.89× the throughput of Gson** with 1000 KB payloads, and up to **5.55× the throughput of Jackson and 10.00× the throughput of Gson** in the `jvm-serializers` MediaContent benchmark.
+**TL;DR**: Apache Fory JSON is a high-performance serialization framework that maps Java objects to and from standard JSON text and UTF-8 bytes. It supports common Java models and runs on JDK 8+, Android, and GraalVM Native Image. Fory JSON is the fastest Java JSON serialization framework in the published benchmarks: up to **10.91× the throughput of Jackson and 10.89× the throughput of Gson** with 1000 KB payloads, and up to **5.55× the throughput of Jackson and 10.00× the throughput of Gson** in the `jvm-serializers` MediaContent benchmark.
 
 - GitHub: [apache/fory](https://github.com/apache/fory)
 - Documentation: [Fory JSON](/docs/json/)
@@ -87,7 +87,7 @@ The public API preserves those fast paths. Applications that need UTF-8 output c
 
 ## Performance Benchmarks
 
-The results below cover two workloads: a large-payload `java-json-benchmark` run and the smaller `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better. Each subsection describes its configuration.
+The performance results cover two workloads: a large-payload `java-json-benchmark` run and the smaller `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better. Each subsection describes its configuration.
 
 The tables compare Fory JSON only with Jackson and Gson. For the wider large-payload matrix, exact payload setup, and the benchmark integration, see [java-json-benchmark](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 

@@ -5,7 +5,7 @@ authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---
 
-**TL;DR**：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在下文展示的基准测试配置中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 **Jackson 的 10.91 倍和 Gson 的 10.89 倍**；在 `jvm-serializers` MediaContent 基准测试中，最高可达 **Jackson 的 5.55 倍和 Gson 的 10.00 倍**。
+**TL;DR**：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在已发布的基准测试中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 **Jackson 的 10.91 倍和 Gson 的 10.89 倍**；在 `jvm-serializers` MediaContent 基准测试中，最高可达 **Jackson 的 5.55 倍和 Gson 的 10.00 倍**。
 
 - GitHub：[apache/fory](https://github.com/apache/fory)
 - 文档：[Fory JSON](/docs/json/)
