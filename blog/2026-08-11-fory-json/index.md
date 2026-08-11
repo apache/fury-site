@@ -151,7 +151,7 @@ Property discovery can combine fields with JavaBean getters and setters, or swit
 
 Fory JSON provides its own annotations in `org.apache.fory.json.annotation`. They cover explicit property names and ordering, ignored directions, immutable construction, date and time formats, Base64 byte arrays, raw or complete value representations, flattened objects, dynamic members, validation, and finite subtype tables.
 
-The annotation model will feel familiar to Jackson users, covering property names and ordering, creators, formatting, polymorphism, and validation. These are independent Fory JSON APIs, not Jackson-compatible annotations.
+The annotation model will feel familiar to Jackson users, covering property names and ordering, creators, formatting, polymorphism, and validation. These are independent Fory JSON APIs, not Jackson-compatible annotations. See the [Fory JSON annotations guide](/docs/json/annotations) for the complete reference.
 
 The annotations compose on an ordinary model. This event renames a fixed property, formats a date, flattens an owner, captures dynamic members, and validates the completed object after reading:
 
@@ -193,7 +193,28 @@ public final class Event {
 
 `JsonCreator` supports immutable classes, while `JsonPropertyOrder` makes output order explicit. `JsonValue`, `JsonRawValue`, and `JsonBase64` handle specialized value shapes without changing the rest of the object mapping.
 
-### Closed-world polymorphism with `JsonSubTypes`
+For a third-party type that cannot carry annotations, a Mixin overlays the same Fory JSON annotations without changing or wrapping the target class:
+
+```java
+import org.apache.fory.json.ForyJson;
+import org.apache.fory.json.annotation.JsonMixin;
+import org.apache.fory.json.annotation.JsonProperty;
+
+@JsonMixin(target = ThirdPartyUser.class)
+abstract class ThirdPartyUserMixin {
+  @JsonProperty("user_id")
+  long id;
+}
+
+ForyJson json =
+    ForyJson.builder()
+        .registerMixin(ThirdPartyUserMixin.class)
+        .build();
+```
+
+When annotations are not enough, `JsonValueCodec<T>` owns one complete JSON value and streams it through Fory's reader and writer. Child codec selections can customize collection elements, optional contents, and map keys or values without replacing the surrounding container mapping.
+
+## Closed-world polymorphism with `JsonSubTypes`
 
 `JsonSubTypes` maps a declared base type to a complete set of permitted implementations and logical names. The discriminator in JSON selects from this table; it never supplies a Java class name.
 
@@ -234,27 +255,6 @@ public final class PaymentExample {
 ```
 
 The declared-type write tells Fory JSON to use `Payment`'s subtype table. During reading, `kind` must match `card` or `bank_transfer`; an unknown name is rejected. For containers, a `TypeRef<List<Payment>>` carries the same declared base type for every element. The [annotations guide](/docs/json/annotations) covers the alternative wrapper representations and complete validation rules.
-
-For a third-party type that cannot carry annotations, a Mixin overlays the same Fory JSON annotations without changing or wrapping the target class:
-
-```java
-import org.apache.fory.json.ForyJson;
-import org.apache.fory.json.annotation.JsonMixin;
-import org.apache.fory.json.annotation.JsonProperty;
-
-@JsonMixin(target = ThirdPartyUser.class)
-abstract class ThirdPartyUserMixin {
-  @JsonProperty("user_id")
-  long id;
-}
-
-ForyJson json =
-    ForyJson.builder()
-        .registerMixin(ThirdPartyUserMixin.class)
-        .build();
-```
-
-When annotations are not enough, `JsonValueCodec<T>` owns one complete JSON value and streams it through Fory's reader and writer. Child codec selections can customize collection elements, optional contents, and map keys or values without replacing the surrounding container mapping.
 
 ## JDK, Android, and GraalVM Native Image Support
 
