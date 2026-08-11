@@ -13,7 +13,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_json_fastest_java_json_framework</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_json_fastest_java_json_framework</guid>
             <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在已发布的基准测试中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 Jackson 的 10.91 倍和 Gson 的 10.89 倍；在 jvm-serializers MediaContent 基准测试中，最高可达 Jackson 的 5.55 倍和 Gson 的 10.00 倍。]]></description>
+            <description><![CDATA[Apache Fory JSON 以高性能将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换，并提供灵活的对象映射与受控多态。]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在已发布的基准测试中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 <strong>Jackson 的 10.91 倍和 Gson 的 10.89 倍</strong>；在 <code>jvm-serializers</code> MediaContent 基准测试中，最高可达 <strong>Jackson 的 5.55 倍和 Gson 的 10.00 倍</strong>。</p>
 <ul>
 <li class="">GitHub：<a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">apache/fory</a></li>
@@ -113,7 +113,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_6_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_6_0_release</guid>
             <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴地宣布 1.6.0 版本正式发布。本次发布包含 23 个 PR。请访问快速开始页面，获取适用于您所用平台的库。]]></description>
+            <description><![CDATA[Fory 1.6.0 增强 Fory JSON，新增 C++ gRPC 代码生成，并对齐和扩展 Rust Row Format 支持。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴地宣布 1.6.0 版本正式发布。本次发布包含 <a href="https://github.com/apache/fory/compare/v1.5.0...v1.6.0" target="_blank" rel="noopener noreferrer" class="">23 个 PR</a>。请访问<a href="https://fory.apache.org/zh-CN/docs/start/" target="_blank" rel="noopener noreferrer" class="">快速开始</a>页面，获取适用于您所用平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_6_0_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -184,7 +184,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_5_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_5_0_release</guid>
             <pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴地宣布 1.5.0 版本正式发布。本次发布包含 25 个 PR。请访问安装页面，获取适用于您所用平台的库。]]></description>
+            <description><![CDATA[Fory 1.5.0 加速 Fory JSON，为四种运行时增加外部类型序列化，并为 C# 和 Dart 增加类继承支持。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴地宣布 1.5.0 版本正式发布。本次发布包含 <a href="https://github.com/apache/fory/compare/v1.4.0...v1.5.0" target="_blank" rel="noopener noreferrer" class="">25 个 PR</a>。请访问<a href="https://fory.apache.org/zh-CN/docs/start/install" target="_blank" rel="noopener noreferrer" class="">安装</a>页面，获取适用于您所用平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_5_0_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -264,7 +264,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_4_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_4_0_release</guid>
             <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴地宣布 1.4.0 版本正式发布。本次发布由 9 位贡献者共同完成，包含 65 个 PR。请访问安装页面，获取适用于您所用平台的库。]]></description>
+            <description><![CDATA[Fory 1.4.0 推出面向 Java 的 Fory JSON，并改进性能、安全性、兼容性、Python 支持和流式反序列化。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴地宣布 1.4.0 版本正式发布。本次发布由 9 位贡献者共同完成，包含 <a href="https://github.com/apache/fory/compare/v1.3.0...v1.4.0" target="_blank" rel="noopener noreferrer" class="">65 个 PR</a>。请访问<a href="https://fory.apache.org/zh-CN/docs/start/install" target="_blank" rel="noopener noreferrer" class="">安装</a>页面，获取适用于您所用平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_4_0_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -386,7 +386,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_3_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_3_0_release</guid>
             <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 1.3.0 版本正式发布。本版本包含来自 3 位贡献者的 8 个 PR，并继续改进各支持语言的跨语言运行时。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 1.3.0 新增基于 AsyncIO 的 Python gRPC 代码生成与 Dart gRPC 代码生成，并完善编译器文档和运行时安全性。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 1.3.0 版本正式发布。本版本包含来自 3 位贡献者的 <a href="https://github.com/apache/fory/compare/v1.2.0...v1.3.0" target="_blank" rel="noopener noreferrer" class="">8 个 PR</a>，并继续改进各支持语言的跨语言运行时。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="发布亮点">发布亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_3_0_release#%E5%8F%91%E5%B8%83%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="发布亮点的直接链接" title="发布亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -459,7 +459,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_2_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_2_0_release</guid>
             <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 1.2.0 版本正式发布。本版本包含来自 9 位贡献者的 38 个 PR，并继续改进各支持语言的跨语言运行时。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 1.2.0 扩展 gRPC 代码生成，改进兼容读取，在 JDK 25+ 上移除 sun.misc.Unsafe 使用，并加强运行时安全性。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 1.2.0 版本正式发布。本版本包含来自 9 位贡献者的 <a href="https://github.com/apache/fory/compare/v1.1.0...v1.2.0" target="_blank" rel="noopener noreferrer" class="">38 个 PR</a>，并继续改进各支持语言的跨语言运行时。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="发布亮点">发布亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_2_0_release#%E5%8F%91%E5%B8%83%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="发布亮点的直接链接" title="发布亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -581,7 +581,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_1_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_1_0_release</guid>
             <pubDate>Sun, 31 May 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 1.1.0 版本正式发布。本版本包含来自 4 位贡献者的 18 个 PR，并继续改进各支持语言的跨语言运行时。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 1.1.0 新增 Java 与 Python gRPC 代码生成，并通过未知分支处理改进跨语言联合类型支持。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 1.1.0 版本正式发布。本版本包含来自 4 位贡献者的 <a href="https://github.com/apache/fory/compare/v1.0.0...v1.1.0" target="_blank" rel="noopener noreferrer" class="">18 个 PR</a>，并继续改进各支持语言的跨语言运行时。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="发布亮点">发布亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_1_0_release#%E5%8F%91%E5%B8%83%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="发布亮点的直接链接" title="发布亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -640,7 +640,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_1_0_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_1_0_0_release</guid>
             <pubDate>Thu, 21 May 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 1.0.0 版本正式发布。这是一个里程碑版本，包含来自 11 位贡献者的 84 个 PR，并让跨语言运行时成为各支持语言的默认路径。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 1.0.0 将统一的跨语言运行时设为默认模式，扩展类型与编解码器支持，并改进各语言的部署能力。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 1.0.0 版本正式发布。这是一个里程碑版本，包含来自 11 位贡献者的 <a href="https://github.com/apache/fory/compare/v0.17.0...v1.0.0" target="_blank" rel="noopener noreferrer" class="">84 个 PR</a>，并让跨语言运行时成为各支持语言的默认路径。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="发布亮点">发布亮点<a href="https://fory.apache.org/zh-CN/blog/fory_1_0_0_release#%E5%8F%91%E5%B8%83%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="发布亮点的直接链接" title="发布亮点的直接链接" translate="no">​</a></h2>
 <p>Apache Fory 1.0.0 标准化了跨语言序列化模型。统一的 xlang 类型系统现在成为各语言默认模式，并带来兼容模式读取、简化的字段排序，以及更好的 list/array 兼容性。本版本还为 xlang 序列化增加了 decimal 和 bfloat16 支持。</p>
@@ -772,7 +772,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_0_17_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_17_0_release</guid>
             <pubDate>Sun, 19 Apr 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 0.17.0 版本正式发布。这是一个重要版本，包含来自 19 位贡献者的 71 个 PR。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 0.17.0 正式发布 JavaScript、Node.js 与 Dart 序列化支持，并提供适合 TypeScript 的 IDL 代码生成和跨语言兼容性。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 0.17.0 版本正式发布。这是一个重要版本，包含来自 19 位贡献者的 <a href="https://github.com/apache/fory/compare/v0.16.0...v0.17.0" target="_blank" rel="noopener noreferrer" class="">71 个 PR</a>。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="javascriptnodejs-serialization首次发布">JavaScript/NodeJS Serialization：首次发布<a href="https://fory.apache.org/zh-CN/blog/fory_0_17_0_release#javascriptnodejs-serialization%E9%A6%96%E6%AC%A1%E5%8F%91%E5%B8%83" class="hash-link" aria-label="JavaScript/NodeJS Serialization：首次发布的直接链接" title="JavaScript/NodeJS Serialization：首次发布的直接链接" translate="no">​</a></h2>
 <p>Apache Fory 0.17.0 首次正式提供 JavaScript/NodeJS 文档、基准测试覆盖，以及对 TypeScript 友好的 IDL 代码生成支持。JavaScript 运行时面向现代 Node.js 服务和 TypeScript 代码库构建，同时保留了 Fory 的跨语言对象模型、Schema 驱动 API，以及可选的引用跟踪能力。</p>
@@ -940,7 +940,7 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_0_16_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_16_0_release</guid>
             <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 0.16.0 版本正式发布。这是一个重要版本，包含来自 17 位贡献者的 91 个 PR。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 0.16.0 首次发布 C# 与 Swift 序列化，扩展跨语言支持，并改进流式处理和编译器。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 0.16.0 版本正式发布。这是一个重要版本，包含来自 17 位贡献者的 <a href="https://github.com/apache/fory/compare/v0.14.1...v0.15.0" target="_blank" rel="noopener noreferrer" class="">91 个 PR</a>。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="发布亮点">发布亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_16_0_release#%E5%8F%91%E5%B8%83%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="发布亮点的直接链接" title="发布亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -1134,7 +1134,7 @@
             <link>https://fory.apache.org/zh-CN/blog/extend_protobuf_flatbuffers_with_shared_circular_refs</link>
             <guid>https://fory.apache.org/zh-CN/blog/extend_protobuf_flatbuffers_with_shared_circular_refs</guid>
             <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR：如果你已经有 .proto 或 .fbs Schema，并且希望支持共享/循环引用，那么使用 Fory 编译器时你可以保留这些 Schema，只需添加一小组 Fory 选项，再通过 foryc 生成 Fory 支持语言中的原生习惯模型，随后即可序列化对象图，无需手工通过 *_id 重建关联，也无需把整份 Schema 重写为 Fory Schema。]]></description>
+            <description><![CDATA[通过 Fory 编译器选项，可为现有 Protobuf 和 FlatBuffers Schema 增加共享与循环引用语义，无需手工重建 ID 关联。]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>：如果你已经有 <code>.proto</code> 或 <code>.fbs</code> Schema，并且希望支持共享/循环引用，那么使用 Fory 编译器时你可以保留这些 Schema，只需添加一小组 Fory 选项，再通过 <code>foryc</code> 生成 Fory 支持语言中的原生习惯模型，随后即可序列化对象图，无需手工通过 <code>*_id</code> 重建关联，也无需把整份 Schema 重写为 Fory Schema。</p>
 <ul>
 <li class="">GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -1266,7 +1266,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_schema_idl_for_object_graph</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_schema_idl_for_object_graph</guid>
             <pubDate>Mon, 09 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR：Apache Fory Schema IDL 是首个面向对象图序列化的跨语言 IDL。你只需在 .fdl 文件中定义一次类型，编译器就能为 Java、Python、Go、Rust、C++、C#、Swift 等语言生成符合各语言习惯的领域对象，并在 Schema 模型中原生支持共享引用、循环、多态、Schema 演进和可选类型。]]></description>
+            <description><![CDATA[Fory Schema IDL 可生成符合各语言习惯的跨语言模型，并原生支持共享引用、循环、多态和 Schema 演进。]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>：Apache Fory Schema IDL 是首个面向<strong>对象图序列化</strong>的跨语言 IDL。你只需在 <code>.fdl</code> 文件中定义一次类型，编译器就能为 <strong>Java、Python、Go、Rust、C++、C#、Swift 等语言</strong>生成符合各语言习惯的领域对象，并在 Schema 模型中原生支持共享引用、循环、多态、Schema 演进和可选类型。</p>
 <ul>
 <li class="">GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -1483,7 +1483,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_cpp_blazing_fast_serialization_framework</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_cpp_blazing_fast_serialization_framework</guid>
             <pubDate>Thu, 19 Feb 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR：Apache Fory C++ 是一个极致性能的跨语言序列化框架，在 二进制性能 上表现出色，同时支持 多态类型、循环引用、Schema 演进，并可与 Java、Python、Go、Rust、JavaScript 无缝互操作。全程基于现代 C++17，零运行时反射开销。]]></description>
+            <description><![CDATA[Apache Fory C++ 提供类型安全的编译期序列化，并支持跨语言互操作、多态、引用跟踪和 Schema 演进。]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>：Apache Fory C++ 是一个极致性能的跨语言序列化框架，在 <strong>二进制性能</strong> 上表现出色，同时支持 <strong>多态类型、循环引用、Schema 演进</strong>，并可与 Java、Python、Go、Rust、JavaScript 无缝互操作。全程基于现代 C++17，零运行时反射开销。</p>
 <ul>
 <li class="">🐙 GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -1629,7 +1629,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_0_15_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_15_0_release</guid>
             <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 0.15.0 版本正式发布。这是一个重要版本，包含来自 17 位贡献者的 144 个 PR。请访问 Install 页面 获取各平台安装方式。]]></description>
+            <description><![CDATA[Fory 0.15.0 首次发布 Go 序列化和 Fory Schema IDL 编译器，并推进各运行时的协议对齐。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 0.15.0 版本正式发布。这是一个重要版本，包含来自 17 位贡献者的 <a href="https://github.com/apache/fory/compare/v0.14.1...v0.15.0" target="_blank" rel="noopener noreferrer" class="">144 个 PR</a>。请访问 <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install 页面</a> 获取各平台安装方式。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="发布亮点">发布亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_15_0_release#%E5%8F%91%E5%B8%83%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="发布亮点的直接链接" title="发布亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -1870,7 +1870,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_0_14_1_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_14_1_release</guid>
             <pubDate>Fri, 26 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 0.14.1 版本发布。 这是一个版本更新，包含来自 5 位贡献者的6 PR。 请参阅Install页面了解如何获取适用于你平台的库。]]></description>
+            <description><![CDATA[Fory 0.14.1 新增可配置的 Rust Default 生成方式，开放 Java 序列化器创建 API，并修复 Java 与 Rust 兼容性问题。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 0.14.1 版本发布。 这是一个版本更新，包含来自 5 位贡献者的<a href="https://github.com/apache/fory/compare/v0.14.0...v0.14.1" target="_blank" rel="noopener noreferrer" class="">6 PR</a>。 请参阅<a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a>页面了解如何获取适用于你平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_14_1_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -1898,7 +1898,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_0_14_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_14_0_release</guid>
             <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴地宣布 0.14.0 版本发布。这是一个主要版本，包含来自 11 位不同贡献者的 85 个 PR。请参阅安装页面了解如何获取适用于您平台的库。]]></description>
+            <description><![CDATA[Fory 0.14.0 首次发布 C++ 运行时，引入统一的 Row Format 类型系统，并支持 JDK 25 和 Go 1.23。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴地宣布 0.14.0 版本发布。这是一个主要版本，包含来自 11 位不同贡献者的 <a href="https://github.com/apache/fory/compare/v0.13.2...v0.14.0" target="_blank" rel="noopener noreferrer" class="">85 个 PR</a>。请参阅<a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">安装页面</a>了解如何获取适用于您平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_14_0_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -2055,7 +2055,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_0_13_2_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_13_2_release</guid>
             <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 0.13.2 版本发布。 这是一个版本更新，包含来自 4 位贡献者的25 PR。 请参阅Install页面了解如何获取适用于你平台的库。]]></description>
+            <description><![CDATA[Fory 0.13.2 优化 Rust 读写上下文性能，增加新的 Rust 类型与诊断能力，并更新 Python 和 Kotlin 支持。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 0.13.2 版本发布。 这是一个版本更新，包含来自 4 位贡献者的<a href="https://github.com/apache/fory/compare/v0.13.1...v0.13.2" target="_blank" rel="noopener noreferrer" class="">25 PR</a>。 请参阅<a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a>页面了解如何获取适用于你平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_13_2_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -2113,7 +2113,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_0_13_1_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_13_1_release</guid>
             <pubDate>Thu, 06 Nov 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴地宣布 0.13.1 版本发布。此版本包含来自 11 位不同贡献者的 28 个 PR。请参阅安装页面了解如何获取适用于您平台的库。]]></description>
+            <description><![CDATA[Fory 0.13.1 为 Rust 枚举变体和元组增加 Schema 演进支持，可处理默认值、字段跳过和变体变化。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴地宣布 0.13.1 版本发布。此版本包含来自 11 位不同贡献者的 <a href="https://github.com/apache/fory/compare/v0.13.0...v0.13.1" target="_blank" rel="noopener noreferrer" class="">28 个 PR</a>。请参阅<a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">安装页面</a>了解如何获取适用于您平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="-亮点">✨ 亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_13_1_release#-%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="✨ 亮点的直接链接" title="✨ 亮点的直接链接" translate="no">​</a></h2>
 <ul>
@@ -2211,7 +2211,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_rust_versatile_serialization_framework</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_rust_versatile_serialization_framework</guid>
             <pubDate>Wed, 29 Oct 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR：Apache Fory Rust 是一个速度极快的跨语言序列化框架，在提供超高序列化性能的同时，支持共享与循环引用、trait 对象、Schema 演进、行格式访问和外部类型。它以 Rust 的安全保证和编译期代码生成为基础，专为不愿在性能与开发体验之间妥协的开发者而设计。]]></description>
+            <description><![CDATA[Apache Fory Rust 将跨语言序列化与共享引用、trait 对象、Schema 演进、外部类型和编译期代码生成结合起来。]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>：Apache Fory Rust 是一个速度极快的跨语言序列化框架，在提供<strong>超高序列化性能</strong>的同时，支持<strong>共享与循环引用、trait 对象、Schema 演进、行格式访问和外部类型</strong>。它以 Rust 的安全保证和编译期代码生成为基础，专为不愿在性能与开发体验之间妥协的开发者而设计。</p>
 <ul>
 <li class="">🐙 GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -2422,7 +2422,7 @@ Protobuf 会保留 unknown fields；Fory 不会保留 protobuf unknown-field 载
             <link>https://fory.apache.org/zh-CN/blog/fory_0_13_0_release</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_0_13_0_release</guid>
             <pubDate>Mon, 27 Oct 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Apache Fory 团队很高兴宣布 0.13.0 版本发布。这是一个重要版本，包含来自 19 位贡献者的217 PR。请参阅Install页面了解如何获取适用于你平台的库。]]></description>
+            <description><![CDATA[Fory 0.13.0 首次发布 Rust 运行时，为 Python 提供 pickle 与 cloudpickle 替代方案，并增强跨语言运行时。]]></description>
             <content:encoded><![CDATA[<p>Apache Fory 团队很高兴宣布 0.13.0 版本发布。这是一个重要版本，包含来自 19 位贡献者的<a href="https://github.com/apache/fory/compare/v0.12.3...v0.13.0" target="_blank" rel="noopener noreferrer" class="">217 PR</a>。请参阅<a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a>页面了解如何获取适用于你平台的库。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="亮点">亮点<a href="https://fory.apache.org/zh-CN/blog/fory_0_13_0_release#%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="亮点的直接链接" title="亮点的直接链接" translate="no">​</a></h2>
 <ul>

@@ -13,7 +13,7 @@
             <link>https://fory.apache.org/blog/fory_json_fastest_java_json_framework</link>
             <guid>https://fory.apache.org/blog/fory_json_fastest_java_json_framework</guid>
             <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR up to 10.91× the throughput of Jackson and 10.89× the throughput of Gson with 1000 KB payloads, and up to 5.55× the throughput of Jackson and 10.00× the throughput of Gson in the jvm-serializers MediaContent benchmark.]]></description>
+            <description><![CDATA[Apache Fory JSON maps Java objects to and from standard JSON text and UTF-8 bytes, combining high performance with flexible object mapping and controlled polymorphism.]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>: Apache Fory JSON is a high-performance serialization framework that maps Java objects to and from standard JSON text and UTF-8 bytes. It supports common Java models and runs on JDK 8+, Android, and GraalVM Native Image. Fory JSON is the fastest Java JSON serialization framework in the published benchmarks: up to <strong>10.91× the throughput of Jackson and 10.89× the throughput of Gson</strong> with 1000 KB payloads, and up to <strong>5.55× the throughput of Jackson and 10.00× the throughput of Gson</strong> in the <code>jvm-serializers</code> MediaContent benchmark.</p>
 <ul>
 <li class="">GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">apache/fory</a></li>
@@ -113,7 +113,7 @@
             <link>https://fory.apache.org/blog/fory_1_6_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_6_0_release</guid>
             <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.6.0 release. This release includes 23 PRs. See the Getting Started page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.6.0 enhances Fory JSON, adds C++ gRPC code generation, and aligns and expands Rust Row Format support.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.6.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.5.0...v1.6.0" target="_blank" rel="noopener noreferrer" class="">23 PRs</a>. See the <a href="https://fory.apache.org/docs/start/" target="_blank" rel="noopener noreferrer" class="">Getting Started</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_6_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -184,7 +184,7 @@
             <link>https://fory.apache.org/blog/fory_1_5_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_5_0_release</guid>
             <pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.5.0 release. This release includes 25 PRs. See the Install page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.5.0 accelerates Fory JSON, adds external-type serialization to four runtimes, and brings class inheritance to C# and Dart.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.5.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.4.0...v1.5.0" target="_blank" rel="noopener noreferrer" class="">25 PRs</a>. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_5_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -264,7 +264,7 @@
             <link>https://fory.apache.org/blog/fory_1_4_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_4_0_release</guid>
             <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.4.0 release. This release includes 65 PRs from 9 distinct contributors. See the Install page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.4.0 introduces Fory JSON for Java and improves performance, safety, compatibility, Python support, and stream deserialization.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.4.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.3.0...v1.4.0" target="_blank" rel="noopener noreferrer" class="">65 PRs</a> from 9 distinct contributors. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_4_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -386,7 +386,7 @@
             <link>https://fory.apache.org/blog/fory_1_3_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_3_0_release</guid>
             <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.3.0 release. This release includes 8 PRs from 3 distinct contributors and continues to improve the cross-language runtime across supported languages. See the Install page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.3.0 adds AsyncIO-based Python gRPC generation and Dart gRPC code generation, with improved compiler documentation and runtime safety.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.3.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.2.0...v1.3.0" target="_blank" rel="noopener noreferrer" class="">8 PRs</a> from 3 distinct contributors and continues to improve the cross-language runtime across supported languages. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_3_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -479,7 +479,7 @@ bidirectional streaming RPC shapes following grpc-dart conventions.</p>
             <link>https://fory.apache.org/blog/fory_1_2_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_2_0_release</guid>
             <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.2.0 release. This release includes 38 PRs from 9 distinct contributors and continues to improve the cross-language runtime across supported languages. See the Install page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.2.0 expands generated gRPC support, improves compatible reads, removes sun.misc.Unsafe usage on JDK 25+, and strengthens runtime safety.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.2.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.1.0...v1.2.0" target="_blank" rel="noopener noreferrer" class="">38 PRs</a> from 9 distinct contributors and continues to improve the cross-language runtime across supported languages. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_2_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -641,7 +641,7 @@ they use: grpc-java for Java and Scala, <code>grpcio</code> for Python, grpc-go 
             <link>https://fory.apache.org/blog/fory_1_1_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_1_0_release</guid>
             <pubDate>Sun, 31 May 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.1.0 release. This release includes 18 PRs from 4 distinct contributors and continues to improve the cross-language runtime across supported languages. See the Install page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.1.0 adds generated Java and Python gRPC support and improves cross-language unions with unknown-case handling.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.1.0 release. This release includes <a href="https://github.com/apache/fory/compare/v1.0.0...v1.1.0" target="_blank" rel="noopener noreferrer" class="">18 PRs</a> from 4 distinct contributors and continues to improve the cross-language runtime across supported languages. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_1_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -700,7 +700,7 @@ they use: grpc-java for Java and Scala, <code>grpcio</code> for Python, grpc-go 
             <link>https://fory.apache.org/blog/fory_1_0_0_release</link>
             <guid>https://fory.apache.org/blog/fory_1_0_0_release</guid>
             <pubDate>Thu, 21 May 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 1.0.0 release. This milestone release includes 84 PRs from 11 distinct contributors and turns the cross-language runtime into the default path across supported languages. See the Install page to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 1.0.0 makes the unified cross-language runtime the default, expands type and codec support, and improves deployment across languages.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 1.0.0 release. This milestone release includes <a href="https://github.com/apache/fory/compare/v0.17.0...v1.0.0" target="_blank" rel="noopener noreferrer" class="">84 PRs</a> from 11 distinct contributors and turns the cross-language runtime into the default path across supported languages. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> page to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_1_0_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <p>Apache Fory 1.0.0 standardizes the cross-language serialization model. The unified xlang type system is now the default mode across languages, with compatible-mode reads, simplified field ordering, and better list/array compatibility. The release also adds decimal and bfloat16 support for xlang serialization.</p>
@@ -832,7 +832,7 @@ they use: grpc-java for Java and Scala, <code>grpcio</code> for Python, grpc-go 
             <link>https://fory.apache.org/blog/fory_0_17_0_release</link>
             <guid>https://fory.apache.org/blog/fory_0_17_0_release</guid>
             <pubDate>Sun, 19 Apr 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.17.0 release. This is a major release that includes 71 PR from 19 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.17.0 delivers official JavaScript, Node.js, and Dart serialization support, with TypeScript-friendly IDL generation and cross-language compatibility.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.17.0 release. This is a major release that includes <a href="https://github.com/apache/fory/compare/v0.16.0...v0.17.0" target="_blank" rel="noopener noreferrer" class="">71 PR</a> from 19 distinct contributors. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="javascriptnodejs-serialization-first-release">JavaScript/NodeJS Serialization: First Release<a href="https://fory.apache.org/blog/fory_0_17_0_release#javascriptnodejs-serialization-first-release" class="hash-link" aria-label="Direct link to JavaScript/NodeJS Serialization: First Release" title="Direct link to JavaScript/NodeJS Serialization: First Release" translate="no">​</a></h2>
 <p>Apache Fory 0.17.0 marks the first release with official JavaScript/NodeJS
@@ -1010,7 +1010,7 @@ Protocol Buffers across representative data structures.</p>
             <link>https://fory.apache.org/blog/fory_0_16_0_release</link>
             <guid>https://fory.apache.org/blog/fory_0_16_0_release</guid>
             <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.16.0 release. This is a major release that includes 91 PR from 17 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.16.0 introduces C# and Swift serialization, expands cross-language support, and adds streaming and compiler improvements.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.16.0 release. This is a major release that includes <a href="https://github.com/apache/fory/compare/v0.15.0...v0.16.0" target="_blank" rel="noopener noreferrer" class="">91 PR</a> from 17 distinct contributors. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_16_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -1211,7 +1211,7 @@ Protobuf and Msgpack across representative data structures.</p>
             <link>https://fory.apache.org/blog/extend_protobuf_flatbuffers_with_shared_circular_refs</link>
             <guid>https://fory.apache.org/blog/extend_protobuf_flatbuffers_with_shared_circular_refs</guid>
             <pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR: If you already have .proto or .fbs schemas and you want shared/circular reference support, with the Fory compiler you can keep those schemas, add a small set of Fory options, then foryc generates idiomatic native models across Fory-supported languages, so you can serialize object graphs without manual *_id link reconstruction or rewriting your entire schema into Fory Schema.]]></description>
+            <description><![CDATA[Fory compiler options add shared and circular reference semantics to existing Protobuf and FlatBuffers schemas without manual ID reconstruction.]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>: If you already have <code>.proto</code> or <code>.fbs</code> schemas and you want shared/circular reference support, with the Fory compiler you can keep those schemas, add a small set of Fory options, then <code>foryc</code> generates idiomatic native models across Fory-supported languages, so you can serialize object graphs without manual <code>*_id</code> link reconstruction or rewriting your entire schema into Fory Schema.</p>
 <ul>
 <li class="">GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -1343,7 +1343,7 @@ Use <code>ref</code>/<code>weak_ref</code> for true shared/cyclic parts of the g
             <link>https://fory.apache.org/blog/fory_schema_idl_for_object_graph</link>
             <guid>https://fory.apache.org/blog/fory_schema_idl_for_object_graph</guid>
             <pubDate>Mon, 09 Mar 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR: Apache Fory Schema IDL is the first cross-language serialization IDL for object graphs serialization. Define your types once in a .fdl file, and the compiler generates idiomatic domain objects for Java, Python, Go, Rust, C++, C#, Swift, and more — with shared refs, cycles, polymorphism, schema evolution, and optional types built into the schema model.]]></description>
+            <description><![CDATA[Fory Schema IDL generates idiomatic cross-language models with native support for shared references, cycles, polymorphism, and schema evolution.]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>: Apache Fory Schema IDL is the first cross-language serialization IDL for <strong>object graphs serialization</strong>. Define your types once in a <code>.fdl</code> file, and the compiler generates idiomatic domain objects for <strong>Java, Python, Go, Rust, C++, C#, Swift, and more</strong> — with shared refs, cycles, polymorphism, schema evolution, and optional types built into the schema model.</p>
 <ul>
 <li class="">GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -1560,7 +1560,7 @@ Use <code>ref</code>/<code>weak_ref</code> for true shared/cyclic parts of the g
             <link>https://fory.apache.org/blog/fory_cpp_blazing_fast_serialization_framework</link>
             <guid>https://fory.apache.org/blog/fory_cpp_blazing_fast_serialization_framework</guid>
             <pubDate>Thu, 19 Feb 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR: Apache Fory C++ is a blazing-fast, cross-language serialization framework delivering exceptional binary performance with support for polymorphic types, circular references, schema evolution, and seamless interoperability with Java, Python, Go, Rust, and JavaScript — all via modern C++17 with zero runtime reflection overhead.]]></description>
+            <description><![CDATA[Apache Fory C++ provides type-safe, compile-time serialization with cross-language interoperability, polymorphism, references, and schema evolution.]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>: Apache Fory C++ is a blazing-fast, cross-language serialization framework delivering <strong>exceptional binary performance</strong> with support for <strong>polymorphic types, circular references, schema evolution, and seamless interoperability</strong> with Java, Python, Go, Rust, and JavaScript — all via modern C++17 with zero runtime reflection overhead.</p>
 <ul>
 <li class="">🐙 GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -1706,7 +1706,7 @@ Use <code>ref</code>/<code>weak_ref</code> for true shared/cyclic parts of the g
             <link>https://fory.apache.org/blog/fory_0_15_0_release</link>
             <guid>https://fory.apache.org/blog/fory_0_15_0_release</guid>
             <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.15.0 release. This is a major release that includes 144 PR from 17 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.15.0 delivers the first Go serialization release and Fory Schema IDL compiler while advancing protocol alignment across runtimes.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.15.0 release. This is a major release that includes <a href="https://github.com/apache/fory/compare/v0.14.1...v0.15.0" target="_blank" rel="noopener noreferrer" class="">144 PR</a> from 17 distinct contributors. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_15_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -1952,7 +1952,7 @@ schema above, generated code looks like:</p>
             <link>https://fory.apache.org/blog/fory_0_14_1_release</link>
             <guid>https://fory.apache.org/blog/fory_0_14_1_release</guid>
             <pubDate>Fri, 26 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.14.1 release. This is a release that includes 6 PR from 5 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.14.1 adds configurable Rust Default generation, exposes Java serializer creation, and fixes Java and Rust compatibility issues.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.14.1 release. This is a release that includes <a href="https://github.com/apache/fory/compare/v0.14.0...v0.14.1" target="_blank" rel="noopener noreferrer" class="">6 PR</a> from 5 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_14_1_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -1980,7 +1980,7 @@ schema above, generated code looks like:</p>
             <link>https://fory.apache.org/blog/fory_0_14_0_release</link>
             <guid>https://fory.apache.org/blog/fory_0_14_0_release</guid>
             <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.14.0 release. This is a major release that includes 85 PR from 11 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.14.0 delivers the first C++ release, a unified Row Format type system, JDK 25 and Go 1.23 support, and broad runtime optimizations.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.14.0 release. This is a major release that includes <a href="https://github.com/apache/fory/compare/v0.13.2...v0.14.0" target="_blank" rel="noopener noreferrer" class="">85 PR</a> from 11 distinct contributors. See the <a href="https://fory.apache.org/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_14_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -2137,7 +2137,7 @@ schema above, generated code looks like:</p>
             <link>https://fory.apache.org/blog/fory_0_13_2_release</link>
             <guid>https://fory.apache.org/blog/fory_0_13_2_release</guid>
             <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.13.2 release. This is a release that includes 25 PR from 4 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.13.2 improves Rust read and write context performance, adds new Rust types and diagnostics, and includes Python and Kotlin updates.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.13.2 release. This is a release that includes <a href="https://github.com/apache/fory/compare/v0.13.1...v0.13.2" target="_blank" rel="noopener noreferrer" class="">25 PR</a> from 4 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_13_2_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -2195,7 +2195,7 @@ schema above, generated code looks like:</p>
             <link>https://fory.apache.org/blog/fory_0_13_1_release</link>
             <guid>https://fory.apache.org/blog/fory_0_13_1_release</guid>
             <pubDate>Thu, 06 Nov 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.13.1 release. This is a release that includes 28 PR from 11 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.13.1 adds schema evolution for Rust enum variants and tuples, including defaults, skipped fields, and variant changes.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.13.1 release. This is a release that includes <a href="https://github.com/apache/fory/compare/v0.13.0...v0.13.1" target="_blank" rel="noopener noreferrer" class="">28 PR</a> from 11 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_13_1_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
@@ -2273,7 +2273,7 @@ schema above, generated code looks like:</p>
             <link>https://fory.apache.org/blog/fory_rust_versatile_serialization_framework</link>
             <guid>https://fory.apache.org/blog/fory_rust_versatile_serialization_framework</guid>
             <pubDate>Wed, 29 Oct 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR: Apache Fory Rust is a blazingly-fast, cross-language serialization framework that delivers ultra-fast serialization performance while supporting shared and circular references, trait objects, schema evolution, row-format access, and external types. Built with Rust's safety guarantees and compile-time code generation, it's designed for developers who refuse to compromise between performance and developer experience.]]></description>
+            <description><![CDATA[Apache Fory Rust provides cross-language serialization with shared references, trait objects, schema evolution, external types, and compile-time code generation.]]></description>
             <content:encoded><![CDATA[<p><strong>TL;DR</strong>: Apache Fory Rust is a blazingly-fast, cross-language serialization framework that delivers <strong>ultra-fast serialization performance</strong> while supporting <strong>shared and circular references, trait objects, schema evolution, row-format access, and external types</strong>. Built with Rust's safety guarantees and compile-time code generation, it's designed for developers who refuse to compromise between performance and developer experience.</p>
 <ul>
 <li class="">🐙 GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">https://github.com/apache/fory</a></li>
@@ -2484,7 +2484,7 @@ schema above, generated code looks like:</p>
             <link>https://fory.apache.org/blog/fory_0_13_0_release</link>
             <guid>https://fory.apache.org/blog/fory_0_13_0_release</guid>
             <pubDate>Mon, 27 Oct 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[The Apache Fory team is pleased to announce the 0.13.0 release. This is a major release that includes 217 PR from 19 distinct contributors. See the Install Page to learn how to get the libraries for your platform.]]></description>
+            <description><![CDATA[Fory 0.13.0 delivers the first Rust release, a Python replacement for pickle and cloudpickle, and cross-language runtime enhancements.]]></description>
             <content:encoded><![CDATA[<p>The Apache Fory team is pleased to announce the 0.13.0 release. This is a major release that includes <a href="https://github.com/apache/fory/compare/v0.12.3...v0.13.0" target="_blank" rel="noopener noreferrer" class="">217 PR</a> from 19 distinct contributors. See the <a href="https://fury.apache.org/docs/docs/start/install" target="_blank" rel="noopener noreferrer" class="">Install</a> Page to learn how to get the libraries for your platform.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://fory.apache.org/blog/fory_0_13_0_release#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
 <ul>
