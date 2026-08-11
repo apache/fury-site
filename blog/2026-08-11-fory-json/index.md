@@ -222,7 +222,7 @@ GraalVM Native Image has its own build-time integration. Mark reachable models w
 
 This gives applications one mapping model across a normal JVM, Android, and native executables without pretending those runtimes have the same code-generation capabilities.
 
-## Treat input limits as part of the API
+## Security controls for untrusted JSON
 
 A fast parser can consume bad input quickly too. Fory JSON does not derive arbitrary Java class names from a JSON document, and it always applies a fixed type disallow list. Applications can add a `JsonTypeChecker` allow-list for their own model surface.
 
