@@ -36,6 +36,8 @@ Use these terms consistently across all translated docs.
 | payload              | 载荷              |                                                                                           |
 | runtime              | 运行时            |                                                                                           |
 | codegen              | 代码生成          |                                                                                           |
+| closed-world polymorphism | 封闭多态 | Use when input selects only from a complete, declared subtype set.                         |
+| open-world polymorphism | 开放多态   | Use for class-name-based or otherwise unrestricted subtype discovery.                     |
 | cross-language       | 跨语言            |                                                                                           |
 | object graph         | 对象图            | Use for graph-shaped data models with identity, shared refs, or cycles.                   |
 | domain object        | 领域对象          | Use for generated host-language models used directly in application code.                 |
