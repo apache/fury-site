@@ -21,8 +21,6 @@ JSON is rarely the most interesting part of a Java service. It is simply everywh
 
 Fory already provides compact binary object serialization and a cross-language protocol. Fory JSON tackles a different job. It maps Java objects to ordinary JSON text and UTF-8 bytes, so the result remains readable by browsers, command-line tools, and any standards-compliant JSON implementation.
 
-There is no Fory-specific envelope and no binary metadata hidden in the document. This is standard JSON, built for Java applications that need to keep the wire format while spending less time converting it.
-
 ## Quick Start
 
 Fory JSON 1.6.0 is available from Maven Central:
