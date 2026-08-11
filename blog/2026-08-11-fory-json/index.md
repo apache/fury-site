@@ -224,7 +224,7 @@ This gives applications one mapping model across a normal JVM, Android, and nati
 
 ## Security controls for untrusted JSON
 
-A fast parser can consume bad input quickly too. Fory JSON does not derive arbitrary Java class names from a JSON document, and it always applies a fixed type disallow list. Applications can add a `JsonTypeChecker` allow-list for their own model surface.
+A fast parser still needs a strict type boundary. Fory JSON deserializes into the type declared by the application; JSON input cannot select an arbitrary Java class. Polymorphism is closed-world: a `JsonSubTypes` declaration defines the complete finite set of permitted subtypes, and input can select only a logical name from that table. Fory JSON also applies a fixed type disallow list and provides `JsonTypeChecker` for application-defined allow-lists. Together, these controls prevent untrusted JSON from materializing arbitrary classes through open-world polymorphic deserialization.
 
 Input depth defaults to 20. A separate graph-memory budget defaults to 128 MiB per root read and estimates the retained object graph created by arrays, collections, maps, records, and application objects. `JsonValidator` methods can enforce domain rules after a mapped object is complete.
 
