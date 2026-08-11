@@ -151,6 +151,8 @@ Property discovery can combine fields with JavaBean getters and setters, or swit
 
 Fory JSON provides its own annotations in `org.apache.fory.json.annotation`. They cover explicit property names and ordering, ignored directions, immutable construction, date and time formats, Base64 byte arrays, raw or complete value representations, flattened objects, dynamic members, validation, and finite subtype tables.
 
+The annotation model will feel familiar to Jackson users, covering property names and ordering, creators, formatting, polymorphism, and validation. These are independent Fory JSON APIs, not Jackson-compatible annotations.
+
 The annotations compose on an ordinary model. This event renames a fixed property, formats a date, flattens an owner, captures dynamic members, and validates the completed object after reading:
 
 ```java
