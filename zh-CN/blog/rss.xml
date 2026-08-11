@@ -13,8 +13,8 @@
             <link>https://fory.apache.org/zh-CN/blog/fory_json_fastest_java_json_framework</link>
             <guid>https://fory.apache.org/zh-CN/blog/fory_json_fastest_java_json_framework</guid>
             <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[TL;DR：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在下文展示的基准测试配置中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 Jackson 的 10.91 倍和 Gson 的 10.89 倍；在 jvm-serializers MediaContent 基准测试中，最高可达 Jackson 的 5.55 倍和 Gson 的 10.00 倍。]]></description>
-            <content:encoded><![CDATA[<p><strong>TL;DR</strong>：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在下文展示的基准测试配置中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 <strong>Jackson 的 10.91 倍和 Gson 的 10.89 倍</strong>；在 <code>jvm-serializers</code> MediaContent 基准测试中，最高可达 <strong>Jackson 的 5.55 倍和 Gson 的 10.00 倍</strong>。</p>
+            <description><![CDATA[TL;DR：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在已发布的基准测试中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 Jackson 的 10.91 倍和 Gson 的 10.89 倍；在 jvm-serializers MediaContent 基准测试中，最高可达 Jackson 的 5.55 倍和 Gson 的 10.00 倍。]]></description>
+            <content:encoded><![CDATA[<p><strong>TL;DR</strong>：Apache Fory JSON 是一款高性能序列化框架，可将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换。它支持常见 Java 模型，并可运行于 JDK 8+、Android 和 GraalVM Native Image。在已发布的基准测试中，Fory JSON 是速度最快的 Java JSON 序列化框架：处理 1000 KB 载荷时，吞吐量最高可达 <strong>Jackson 的 10.91 倍和 Gson 的 10.89 倍</strong>；在 <code>jvm-serializers</code> MediaContent 基准测试中，最高可达 <strong>Jackson 的 5.55 倍和 Gson 的 10.00 倍</strong>。</p>
 <ul>
 <li class="">GitHub：<a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">apache/fory</a></li>
 <li class="">文档：<a class="" href="https://fory.apache.org/zh-CN/docs/json/">Fory JSON</a></li>
