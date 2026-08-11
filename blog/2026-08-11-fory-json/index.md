@@ -133,7 +133,7 @@ Fory JSON leads all four rows. Its largest advantage appears on UTF-8 serializat
 
 The String and UTF-8 groups are deliberately separate. The String group excludes UTF-8 conversion. The byte group uses direct byte-array APIs where a library provides them; Gson includes its required String-to-byte and byte-to-String conversion.
 
-No benchmark can promise the same multiplier for every domain model, JDK, machine, or configuration. These results support a narrower and still notable conclusion: in both published configurations reported here, Fory JSON is the fastest Java JSON serialization framework.
+Results vary by workload, but Fory JSON is the fastest framework in both benchmark configurations shown here.
 
 ## A fast path that still understands Java
 
