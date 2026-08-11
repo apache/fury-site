@@ -15,7 +15,7 @@ tags: [fory, java, json, serialization, performance]
 
 ---
 
-## JSON is still on the hot path
+## Why JSON Performance Matters
 
 JSON is rarely the most interesting part of a Java service. It is simply everywhere: HTTP APIs, browser traffic, event envelopes, logs, configuration, and integrations with systems that do not share a binary protocol. That makes JSON processing a recurring CPU and allocation cost, often paid on every request.
 
@@ -23,7 +23,7 @@ Fory already provides compact binary object serialization and a cross-language p
 
 There is no Fory-specific envelope and no binary metadata hidden in the document. This is standard JSON, built for Java applications that need to keep the wire format while spending less time converting it.
 
-## A complete round trip
+## Quick Start
 
 Fory JSON 1.6.0 is available from Maven Central:
 
@@ -73,7 +73,7 @@ public final class JsonExample {
 
 String and byte-array APIs are both first-class. For generic roots, a `TypeRef<List<User>>` keeps the element type available on reads and declared writes. Fory JSON can also write a complete UTF-8 document to an `OutputStream` without taking ownership of the stream.
 
-## Where the speed comes from
+## How Fory JSON Achieves High Performance
 
 Four implementation choices do most of the work.
 
@@ -87,7 +87,7 @@ Four implementation choices do most of the work.
 
 The public API preserves those fast paths. A service that already needs network bytes can call `toJsonBytes` and `fromJson(byte[], type)` directly, while text-oriented code can stay on the String path. Custom codecs also stream through Fory's reader and writer instead of building an intermediate JSON tree.
 
-## The fastest Java JSON framework in these benchmarks
+## Performance Benchmarks
 
 Any useful performance claim needs a workload. We use two views here: the three-thread `java-json-benchmark` run with one 1000 KB object per invocation, followed by the single-thread `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better.
 
@@ -135,7 +135,7 @@ The String and UTF-8 groups are deliberately separate. The String group excludes
 
 Results vary by workload, but Fory JSON is the fastest framework in both benchmark configurations shown here.
 
-## A fast path that still understands Java
+## Java Object Mapping
 
 Performance would be much less useful if it required flattening every application model into hand-written transfer objects. Fory JSON maps the Java shapes developers already use:
 
@@ -147,7 +147,7 @@ Performance would be much less useful if it required flattening every applicatio
 
 Property discovery can combine fields with JavaBean getters and setters, or switch to field-only mode. A finite `JsonSubTypes` table handles declared polymorphic models without accepting arbitrary class names from input.
 
-## Annotations for real application models
+## Annotation-Based Object Mapping
 
 Fory JSON provides its own annotations in `org.apache.fory.json.annotation`. They cover explicit property names and ordering, ignored directions, immutable construction, date and time formats, Base64 byte arrays, raw or complete value representations, flattened objects, dynamic members, validation, and finite subtype tables.
 
@@ -256,7 +256,7 @@ ForyJson json =
 
 When annotations are not enough, `JsonValueCodec<T>` owns one complete JSON value and streams it through Fory's reader and writer. Child codec selections can customize collection elements, optional contents, and map keys or values without replacing the surrounding container mapping.
 
-## JDK, Android, and native executables
+## JDK, Android, and GraalVM Native Image Support
 
 The same `fory-json` artifact supports Java 8 and later. Java records require Java 17 or later.
 
@@ -274,13 +274,13 @@ Input depth defaults to 20. A separate graph-memory budget defaults to 128 MiB p
 
 Those controls do not replace HTTP body limits, authentication, authorization, timeouts, or endpoint-specific validation. They give the JSON layer clear boundaries to combine with those external controls. The [Fory JSON security guide](/docs/json/security) documents the accounting model and recommended negative tests.
 
-## Choosing the right Fory format
+## Choosing Between Fory JSON and Binary Serialization
 
 Choose Fory JSON when the wire must remain ordinary JSON: public APIs, browser clients, configuration, logs, or an integration that already speaks JSON. You get the interoperability of the format with a Java implementation designed around generated codecs and reusable state.
 
 Choose Fory's binary object serialization when both sides can use a binary protocol and the application needs features JSON does not carry, such as cross-language schema metadata, shared-reference identity, or circular object graphs. The two formats solve different problems and can live in the same service.
 
-## Start here
+## Learn More
 
 The fastest route to a useful evaluation is to replace one representative Jackson or Gson round trip, reuse a single `ForyJson` instance, and benchmark the application's real model and JDK settings. The published numbers show the available headroom; the application workload tells you how much of it matters.
 
