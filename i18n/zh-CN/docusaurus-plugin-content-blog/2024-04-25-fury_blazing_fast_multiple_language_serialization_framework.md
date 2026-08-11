@@ -1,6 +1,7 @@
 ---
 slug: fury_blazing_fast_multiple_language_serialization_framework
 title: "Apache Fury：由 JIT 与零拷贝驱动的超高速多语言序列化框架"
+description: "Apache Fury 多语言序列化架构概览，介绍 JIT 编译、零拷贝数据访问、Schema 演进和多协议设计。"
 authors: [chaokunyang]
 tags: [fury]
 ---

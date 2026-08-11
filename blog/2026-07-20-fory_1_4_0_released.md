@@ -1,6 +1,7 @@
 ---
 slug: fory_1_4_0_release
 title: Fory v1.4.0 Released
+description: "Fory 1.4.0 introduces Fory JSON for Java and improves performance, safety, compatibility, Python support, and stream deserialization."
 authors: [chaokunyang]
 tags: [fory, java, kotlin, scala, android, python, rust, cpp, go, csharp, swift, dart, compiler]
 ---

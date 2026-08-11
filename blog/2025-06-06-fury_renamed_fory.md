@@ -1,6 +1,7 @@
 ---
 slug: fury_renamed_to_fory
 title: Important Announcement - Apache Fury is Now Apache Fory
+description: "Apache Fury is renamed Apache Fory, with corresponding changes to repositories, packages, artifacts, documentation, and community channels."
 authors: [chaokunyang]
 tags: [fury]
 ---

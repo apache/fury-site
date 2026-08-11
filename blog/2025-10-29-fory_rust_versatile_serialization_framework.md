@@ -1,6 +1,7 @@
 ---
 slug: fory_rust_versatile_serialization_framework
 title: "Introducing Apache Fory™ Rust: A Versatile Serialization Framework for the Modern Age"
+description: "Apache Fory Rust provides cross-language serialization with shared references, trait objects, schema evolution, external types, and compile-time code generation."
 authors: [chaokunyang]
 tags: [fory, rust]
 ---

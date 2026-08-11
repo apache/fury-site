@@ -1,6 +1,7 @@
 ---
 slug: fory_schema_idl_for_object_graph
 title: "Apache Fory™ Schema IDL：面向对象图序列化的 IDL，支持原生类型、多态、共享引用"
+description: "Fory Schema IDL 可生成符合各语言习惯的跨语言模型，并原生支持共享引用、循环、多态和 Schema 演进。"
 authors: [chaokunyang]
 tags: [fory, idl, schema, serialization, cross-language, codegen]
 ---

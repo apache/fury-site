@@ -1,6 +1,7 @@
 ---
 slug: fury_renamed_to_fory
 title: 重要公告 - Apache Fury 现已更名为 Apache Fory
+description: "Apache Fury 正式更名为 Apache Fory，代码仓库、包名、构件、文档和社区沟通渠道随之更新。"
 authors: [chaokunyang]
 tags: [fury]
 ---

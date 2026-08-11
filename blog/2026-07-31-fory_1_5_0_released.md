@@ -1,6 +1,7 @@
 ---
 slug: fory_1_5_0_release
 title: Fory v1.5.0 Released
+description: "Fory 1.5.0 accelerates Fory JSON, adds external-type serialization to four runtimes, and brings class inheritance to C# and Dart."
 authors: [chaokunyang]
 tags: [fory, java, rust, csharp, swift, dart]
 ---

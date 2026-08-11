@@ -62,7 +62,7 @@ byte[] payload = fory.Serialize(person);
 Person decoded = fory.Deserialize<Person>(payload);
 ```
 
-## 类继承
+## 类继承 {#class-inheritance}
 
 带注解的类会将其带注解基类所声明的受支持成员纳入同一个扁平化 Schema。
 需要直接为继承层次中的每个类添加注解；`[ForyStruct]` 不会被继承。
