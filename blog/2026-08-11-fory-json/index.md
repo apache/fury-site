@@ -9,7 +9,7 @@ tags: [fory, java, json, serialization, performance]
 
 - GitHub: [apache/fory](https://github.com/apache/fory)
 - Documentation: [Fory JSON](/docs/json/)
-- Wider 1000 KB benchmark context: [java-json-benchmark PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129)
+- Wider 1000 KB benchmark context: [java-json-benchmark](https://github.com/fabienrenaud/java-json-benchmark/pull/129)
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
@@ -287,7 +287,7 @@ The fastest route to a useful evaluation is to replace one representative Jackso
 - Read the [Fory JSON overview](/docs/json/).
 - Run the [Getting Started example](/docs/json/getting-started).
 - Inspect the [complete `jvm-serializers` MediaContent benchmark](/docs/benchmarks/json/java/).
-- Review the [1000 KB benchmark and broader matrix in PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
+- Review the [1000 KB benchmark and broader matrix](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 - Join development at [apache/fory](https://github.com/apache/fory).
 
 Fory JSON keeps the format everyone already understands. The difference is how little time your Java service has to spend on it.
