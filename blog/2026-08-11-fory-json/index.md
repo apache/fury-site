@@ -91,7 +91,7 @@ The public API preserves those fast paths. A service that already needs network 
 
 Any useful performance claim needs a workload. We use two views here: the three-thread `java-json-benchmark` run with one 1000 KB object per invocation, followed by the single-thread `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better.
 
-The tables intentionally compare Fory JSON only with Jackson and Gson. For the wider large-payload matrix, exact payload setup, and the benchmark integration, see [PR #129 in `java-json-benchmark`](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
+The tables compare Fory JSON only with Jackson and Gson. For the wider large-payload matrix, exact payload setup, and the benchmark integration, see [java-json-benchmark](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 
 ### `java-json-benchmark`: 1000 KB payloads
 
