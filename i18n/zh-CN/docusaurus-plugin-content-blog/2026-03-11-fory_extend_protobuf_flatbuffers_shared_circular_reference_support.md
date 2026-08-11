@@ -1,6 +1,7 @@
 ---
 slug: extend_protobuf_flatbuffers_with_shared_circular_refs
 title: "为 Protobuf/FlatBuffers Schema IDL 增加共享/循环引用支持"
+description: "通过 Fory 编译器选项，可为现有 Protobuf 和 FlatBuffers Schema 增加共享与循环引用语义，无需手工重建 ID 关联。"
 authors: [chaokunyang]
 tags: [fory, protobuf, flatbuffers, idl, serialization, references]
 ---

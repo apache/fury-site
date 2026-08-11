@@ -1,6 +1,7 @@
 ---
 slug: fury_meta_string_37_5_percent_space_efficient_encoding_than_utf8
 title: "Meta String：Fury 序列化中比 UTF-8 节省 37.5% 空间的字符串编码"
+description: "Meta String 使用紧凑字符编码表示标识符和元数据，与 UTF-8 相比最多可节省 37.5% 的空间。"
 authors: [chaokunyang]
 tags: [fury]
 ---

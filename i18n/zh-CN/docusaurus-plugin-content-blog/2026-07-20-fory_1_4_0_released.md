@@ -1,6 +1,7 @@
 ---
 slug: fory_1_4_0_release
 title: Apache Fory 1.4.0 正式发布
+description: "Fory 1.4.0 推出面向 Java 的 Fory JSON，并改进性能、安全性、兼容性、Python 支持和流式反序列化。"
 authors: [chaokunyang]
 tags: [fory, java, kotlin, scala, android, python, rust, cpp, go, csharp, swift, dart, compiler]
 ---

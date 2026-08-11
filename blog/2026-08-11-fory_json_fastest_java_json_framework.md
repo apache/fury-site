@@ -1,6 +1,7 @@
 ---
 slug: fory_json_fastest_java_json_framework
 title: "Introducing Apache Fory™ JSON: Blazingly Fast JSON Serialization for Java"
+description: "Apache Fory JSON maps Java objects to and from standard JSON text and UTF-8 bytes, combining high performance with flexible object mapping and controlled polymorphism."
 authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---

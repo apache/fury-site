@@ -1,6 +1,7 @@
 ---
 slug: fury_blazing_fast_multiple_language_serialization_framework
 title: "Apache Fury: A blazing fast multi-language serialization framework powered by JIT and zero-copy"
+description: "An overview of Apache Fury's multi-language architecture, including JIT compilation, zero-copy data access, schema evolution, and multiple serialization protocols."
 authors: [chaokunyang]
 tags: [fury]
 ---

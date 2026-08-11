@@ -1,6 +1,7 @@
 ---
 slug: fory_cpp_blazing_fast_serialization_framework
 title: "Introducing Apache Fory™ C++: Blazing-Fast, Type-Safe Serialization for Modern C++"
+description: "Apache Fory C++ provides type-safe, compile-time serialization with cross-language interoperability, polymorphism, references, and schema evolution."
 authors: [chaokunyang]
 tags: [fory, cpp, serialization, cross-language]
 ---

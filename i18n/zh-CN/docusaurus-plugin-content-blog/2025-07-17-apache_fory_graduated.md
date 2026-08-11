@@ -1,5 +1,6 @@
 ---
 title: "Apache Fory™ 从 Apache 孵化器毕业，成为 Apache 顶级项目"
+description: "Apache Fory 从 Apache 孵化器毕业，正式成为 Apache 软件基金会顶级项目。"
 date: 2025-07-18
 slug: apache-fory-graduated
 tags: [announcement, serialization, asf]

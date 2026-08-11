@@ -1,5 +1,6 @@
 ---
 title: "Apache Fory™ Graduates to Top-Level Apache Project"
+description: "Apache Fory graduates from the Apache Incubator to become an Apache Software Foundation Top-Level Project."
 date: 2025-07-18
 slug: apache-fory-graduated
 tags: [announcement, serialization, asf]

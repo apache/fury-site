@@ -1,6 +1,7 @@
 ---
 slug: extend_protobuf_flatbuffers_with_shared_circular_refs
 title: "Extend Protobuf/FlatBuffers Schema IDL with Shared/Circular Reference Support"
+description: "Fory compiler options add shared and circular reference semantics to existing Protobuf and FlatBuffers schemas without manual ID reconstruction."
 authors: [chaokunyang]
 tags: [fory, protobuf, flatbuffers, idl, serialization, references]
 ---

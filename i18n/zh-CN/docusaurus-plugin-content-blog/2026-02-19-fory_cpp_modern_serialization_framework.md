@@ -1,6 +1,7 @@
 ---
 slug: fory_cpp_blazing_fast_serialization_framework
 title: "重磅发布：Apache Fory™ C++，面向现代 C++ 的超高速、类型安全序列化框架"
+description: "Apache Fory C++ 提供类型安全的编译期序列化，并支持跨语言互操作、多态、引用跟踪和 Schema 演进。"
 authors: [chaokunyang]
 tags: [fory, cpp, serialization, cross-language]
 ---

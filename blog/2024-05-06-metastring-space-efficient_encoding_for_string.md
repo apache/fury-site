@@ -1,6 +1,7 @@
 ---
 slug: fury_meta_string_37_5_percent_space_efficient_encoding_than_utf8
 title: "Meta String: A 37.5% space efficient string encoding than UTF-8 in Fury serialization"
+description: "Meta String uses compact character encodings for identifiers and metadata, reducing space by up to 37.5% compared with UTF-8."
 authors: [chaokunyang]
 tags: [fury]
 ---

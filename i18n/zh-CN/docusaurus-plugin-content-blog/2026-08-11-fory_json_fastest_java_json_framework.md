@@ -1,6 +1,7 @@
 ---
 slug: fory_json_fastest_java_json_framework
 title: "Apache Fory™ JSON：面向 Java 的极速 JSON 序列化框架"
+description: "Apache Fory JSON 以高性能将 Java 对象与标准 JSON 文本或 UTF-8 字节相互转换，并提供灵活的对象映射与受控多态。"
 authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---

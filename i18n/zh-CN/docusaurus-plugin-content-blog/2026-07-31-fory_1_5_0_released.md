@@ -1,6 +1,7 @@
 ---
 slug: fory_1_5_0_release
 title: Apache Fory 1.5.0 正式发布
+description: "Fory 1.5.0 加速 Fory JSON，为四种运行时增加外部类型序列化，并为 C# 和 Dart 增加类继承支持。"
 authors: [chaokunyang]
 tags: [fory, java, rust, csharp, swift, dart]
 ---

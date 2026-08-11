@@ -1,6 +1,7 @@
 ---
 slug: fory_1_6_0_release
 title: Fory v1.6.0 Released
+description: "Fory 1.6.0 enhances Fory JSON, adds C++ gRPC code generation, and aligns and expands Rust Row Format support."
 authors: [chaokunyang]
 tags: [fory, java, cpp, rust, csharp, swift, dart]
 ---

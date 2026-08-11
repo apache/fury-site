@@ -1,6 +1,7 @@
 ---
 slug: fory_1_6_0_release
 title: Apache Fory 1.6.0 正式发布
+description: "Fory 1.6.0 增强 Fory JSON，新增 C++ gRPC 代码生成，并对齐和扩展 Rust Row Format 支持。"
 authors: [chaokunyang]
 tags: [fory, java, cpp, rust, csharp, swift, dart]
 ---

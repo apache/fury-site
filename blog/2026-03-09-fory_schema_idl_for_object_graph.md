@@ -1,6 +1,7 @@
 ---
 slug: fory_schema_idl_for_object_graph
 title: "Apache Fory™ Schema IDL: Serialization IDL for Object Graphs and Generated API Ergonomics"
+description: "Fory Schema IDL generates idiomatic cross-language models with native support for shared references, cycles, polymorphism, and schema evolution."
 authors: [chaokunyang]
 tags: [fory, idl, schema, serialization, cross-language, codegen]
 ---
