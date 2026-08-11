@@ -1,6 +1,6 @@
 ---
 slug: fory_json_fastest_java_json_framework
-title: "Introducing Apache Fory™ JSON: The Fastest Java JSON Framework in Our Benchmarks"
+title: "Introducing Apache Fory™ JSON: Blazingly Fast JSON Serialization for Java"
 authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---
