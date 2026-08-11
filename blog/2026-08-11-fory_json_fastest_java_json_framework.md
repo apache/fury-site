@@ -210,7 +210,7 @@ ForyJson json =
         .build();
 ```
 
-When annotations are not enough, `JsonValueCodec<T>` handles one complete JSON value and streams it through Fory's reader and writer. Child codec selections can customize collection elements, optional contents, and map keys or values without replacing the surrounding container mapping.
+When built-in mapping and annotations are not enough, `JsonValueCodec<T>` can handle one complete JSON value and stream it through Fory's reader and writer. Child codec selections can customize collection elements, optional contents, and map keys or values without replacing the surrounding container mapping. See the [custom codecs guide](/docs/json/custom-codecs) for details.
 
 ## Closed-world polymorphism with `JsonSubTypes`
 

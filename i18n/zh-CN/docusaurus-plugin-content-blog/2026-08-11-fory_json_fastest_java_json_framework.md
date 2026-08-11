@@ -210,7 +210,7 @@ ForyJson json =
         .build();
 ```
 
-当注解仍不足以满足需求时，`JsonValueCodec<T>` 可以处理一个完整 JSON 值，并通过 Fory 的读取器和写入器进行流式处理。子 Codec 配置还可以定制集合元素、Optional 内容以及 Map 的键或值，而无需替换外围容器的映射逻辑。
+当内置映射和注解仍不足以满足需求时，`JsonValueCodec<T>` 可以处理一个完整 JSON 值，并通过 Fory 的读取器和写入器进行流式处理。子 Codec 配置还可以定制集合元素、Optional 内容以及 Map 的键或值，而无需替换外围容器的映射逻辑。详情请参阅 [自定义 Codec 指南](/docs/json/custom-codecs)。
 
 ## 使用 `JsonSubTypes` 实现封闭多态
 
