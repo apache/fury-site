@@ -5,7 +5,7 @@ authors: [chaokunyang]
 tags: [fory, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON is a thread-safe Java framework for reading and writing standard JSON. It combines runtime-generated codecs with direct String and UTF-8 APIs, supports ordinary Java models, and runs on JDK 8+, Android, and GraalVM Native Image. In the published benchmark configurations below, Fory JSON is the fastest Java JSON serialization framework: up to **5.55× faster than Jackson and 10.00× faster than Gson** in the checked-in single-thread benchmark, and up to **10.91× faster than Jackson and 10.89× faster than Gson** with 1,000 KB payloads.
+**TL;DR**: Apache Fory JSON is a high-performance Java framework for mapping application objects to standard JSON text and UTF-8 bytes. It supports ordinary Java models and runs on JDK 8+, Android, and GraalVM Native Image. In the published benchmark configurations below, Fory JSON is the fastest Java JSON serialization framework: up to **10.91× faster than Jackson and 10.89× faster than Gson** with 1,000 KB payloads, and up to **5.55× faster than Jackson and 10.00× faster than Gson** in the `jvm-serializers` MediaContent benchmark.
 
 - GitHub: [apache/fory](https://github.com/apache/fory)
 - Documentation: [Fory JSON](/docs/json/)
@@ -75,44 +75,33 @@ String and byte-array APIs are both first-class. For generic roots, a `TypeRef<L
 
 ## Where the speed comes from
 
-Fory JSON prepares a codec for each Java type it encounters. Runtime code generation and asynchronous compilation are enabled by default on a standard JDK, while an interpreted path remains available for restricted environments and diagnostics. Generated codecs specialize the object-mapping work for the target class instead of rediscovering the same property model on every call.
+Four implementation choices do most of the work.
 
-The public API also avoids making applications bounce through unnecessary representations. A service that already needs network bytes can call `toJsonBytes` and `fromJson(byte[], type)` directly. Applications working with text can stay on the String path. Custom codecs read and write through Fory's concrete JSON reader and writer rather than building an intermediate JSON tree.
+**Minimal temporary allocation.** A `ForyJson` instance reuses prepared type metadata, execution state, and retained writer buffers. For most basic scalar values, the hot serialization path is effectively zero-allocation beyond the requested output: Fory writes the value directly into its output buffer instead of first converting it into a Java `String`. Returning a `String` or `byte[]` still creates that result, and buffer growth or a cold fallback can allocate.
 
-Reuse matters too. A built `ForyJson` instance keeps prepared type metadata and a fixed set of reusable execution states. Multiple threads can share it, while retained writer buffers and cached input field names have explicit limits.
+**Highly optimized primitive writes.** Integers and longs use direct digit encoders, while floating-point values use direct formatting paths where the JDK provides them. Booleans, numbers, and quoted strings go straight to the active String or UTF-8 writer. There is no per-value `String.valueOf(...)` round trip on the hot path.
 
-These choices are fairly unglamorous. That is a compliment. Fast JSON usually comes from removing repeated work in ordinary paths, not from changing what JSON means.
+**Bulk memory operations.** Common Latin-1 and ASCII text is scanned and copied in 8-byte or 16-byte chunks. Generated writers can also use packed property prefixes and object framing, reducing per-character branches and repeated writes.
+
+**Runtime code generation.** Fory JSON prepares a codec for each Java type it encounters. On a standard JDK, code generation and asynchronous compilation are enabled by default. Generated codecs specialize field access, property names, framing, and primitive operations for the target class instead of rediscovering the same property model on every call. An interpreted path remains available for restricted environments and diagnostics.
+
+The public API preserves those fast paths. A service that already needs network bytes can call `toJsonBytes` and `fromJson(byte[], type)` directly, while text-oriented code can stay on the String path. Custom codecs also stream through Fory's reader and writer instead of building an intermediate JSON tree.
 
 ## The fastest Java JSON framework in these benchmarks
 
-Any useful performance claim needs a workload. We use two views here: Apache Fory's checked-in single-thread benchmark and a three-thread benchmark that processes one 1,000 KB object per invocation. Both report throughput in operations per second, so higher is better.
+Any useful performance claim needs a workload. We use two views here: the three-thread `java-json-benchmark` run with one 1,000 KB object per invocation, followed by the single-thread `jvm-serializers` MediaContent benchmark. Both report throughput in operations per second, so higher is better.
 
 The tables intentionally compare Fory JSON only with Jackson and Gson. For the wider large-payload matrix, exact payload setup, and the benchmark integration, see [PR #129 in `java-json-benchmark`](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 
-### String and UTF-8 byte APIs
-
-The checked-in Apache Fory benchmark ran on an Apple M4 Pro with JDK 26.0.1. It used one JMH fork and one thread, with three 2-second warmup iterations followed by five 2-second measurement iterations.
-
-![Java JSON String benchmark throughput](../docs/benchmarks/json/java/string_throughput.png)
-
-![Java JSON UTF-8 bytes benchmark throughput](../docs/benchmarks/json/java/utf8_bytes_throughput.png)
-
-| Representation | Operation   | Fory JSON ops/s | Jackson ops/s | Gson ops/s | vs. Jackson | vs. Gson |
-| -------------- | ----------- | --------------: | ------------: | ---------: | ----------: | -------: |
-| String         | Serialize   |       7,387,465 |     2,049,368 |  1,084,042 |       3.60× |    6.81× |
-| String         | Deserialize |       2,897,955 |     1,074,885 |    902,772 |       2.70× |    3.21× |
-| UTF-8 bytes    | Serialize   |      10,375,498 |     1,868,614 |  1,037,211 |       5.55× |   10.00× |
-| UTF-8 bytes    | Deserialize |       3,077,158 |     1,268,397 |    933,079 |       2.43× |    3.30× |
-
-Fory JSON leads all four rows. Its largest advantage appears on UTF-8 serialization, where it passes 10 million operations per second and reaches 5.55× Jackson throughput and 10.00× Gson throughput.
-
-The String and UTF-8 groups are deliberately separate. The String group excludes UTF-8 conversion. The byte group uses direct byte-array APIs where a library provides them; Gson includes its required String-to-byte and byte-to-String conversion.
-
-### 1,000 KB payloads: three concurrent workers
+### `java-json-benchmark`: 1,000 KB payloads
 
 The 1,000 KB suite asks what happens when each invocation has substantial parsing, traversal, and output work.
 
 The 1,000 KB run used Fory JSON 1.6.0, Jackson Databind 2.17.1, and Gson 2.11.0 with the databind API. JMH ran two forks and three threads. Each fork used five 3-second warmup iterations and five 3-second measurement iterations. The Users and Clients payloads each contained one 1,000 KB object per invocation.
+
+![Fory JSON, Jackson, and Gson serialization and deserialization throughput for a 1,000 KB Users payload](./users-throughput.png)
+
+![Fory JSON, Jackson, and Gson serialization and deserialization throughput for a 1,000 KB Clients payload](./clients-throughput.png)
 
 | Payload | Operation       | Fory JSON ops/s       | Jackson ops/s         | Gson ops/s            | vs. Jackson | vs. Gson |
 | ------- | --------------- | --------------------: | --------------------: | --------------------: | ----------: | -------: |
@@ -124,6 +113,27 @@ The 1,000 KB run used Fory JSON 1.6.0, Jackson Databind 2.17.1, and Gson 2.11.0 
 Fory JSON again leads every published comparison. Across these four large-payload cases, it delivers 3.54× to 10.91× Jackson throughput and 5.65× to 10.89× Gson throughput.
 
 The Clients deserialization result deserves one detail from the run report: Fory's two fork means differed by 12.9%, which widened its aggregate interval. Even with that variation, the aggregate mean remained roughly 10.9× the Jackson and Gson means. The [PR #129 benchmark report](https://github.com/fabienrenaud/java-json-benchmark/pull/129) carries the wider matrix and complete context rather than compressing all of it into this introduction.
+
+### `jvm-serializers` MediaContent benchmark
+
+The second view uses the [`jvm-serializers` MediaContent model](https://github.com/eishay/jvm-serializers/blob/master/tpc/src/data/media/MediaContent.java), which contains a media object and a list of images. This benchmark covers much smaller objects than the 1,000 KB suite and separates Java String APIs from UTF-8 byte-array APIs.
+
+The `jvm-serializers` benchmark ran on an Apple M4 Pro with JDK 26.0.1. It used one JMH fork and one thread, with three 2-second warmup iterations followed by five 2-second measurement iterations.
+
+![Java JSON String benchmark throughput](../../docs/benchmarks/json/java/string_throughput.png)
+
+![Java JSON UTF-8 bytes benchmark throughput](../../docs/benchmarks/json/java/utf8_bytes_throughput.png)
+
+| Representation | Operation   | Fory JSON ops/s | Jackson ops/s | Gson ops/s | vs. Jackson | vs. Gson |
+| -------------- | ----------- | --------------: | ------------: | ---------: | ----------: | -------: |
+| String         | Serialize   |       7,387,465 |     2,049,368 |  1,084,042 |       3.60× |    6.81× |
+| String         | Deserialize |       2,897,955 |     1,074,885 |    902,772 |       2.70× |    3.21× |
+| UTF-8 bytes    | Serialize   |      10,375,498 |     1,868,614 |  1,037,211 |       5.55× |   10.00× |
+| UTF-8 bytes    | Deserialize |       3,077,158 |     1,268,397 |    933,079 |       2.43× |    3.30× |
+
+Fory JSON leads all four rows. Its largest advantage appears on UTF-8 serialization, where it passes 10 million operations per second and reaches 5.55× Jackson throughput and 10.00× Gson throughput.
+
+The String and UTF-8 groups are deliberately separate. The String group excludes UTF-8 conversion. The byte group uses direct byte-array APIs where a library provides them; Gson includes its required String-to-byte and byte-to-String conversion.
 
 No benchmark can promise the same multiplier for every domain model, JDK, machine, or configuration. These results support a narrower and still notable conclusion: in both published configurations reported here, Fory JSON is the fastest Java JSON serialization framework.
 
@@ -139,7 +149,49 @@ Performance would be much less useful if it required flattening every applicatio
 
 Property discovery can combine fields with JavaBean getters and setters, or switch to field-only mode. A finite `JsonSubTypes` table handles declared polymorphic models without accepting arbitrary class names from input.
 
-The annotation set covers the cases that tend to appear after the first production deployment: explicit property names and ordering, ignored directions, custom date/time formats, Base64 byte arrays, flattened objects, dynamic members, validators, subtype discriminators, and complete value representations.
+## Annotations for real application models
+
+Fory JSON provides its own annotations in `org.apache.fory.json.annotation`. They cover explicit property names and ordering, ignored directions, immutable construction, date and time formats, Base64 byte arrays, raw or complete value representations, flattened objects, dynamic members, validation, and finite subtype tables.
+
+The annotations compose on an ordinary model. This event renames a fixed property, formats a date, flattens an owner, captures dynamic members, and validates the completed object after reading:
+
+```java
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.apache.fory.json.annotation.JsonAnyProperty;
+import org.apache.fory.json.annotation.JsonFormat;
+import org.apache.fory.json.annotation.JsonProperty;
+import org.apache.fory.json.annotation.JsonUnwrapped;
+import org.apache.fory.json.annotation.JsonValidator;
+
+public final class Event {
+  @JsonProperty("event_id")
+  public long id;
+
+  @JsonFormat(pattern = "dd/MM/uuuu")
+  public LocalDate day;
+
+  @JsonUnwrapped(prefix = "owner_")
+  public Owner owner;
+
+  @JsonAnyProperty
+  public Map<String, Object> attributes = new LinkedHashMap<>();
+
+  @JsonValidator
+  public void validate() {
+    if (id <= 0) {
+      throw new IllegalArgumentException("event_id must be positive");
+    }
+  }
+
+  public static final class Owner {
+    public String name;
+  }
+}
+```
+
+`JsonCreator` supports immutable classes, `JsonPropertyOrder` makes output order explicit, and `JsonSubTypes` declares a closed polymorphic model. `JsonValue`, `JsonRawValue`, and `JsonBase64` handle specialized value shapes without changing the rest of the object mapping. The [annotations guide](/docs/json/annotations) documents the supported combinations and validation rules.
 
 For a third-party type that cannot carry annotations, a Mixin overlays the same Fory JSON annotations without changing or wrapping the target class:
 
@@ -192,7 +244,7 @@ The fastest route to a useful evaluation is to replace one representative Jackso
 
 - Read the [Fory JSON overview](/docs/json/).
 - Run the [Getting Started example](/docs/json/getting-started).
-- Inspect the [complete checked-in Java JSON benchmark](/docs/benchmarks/json/java/).
+- Inspect the [complete `jvm-serializers` MediaContent benchmark](/docs/benchmarks/json/java/).
 - Review the [1,000 KB benchmark and broader matrix in PR #129](https://github.com/fabienrenaud/java-json-benchmark/pull/129).
 - Join development at [apache/fory](https://github.com/apache/fory).
 
