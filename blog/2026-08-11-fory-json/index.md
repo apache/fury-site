@@ -112,8 +112,6 @@ The 1000 KB run used Fory JSON 1.6.0, Jackson Databind 2.17.1, and Gson 2.11.0 w
 
 Across these four large-payload cases, Fory JSON delivers 3.54× to 10.91× Jackson throughput and 5.65× to 10.89× Gson throughput.
 
-The [PR #129 benchmark report](https://github.com/fabienrenaud/java-json-benchmark/pull/129) carries the wider matrix and complete context rather than compressing all of it into this introduction.
-
 ### `jvm-serializers` MediaContent benchmark
 
 The second view uses the [`jvm-serializers` MediaContent model](https://github.com/eishay/jvm-serializers/blob/master/tpc/src/data/media/MediaContent.java), which contains a media object and a list of images. This benchmark covers much smaller objects than the 1000 KB suite and separates Java String APIs from UTF-8 byte-array APIs.
