@@ -110,9 +110,9 @@ The 1,000 KB run used Fory JSON 1.6.0, Jackson Databind 2.17.1, and Gson 2.11.0 
 | Clients | Serialization   | 11,895.269 ± 183.251  | 1,706.314 ± 36.263    | 1,298.288 ± 27.405    |       6.97× |    9.16× |
 | Clients | Deserialization | 6,442.262 ± 627.116   | 590.656 ± 10.849      | 591.350 ± 6.444       |      10.91× |   10.89× |
 
-Fory JSON again leads every published comparison. Across these four large-payload cases, it delivers 3.54× to 10.91× Jackson throughput and 5.65× to 10.89× Gson throughput.
+Across these four large-payload cases, Fory JSON delivers 3.54× to 10.91× Jackson throughput and 5.65× to 10.89× Gson throughput.
 
-The Clients deserialization result deserves one detail from the run report: Fory's two fork means differed by 12.9%, which widened its aggregate interval. Even with that variation, the aggregate mean remained roughly 10.9× the Jackson and Gson means. The [PR #129 benchmark report](https://github.com/fabienrenaud/java-json-benchmark/pull/129) carries the wider matrix and complete context rather than compressing all of it into this introduction.
+The [PR #129 benchmark report](https://github.com/fabienrenaud/java-json-benchmark/pull/129) carries the wider matrix and complete context rather than compressing all of it into this introduction.
 
 ### `jvm-serializers` MediaContent benchmark
 
