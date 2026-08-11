@@ -189,7 +189,49 @@ public final class Event {
 }
 ```
 
-`JsonCreator` supports immutable classes, `JsonPropertyOrder` makes output order explicit, and `JsonSubTypes` declares a closed polymorphic model. `JsonValue`, `JsonRawValue`, and `JsonBase64` handle specialized value shapes without changing the rest of the object mapping. The [annotations guide](/docs/json/annotations) documents the supported combinations and validation rules.
+`JsonCreator` supports immutable classes, while `JsonPropertyOrder` makes output order explicit. `JsonValue`, `JsonRawValue`, and `JsonBase64` handle specialized value shapes without changing the rest of the object mapping.
+
+### Closed-world polymorphism with `JsonSubTypes`
+
+`JsonSubTypes` maps a declared base type to a complete set of permitted implementations and logical names. The discriminator in JSON selects from this table; it never supplies a Java class name.
+
+```java
+import org.apache.fory.json.ForyJson;
+import org.apache.fory.json.annotation.JsonSubTypes;
+
+public final class PaymentExample {
+  @JsonSubTypes(
+      property = "kind",
+      value = {
+        @JsonSubTypes.Type(value = CardPayment.class, name = "card"),
+        @JsonSubTypes.Type(value = BankTransfer.class, name = "bank_transfer")
+      })
+  public interface Payment {}
+
+  public static final class CardPayment implements Payment {
+    public String lastFour;
+  }
+
+  public static final class BankTransfer implements Payment {
+    public String iban;
+  }
+
+  public static void main(String[] args) {
+    ForyJson json = ForyJson.builder().build();
+
+    CardPayment card = new CardPayment();
+    card.lastFour = "4242";
+
+    String text = json.toJson(card, Payment.class);
+    Payment copy = json.fromJson(text, Payment.class);
+
+    System.out.println(text);              // {"kind":"card","lastFour":"4242"}
+    System.out.println(copy.getClass());   // class PaymentExample$CardPayment
+  }
+}
+```
+
+The declared-type write tells Fory JSON to use `Payment`'s subtype table. During reading, `kind` must match `card` or `bank_transfer`; an unknown name is rejected. For containers, a `TypeRef<List<Payment>>` carries the same declared base type for every element. The [annotations guide](/docs/json/annotations) covers the alternative wrapper representations and complete validation rules.
 
 For a third-party type that cannot carry annotations, a Mixin overlays the same Fory JSON annotations without changing or wrapping the target class:
 
