@@ -15,9 +15,11 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# This redirect must run before Apache handles the request as a 404; client-side
-# Docusaurus redirects never execute when the origin serves its stock 404 page.
-RedirectMatch 301 "^/docs/guide/rust/?$" "https://fory.apache.org/docs/object-serialization/rust/"
+# These redirects must run before Apache handles the request as a 404;
+# client-side Docusaurus redirects never execute when the origin serves its
+# stock 404 page. Keep the entry list aligned with
+# objectSerializationGuideEntries in src/plugin/redirect.js.
+RedirectMatch 301 "^/(zh-CN/)?docs/(next/)?guide/(cpp|csharp|dart|go|java|javascript|kotlin|python|rust|scala|swift)/?$" "https://fory.apache.org/$1docs/$2object-serialization/$3/"
 
 # Keep arbitrary missing URLs temporary so stale typos are not cached forever.
 ErrorDocument 404 "https://fory.apache.org/"

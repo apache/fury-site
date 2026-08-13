@@ -4,6 +4,19 @@ export default function (context, options) {
         (version) => typeof version === 'string',
       )
     : [];
+  const objectSerializationGuideEntries = [
+    'cpp',
+    'csharp',
+    'dart',
+    'go',
+    'java',
+    'javascript',
+    'kotlin',
+    'python',
+    'rust',
+    'scala',
+    'swift',
+  ];
 
   return {
     name: "redirect-plugin",
@@ -77,6 +90,11 @@ export default function (context, options) {
                 }
 
                 var oldPath = segments.slice(pathIndex).join('/');
+                var objectSerializationGuideEntries = ${JSON.stringify(objectSerializationGuideEntries)};
+                var guidePath = oldPath.split('/');
+                var guideEntry = guidePath.length === 2 && guidePath[0] === 'guide'
+                  ? guidePath[1]
+                  : null;
                 var routes = {
                   'introduction/overview': 'introduction',
                   'introduction/benchmark': 'benchmarks',
@@ -86,7 +104,6 @@ export default function (context, options) {
                   'guide/xlang/getting_started': 'object-serialization/xlang',
                   'guide/xlang/serialization': 'object-serialization/xlang',
                   'guide/java/json_support': 'json',
-                  'guide/rust': 'object-serialization/rust',
                   'guide/rust/external_types': 'object-serialization/rust/external-types',
                   'guide/dart/external_types': 'object-serialization/dart/external-types',
                   'guide/swift/external_types': 'object-serialization/swift/external-types',
@@ -97,7 +114,9 @@ export default function (context, options) {
                   'compiler/compiler_guide': 'compiler/getting-started',
                   'community/development': 'development',
                 };
-                var destination = routes[oldPath];
+                var destination = guideEntry && objectSerializationGuideEntries.indexOf(guideEntry) >= 0
+                  ? 'object-serialization/' + guideEntry
+                  : routes[oldPath];
                 if (!destination) {
                   return;
                 }
