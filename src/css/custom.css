@@ -157,6 +157,17 @@
   text-align: center;
 }
 
+@media (max-width: 996px) {
+  .footer__col {
+    margin-bottom: 2rem;
+  }
+
+  .footer__link-item {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .themed-logo-light {
   display: block;
 }
