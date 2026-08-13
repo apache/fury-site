@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfory_site=self.webpackChunkfory_site||[]).push([["16785"],{17819(e,t,r){r.d(t,{A:()=>c});var s=r(96540);function c(){return(0,s.useEffect)(()=>{window.location.replace("https://fory.apache.org/")},[]),null}}}]);
