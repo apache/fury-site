@@ -86,6 +86,7 @@ export default function (context, options) {
                   'guide/xlang/getting_started': 'object-serialization/xlang',
                   'guide/xlang/serialization': 'object-serialization/xlang',
                   'guide/java/json_support': 'json',
+                  'guide/rust': 'object-serialization/rust',
                   'guide/rust/external_types': 'object-serialization/rust/external-types',
                   'guide/dart/external_types': 'object-serialization/dart/external-types',
                   'guide/swift/external_types': 'object-serialization/swift/external-types',
