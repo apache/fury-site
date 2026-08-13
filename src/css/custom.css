@@ -110,6 +110,23 @@
   color: var(--ifm-navbar-link-hover-color);
 }
 
+/* Keep this aligned with navbarDesktopBreakpoint in
+ * src/theme/Navbar/MobileSidebar. The full navbar begins to overlap below
+ * 1320px, so switch while it still has a useful safety gap. */
+@media (max-width: 1360px) {
+  .navbar {
+    --ifm-navbar-sidebar-width: min(83vw, 28rem);
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__item {
+    display: none;
+  }
+}
+
 .header-github-link:hover {
   opacity: 1;
 }
@@ -155,6 +172,17 @@
 
 .footer__links {
   text-align: center;
+}
+
+@media (max-width: 996px) {
+  .footer__col {
+    margin-bottom: 2rem;
+  }
+
+  .footer__link-item {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .themed-logo-light {

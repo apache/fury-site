@@ -26,7 +26,11 @@ Common commands (`package.json`):
 - `npm run start` / `npm run start-en` / `npm run start-zh`
 - `npm run build` (runs `prebuild` first)
 - `npm run docusaurus docs:version <ver>` (wrapped command with i18n version copy support)
-- `npm run typecheck`
+
+Agent command restriction:
+
+- Do not execute `npm run typecheck` unless the user explicitly reverses this
+  instruction. Use the permitted build and focused checks for validation.
 
 ## 3. Information Architecture and Directory Responsibilities
 
@@ -143,5 +147,4 @@ This means Chinese docs may be a mix of translated content and English fallback 
   - Update `i18n/zh-CN/docusaurus-plugin-content-docs/current.json` (and version JSON files if needed)
 - Minimum pre-commit validation:
   - `npm run build`
-  - `npm run typecheck`
   - Manually verify critical routes: `/`, `/docs`, `/zh-CN/docs`, `/blog`
