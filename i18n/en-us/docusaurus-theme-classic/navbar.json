@@ -3,18 +3,6 @@
     "message": "Apache Fory™ Logo",
     "description": "The alt text of navbar logo"
   },
-  "item.label.Start": {
-    "message": "Start",
-    "description": "Navbar item with label Start"
-  },
-  "item.label.Introduction": {
-    "message": "Introduction",
-    "description": "Navbar item with label Introduction"
-  },
-  "item.label.Guide": {
-    "message": "Guide",
-    "description": "Navbar item with label Guide"
-  },
   "item.label.Specification": {
     "message": "Specification",
     "description": "Navbar item with label Specification"
