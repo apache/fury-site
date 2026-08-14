@@ -74,27 +74,29 @@ the same case-class schema.
 
 ## Supported Scala types
 
-| Scala type                                                  | JSON representation                                    |
-| ----------------------------------------------------------- | ------------------------------------------------------ |
-| `Unit`                                                      | `null`                                                 |
-| case class                                                  | object                                                 |
-| singleton object                                            | empty object                                           |
-| value class                                                 | underlying value                                       |
-| `Option[A]`, `Some[A]`, `None`                              | contained value or `null`                              |
-| `Either[L, R]`                                              | object containing exactly one `left` or `right` member |
-| `List`, `Seq`, `Vector`, `Queue`, `ArraySeq`, buffers, sets | array                                                  |
-| Scala maps, `IntMap`, `LongMap`                             | object                                                 |
-| immutable and mutable `BitSet`                              | ascending integer array                                |
-| `Tuple1` through `Tuple22`                                  | fixed-length array                                     |
-| Scala 3 `EmptyTuple`                                        | empty array                                            |
-| `BigInt`, `BigDecimal`                                      | JSON number                                            |
-| Scala `StringBuilder`                                       | string                                                 |
-| `Range`, supported `NumericRange`                           | realized value array                                   |
-| `FiniteDuration`, `Duration`                                | fixed `length`/`unit` or `special` object              |
-| parameterless Scala 3 enum                                  | string case name                                       |
-| Scala 2 `Enumeration`                                       | string through an owner-bound codec                    |
+| Scala type                                                  | JSON representation                             |
+| ----------------------------------------------------------- | ----------------------------------------------- |
+| `Unit`                                                      | `null`                                          |
+| case class                                                  | object                                          |
+| singleton object                                            | empty object                                    |
+| value class                                                 | underlying value                                |
+| `Option[A]`, `Some[A]`, `None`                              | contained value or `null`                       |
+| `Either[L, R]`                                              | object containing exactly one `l` or `r` member |
+| `List`, `Seq`, `Vector`, `Queue`, `ArraySeq`, buffers, sets | array                                           |
+| Scala maps, `IntMap`, `LongMap`                             | object                                          |
+| immutable and mutable `BitSet`                              | ascending integer array                         |
+| `Tuple1` through `Tuple22`                                  | fixed-length array                              |
+| Scala 3 `EmptyTuple`                                        | empty array                                     |
+| `BigInt`, `BigDecimal`                                      | JSON number                                     |
+| Scala `StringBuilder`                                       | string                                          |
+| `Range`, supported `NumericRange`                           | realized value array                            |
+| `FiniteDuration`, `Duration`                                | fixed `length`/`unit` or `special` object       |
+| parameterless Scala 3 enum                                  | string case name                                |
+| Scala 2 `Enumeration`                                       | string through an owner-bound codec             |
 
 Strict standard-library collections are reconstructed through their standard Scala builders.
+`Either` writes compact `l` and `r` member names. Readers also accept the legacy `left` and
+`right` member names.
 Fory does not add a Scala-specific collection-size limit; the codecs use the same input-length,
 depth, graph-memory, and read-progress limits as Fory JSON core. A sparse `BitSet` whose highest
 index would require backing storage disproportionate to the available JSON input is rejected.
