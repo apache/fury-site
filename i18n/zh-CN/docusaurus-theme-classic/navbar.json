@@ -7,18 +7,6 @@
     "message": "文档",
     "description": "Navbar item with label Docs"
   },
-  "item.label.Start": {
-    "message": "快速开始",
-    "description": "Navbar item with label Start"
-  },
-  "item.label.Introduction": {
-    "message": "Apache Fory 介绍",
-    "description": "Navbar item with label Introduction"
-  },
-  "item.label.Guide": {
-    "message": "用户指南",
-    "description": "Navbar item with label Guide"
-  },
   "item.label.Specification": {
     "message": "规范",
     "description": "Navbar item with label Specification"
