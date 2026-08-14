@@ -1,6 +1,6 @@
 ---
 title: GraalVM Native Image
-sidebar_position: 7
+sidebar_position: 9
 id: graalvm
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more

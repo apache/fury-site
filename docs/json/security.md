@@ -1,6 +1,6 @@
 ---
 title: Security
-sidebar_position: 8
+sidebar_position: 10
 id: security
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
