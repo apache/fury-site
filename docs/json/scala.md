@@ -132,23 +132,38 @@ value decodes to `Some(value)`; JSON `null` is rejected for `Some[Int]` but deco
 
 ## Scala 2 Enumeration
 
-Scala 2 erases the owning `Enumeration` from `Enumeration#Value`. Bind the owner explicitly with
-`ScalaEnumerationCodec` and select it through an annotation:
+Scala 2 erases the owning `Enumeration` from `Enumeration#Value`. Use `JsonEnumeration` to retain
+the owner on a direct value, collection or array element, `Option` content, or map key/value:
 
 ```scala
+import org.apache.fory.json.scala.JsonEnumeration
+
 object Weekday extends Enumeration {
   val Monday, Tuesday = Value
 }
 
-final class WeekdayCodec extends ScalaEnumerationCodec(Weekday)
+object Month extends Enumeration {
+  val January, February = Value
+}
 
 case class Schedule(
-    @JsonCodec(value = classOf[WeekdayCodec]) day: Weekday.Value,
-    @JsonCodec(elementCodec = classOf[WeekdayCodec]) days: List[Weekday.Value]
+    @JsonEnumeration(classOf[Weekday.type]) day: Weekday.Value,
+    @JsonEnumeration(element = classOf[Weekday.type]) days: List[Weekday.Value],
+    @JsonEnumeration(content = classOf[Month.type]) month: Option[Month.Value],
+    @JsonEnumeration(
+      mapKey = classOf[Weekday.type],
+      mapValue = classOf[Month.type]
+    ) labels: Map[Weekday.Value, Month.Value]
 )
 ```
 
-The codec also implements the map-key contract, so its class can be used in `keyCodec`.
+Each slot describes one direct `Enumeration.Value` occurrence. `value` cannot be combined with a
+child slot, and `element`, `content`, and map slots must match the annotated property's immediate
+type shape. Invalid or conflicting declarations fail when the case-class metadata is created.
+
+For a custom wire representation, extend `ScalaEnumerationCodec` and select the codec through
+`@JsonCodec`. The codec also implements the map-key contract, so its class can be used in
+`keyCodec`.
 
 ## Scala 3 closed enums
 
