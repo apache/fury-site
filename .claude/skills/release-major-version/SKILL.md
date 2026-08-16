@@ -1,21 +1,58 @@
 ---
 name: release-major-version
 description: >-
-  Prepare the Apache Fory site for a new major-ish docs release such as 0.17:
+  Prepare the Apache Fory site for a release that opens a new documentation
+  line, such as 0.17.0 or 1.6.0:
   write the release blog, update the download page, checkpoint with git
   commits, translate the zh-CN release blog and docs, create the versioned
   docs snapshot, update the default docs version, and run an independent
-  self-review to catch remaining issues. Use when the user asks to cut a new
-  docs/site release version on this repository.
+  self-review to catch remaining issues. Use only when the release requires a
+  new Docusaurus versioned-docs snapshot. Do not use for patch releases such
+  as 1.6.1 that update an existing documentation line.
 ---
 
 # Release Big Version
 
-Use this skill for the `apache/fory-site` repository when preparing a new docs/site release such as `0.17`.
+Use this skill for the `apache/fory-site` repository only when preparing a
+release that opens a new documentation line and therefore requires a new
+Docusaurus snapshot, such as `0.17.0` or `1.6.0`.
 
 This skill is for the website/docs repository workflow, not the ASF source release/signing workflow in `docs/community/how_to_release.md`.
 
+## Applicability Boundary
+
+Use this workflow when all of the following are true:
+
+1. The release starts a new maintained documentation line.
+2. The site must create `versioned_docs/version-<version>/` and the matching
+   localized snapshot.
+3. The target version must be added to `versions.json` and become
+   `docs.lastVersion`.
+
+Do **not** use this workflow for a patch release such as `1.6.1` when the site
+already has the corresponding `1.6.0` documentation line. For a patch release:
+
+1. Write the release blog and update the homepage, download pages, current
+   install guidance, and other release-facing references as needed.
+2. Apply release-relevant documentation fixes and version pins directly to the
+   existing English and zh-CN versioned trees, for example
+   `versioned_docs/version-1.6.0/` and
+   `i18n/zh-CN/docusaurus-plugin-content-docs/version-1.6.0/` for `1.6.1`.
+3. Keep the existing documentation line name and navigation entry.
+4. Do not run `docusaurus docs:version`, create a patch-version sidebar or
+   localized version metadata, add the patch version to `versions.json`, or
+   change `docs.lastVersion`.
+
+If the request does not clearly establish whether the release opens a new docs
+line, inspect `versions.json`, `docs.lastVersion`, and the existing versioned
+trees before selecting this workflow. The existence of `version-<major>.<minor>.0`
+is normally decisive evidence that a later `<major>.<minor>.<patch>` release
+must update that existing line instead.
+
 ## Scope
+
+This scope applies only after the applicability boundary above confirms that a
+new documentation line is required.
 
 This workflow covers:
 

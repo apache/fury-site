@@ -36,7 +36,7 @@ go env GOPROXY
 mkdir fory-example
 cd fory-example
 go mod init example.com/fory-example
-go get github.com/apache/fory/go/fory@v1.6.0
+go get github.com/apache/fory/go/fory@v1.6.1
 ```
 
 如果 Go proxy 尚未收录新的 submodule tag，请稍后重试，或者暂时使用 `GOPROXY=direct`。

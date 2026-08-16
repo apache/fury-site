@@ -34,7 +34,7 @@ dart pub --help
 
 ```yaml
 dependencies:
-  fory: 1.6.0
+  fory: 1.6.1
 
 dev_dependencies:
   build_runner: ^2.4.0

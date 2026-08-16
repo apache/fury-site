@@ -35,7 +35,7 @@ java -version
 
 ```kotlin title="build.gradle.kts"
 dependencies {
-  implementation("org.apache.fory:fory-kotlin:1.6.0")
+  implementation("org.apache.fory:fory-kotlin:1.6.1")
 }
 ```
 
