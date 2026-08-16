@@ -18,21 +18,32 @@ const isArchiveBuild = process.env.DOCS_ARCHIVE === 'true';
 // deploy workflow explicitly disables it until the immutable archive branch
 // exists, so the migration cannot remove the live 0.x pages prematurely.
 const isArchiveReady = process.env.DOCS_ARCHIVE_READY !== 'false';
+const lastDocsVersion = versions[0];
 // Docusaurus sets this before loading the config for each locale. Archive
 // entries use absolute hrefs because excluded versions are not valid internal
 // routes during broken-link validation.
 const currentLocale = process.env.DOCUSAURUS_CURRENT_LOCALE ?? 'en-US';
 const archiveLocalePath =
   currentLocale === 'en-US' ? '' : `${currentLocale}/`;
-const activeDocsVersions = [
-  'current',
-  ...versions.filter(
-    (version) =>
-      !archivedDocsVersions.includes(
-        version as (typeof archivedDocsVersions)[number],
-      ),
-  ),
-];
+const activePublishedDocsVersions = versions.filter(
+  (version) =>
+    !archivedDocsVersions.includes(
+      version as (typeof archivedDocsVersions)[number],
+    ),
+);
+const activeDocsVersions = ['current', ...activePublishedDocsVersions];
+const activeVersionOptions = Object.fromEntries(
+  activePublishedDocsVersions.map((version) => {
+    const shortVersion = version.replace(/\.\d+$/, '');
+    return [
+      version,
+      {
+        label: shortVersion,
+        ...(version === lastDocsVersion ? {} : { path: shortVersion }),
+      },
+    ];
+  }),
+);
 const archivedVersionOptions = Object.fromEntries(
   archivedDocsVersions.map((version) => [
     version,
@@ -93,7 +104,7 @@ const config: Config = {
           exclude: ['security/**', 'images/**'],
           sidebarCollapsible: true,
           includeCurrentVersion: !isArchiveBuild,
-          lastVersion: isArchiveBuild ? '0.17' : '1.6.0',
+          lastVersion: isArchiveBuild ? '0.17' : lastDocsVersion,
           onlyIncludeVersions: isArchiveBuild
             ? [...archivedDocsVersions]
             : isArchiveReady
@@ -106,6 +117,7 @@ const config: Config = {
                   current: {
                     label: 'dev',
                   },
+                  ...activeVersionOptions,
                 }),
             ...(isArchiveBuild || !isArchiveReady
               ? archivedVersionOptions
