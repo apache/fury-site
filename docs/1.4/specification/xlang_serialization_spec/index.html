@@ -1,0 +1,1123 @@
+<!doctype html><html lang=en-US dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-1.4.0 docs-doc-page docs-doc-id-specification/xlang_serialization_spec" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Xlang Serialization Format | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/docs/1.4/specification/xlang_serialization_spec /><meta data-rh=true property=og:locale content=en_US /><meta data-rh=true property=og:locale:alternate content=zh_CN /><meta data-rh=true name=docusaurus_locale content=en-US /><meta data-rh=true name=docsearch:language content=en-US /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=1.4.0 /><meta data-rh=true name=docusaurus_tag content=docs-default-1.4.0 /><meta data-rh=true name=docsearch:version content=1.4.0 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-1.4.0 /><meta data-rh=true property=og:title content="Xlang Serialization Format | Apache Fory™"/><meta data-rh=true name=description content="Cross-language Serialization Specification"/><meta data-rh=true property=og:description content="Cross-language Serialization Specification"/><link data-rh=true rel=icon href=/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/docs/1.4/specification/xlang_serialization_spec /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.4/specification/xlang_serialization_spec hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/1.4/specification/xlang_serialization_spec hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.4/specification/xlang_serialization_spec hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/docs/1.4/specification/xlang_serialization_spec","name":"Xlang Serialization Format","position":1}]}</script><link rel=alternate type=application/rss+xml href=/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=["0.17","0.16","0.15","0.14","0.13","0.12","0.11","0.10"];if(0!==i.length){var t=window.location.pathname.split("/").filter(Boolean),a=/^[a-z]{2}-[A-Z]{2}$/.test(t[0])?t[0]:null,e=+!!a;if(!("docs"!==t[e]||0>i.indexOf(t[e+1]))){var o=["/archive"];a&&o.push(a),o.push.apply(o,t.slice(e));var n=window.location.pathname.endsWith("/")?"/":"";window.location.replace(o.join("/")+n+window.location.search+window.location.hash)}}}(),function(){var i=window.location.pathname.split("/").filter(Boolean),t="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(t<0)){var a=t+1,e=i[a];if(!/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(e)){"next"===e&&a++;var o=i.slice(a).join("/"),n=o.split("/"),r=2===n.length&&"guide"===n[0]?n[1]:null,s=r&&["cpp","csharp","dart","go","java","javascript","kotlin","python","rust","scala","swift"].indexOf(r)>=0?"object-serialization/"+r:({"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","guide/rust/external_types":"object-serialization/rust/external-types","guide/dart/external_types":"object-serialization/dart/external-types","guide/swift/external_types":"object-serialization/swift/external-types","guide/csharp/external_types":"object-serialization/csharp/external-types","guide/csharp/basic_serialization":"object-serialization/csharp/basic-serialization","guide/dart/inheritance":"object-serialization/dart/inheritance","benchmarks/rust":"benchmarks/object-serialization/xlang/rust","compiler/compiler_guide":"compiler/getting-started","community/development":"development"})[o];if(s){var l="/"+i.slice(0,a).join("/");window.location.replace(l+"/"+s+"/"+window.location.search+window.location.hash)}}}}(),function(){var i=window.location.pathname,t=i.split("/").filter(Boolean),a="docs"===t[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(t[0])&&"docs"===t[1]?1:-1;if(!(a<0)){var e=a+1,o=t[e];if(("next"===o||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(o))&&e++,!("docs"!==t[e]||0>["guide","introduction","start"].indexOf(t[e+1]))){t.splice(e,1);var n="/"+t.join("/");i.endsWith("/")&&(n+="/"),window.location.replace(n+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/assets/css/styles.eba6f8f8.css /><script src=/assets/js/runtime~main.f4acdbcd.js defer></script><script src=/assets/js/main.12028d08.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label="Skip to main content"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>Skip to main content</a></div><nav aria-label=Main class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/><div class=navbar__logo><img src=/img/fory-logo-light.png alt="Apache Fory™ Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/img/fory-logo-dark.png alt="Apache Fory™ Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/docs/1.4/introduction/overview>Docs</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/docs/1.4/specification/xlang_serialization_spec>Specification</a><a class="navbar__item navbar__link" href=/docs/1.4/community/>Community</a><a class="navbar__item navbar__link" href=/user>Users</a><a class="navbar__item navbar__link" href=/download>Download</a><a class="navbar__item navbar__link" href=/blog>Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>Foundation</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>License</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>Events</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>Privacy</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>Security</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>Sponsorship</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>Thanks</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>Code of Conduct</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/docs/1.4/specification/xlang_serialization_spec>1.4</a><ul class=dropdown__menu><li><a class=dropdown__link href=/docs/next/specification/xlang_serialization_spec>dev</a><li><a class=dropdown__link href=/docs/specification/xlang_serialization_spec>1.6</a><li><a class=dropdown__link href=/docs/1.5/specification/xlang_serialization_spec>1.5</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/docs/1.4/specification/xlang_serialization_spec>1.4</a><li><a class=dropdown__link href=/docs/1.3/specification/xlang_serialization_spec>1.3</a><li><a class=dropdown__link href=/docs/1.2/specification/xlang_serialization_spec>1.2</a><li><a class=dropdown__link href=/docs/1.1/specification/xlang_serialization_spec>1.1</a><li><a class=dropdown__link href=/docs/1.0/specification/xlang_serialization_spec>1.0</a><li><a href=https://fory.apache.org/archive/docs/0.17/introduction/overview/ target=_blank rel="noopener noreferrer" class=dropdown__link>More versions<svg width=12 height=12 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>English</a><ul class=dropdown__menu><li><a href=/docs/1.4/specification/xlang_serialization_spec target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=en-US>English</a><li><a href=/zh-CN/docs/1.4/specification/xlang_serialization_spec target=_self rel="noopener noreferrer" class=dropdown__link lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/docs/1.4/specification/xlang_serialization_spec><span title="Xlang Serialization Format" class=linkLabel_WmDU>Xlang Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/java_serialization_spec><span title="Java Serialization Format" class=linkLabel_WmDU>Java Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/row_format_spec><span title="Row Format" class=linkLabel_WmDU>Row Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/xlang_type_mapping><span title="Xlang Type Mapping" class=linkLabel_WmDU>Xlang Type Mapping</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/xlang_implementation_guide><span title="Xlang Implementation Guide" class=linkLabel_WmDU>Xlang Implementation Guide</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role=alert><div>This is documentation for <!-- -->Apache Fory™<!-- --> <b>1.4</b>, which is no longer actively maintained.</div><div class=margin-top--md>For up-to-date documentation, see the <b><a href=/docs/specification/xlang_serialization_spec>latest version</a></b> (<!-- -->1.6<!-- -->).</div></div><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=Breadcrumbs><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label="Home page" class=breadcrumbs__link href=/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Xlang Serialization Format</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">Version: 1.4</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Xlang Serialization Format</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=cross-language-serialization-specification>Cross-language Serialization Specification<a href=#cross-language-serialization-specification class=hash-link aria-label="Direct link to Cross-language Serialization Specification" title="Direct link to Cross-language Serialization Specification" translate=no>​</a></h2>
+<p>Apache Fory™ xlang serialization enables automatic cross-language object serialization with support for shared references, circular references, and polymorphism. Unlike traditional serialization frameworks that require IDL definitions and schema compilation, Fory serializes objects directly without any intermediate steps.</p>
+<p>Key characteristics:</p>
+<ul>
+<li class=""><strong>Automatic</strong>: No IDL definition, no schema compilation, no manual object-to-protocol conversion</li>
+<li class=""><strong>Cross-language</strong>: Same binary format works across Java, Python, C++, Go,
+Rust, JavaScript/TypeScript, C#, Swift, Dart, Scala, and Kotlin</li>
+<li class=""><strong>Reference-aware</strong>: Handles shared references and circular references without duplication or infinite recursion</li>
+<li class=""><strong>Polymorphic</strong>: Supports object polymorphism with concrete type resolution</li>
+</ul>
+<p>This specification defines the Fory xlang binary format. The format is dynamic rather than static, which enables flexibility and ease of use at the cost of additional complexity in the wire format.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-systems>Type Systems<a href=#type-systems class=hash-link aria-label="Direct link to Type Systems" title="Direct link to Type Systems" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=data-types>Data Types<a href=#data-types class=hash-link aria-label="Direct link to Data Types" title="Direct link to Data Types" translate=no>​</a></h3>
+<ul>
+<li class="">bool: a boolean value (true or false).</li>
+<li class="">int8: a 8-bit signed integer.</li>
+<li class="">int16: a 16-bit signed integer.</li>
+<li class="">int32: a 32-bit signed integer. Scalar type expressions may use fixed or varint encoding.</li>
+<li class="">int64: a 64-bit signed integer. Scalar type expressions may use fixed, varint/PVL, or tagged encoding.</li>
+<li class="">uint8: an 8-bit unsigned integer.</li>
+<li class="">uint16: a 16-bit unsigned integer.</li>
+<li class="">uint32: a 32-bit unsigned integer. Scalar type expressions may use fixed or varint encoding.</li>
+<li class="">uint64: a 64-bit unsigned integer. Scalar type expressions may use fixed, varint/PVL, or tagged encoding.</li>
+<li class="">float8: an 8-bit floating point number.</li>
+<li class="">float16: a 16-bit floating point number.</li>
+<li class="">bfloat16: a 16-bit brain floating point number.</li>
+<li class="">float32: a 32-bit floating point number.</li>
+<li class="">float64: a 64-bit floating point number including NaN and Infinity.</li>
+<li class="">string: a text string encoded using Latin1/UTF16/UTF-8 encoding.</li>
+<li class="">enum: a data type consisting of a set of named values. Rust enum with non-predefined field values are not supported as
+an enum.</li>
+<li class="">named_enum: an enum whose value will be serialized as the registered name.</li>
+<li class="">struct: a dynamic(final) type serialized by Fory Struct serializer. i.e. it doesn't have subclasses. Suppose we're
+deserializing <code>List&lt;SomeClass></code>, we can save dynamic serializer dispatch since <code>SomeClass</code> is dynamic(final).</li>
+<li class="">compatible_struct: a dynamic(final) type serialized by Fory compatible Struct serializer.</li>
+<li class="">named_struct: a <code>struct</code> whose type mapping will be encoded as a name.</li>
+<li class="">named_compatible_struct: a <code>compatible_struct</code> whose type mapping will be encoded as a name.</li>
+<li class="">ext: a type which will be serialized by a customized serializer.</li>
+<li class="">named_ext: an <code>ext</code> type whose type mapping will be encoded as a name.</li>
+<li class="">list: a sequence of objects.</li>
+<li class="">set: an unordered set of unique elements.</li>
+<li class="">map: a map of key-value pairs. Map keys do not allow binary values, floating-point values,
+decimal values, or collection-shaped values such as <code>list</code>, <code>map</code>, <code>set</code>, and <code>array</code>.</li>
+<li class="">duration: an absolute length of time, independent of any calendar/timezone, as a count of nanoseconds.</li>
+<li class="">timestamp: a point in time, independent of any calendar/timezone, encoded as seconds (int64) and nanoseconds
+(uint32) since the epoch at UTC midnight on January 1, 1970.</li>
+<li class="">date: a naive date without timezone, encoded as a signed varint64 count of days since the Unix epoch.</li>
+<li class="">decimal: an exact decimal value encoded as a signed <code>scale</code> and an exact <code>unscaled</code> integer.</li>
+<li class="">binary: an variable-length array of bytes.</li>
+<li class="">array: <code>array&lt;T></code> is dense one-dimensional bool or numeric data. Current xlang emits the canonical specialized
+<code>*_ARRAY</code> type IDs for each supported element domain. <code>ARRAY (42)</code> is reserved for a future generic array encoding and
+is not emitted by the current xlang format. <code>list&lt;T></code> remains a separate schema kind.<!-- -->
+<ul>
+<li class="">bool_array: canonical wire tag for <code>array&lt;bool></code>.</li>
+<li class="">int8_array: canonical wire tag for <code>array&lt;int8></code>.</li>
+<li class="">int16_array: canonical wire tag for <code>array&lt;int16></code>.</li>
+<li class="">int32_array: canonical wire tag for <code>array&lt;int32></code>.</li>
+<li class="">int64_array: canonical wire tag for <code>array&lt;int64></code>.</li>
+<li class="">uint8_array: canonical wire tag for <code>array&lt;uint8></code>.</li>
+<li class="">uint16_array: canonical wire tag for <code>array&lt;uint16></code>.</li>
+<li class="">uint32_array: canonical wire tag for <code>array&lt;uint32></code>.</li>
+<li class="">uint64_array: canonical wire tag for <code>array&lt;uint64></code>.</li>
+<li class="">float8_array: reserved canonical wire tag for <code>array&lt;float8></code>.</li>
+<li class="">float16_array: canonical wire tag for <code>array&lt;float16></code>.</li>
+<li class="">bfloat16_array: canonical wire tag for <code>array&lt;bfloat16></code>.</li>
+<li class="">float32_array: canonical wire tag for <code>array&lt;float32></code>.</li>
+<li class="">float64_array: canonical wire tag for <code>array&lt;float64></code>.</li>
+</ul>
+</li>
+<li class="">union: a tagged union type that can hold one of several alternative types. The active alternative is identified by a non-negative case ID.</li>
+<li class="">typed_union: a union value with registered numeric union type ID.</li>
+<li class="">named_union: a union value with embedded union type name or shared TypeDef.</li>
+<li class="">none: represents an empty/unit value with no data (e.g., for empty union alternatives).</li>
+</ul>
+<p>Note:</p>
+<ul>
+<li class="">Unsigned integer types use the same byte sizes as their signed counterparts; the difference is in value interpretation. See <a class="" href=/docs/1.4/specification/xlang_type_mapping>Type mapping</a> for language-specific type mappings.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=polymorphisms>Polymorphisms<a href=#polymorphisms class=hash-link aria-label="Direct link to Polymorphisms" title="Direct link to Polymorphisms" translate=no>​</a></h3>
+<p>For polymorphism, if one non-final class is registered, and only one subclass is registered, then we can take all
+elements in List/Map have same type, thus reduce per-element type checks.</p>
+<p>Collection/Array polymorphism are not fully supported, since some languages such as golang have only one collection
+type. If users want to get exactly the type he passed, he must pass that type when deserializing or annotate that type
+to the field of struct.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-disambiguation>Type disambiguation<a href=#type-disambiguation class=hash-link aria-label="Direct link to Type disambiguation" title="Direct link to Type disambiguation" translate=no>​</a></h3>
+<p>Due to differences between type systems of languages, those types can't be mapped one-to-one between languages. When
+deserializing, Fory use the target data structure type and the data type in the data jointly to determine how to
+deserialize and populate the target data structure. For example:</p>
+<div class="language-java codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-java codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">Foo</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token keyword" style=color:#00009f>int</span><span class="token punctuation" style=color:#393A34>[</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"> intArray</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token class-name">Object</span><span class="token punctuation" style=color:#393A34>[</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"> objects</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token class-name">List</span><span class="token generics punctuation" style=color:#393A34>&lt;</span><span class="token generics class-name">Object</span><span class="token generics punctuation" style=color:#393A34>></span><span class="token plain"> objectList</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">Foo2</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token keyword" style=color:#00009f>int</span><span class="token punctuation" style=color:#393A34>[</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"> intArray</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token class-name">List</span><span class="token generics punctuation" style=color:#393A34>&lt;</span><span class="token generics class-name">Object</span><span class="token generics punctuation" style=color:#393A34>></span><span class="token plain"> objects</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token class-name">List</span><span class="token generics punctuation" style=color:#393A34>&lt;</span><span class="token generics class-name">Object</span><span class="token generics punctuation" style=color:#393A34>></span><span class="token plain"> objectList</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><br/></div></code></pre></div></div>
+<p><code>intArray</code> has <code>array&lt;int32></code> schema and uses the <code>int32_array</code> wire tag. Both <code>objects</code> and <code>objectList</code> have <code>list</code>
+schema. These schema kinds are distinct; implementations must not treat general object arrays as dense numeric arrays.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=list-and-array-semantics>List and Array Semantics<a href=#list-and-array-semantics class=hash-link aria-label="Direct link to List and Array Semantics" title="Direct link to List and Array Semantics" translate=no>​</a></h3>
+<p><code>list&lt;T></code> and <code>array&lt;T></code> are different schema kinds.</p>
+<p>Use <code>list&lt;T></code> for ordinary ordered collections whose elements may need collection
+semantics, nullable element handling, reference handling, or object/string/bytes
+payloads. A primitive <code>list&lt;T></code> may still use an optimized homogeneous element
+segment internally, but the payload is owned by the list protocol and carries
+list metadata.</p>
+<p>Use <code>array&lt;T></code> for dynamic-length dense one-dimensional bool or numeric data.
+<code>array&lt;T></code> elements are always non-null, non-reference-tracked, and fixed-width
+by the array contract. <code>array&lt;bool></code> uses one byte per value. Integer arrays use
+fixed-width little-endian element payloads even when the scalar <code>int32</code>,
+<code>int64</code>, <code>uint32</code>, or <code>uint64</code> default encoding is varint/PVL in scalar or list
+positions.</p>
+<p>Valid <code>array&lt;T></code> element domains are:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">bool</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">int8, int16, int32, int64</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">uint8, uint16, uint32, uint64</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">float16, bfloat16, float32, float64</span><br/></div></code></pre></div></div>
+<p>Invalid array schemas include <code>array&lt;fixed int32></code>,
+<code>array&lt;optional int32></code>, <code>array&lt;ref T></code>, <code>array&lt;string></code>, <code>array&lt;bytes></code>,
+<code>array&lt;map&lt;...>></code>, and arrays of structs, unions, enums, temporal values,
+decimals, or dynamic <code>any</code> values.</p>
+<p>The current wire format keeps specialized primitive-array type IDs as the
+canonical dynamic tags for <code>array&lt;T></code>:</p>
+<table><thead><tr><th>Schema<th>Dynamic wire tag<tbody><tr><td><code>array&lt;bool></code><td><code>BOOL_ARRAY</code><tr><td><code>array&lt;int8></code><td><code>INT8_ARRAY</code><tr><td><code>array&lt;int16></code><td><code>INT16_ARRAY</code><tr><td><code>array&lt;int32></code><td><code>INT32_ARRAY</code><tr><td><code>array&lt;int64></code><td><code>INT64_ARRAY</code><tr><td><code>array&lt;uint8></code><td><code>UINT8_ARRAY</code><tr><td><code>array&lt;uint16></code><td><code>UINT16_ARRAY</code><tr><td><code>array&lt;uint32></code><td><code>UINT32_ARRAY</code><tr><td><code>array&lt;uint64></code><td><code>UINT64_ARRAY</code><tr><td><code>array&lt;float16></code><td><code>FLOAT16_ARRAY</code><tr><td><code>array&lt;bfloat16></code><td><code>BFLOAT16_ARRAY</code><tr><td><code>array&lt;float32></code><td><code>FLOAT32_ARRAY</code><tr><td><code>array&lt;float64></code><td><code>FLOAT64_ARRAY</code></table>
+<p><code>ARRAY (42)</code> is reserved for a future generic or shaped-array descriptor and is
+not emitted for dense primitive arrays.</p>
+<p>In schema-compatible mode only, a matched struct/class field may read between
+direct top-level <code>list&lt;T></code> and direct top-level <code>array&lt;T></code> schemas when <code>T</code>
+belongs to the valid dense array element domains above. Integer list element
+encodings in the same signedness and width domain match the corresponding dense
+array element domain. This is a read adaptation, not a schema-kind merge:
+writers keep emitting their local canonical <code>list&lt;T></code> or <code>array&lt;T></code> payload, and
+TypeDef/ClassDef encodings, fingerprints, dynamic root serialization,
+same-schema mode, and unknown-field skipping continue to treat <code>list&lt;T></code>
+and <code>array&lt;T></code> as distinct kinds.</p>
+<p>The adaptation is limited to the immediate schema of the matched compatible
+field. It does not apply when <code>list&lt;T></code> or <code>array&lt;T></code> appears inside another
+field type, including collection elements, map keys or values, array elements,
+union alternatives, or other generic/container positions. A peer <code>list&lt;T?></code>
+TypeDef element schema is not immediate schema incompatibility for a local
+matched <code>array&lt;T></code> field. Classification must accept the matched field when the
+element domains match and the only element-schema difference is nullable
+metadata. The reader must decide from the collection payload: if the payload
+actually carries a null element, the local <code>array&lt;T></code> field must raise a
+compatible-read error. Null list elements must not be coerced to dense-array
+default values. Reference-tracked list-element framing is separate from
+nullable element schema. A runtime that cannot materialize ref-tracked list
+elements into a dense array without generic/reference paths may reject that
+field during compatible classification; if it accepts the field, reference
+payloads that cannot be represented as dense array element values must fail
+during read.</p>
+<p>The dense-array error rule applies to dense-array targets. A matched
+<code>list&lt;T?></code> field read into a local <code>list&lt;T?></code> target must keep using list
+semantics and preserve actual null elements; implementations must not route that
+payload through a dense primitive-array materialization path that rejects nulls.</p>
+<p>In schema-compatible mode only, a matched struct/class field may read between
+direct top-level <code>binary</code> and direct top-level <code>array&lt;uint8></code> schemas. This is a
+byte-sequence adaptation only: it does not merge TypeDef/ClassDef type IDs,
+schema fingerprints, dynamic root serialization, same-schema mode, or nested
+collection/map/array/union/generic positions. <code>array&lt;int8></code> is not part of this
+adapter.</p>
+<p>In schema-compatible mode only, a matched struct/class field may also read
+between direct top-level scalar schemas when the remote value can be represented
+by the local scalar schema without changing the logical value. This is a
+compatible read adaptation only: writers keep emitting their local canonical
+schema and payload, and TypeDef/ClassDef encodings, fingerprints, dynamic root
+serialization, same-schema mode, unknown-field skipping, and container
+element schemas continue to treat the original scalar types as distinct.</p>
+<p>The scalar conversion rule applies only to the immediate schema of the matched
+compatible field. It does not apply to dynamic root values, <code>any</code>, map keys, map
+values, list elements, set elements, array elements, union alternatives, enum
+values, time/date/duration values, binary values, structs, ext values, or nested
+generic/container positions. It also applies only when both the remote and local
+top-level field schemas have <code>trackingRef = false</code>; if either matched field
+schema has <code>trackingRef = true</code>, scalar conversion is outside the compatible
+layout matrix and scalar type changes remain schema/type incompatible. Same
+scalar type IDs with matching top-level <code>trackingRef</code> and null/optional framing
+are exact same-schema direct reads, not compatible scalar conversion. Same
+scalar type IDs with different top-level <code>trackingRef</code> framing are schema/type
+incompatible because the wire framing differs. Same scalar type IDs with
+different top-level null/optional framing may still use the nullable/optional
+composition rule below when both fields have <code>trackingRef = false</code>.</p>
+<p>The convertible scalar domains are <code>bool</code>, <code>string</code>, and numeric scalars.
+Numeric scalars are signed integers (<code>int8</code>, <code>int16</code>, <code>int32</code>, <code>int64</code>),
+unsigned integers (<code>uint8</code>, <code>uint16</code>, <code>uint32</code>, <code>uint64</code>), floating point
+(<code>float16</code>, <code>bfloat16</code>, <code>float32</code>, <code>float64</code>), and <code>decimal</code>. Integer encoding
+variants are the same semantic domain as their base width: fixed, variable, and
+tagged integer encodings do not create additional conversion domains.</p>
+<p>Compatible scalar conversion MUST follow these rules:</p>
+<ul>
+<li class=""><code>string</code> to <code>bool</code> accepts exactly <code>"0"</code>, <code>"1"</code>, <code>"false"</code>, and <code>"true"</code>.
+The match is byte-for-byte ASCII; readers MUST NOT trim whitespace, accept a
+leading sign, accept other letter case, or use locale-specific text.</li>
+<li class=""><code>bool</code> to <code>string</code> produces canonical lower-case <code>"false"</code> or <code>"true"</code>.</li>
+<li class="">numeric to <code>bool</code> accepts only exact numeric zero and exact numeric one. <code>NaN</code>
+and infinities fail. Negative floating zero is zero. Decimal scale does not
+affect the zero/one check.</li>
+<li class=""><code>bool</code> to numeric produces exact zero or one in the local numeric domain.</li>
+<li class="">numeric to numeric succeeds only when the local numeric domain represents the
+same mathematical value. Integer conversions check target range and signedness;
+integer-to-floating conversions check exact representability in the target
+floating domain; floating-to-integer conversions require a finite integral
+value within range; floating-to-floating conversions require exact
+preservation after converting to the target and back to the source, including
+the sign of zero. Floating infinities may convert only when the target floating
+domain preserves the same infinity. <code>NaN</code> is not convertible across different
+floating type IDs.</li>
+<li class="">decimal is an exact numeric scalar. Integer-to-decimal conversion uses scale
+<code>0</code>; decimal-to-integer conversion requires an integral value in range;
+floating-to-decimal conversion requires a finite value and converts the exact
+binary floating value to canonical decimal form; decimal-to-floating
+conversion requires exact representability in the target floating domain.
+Same-type decimal reads preserve the ordinary decimal payload. Decimal values
+produced by conversion use the canonical converted decimal form below.</li>
+<li class=""><code>string</code> to numeric accepts only the compatible numeric literal grammar below
+and then applies the same lossless target-domain checks. <code>"NaN"</code>,
+<code>"Infinity"</code>, <code>"-Infinity"</code>, and spelling variants fail because numeric
+strings are finite-only.</li>
+<li class="">numeric to <code>string</code> emits canonical finite numeric text. Integer sources emit
+decimal text with no leading zeros except <code>"0"</code>. Floating sources emit exact
+plain decimal text that equals the source value and parses back to the same
+source floating type; it includes a decimal point and at least one fractional
+digit, preserves negative zero as <code>"-0.0"</code>, never uses exponent notation, and
+fails for <code>NaN</code> and infinities. Decimal sources emit exact plain decimal text
+with no exponent and no insignificant trailing fractional zeros; decimal zero
+is <code>"0"</code>.</li>
+</ul>
+<p>The compatible numeric literal grammar is deliberately stricter than host
+language parsers:</p>
+<ul>
+<li class="">no leading or trailing whitespace;</li>
+<li class="">no leading plus sign;</li>
+<li class="">ASCII grammar only: signs, digits, decimal points, and exponent markers are
+the ASCII bytes <code>-</code>, <code>0</code> through <code>9</code>, <code>.</code>, <code>e</code>, and <code>E</code>;</li>
+<li class="">no Unicode decimal digits, underscores, grouping separators, locale-specific
+digits, hexadecimal, octal, binary, or type suffixes;</li>
+<li class="">integer literal: <code>-?(0|[1-9][0-9]*)</code>;</li>
+<li class="">decimal floating literal:
+<code>-?(0|[1-9][0-9]*)\.[0-9]+([eE]-?(0|[1-9][0-9]*))?</code> or
+<code>-?(0|[1-9][0-9]*)[eE]-?(0|[1-9][0-9]*)</code>.</li>
+</ul>
+<p>Readers MUST parse numeric strings with exact decimal, rational, or equivalent
+checked algorithms. Parsing through a host floating type and then casting is not
+valid unless the implementation also proves exactness against the original
+literal.</p>
+<p>Canonical converted decimal form is:</p>
+<ul>
+<li class="">zero: <code>unscaled = 0</code>, <code>scale = 0</code>;</li>
+<li class="">non-zero integers: <code>scale = 0</code> and the integer as <code>unscaled</code>;</li>
+<li class="">finite fractional values: the smallest non-negative scale whose
+<code>unscaled * 10^-scale</code> equals the value and whose <code>unscaled</code> is not divisible
+by <code>10</code>.</li>
+</ul>
+<p>Compatible scalar conversion MUST reject a numeric string before arbitrary
+precision parsing when the raw string length is greater than <code>320</code>. It MUST also
+reject a converted decimal before constructing large powers of ten or formatting
+plain decimal text when its canonical converted form would require an exponent or
+scale outside <code>[-256, 256]</code>, a positive scale greater than <code>256</code>, an unscaled
+decimal magnitude with more than <code>256</code> significant digits, or a negative scale
+whose formatted integer digit count would exceed <code>256</code>. These bounds apply only
+to values produced by compatible scalar conversion, including string-to-decimal,
+decimal-to-string, and floating-to-decimal conversion. Same-type decimal reads
+preserve the ordinary decimal payload. A bounded public decimal carrier may
+reject smaller values when it cannot represent the value exactly.</p>
+<p>Nullable, boxed, optional, and nullable-field composition is supported for
+matched scalar pairs whose top-level field schemas have <code>trackingRef = false</code>.
+Readers first consume the remote null/optional framing described by the remote
+field metadata. If a value is present, the reader converts the unwrapped scalar
+value and then assigns or wraps it into the local carrier. If the remote value
+is null or absent, the reader uses the same missing/null compatible-field rule
+it already applies for that local field; this feature does not introduce a
+second null policy. Reference-tracked scalar conversion is not supported.</p>
+<p>Conversion failures are data errors, not schema misses. A schema pair outside
+the conversion matrix remains a schema/type compatibility error when building
+the compatible layout. Once a matched field is accepted as a scalar conversion
+action, an invalid payload value MUST be reported through the implementation's
+data-error path with enough context to identify the remote type, local type, and
+field when that path has the information.</p>
+<p>Unknown-field skipping applies only when the remote field has no matching local
+field identity. If a local field matches by tag ID or name but its schema is
+outside the exact-read and compatible-adaptation rules, the reader MUST reject
+the compatible layout instead of treating the field as missing, remote-only, or
+skippable.</p>
+<p>Users can also provide meta hints for fields of a type, or the type whole. Here is an example in java which use
+annotation to provide such information.</p>
+<div class="language-java codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-java codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token annotation punctuation" style=color:#393A34>@ForyStruct</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">Foo</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token annotation punctuation" style=color:#393A34>@ArrayType</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token annotation punctuation" style=color:#393A34>@ForyField</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">id </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>0</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token keyword" style=color:#00009f>int</span><span class="token punctuation" style=color:#393A34>[</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"> intArray</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token annotation punctuation" style=color:#393A34>@ForyField</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">id </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>1</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> dynamic </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token class-name">ForyField</span><span class="token class-name punctuation" style=color:#393A34>.</span><span class="token class-name">Dynamic</span><span class="token punctuation" style=color:#393A34>.</span><span class="token constant" style=color:#36acaa>TRUE</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token class-name">Object</span><span class="token plain"> object</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token annotation punctuation" style=color:#393A34>@Nullable</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token annotation punctuation" style=color:#393A34>@ForyField</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">id </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token number" style=color:#36acaa>2</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  </span><span class="token class-name">List</span><span class="token generics punctuation" style=color:#393A34>&lt;</span><span class="token generics class-name">Object</span><span class="token generics punctuation" style=color:#393A34>></span><span class="token plain"> objectList</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><br/></div></code></pre></div></div>
+<p>Such information can be provided in other languages too:</p>
+<ul>
+<li class="">cpp: use macro and template.</li>
+<li class="">golang: use struct tag.</li>
+<li class="">python: use typehint.</li>
+<li class="">rust: use macro.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-id>Type ID<a href=#type-id class=hash-link aria-label="Direct link to Type ID" title="Direct link to Type ID" translate=no>​</a></h3>
+<p>All internal data types use an 8-bit internal ID (<code>0~255</code>, with <code>0~56</code> defined here). Users can
+register types by numeric ID (<code>0~0xFFFFFFFE</code> in current implementations). User IDs are encoded
+separately from the internal type ID; there is no bit shifting/packing.</p>
+<p>Named types (<code>NAMED_*</code>) do not embed a user ID; their names are carried in metadata instead.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=internal-type-id-table>Internal Type ID Table<a href=#internal-type-id-table class=hash-link aria-label="Direct link to Internal Type ID Table" title="Direct link to Internal Type ID Table" translate=no>​</a></h4>
+<table><thead><tr><th>Type ID<th>Name<th>Description<tbody><tr><td>0<td>UNKNOWN<td>Unknown type, used for dynamic typing<tr><td>1<td>BOOL<td>Boolean value<tr><td>2<td>INT8<td>8-bit signed integer<tr><td>3<td>INT16<td>16-bit signed integer<tr><td>4<td>INT32<td>32-bit signed integer<tr><td>5<td>VARINT32<td>Variable-length encoded 32-bit signed integer<tr><td>6<td>INT64<td>64-bit signed integer<tr><td>7<td>VARINT64<td>Variable-length encoded 64-bit signed integer<tr><td>8<td>TAGGED_INT64<td>Hybrid encoded 64-bit signed integer<tr><td>9<td>UINT8<td>8-bit unsigned integer<tr><td>10<td>UINT16<td>16-bit unsigned integer<tr><td>11<td>UINT32<td>32-bit unsigned integer<tr><td>12<td>VAR_UINT32<td>Variable-length encoded 32-bit unsigned integer<tr><td>13<td>UINT64<td>64-bit unsigned integer<tr><td>14<td>VAR_UINT64<td>Variable-length encoded 64-bit unsigned integer<tr><td>15<td>TAGGED_UINT64<td>Hybrid encoded 64-bit unsigned integer<tr><td>16<td>FLOAT8<td>8-bit floating point (float8)<tr><td>17<td>FLOAT16<td>16-bit floating point (half precision)<tr><td>18<td>BFLOAT16<td>16-bit brain floating point<tr><td>19<td>FLOAT32<td>32-bit floating point (single precision)<tr><td>20<td>FLOAT64<td>64-bit floating point (double precision)<tr><td>21<td>STRING<td>UTF-8/UTF-16/Latin1 encoded string<tr><td>22<td>LIST<td>Ordered collection (List, Array, Vector)<tr><td>23<td>SET<td>Unordered collection of unique elements<tr><td>24<td>MAP<td>Key-value mapping<tr><td>25<td>ENUM<td>Enum registered by numeric ID<tr><td>26<td>NAMED_ENUM<td>Enum registered by namespace + type name<tr><td>27<td>STRUCT<td>Struct registered by numeric ID (same-schema)<tr><td>28<td>COMPATIBLE_STRUCT<td>Struct with schema evolution support (by ID)<tr><td>29<td>NAMED_STRUCT<td>Struct registered by namespace + type name<tr><td>30<td>NAMED_COMPATIBLE_STRUCT<td>Struct with schema evolution (by name)<tr><td>31<td>EXT<td>Extension type registered by numeric ID<tr><td>32<td>NAMED_EXT<td>Extension type registered by namespace + type name<tr><td>33<td>UNION<td>Union value, schema identity not embedded<tr><td>34<td>TYPED_UNION<td>Union value with registered numeric type ID<tr><td>35<td>NAMED_UNION<td>Union value with embedded type name/TypeDef<tr><td>36<td>NONE<td>Empty/unit type (no data)<tr><td>37<td>DURATION<td>Time duration (seconds + nanoseconds)<tr><td>38<td>TIMESTAMP<td>Point in time (seconds + nanoseconds since epoch)<tr><td>39<td>DATE<td>Date without timezone (signed varint64 days)<tr><td>40<td>DECIMAL<td>Arbitrary precision decimal (scale + unscaled)<tr><td>41<td>BINARY<td>Raw binary data<tr><td>42<td>ARRAY<td>Reserved for future dedicated multi-dimensional arrays<tr><td>43<td>BOOL_ARRAY<td>1D boolean array<tr><td>44<td>INT8_ARRAY<td>1D int8 array<tr><td>45<td>INT16_ARRAY<td>1D int16 array<tr><td>46<td>INT32_ARRAY<td>1D int32 array<tr><td>47<td>INT64_ARRAY<td>1D int64 array<tr><td>48<td>UINT8_ARRAY<td>1D uint8 array<tr><td>49<td>UINT16_ARRAY<td>1D uint16 array<tr><td>50<td>UINT32_ARRAY<td>1D uint32 array<tr><td>51<td>UINT64_ARRAY<td>1D uint64 array<tr><td>52<td>FLOAT8_ARRAY<td>1D float8 array<tr><td>53<td>FLOAT16_ARRAY<td>1D float16 array<tr><td>54<td>BFLOAT16_ARRAY<td>1D bfloat16 array<tr><td>55<td>FLOAT32_ARRAY<td>1D float32 array<tr><td>56<td>FLOAT64_ARRAY<td>1D float64 array</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-id-encoding-for-user-types>Type ID Encoding for User Types<a href=#type-id-encoding-for-user-types class=hash-link aria-label="Direct link to Type ID Encoding for User Types" title="Direct link to Type ID Encoding for User Types" translate=no>​</a></h4>
+<p>When registering user types (struct/ext/enum/union), the internal type ID is written as the 8-bit
+kind. The user type ID is written separately as an unsigned varint32 (small7); there is no bit
+shift or packing.</p>
+<p><strong>Examples:</strong></p>
+<table><thead><tr><th>User ID<th>Type<th>Internal ID<th>Encoded User ID<th>Decimal<tbody><tr><td>0<td>STRUCT<td>27<td>0<td>0<tr><td>0<td>ENUM<td>25<td>0<td>0<tr><td>1<td>STRUCT<td>27<td>1<td>1<tr><td>1<td>COMPATIBLE_STRUCT<td>28<td>1<td>1<tr><td>2<td>NAMED_STRUCT<td>29<td>2<td>2</table>
+<p>When reading type IDs:</p>
+<ul>
+<li class="">Read internal type ID from the type ID field.</li>
+<li class="">If the internal type is a user-registered kind, read <code>user_type_id</code> as varuint32.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-mapping>Type mapping<a href=#type-mapping class=hash-link aria-label="Direct link to Type mapping" title="Direct link to Type mapping" translate=no>​</a></h3>
+<p>See <a class="" href=/docs/1.4/specification/xlang_type_mapping>Type mapping</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=spec-overview>Spec overview<a href=#spec-overview class=hash-link aria-label="Direct link to Spec overview" title="Direct link to Spec overview" translate=no>​</a></h2>
+<p>Here is the overall format:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| fory header | object ref meta | object type meta | object value data |</span><br/></div></code></pre></div></div>
+<p>The data are serialized using little endian byte order for all types.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=fory-header>Fory header<a href=#fory-header class=hash-link aria-label="Direct link to Fory header" title="Direct link to Fory header" translate=no>​</a></h2>
+<p>Fory header format for xlang serialization:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">|        1 byte bitmap           |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">+--------------------------------+</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">|            flags               |</span><br/></div></code></pre></div></div>
+<p>Detailed byte layout:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">Byte 0:   Bitmap flags</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">          - Bit 0: xlang flag (0x01)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">          - Bit 1: oob flag (0x02)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">          - Bits 2-7: reserved</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><strong>xlang flag</strong> (bit 0): 1 when serialization uses Fory xlang format, 0 when serialization uses a Fory native-mode format.</li>
+<li class=""><strong>oob flag</strong> (bit 1): 1 when out-of-band serialization is enabled (BufferCallback is not null), 0 otherwise.</li>
+<li class=""><strong>reserved bits</strong> (bits 2-7): must be zero.</li>
+</ul>
+<p>All data is encoded in little-endian format.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-meta>Reference Meta<a href=#reference-meta class=hash-link aria-label="Direct link to Reference Meta" title="Direct link to Reference Meta" translate=no>​</a></h2>
+<p>Reference tracking handles whether the object is null, and whether to track reference for the object by writing
+corresponding flags and maintaining internal state.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-flags>Reference Flags<a href=#reference-flags class=hash-link aria-label="Direct link to Reference Flags" title="Direct link to Reference Flags" translate=no>​</a></h3>
+<table><thead><tr><th>Flag<th>Byte Value (int8)<th>Hex<th>Description<tbody><tr><td>NULL FLAG<td><code>-3</code><td><code>0xFD</code><td>Object is null. No further bytes are written for this object.<tr><td>REF FLAG<td><code>-2</code><td><code>0xFE</code><td>Object was already serialized. Followed by unsigned varint32 reference ID.<tr><td>NOT_NULL VALUE FLAG<td><code>-1</code><td><code>0xFF</code><td>Object is non-null but reference tracking is disabled for this type. Object data follows immediately.<tr><td>REF VALUE FLAG<td><code>0</code><td><code>0x00</code><td>Object is referencable and this is its first occurrence. Object data follows. Assigns next reference ID.</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-tracking-algorithm>Reference Tracking Algorithm<a href=#reference-tracking-algorithm class=hash-link aria-label="Direct link to Reference Tracking Algorithm" title="Direct link to Reference Tracking Algorithm" translate=no>​</a></h3>
+<p><strong>Writing:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function write_ref_or_null(buffer, obj):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if obj is null:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        buffer.write_int8(NULL_FLAG)      // -3</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        return true  // done, no more data to write</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if reference_tracking_enabled:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        ref_id = lookup_written_objects(obj)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        if ref_id exists:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            buffer.write_int8(REF_FLAG)   // -2</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            buffer.write_varuint32(ref_id)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return true  // done, reference written</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            buffer.write_int8(REF_VALUE_FLAG)  // 0</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            add_to_written_objects(obj, next_ref_id++)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return false  // continue to serialize object data</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        buffer.write_int8(NOT_NULL_VALUE_FLAG)  // -1</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        return false  // continue to serialize object data</span><br/></div></code></pre></div></div>
+<p><strong>Reading:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function read_ref_or_null(buffer):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    flag = buffer.read_int8()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    switch flag:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        case NULL_FLAG (-3):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return (null, true)  // null object, done</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        case REF_FLAG (-2):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            ref_id = buffer.read_varuint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            obj = get_from_read_objects(ref_id)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return (obj, true)  // referenced object, done</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        case NOT_NULL_VALUE_FLAG (-1):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return (null, false)  // non-null, continue reading</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        case REF_VALUE_FLAG (0):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            reserve_ref_slot()  // will be filled after reading</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return (null, false)  // non-null, continue reading</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-id-assignment>Reference ID Assignment<a href=#reference-id-assignment class=hash-link aria-label="Direct link to Reference ID Assignment" title="Direct link to Reference ID Assignment" translate=no>​</a></h3>
+<ul>
+<li class="">Reference IDs are assigned sequentially starting from <code>0</code></li>
+<li class="">The ID is assigned when <code>REF_VALUE_FLAG</code> is written (first occurrence)</li>
+<li class="">Objects are stored in a list/map indexed by their reference ID</li>
+<li class="">For reading, a reference slot is reserved before deserializing the object, then filled after</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=when-reference-tracking-is-disabled>When Reference Tracking is Disabled<a href=#when-reference-tracking-is-disabled class=hash-link aria-label="Direct link to When Reference Tracking is Disabled" title="Direct link to When Reference Tracking is Disabled" translate=no>​</a></h3>
+<p>When reference tracking is disabled globally or for specific types, only the <code>NULL</code> and <code>NOT_NULL VALUE</code> flags
+will be used for reference meta. This reduces overhead for types that are known not to have references.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=language-specific-considerations>Language-Specific Considerations<a href=#language-specific-considerations class=hash-link aria-label="Direct link to Language-Specific Considerations" title="Direct link to Language-Specific Considerations" translate=no>​</a></h3>
+<p><strong>Languages with nullable and reference types by default (Java, Python, JavaScript):</strong></p>
+<p>In xlang mode, for cross-language compatibility:</p>
+<ul>
+<li class="">All fields are treated as <strong>not-null</strong> by default</li>
+<li class="">Reference tracking is <strong>disabled</strong> by default</li>
+<li class="">Users can explicitly mark fields as nullable or enable reference tracking via annotations</li>
+<li class=""><code>Optional</code> types (e.g., <code>java.util.Optional</code>, <code>typing.Optional</code>) are treated as nullable</li>
+</ul>
+<p><strong>Annotation examples:</strong></p>
+<div class="language-java codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-java codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic>// Java: use @Ref for reference tracking</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>public</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">MyClass</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token annotation punctuation" style=color:#393A34>@Nullable</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token annotation punctuation" style=color:#393A34>@Ref</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>private</span><span class="token plain"> </span><span class="token class-name">Object</span><span class="token plain"> refField</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>private</span><span class="token plain"> </span><span class="token class-name">String</span><span class="token plain"> requiredField</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><br/></div></code></pre></div></div>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-python codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token comment" style=color:#999988;font-style:italic># Python: use typing with fory field descriptors</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>from</span><span class="token plain"> pyfory </span><span class="token keyword" style=color:#00009f>import</span><span class="token plain"> ForyField</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> Ref</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">MyClass</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    ref_field</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> ForyField</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">Ref</span><span class="token punctuation" style=color:#393A34>[</span><span class="token plain">SomeType</span><span class="token punctuation" style=color:#393A34>]</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> nullable</span><span class="token operator" style=color:#393A34>=</span><span class="token boolean" style=color:#36acaa>True</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    required_field</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> ForyField</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">str</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> nullable</span><span class="token operator" style=color:#393A34>=</span><span class="token boolean" style=color:#36acaa>False</span><span class="token punctuation" style=color:#393A34>)</span><br/></div></code></pre></div></div>
+<p><strong>Languages with non-nullable types by default:</strong></p>
+<table><thead><tr><th>Language<th>Null Representation<th>Reference Tracking Support<tbody><tr><td>Rust<td><code>Option::None</code><td>Via <code>Rc&lt;T></code>, <code>Arc&lt;T></code>, <code>Weak&lt;T></code><tr><td>C++<td><code>std::nullopt</code>, <code>nullptr</code><td>Via <code>std::shared_ptr&lt;T></code>, <code>weak_ptr&lt;T></code><tr><td>Go<td><code>nil</code> interface/pointer<td>Via pointer/interface types</table>
+<p><strong>Important:</strong> For languages like Rust that don't have implicit reference semantics, reference tracking must use
+explicit smart pointers (<code>Rc</code>, <code>Arc</code>).</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-meta>Type Meta<a href=#type-meta class=hash-link aria-label="Direct link to Type Meta" title="Direct link to Type Meta" translate=no>​</a></h2>
+<p>Every non-primitive value begins with a type ID that identifies its concrete type. The type ID is
+followed by optional type-specific metadata.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-id-encoding>Type ID encoding<a href=#type-id-encoding class=hash-link aria-label="Direct link to Type ID encoding" title="Direct link to Type ID encoding" translate=no>​</a></h3>
+<ul>
+<li class="">The type ID is written as an unsigned varint32 (small7).</li>
+<li class="">Internal types use their internal type ID directly (low 8 bits).</li>
+<li class="">User-registered types write the internal type ID, then write <code>user_type_id</code> as varuint32.<!-- -->
+<ul>
+<li class=""><code>user_type_id</code> is a numeric ID (0~0xFFFFFFFE in current implementations).</li>
+<li class=""><code>internal_type_id</code> is one of <code>ENUM</code>, <code>STRUCT</code>, <code>COMPATIBLE_STRUCT</code>, <code>EXT</code>, or <code>TYPED_UNION</code>.</li>
+</ul>
+</li>
+<li class="">Named types do not embed a user ID. They use <code>NAMED_*</code> internal type IDs and carry a namespace
+and type name (or shared TypeDef) instead.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-meta-payload>Type meta payload<a href=#type-meta-payload class=hash-link aria-label="Direct link to Type meta payload" title="Direct link to Type meta payload" translate=no>​</a></h3>
+<p>After the type ID:</p>
+<ul>
+<li class=""><strong>ENUM / STRUCT / EXT / TYPED_UNION</strong>: no extra bytes beyond the <code>user_type_id</code> (registration by ID required on both sides).</li>
+<li class=""><strong>COMPATIBLE_STRUCT</strong>:<!-- -->
+<ul>
+<li class="">If meta share is enabled, write a shared TypeDef entry (see below).</li>
+<li class="">If meta share is disabled, no extra bytes.</li>
+</ul>
+</li>
+<li class=""><strong>NAMED_ENUM / NAMED_STRUCT / NAMED_COMPATIBLE_STRUCT / NAMED_EXT / NAMED_UNION</strong>:<!-- -->
+<ul>
+<li class="">If meta share is disabled, write <code>namespace</code> and <code>type_name</code> as meta strings.</li>
+<li class="">If meta share is enabled, write a shared TypeDef entry (see below).</li>
+</ul>
+</li>
+<li class=""><strong>UNION</strong>: no extra bytes at this layer.</li>
+<li class=""><strong>LIST / SET / MAP / primitives</strong>: no extra bytes at this layer.</li>
+</ul>
+<p>Pure id-based enum, ext, and typed-union values therefore do not carry a TypeDef
+body. Receive-side TypeDef resource limits apply only when the stream actually
+carries shared TypeDef metadata.</p>
+<p><code>ARRAY (42)</code> is reserved for a future xlang extension for dedicated multi-dimensional arrays and
+is not used in current xlang streams.</p>
+<p>Unregistered types are serialized as named types:</p>
+<ul>
+<li class="">Enums -> <code>NAMED_ENUM</code></li>
+<li class="">Struct-like classes -> <code>NAMED_STRUCT</code> (or <code>NAMED_COMPATIBLE_STRUCT</code> when meta share is enabled)</li>
+<li class="">Custom extension types -> <code>NAMED_EXT</code></li>
+<li class="">Unions -> <code>NAMED_UNION</code></li>
+</ul>
+<p>The namespace is the package/module name and the type name is the simple class name.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=shared-type-meta-streaming>Shared Type Meta (streaming)<a href=#shared-type-meta-streaming class=hash-link aria-label="Direct link to Shared Type Meta (streaming)" title="Direct link to Shared Type Meta (streaming)" translate=no>​</a></h3>
+<p>When meta share is enabled, TypeDef metadata is written inline the first time a type is
+encountered, and subsequent occurrences only reference it.</p>
+<p>Encoding:</p>
+<ul>
+<li class=""><code>marker = (index &lt;&lt; 1) | flag</code></li>
+<li class=""><code>flag = 0</code>: new type definition follows</li>
+<li class=""><code>flag = 1</code>: reference to a previously written type definition</li>
+<li class=""><code>index</code> is the sequential index assigned to this type (starting from 0).</li>
+</ul>
+<p>Write algorithm:</p>
+<ol>
+<li class="">Look up the class in the per-stream meta context map.</li>
+<li class="">If found, write <code>(index &lt;&lt; 1) | 1</code>.</li>
+<li class="">If not found:<!-- -->
+<ul>
+<li class="">assign <code>index = next_id</code></li>
+<li class="">write <code>(index &lt;&lt; 1)</code></li>
+<li class="">write the encoded TypeDef bytes immediately after</li>
+</ul>
+</li>
+</ol>
+<p>Read algorithm:</p>
+<ol>
+<li class="">Read <code>marker</code> as varuint32.</li>
+<li class=""><code>flag = marker & 1</code>, <code>index = marker >>> 1</code>.</li>
+<li class="">If <code>flag == 1</code>, use the cached TypeDef at <code>index</code>.</li>
+<li class="">If <code>flag == 0</code>, read a TypeDef, cache it at <code>index</code>, and use it.</li>
+</ol>
+<p>TypeDef bytes include the 8-byte global header and optional size extension.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=typedef-schema-evolution-metadata>TypeDef (schema evolution metadata)<a href=#typedef-schema-evolution-metadata class=hash-link aria-label="Direct link to TypeDef (schema evolution metadata)" title="Direct link to TypeDef (schema evolution metadata)" translate=no>​</a></h3>
+<p>TypeDef describes a struct-like type (or a named enum/ext) for schema evolution and name
+resolution. It is encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">|    8-byte global header   | [optional size varuint] | TypeDef body |</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=global-header>Global header<a href=#global-header class=hash-link aria-label="Direct link to Global header" title="Direct link to Global header" translate=no>​</a></h4>
+<p>The 8-byte header is a little-endian uint64:</p>
+<ul>
+<li class="">Low 8 bits: meta size (number of bytes in the TypeDef body).<!-- -->
+<ul>
+<li class="">If meta size >= 0xFF, the low 8 bits are set to 0xFF and an extra
+<code>varuint32(meta_size - 0xFF)</code> follows immediately after the header.</li>
+</ul>
+</li>
+<li class="">Bit 8: <code>COMPRESS_META</code> is reserved for a future xlang metadata-compression extension.
+Current xlang writers MUST leave this bit unset and current xlang readers MUST treat a set bit
+as unsupported.</li>
+<li class="">Bits 9-11: reserved for future extension (must be zero).</li>
+<li class="">High 52 bits: stored hash bits derived from MurmurHash3 x64_128 seed 47 over
+<code>TypeDef body || header_low12_le</code>. <code>header_low12_le</code> is two little-endian bytes containing the low
+12 header bits (size, compress, and reserved bits); the upper four bits of the second byte are
+zero. Take lane 0 of the 128-bit MurmurHash3 result as a signed int64, left-shift it by 12 with
+two's-complement 64-bit wraparound, apply signed absolute value (leaving <code>INT64_MIN</code> unchanged),
+then mask with <code>0xfffffffffffff000</code>. The final header is the masked hash bits OR-ed with the low
+12 header bits.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=typedef-body>TypeDef body<a href=#typedef-body class=hash-link aria-label="Direct link to TypeDef body" title="Direct link to TypeDef body" translate=no>​</a></h4>
+<p>TypeDef body has a single layer (fields are flattened in class hierarchy order):</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| meta header (1 byte) | type spec | field info ... |</span><br/></div></code></pre></div></div>
+<p>Meta header byte for struct TypeDefs:</p>
+<ul>
+<li class="">Bit 7: <code>IS_STRUCT</code> (1).</li>
+<li class="">Bit 6: <code>COMPATIBLE</code>.</li>
+<li class="">Bit 5: <code>REGISTER_BY_NAME</code> (1 = namespace + type name, 0 = numeric user type ID).</li>
+<li class="">Bits 0-4: <code>num_fields</code> (0-30).<!-- -->
+<ul>
+<li class="">If <code>num_fields == 31</code>, read an extra <code>varuint32</code> and add it.</li>
+</ul>
+</li>
+</ul>
+<p>Meta header byte for non-struct TypeDefs:</p>
+<ul>
+<li class="">Bit 7: <code>IS_STRUCT</code> (0).</li>
+<li class="">Bits 4-6: reserved (must be zero).</li>
+<li class="">Bits 0-3: kind code.</li>
+</ul>
+<p>Readers may reject a received TypeDef that exceeds runtime resource limits such
+as maximum metadata body bytes or maximum fields in one struct TypeDef. These
+limits are receive-side resource controls and do not change TypeDef wire
+encoding, type identity, dynamic loading, unknown-type handling, registration
+policy, or schema-evolution semantics.</p>
+<p>Non-struct kind codes:</p>
+<ul>
+<li class=""><code>0</code>: <code>ENUM</code></li>
+<li class=""><code>1</code>: <code>NAMED_ENUM</code></li>
+<li class=""><code>2</code>: <code>EXT</code></li>
+<li class=""><code>3</code>: <code>NAMED_EXT</code></li>
+<li class=""><code>4</code>: <code>TYPED_UNION</code></li>
+<li class=""><code>5</code>: <code>NAMED_UNION</code></li>
+<li class=""><code>6-14</code>: reserved</li>
+<li class=""><code>15</code>: extended-kind escape, rejected until defined</li>
+</ul>
+<p>Type spec:</p>
+<ul>
+<li class="">If <code>REGISTER_BY_NAME</code> is set:<!-- -->
+<ul>
+<li class=""><code>namespace</code> meta string</li>
+<li class=""><code>type_name</code> meta string</li>
+</ul>
+</li>
+<li class="">Otherwise:<!-- -->
+<ul>
+<li class="">user type ID as <code>varuint32</code></li>
+</ul>
+</li>
+</ul>
+<p>Field info list:</p>
+<p>Each field is encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| field header (1 byte) | field type info | [field name bytes] |</span><br/></div></code></pre></div></div>
+<p>Field header layout:</p>
+<ul>
+<li class="">Bits 6-7: field name encoding (<code>UTF8</code>, <code>ALL_TO_LOWER_SPECIAL</code>,
+<code>LOWER_UPPER_DIGIT_SPECIAL</code>, or <code>TAG_ID</code>)</li>
+<li class="">Bits 2-5: size<!-- -->
+<ul>
+<li class="">For name encoding: <code>size = (name_bytes_length - 1)</code></li>
+<li class="">For tag ID: <code>size = tag_id</code></li>
+<li class="">If <code>size == 0b1111</code>, read <code>varuint32(size - 15)</code> and add it</li>
+</ul>
+</li>
+<li class="">Bit 1: nullable flag</li>
+<li class="">Bit 0: reference tracking flag</li>
+</ul>
+<p>Field type info:</p>
+<ul>
+<li class="">The top-level field type is written as <code>varuint32(type_id)</code> (small7) without flags.</li>
+<li class="">For <code>LIST</code> / <code>SET</code>, an element type follows, encoded as
+<code>(nested_type_id &lt;&lt; 2) | (nullable &lt;&lt; 1) | tracking_ref</code>.</li>
+<li class="">For <code>MAP</code>, key type and value type follow, both encoded the same way.</li>
+<li class="">One-dimensional primitive arrays use <code>*_ARRAY</code> type IDs; other arrays are encoded as <code>LIST</code>.</li>
+</ul>
+<p>Field names:</p>
+<ul>
+<li class="">If <code>TAG_ID</code> encoding is used, no name bytes are written.</li>
+<li class="">Otherwise, write the encoded field name bytes as a meta string.</li>
+<li class="">For xlang, field names are converted to <code>snake_case</code> before encoding for
+cross-language compatibility.</li>
+</ul>
+<p>Field order:</p>
+<p>TypeDef field lists use the same ordering defined in <a href=#field-order class="">Field order</a>. Compatible
+decoders must still match fields by name or tag ID rather than relying only on position.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-string>Meta String<a href=#meta-string class=hash-link aria-label="Direct link to Meta String" title="Direct link to Meta String" translate=no>​</a></h2>
+<p>Meta string is a compressed encoding for metadata strings such as field names, type names, and namespaces.
+This compression significantly reduces the size of type metadata in serialized data.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=encoding-type-ids>Encoding Type IDs<a href=#encoding-type-ids class=hash-link aria-label="Direct link to Encoding Type IDs" title="Direct link to Encoding Type IDs" translate=no>​</a></h3>
+<table><thead><tr><th>ID<th>Name<th>Bits/Char<th>Character Set<tbody><tr><td>0<td>UTF8<td>8<td>Any UTF-8 character<tr><td>1<td>LOWER_SPECIAL<td>5<td><code>a-z . _ $ |</code><tr><td>2<td>LOWER_UPPER_DIGIT_SPECIAL<td>6<td><code>a-z A-Z 0-9 . _</code><tr><td>3<td>FIRST_TO_LOWER_SPECIAL<td>5<td>First char uppercase, rest <code>a-z . _</code><tr><td>4<td>ALL_TO_LOWER_SPECIAL<td>5<td><code>a-z A-Z . _</code> (uppercase escaped)</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=character-mapping-tables>Character Mapping Tables<a href=#character-mapping-tables class=hash-link aria-label="Direct link to Character Mapping Tables" title="Direct link to Character Mapping Tables" translate=no>​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=lower_special-5-bits-per-character>LOWER_SPECIAL (5 bits per character)<a href=#lower_special-5-bits-per-character class=hash-link aria-label="Direct link to LOWER_SPECIAL (5 bits per character)" title="Direct link to LOWER_SPECIAL (5 bits per character)" translate=no>​</a></h4>
+<table><thead><tr><th>Character<th>Code (binary)<th>Code (decimal)<tbody><tr><td>a-z<td>00000-11001<td>0-25<tr><td>.<td>11010<td>26<tr><td>_<td>11011<td>27<tr><td>$<td>11100<td>28<tr><td>|<td>11101<td>29</table>
+<p><strong>Note:</strong> The <code>|</code> character is used as an escape sequence in ALL_TO_LOWER_SPECIAL encoding.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=lower_upper_digit_special-6-bits-per-character>LOWER_UPPER_DIGIT_SPECIAL (6 bits per character)<a href=#lower_upper_digit_special-6-bits-per-character class=hash-link aria-label="Direct link to LOWER_UPPER_DIGIT_SPECIAL (6 bits per character)" title="Direct link to LOWER_UPPER_DIGIT_SPECIAL (6 bits per character)" translate=no>​</a></h4>
+<table><thead><tr><th>Character<th>Code (binary)<th>Code (decimal)<tbody><tr><td>a-z<td>000000-011001<td>0-25<tr><td>A-Z<td>011010-110011<td>26-51<tr><td>0-9<td>110100-111101<td>52-61<tr><td>.<td>111110<td>62<tr><td>_<td>111111<td>63</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=encoding-algorithms>Encoding Algorithms<a href=#encoding-algorithms class=hash-link aria-label="Direct link to Encoding Algorithms" title="Direct link to Encoding Algorithms" translate=no>​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=lower_special-encoding>LOWER_SPECIAL Encoding<a href=#lower_special-encoding class=hash-link aria-label="Direct link to LOWER_SPECIAL Encoding" title="Direct link to LOWER_SPECIAL Encoding" translate=no>​</a></h4>
+<p>For strings containing only <code>a-z</code>, <code>.</code>, <code>_</code>, <code>$</code>, <code>|</code>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function encode_lower_special(str):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    bits = []</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    for char in str:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        bits.append(lookup_lower_special[char])  // 5 bits each</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    // Pad to byte boundary</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    total_bits = len(str) * 5</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    padding_bits = (8 - (total_bits % 8)) % 8</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    // First bit indicates if last char should be stripped (due to padding)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    strip_last = (padding_bits >= 5)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if strip_last:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        prepend bit 1</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        prepend bit 0</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return pack_bits_to_bytes(bits)</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=first_to_lower_special-encoding>FIRST_TO_LOWER_SPECIAL Encoding<a href=#first_to_lower_special-encoding class=hash-link aria-label="Direct link to FIRST_TO_LOWER_SPECIAL Encoding" title="Direct link to FIRST_TO_LOWER_SPECIAL Encoding" translate=no>​</a></h4>
+<p>For strings like <code>MyFieldName</code> where only the first character is uppercase:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function encode_first_to_lower_special(str):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    // Convert first char to lowercase</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    modified = str[0].lower() + str[1:]</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    // Then use LOWER_SPECIAL encoding</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return encode_lower_special(modified)</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=all_to_lower_special-encoding>ALL_TO_LOWER_SPECIAL Encoding<a href=#all_to_lower_special-encoding class=hash-link aria-label="Direct link to ALL_TO_LOWER_SPECIAL Encoding" title="Direct link to ALL_TO_LOWER_SPECIAL Encoding" translate=no>​</a></h4>
+<p>For strings with multiple uppercase characters like <code>MyTypeName</code>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function encode_all_to_lower_special(str):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    result = ""</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    for char in str:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        if char.is_upper():</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            result += "|" + char.lower()  // Escape uppercase with |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            result += char</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return encode_lower_special(result)</span><br/></div></code></pre></div></div>
+<p>Example: <code>MyType</code> → <code>|my|type</code> → encoded with LOWER_SPECIAL</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=encoding-selection-algorithm>Encoding Selection Algorithm<a href=#encoding-selection-algorithm class=hash-link aria-label="Direct link to Encoding Selection Algorithm" title="Direct link to Encoding Selection Algorithm" translate=no>​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function choose_encoding(str):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if all chars in str are in [a-z . _ $ |]:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        return LOWER_SPECIAL</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if first char is uppercase AND rest are in [a-z . _]:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        return FIRST_TO_LOWER_SPECIAL</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if all chars are in [a-z A-Z . _]:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        lower_special_size = encode_all_to_lower_special(str).size</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        luds_size = encode_lower_upper_digit_special(str).size</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        if lower_special_size &lt;= luds_size:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return ALL_TO_LOWER_SPECIAL</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            return LOWER_UPPER_DIGIT_SPECIAL</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if all chars are in [a-z A-Z 0-9 . _]:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        return LOWER_UPPER_DIGIT_SPECIAL</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return UTF8</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-string-header-format>Meta String Header Format<a href=#meta-string-header-format class=hash-link aria-label="Direct link to Meta String Header Format" title="Direct link to Meta String Header Format" translate=no>​</a></h3>
+<p>Meta strings are written with a header that includes the encoding type:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| 3 bits encoding | 5+ bits length | encoded bytes |</span><br/></div></code></pre></div></div>
+<p>Or for larger strings:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint: (length &lt;&lt; 3) | encoding | encoded bytes |</span><br/></div></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=special-character-sets-by-context>Special Character Sets by Context<a href=#special-character-sets-by-context class=hash-link aria-label="Direct link to Special Character Sets by Context" title="Direct link to Special Character Sets by Context" translate=no>​</a></h3>
+<p>Different contexts use different special characters:</p>
+<table><thead><tr><th>Context<th>Special Chars<th>Notes<tbody><tr><td>Field Name<td>. _ $ |<td>$ for inner classes, | for escape<tr><td>Namespace<td>. _<td>Package/module separators<tr><td>Type Name<td>$ _<td>$ for inner classes in Java</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=deduplication>Deduplication<a href=#deduplication class=hash-link aria-label="Direct link to Deduplication" title="Direct link to Deduplication" translate=no>​</a></h3>
+<p>Meta strings are deduplicated within a serialization session:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">First occurrence:  | (length &lt;&lt; 1) | [hash if large] | encoding | bytes |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">Reference:         | ((id + 1) &lt;&lt; 1) | 1 |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">Bit 0 of the header indicates: 0 = new string, 1 = reference to previous</li>
+<li class="">Large strings (> 16 bytes) include 64-bit hash for content-based deduplication</li>
+<li class="">Small strings use exact byte comparison</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=value-format>Value Format<a href=#value-format class=hash-link aria-label="Direct link to Value Format" title="Direct link to Value Format" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=basic-types>Basic types<a href=#basic-types class=hash-link aria-label="Direct link to Basic types" title="Direct link to Basic types" translate=no>​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=bool>bool<a href=#bool class=hash-link aria-label="Direct link to bool" title="Direct link to bool" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1 byte</li>
+<li class="">format: 0 for <code>false</code>, 1 for <code>true</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=int8>int8<a href=#int8 class=hash-link aria-label="Direct link to int8" title="Direct link to int8" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1 byte</li>
+<li class="">format: write as pure byte.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=int16>int16<a href=#int16 class=hash-link aria-label="Direct link to int16" title="Direct link to int16" translate=no>​</a></h4>
+<ul>
+<li class="">size: 2 byte</li>
+<li class="">byte order: raw bytes of little endian order</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=unsigned-int32>unsigned int32<a href=#unsigned-int32 class=hash-link aria-label="Direct link to unsigned int32" title="Direct link to unsigned int32" translate=no>​</a></h4>
+<ul>
+<li class="">size: 4 byte</li>
+<li class="">byte order: raw bytes of little endian order</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=unsigned-varint32>unsigned varint32<a href=#unsigned-varint32 class=hash-link aria-label="Direct link to unsigned varint32" title="Direct link to unsigned varint32" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1~5 bytes</li>
+<li class="">Format: The most significant bit (MSB) in every byte indicates whether to have the next byte. If the continuation
+bit is set (i.e. <code>b & 0x80 == 0x80</code>), then the next byte should be read until a byte with unset continuation bit.</li>
+</ul>
+<p><strong>Encoding Algorithm:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function write_varuint32(value):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    while value >= 0x80:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        buffer.write_byte((value & 0x7F) | 0x80)  // 7 bits of data + continuation bit</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        value = value >> 7</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    buffer.write_byte(value)  // final byte without continuation bit</span><br/></div></code></pre></div></div>
+<p><strong>Decoding Algorithm:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function read_varuint32():</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    result = 0</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    shift = 0</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    while true:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        byte = buffer.read_byte()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        result = result | ((byte & 0x7F) &lt;&lt; shift)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        if (byte & 0x80) == 0:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            break</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        shift = shift + 7</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return result</span><br/></div></code></pre></div></div>
+<p><strong>Byte sizes by value range:</strong></p>
+<table><thead><tr><th>Value Range<th>Bytes<tbody><tr><td>0 ~ 127<td>1<tr><td>128 ~ 16383<td>2<tr><td>16384 ~ 2097151<td>3<tr><td>2097152 ~ 268435455<td>4<tr><td>268435456 ~ 4294967295<td>5</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=signed-int32>signed int32<a href=#signed-int32 class=hash-link aria-label="Direct link to signed int32" title="Direct link to signed int32" translate=no>​</a></h4>
+<ul>
+<li class="">size: 4 bytes</li>
+<li class="">byte order: raw bytes of little endian order</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=signed-varint32>signed varint32<a href=#signed-varint32 class=hash-link aria-label="Direct link to signed varint32" title="Direct link to signed varint32" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1~5 bytes</li>
+<li class="">Format: First convert the number into positive unsigned int using ZigZag encoding, then encode as unsigned varint.</li>
+</ul>
+<p><strong>ZigZag Encoding:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">// Encode: convert signed to unsigned</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">zigzag_value = (value &lt;&lt; 1) ^ (value >> 31)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">// Decode: convert unsigned back to signed</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">original = (zigzag_value >> 1) ^ (-(zigzag_value & 1))</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">// Or equivalently:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">original = (zigzag_value >> 1) ^ (~(zigzag_value & 1) + 1)</span><br/></div></code></pre></div></div>
+<p>ZigZag encoding maps signed integers to unsigned integers so that small absolute values (positive or negative)
+have small encoded values:</p>
+<table><thead><tr><th>Original<th>ZigZag Encoded<tbody><tr><td>0<td>0<tr><td>-1<td>1<tr><td>1<td>2<tr><td>-2<td>3<tr><td>2<td>4<tr><td>...<td>...</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=unsigned-int64>unsigned int64<a href=#unsigned-int64 class=hash-link aria-label="Direct link to unsigned int64" title="Direct link to unsigned int64" translate=no>​</a></h4>
+<ul>
+<li class="">size: 8 bytes</li>
+<li class="">byte order: raw bytes of little endian order</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=unsigned-varint64>unsigned varint64<a href=#unsigned-varint64 class=hash-link aria-label="Direct link to unsigned varint64" title="Direct link to unsigned varint64" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1~9 bytes</li>
+</ul>
+<p>Uses PVL (Progressive Variable-Length) encoding:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function write_varuint64(value):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    while value >= 0x80:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        buffer.write_byte((value & 0x7F) | 0x80)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        value = value >> 7</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    buffer.write_byte(value)</span><br/></div></code></pre></div></div>
+<table><thead><tr><th>Value Range<th>Bytes<tbody><tr><td>0 ~ 127<td>1<tr><td>128 ~ 16383<td>2<tr><td>...<td>...<tr><td>2^56 ~ 2^63-1<td>9</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=unsigned-hybrid-int64-tagged_uint64>unsigned hybrid int64 (TAGGED_UINT64)<a href=#unsigned-hybrid-int64-tagged_uint64 class=hash-link aria-label="Direct link to unsigned hybrid int64 (TAGGED_UINT64)" title="Direct link to unsigned hybrid int64 (TAGGED_UINT64)" translate=no>​</a></h4>
+<ul>
+<li class="">size: 4 or 9 bytes</li>
+</ul>
+<p>Optimized for unsigned values that fit in 31 bits (common case for IDs, sizes, counts, etc.):</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">if value in [0, 2147483647]:  // fits in 31 bits (2^31 - 1), full unsigned range</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    write 4 bytes: ((int32) value) &lt;&lt; 1  // bit 0 is 0, indicating 4-byte encoding</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    write 1 byte:  0x01                  // bit 0 is 1, indicating 9-byte encoding</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    write 8 bytes: value as little-endian uint64</span><br/></div></code></pre></div></div>
+<p>Reading:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">first_int32 = read_int32_le()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">if (first_int32 & 1) == 0:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return (uint64)(first_int32 >> 1)  // 4-byte encoding, unsigned</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return read_uint64_le()            // read remaining 8 bytes</span><br/></div></code></pre></div></div>
+<p>Note: TAGGED_UINT64 uses the full 31 bits for positive values [0, 2^31-1], compared to TAGGED_INT64 which splits the range for signed values [-2^30, 2^30-1].</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=varuint36small>VarUint36Small<a href=#varuint36small class=hash-link aria-label="Direct link to VarUint36Small" title="Direct link to VarUint36Small" translate=no>​</a></h4>
+<p>A specialized encoding used for string headers that combines size (up to 36 bits) with encoding flags:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">// Write: encodes (size &lt;&lt; 2) | encoding_flags</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">function write_varuint36_small(value):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    if value &lt; 0x80:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        buffer.write_byte(value)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        // Standard varint encoding for values >= 128</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        write_varuint64(value)</span><br/></div></code></pre></div></div>
+<p>This encoding is optimized for the common case where string length fits in 7 bits (strings &lt; 32 characters).</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=signed-int64>signed int64<a href=#signed-int64 class=hash-link aria-label="Direct link to signed int64" title="Direct link to signed int64" translate=no>​</a></h4>
+<ul>
+<li class="">size: 8 bytes</li>
+<li class="">byte order: raw bytes of little endian order</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=signed-varint64>signed varint64<a href=#signed-varint64 class=hash-link aria-label="Direct link to signed varint64" title="Direct link to signed varint64" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1~9 bytes</li>
+</ul>
+<p>Uses ZigZag encoding first, then PVL varint:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">// Encode</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">zigzag_value = (value &lt;&lt; 1) ^ (value >> 63)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">write_varuint64(zigzag_value)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">// Decode</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">zigzag_value = read_varuint64()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">value = (zigzag_value >> 1) ^ (-(zigzag_value & 1))</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=signed-hybrid-int64-tagged_int64>signed hybrid int64 (TAGGED_INT64)<a href=#signed-hybrid-int64-tagged_int64 class=hash-link aria-label="Direct link to signed hybrid int64 (TAGGED_INT64)" title="Direct link to signed hybrid int64 (TAGGED_INT64)" translate=no>​</a></h4>
+<ul>
+<li class="">size: 4 or 9 bytes</li>
+</ul>
+<p>Optimized for small signed values:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">if value in [-1073741824, 1073741823]:  // fits in 30 bits + sign ([-2^30, 2^30-1])</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    write 4 bytes: ((int32) value) &lt;&lt; 1  // bit 0 is 0, indicating 4-byte encoding</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    write 1 byte:  0x01                  // bit 0 is 1, indicating 9-byte encoding</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    write 8 bytes: value as little-endian int64</span><br/></div></code></pre></div></div>
+<p>Reading:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">first_int32 = read_int32_le()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">if (first_int32 & 1) == 0:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return (int64)(first_int32 >> 1)  // 4-byte encoding, sign-extended</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">else:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return read_int64_le()            // read remaining 8 bytes</span><br/></div></code></pre></div></div>
+<p>Note: TAGGED_INT64 uses 30 bits + sign for values [-2^30, 2^30-1], while TAGGED_UINT64 uses full 31 bits for unsigned values [0, 2^31-1].</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=float8>float8<a href=#float8 class=hash-link aria-label="Direct link to float8" title="Direct link to float8" translate=no>​</a></h4>
+<ul>
+<li class="">size: 1 byte</li>
+<li class="">format:<!-- -->
+<ul>
+<li class="">float8 has 4 kinds: float8 kind enum: float8_e4m3fn, float8_e4m3fnuz, float8_e5m2, float8_e5m2fnuz</li>
+<li class="">when serialize as field, write raw 8 bits as one byte directly</li>
+<li class="">when serialize as an object: write type kind as a byte, then write value byte</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=float16>float16<a href=#float16 class=hash-link aria-label="Direct link to float16" title="Direct link to float16" translate=no>​</a></h4>
+<ul>
+<li class="">size: 2 bytes</li>
+<li class="">format: encode the specified floating-point value according to the IEEE 754 standard binary16 format, preserving NaN values, then write as binary by little endian order.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=bfloat16>bfloat16<a href=#bfloat16 class=hash-link aria-label="Direct link to bfloat16" title="Direct link to bfloat16" translate=no>​</a></h4>
+<ul>
+<li class="">size: 2 bytes</li>
+<li class="">format: encode the specified floating-point value according to the IEEE 754 standard bfloat16 format, preserving NaN values, then write as binary by little endian order.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=float32>float32<a href=#float32 class=hash-link aria-label="Direct link to float32" title="Direct link to float32" translate=no>​</a></h4>
+<ul>
+<li class="">size: 4 byte</li>
+<li class="">format: encode the specified floating-point value according to the IEEE 754 floating-point "single format" bit layout,
+preserving Not-a-Number (NaN) values, then write as binary by little endian order.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=float64>float64<a href=#float64 class=hash-link aria-label="Direct link to float64" title="Direct link to float64" translate=no>​</a></h4>
+<ul>
+<li class="">size: 8 byte</li>
+<li class="">format: encode the specified floating-point value according to the IEEE 754 floating-point "double format" bit layout,
+preserving Not-a-Number (NaN) values. then write as binary by little endian order.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=string>string<a href=#string class=hash-link aria-label="Direct link to string" title="Direct link to string" translate=no>​</a></h3>
+<p>Format:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint36_small: (size &lt;&lt; 2) | encoding | binary data |</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=string-header>String Header<a href=#string-header class=hash-link aria-label="Direct link to String Header" title="Direct link to String Header" translate=no>​</a></h4>
+<p>The header is encoded using <code>varuint36_small</code> format, which combines the byte length and encoding type:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">header = (byte_length &lt;&lt; 2) | encoding_type</span><br/></div></code></pre></div></div>
+<table><thead><tr><th>Encoding Type<th>Value<th>Description<tbody><tr><td>LATIN1<td>0<td>ISO-8859-1 single-byte encoding<tr><td>UTF16<td>1<td>UTF-16 encoding (2 bytes per code unit)<tr><td>UTF8<td>2<td>UTF-8 variable-length encoding<tr><td>Reserved<td>3<td>Reserved for future use</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=encoding-algorithm>Encoding Algorithm<a href=#encoding-algorithm class=hash-link aria-label="Direct link to Encoding Algorithm" title="Direct link to Encoding Algorithm" translate=no>​</a></h4>
+<p><strong>Writing:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function write_string(str):</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    bytes = encode_to_bytes(str, chosen_encoding)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    header = (bytes.length &lt;&lt; 2) | encoding_type</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    buffer.write_varuint36_small(header)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    buffer.write_bytes(bytes)</span><br/></div></code></pre></div></div>
+<p><strong>Reading:</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">function read_string():</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    header = buffer.read_varuint36_small()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    encoding = header & 0x03</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    byte_length = header >> 2</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    bytes = buffer.read_bytes(byte_length)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    return decode_bytes(bytes, encoding)</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=encoding-selection-by-language>Encoding Selection by Language<a href=#encoding-selection-by-language class=hash-link aria-label="Direct link to Encoding Selection by Language" title="Direct link to Encoding Selection by Language" translate=no>​</a></h4>
+<p><strong>Writing:</strong></p>
+<table><thead><tr><th>Language<th>Encoding Strategy<tbody><tr><td>Java (JDK8)<td>Detect at runtime: LATIN1 if all chars &lt; 256, else UTF16<tr><td>Java (JDK9+)<td>Use String's internal coder: LATIN1 or UTF16<tr><td>Python<td>Can write LATIN1, UTF16, or UTF8 based on string content<tr><td>C++<td>UTF8 (<code>std::string</code>) or UTF16 (<code>std::u16string</code>)<tr><td>Rust<td>UTF8 (<code>String</code>)<tr><td>Go<td>UTF8 (<code>string</code>)<tr><td>JavaScript<td>UTF8</table>
+<p><strong>Reading:</strong> All languages support decoding all three encodings (LATIN1, UTF16, UTF8).</p>
+<p><strong>Recommendation:</strong> Select encoding based on maximum performance - use the encoding that matches the language's native string representation to avoid conversion overhead.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=empty-string>Empty String<a href=#empty-string class=hash-link aria-label="Direct link to Empty String" title="Direct link to Empty String" translate=no>​</a></h4>
+<p>Empty strings are encoded with header <code>0</code> (length 0, any encoding) followed by no data bytes.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=duration>duration<a href=#duration class=hash-link aria-label="Direct link to duration" title="Direct link to duration" translate=no>​</a></h3>
+<p>Duration is an absolute length of time, independent of any calendar/timezone, as a count of seconds and nanoseconds.</p>
+<p>Format:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| signed varint64: seconds | signed int32: nanoseconds |</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><code>seconds</code>: Number of seconds in the duration, encoded as a signed varint64. Can be positive or negative.</li>
+<li class=""><code>nanoseconds</code>: Nanosecond adjustment to the duration, encoded as a signed int32.</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li class="">The duration is stored as two separate fields to maintain precision and avoid overflow issues.</li>
+<li class="">Seconds are encoded using varint64 for compact representation of common duration values.</li>
+<li class="">Nanoseconds are stored as a fixed int32 since the range is limited.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=canonical-rules>Canonical Rules<a href=#canonical-rules class=hash-link aria-label="Direct link to Canonical Rules" title="Direct link to Canonical Rules" translate=no>​</a></h4>
+<ul>
+<li class="">Writers MUST normalize durations so <code>nanoseconds</code> is always in <code>[0, 1_000_000_000)</code>.</li>
+<li class="">Zero MUST be encoded as <code>seconds = 0</code> and <code>nanoseconds = 0</code>.</li>
+<li class="">Negative sub-second durations MUST borrow one second and use a positive nanosecond adjustment.
+Example: <code>-0.5s</code> is encoded as <code>seconds = -1</code>, <code>nanoseconds = 500_000_000</code>.</li>
+<li class="">More generally, the encoded pair MUST satisfy:<!-- -->
+<ul>
+<li class=""><code>duration = seconds + nanoseconds / 1_000_000_000</code></li>
+<li class=""><code>0 &lt;= nanoseconds &lt; 1_000_000_000</code></li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=final-value>Final Value<a href=#final-value class=hash-link aria-label="Direct link to Final Value" title="Direct link to Final Value" translate=no>​</a></h4>
+<p>After decoding <code>seconds</code> and <code>nanoseconds</code>, the duration value is reconstructed as the exact
+duration represented by:</p>
+<p><code>seconds + nanoseconds / 1_000_000_000</code></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=collectionlist>collection/list<a href=#collectionlist class=hash-link aria-label="Direct link to collection/list" title="Direct link to collection/list" translate=no>​</a></h3>
+<p>Format:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32: length | 1 byte elements header | [optional type info] | elements data |</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=elements-header>Elements Header<a href=#elements-header class=hash-link aria-label="Direct link to Elements Header" title="Direct link to Elements Header" translate=no>​</a></h4>
+<p>The elements header is a single byte that encodes metadata about the collection elements to optimize serialization:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| bit 7-4 (reserved) |    bit 3    |      bit 2       |   bit 1  |   bit 0   |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">+--------------------+-------------+------------------+----------+-----------+</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">|      reserved      | is_same_type| is_decl_elem_type| has_null | track_ref |</span><br/></div></code></pre></div></div>
+<table><thead><tr><th>Bit<th>Name<th>Value<th>Meaning when SET (1)<th>Meaning when UNSET (0)<tbody><tr><td>0<td>track_ref<td>0x01<td>Track references for elements<td>Don't track element references<tr><td>1<td>has_null<td>0x02<td>Payload contains null element markers<td>No null elements (skip null checks)<tr><td>2<td>is_decl_elem_type<td>0x04<td>Elements are the declared generic type<td>Element types differ from declared type<tr><td>3<td>is_same_type<td>0x08<td>All elements have the same concrete type<td>Elements have different concrete types</table>
+<p><strong>Common header values:</strong></p>
+<table><thead><tr><th>Header<th>Hex<th>Meaning<tbody><tr><td>0x0C<td>12<td>Declared type + same type, non-null, no ref tracking (optimal)<tr><td>0x0D<td>13<td>Declared type + same type, non-null, with ref tracking<tr><td>0x0E<td>14<td>Declared type + same type, may have nulls, no ref tracking<tr><td>0x08<td>8<td>Same type but not declared type (type info written once)<tr><td>0x00<td>0<td>Different types, non-null, no ref tracking (type per element)</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-info-after-header>Type Info After Header<a href=#type-info-after-header class=hash-link aria-label="Direct link to Type Info After Header" title="Direct link to Type Info After Header" translate=no>​</a></h4>
+<p>When <code>is_decl_elem_type</code> (bit 2) is NOT set, the element type info is written once after the header if <code>is_same_type</code> (bit 3) is set:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| header (0x08) | type_id (varuint32) | elements... |</span><br/></div></code></pre></div></div>
+<p>When both <code>is_decl_elem_type</code> and <code>is_same_type</code> are NOT set, type info is written per element.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=element-serialization-based-on-header>Element Serialization Based on Header<a href=#element-serialization-based-on-header class=hash-link aria-label="Direct link to Element Serialization Based on Header" title="Direct link to Element Serialization Based on Header" translate=no>​</a></h4>
+<p>The header determines how each element is serialized:</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=elements-data>elements data<a href=#elements-data class=hash-link aria-label="Direct link to elements data" title="Direct link to elements data" translate=no>​</a></h4>
+<p>Based on the elements header, the serialization of elements data may skip <code>ref flag</code>/<code>null flag</code>/<code>element type info</code>.</p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-python codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">fory </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token builtin">buffer</span><span class="token plain"> </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elems </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>if</span><span class="token plain"> element_type_is_same</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>if</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>not</span><span class="token plain"> is_declared_type</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_type</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem_type</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    elem_serializer </span><span class="token operator" style=color:#393A34>=</span><span class="token plain"> get_serializer</span><span class="token punctuation" style=color:#393A34>(</span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>.</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>if</span><span class="token plain"> track_ref</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        </span><span class="token keyword" style=color:#00009f>for</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>in</span><span class="token plain"> elems</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            </span><span class="token keyword" style=color:#00009f>if</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>not</span><span class="token plain"> ref_resolver</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_ref_or_null</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">                elem_serializer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>elif</span><span class="token plain"> has_null</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        </span><span class="token keyword" style=color:#00009f>for</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>in</span><span class="token plain"> elems</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            </span><span class="token keyword" style=color:#00009f>if</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>is</span><span class="token plain"> </span><span class="token boolean" style=color:#36acaa>None</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">                </span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_byte</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">null_flag</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            </span><span class="token keyword" style=color:#00009f>else</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">                </span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_byte</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">not_null_flag</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">                elem_serializer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>else</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        </span><span class="token keyword" style=color:#00009f>for</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>in</span><span class="token plain"> elems</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            elem_serializer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>else</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>if</span><span class="token plain"> track_ref</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        </span><span class="token keyword" style=color:#00009f>for</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>in</span><span class="token plain"> elems</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_ref</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>elif</span><span class="token plain"> has_null</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        </span><span class="token keyword" style=color:#00009f>for</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>in</span><span class="token plain"> elems</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_nullable</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>else</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">        </span><span class="token keyword" style=color:#00009f>for</span><span class="token plain"> elem </span><span class="token keyword" style=color:#00009f>in</span><span class="token plain"> elems</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">            fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token plain">write_value</span><span class="token punctuation" style=color:#393A34>(</span><span class="token builtin">buffer</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> elem</span><span class="token punctuation" style=color:#393A34>)</span><br/></div></code></pre></div></div>
+<p><a href=https://github.com/apache/fory/blob/20a1a78b17a75a123a6f5b7094c06ff77defc0fe/java/fory-core/src/main/java/org/apache/fory/serializer/collection/CollectionLikeSerializer.java#L302 target=_blank rel="noopener noreferrer" class=""><code>CollectionSerializer#writeElements</code></a>
+can be taken as an example.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=array>array<a href=#array class=hash-link aria-label="Direct link to array" title="Direct link to array" translate=no>​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=primitive-array>primitive array<a href=#primitive-array class=hash-link aria-label="Direct link to primitive array" title="Direct link to primitive array" translate=no>​</a></h4>
+<p>Primitive array are taken as a binary buffer, serialization will just write the length of array size as an unsigned int,
+then copy the whole buffer into the stream. Multi-byte element arrays are always encoded in little-endian element order;
+implementations whose native typed-array storage uses another byte order must swap or write elements explicitly instead of
+copying native storage bytes unchanged.</p>
+<p>Such serialization won't compress the array. If users want to compress primitive array, users need to register custom
+serializers for such types or mark it as list type.</p>
+<p>Float array specifics:</p>
+<ul>
+<li class="">float16/bfloat16 array: write <code>varuint</code> length, then raw bytes in little endian order.</li>
+<li class="">float8 array: write element type kind as a byte, then <code>varuint</code> length, then raw bytes in little endian order.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=multi-dimensional-arrays>Multi-dimensional arrays<a href=#multi-dimensional-arrays class=hash-link aria-label="Direct link to Multi-dimensional arrays" title="Direct link to Multi-dimensional arrays" translate=no>​</a></h4>
+<p>Current xlang does not define a dedicated multi-dimensional array/tensor encoding. Multi-dimensional
+arrays are serialized as nested lists, while one-dimensional primitive arrays use the <code>*_ARRAY</code>
+type IDs. Internal type ID <code>ARRAY (42)</code> is reserved for a future dedicated multi-dimensional array
+encoding and is not used in current xlang streams.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=object-array>object array<a href=#object-array class=hash-link aria-label="Direct link to object array" title="Direct link to object array" translate=no>​</a></h4>
+<p>Object array is serialized using the list format. Object component type will be taken as list element
+generic type.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=map>map<a href=#map class=hash-link aria-label="Direct link to map" title="Direct link to map" translate=no>​</a></h3>
+<p>Map uses a chunk-based format to handle heterogeneous key-value pairs efficiently:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32: total_size | chunk_1 | chunk_2 | ... | chunk_n |</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=map-chunk-format>Map Chunk Format<a href=#map-chunk-format class=hash-link aria-label="Direct link to Map Chunk Format" title="Direct link to Map Chunk Format" translate=no>​</a></h4>
+<p>Each chunk contains up to 255 key-value pairs with the same metadata characteristics:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">|    1 byte    |     1 byte     |        variable bytes        |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">+--------------+----------------+------------------------------+</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">|  KV header   |  chunk size N  |  N key-value pairs (N*2 obj) |</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=kv-header-bits>KV Header Bits<a href=#kv-header-bits class=hash-link aria-label="Direct link to KV Header Bits" title="Direct link to KV Header Bits" translate=no>​</a></h4>
+<p>The KV header is a single byte encoding metadata for both keys and values:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">|  bit 7-6   |     bit 5     |     bit 4    |     bit 3     |     bit 2     |     bit 1    |     bit 0     |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">+------------+---------------+--------------+---------------+---------------+--------------+---------------+</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">|  reserved  | val_decl_type | val_has_null | val_track_ref | key_decl_type | key_has_null | key_track_ref |</span><br/></div></code></pre></div></div>
+<table><thead><tr><th>Bit<th>Name<th>Value<th>Meaning when SET (1)<tbody><tr><td>0<td>key_track_ref<td>0x01<td>Track references for keys<tr><td>1<td>key_has_null<td>0x02<td>Keys may be null (rare, usually invalid)<tr><td>2<td>key_decl_type<td>0x04<td>Key is the declared generic type<tr><td>3<td>val_track_ref<td>0x08<td>Track references for values<tr><td>4<td>val_has_null<td>0x10<td>Values may be null<tr><td>5<td>val_decl_type<td>0x20<td>Value is the declared generic type</table>
+<p><strong>Common KV header values:</strong></p>
+<table><thead><tr><th>Header<th>Hex<th>Meaning<tbody><tr><td>0x24<td>36<td>Key + value are declared types, non-null, no ref tracking (optimal)<tr><td>0x2C<td>44<td>Key + value declared types, value tracks refs<tr><td>0x34<td>52<td>Key + value declared types, value may be null<tr><td>0x00<td>0<td>Key + value not declared types, non-null, no ref tracking</table>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=chunk-size>Chunk Size<a href=#chunk-size class=hash-link aria-label="Direct link to Chunk Size" title="Direct link to Chunk Size" translate=no>​</a></h4>
+<ul>
+<li class="">Maximum chunk size: 255 pairs (fits in 1 byte)</li>
+<li class="">When key or value is null, that entry is serialized as a separate chunk with implicit size 1 (chunk size byte is skipped)</li>
+<li class="">Reader tracks accumulated count against total map size to know when to stop reading chunks</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=why-chunk-based-format>Why Chunk-Based Format?<a href=#why-chunk-based-format class=hash-link aria-label="Direct link to Why Chunk-Based Format?" title="Direct link to Why Chunk-Based Format?" translate=no>​</a></h4>
+<p>Map iteration is expensive. Computing a single header for all pairs would require two passes. The chunk-based
+approach allows:</p>
+<ol>
+<li class=""><strong>Optimistic prediction</strong>: Use first key-value pair to predict header</li>
+<li class=""><strong>Adaptive chunking</strong>: Start new chunk if prediction fails for a pair</li>
+<li class=""><strong>Efficient reading</strong>: Most maps fit in single chunk (&lt; 255 pairs)</li>
+<li class=""><strong>Memory efficiency</strong>: Minimal overhead for common homogeneous maps</li>
+</ol>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=why-serialize-chunk-by-chunk>Why serialize chunk by chunk?<a href=#why-serialize-chunk-by-chunk class=hash-link aria-label="Direct link to Why serialize chunk by chunk?" title="Direct link to Why serialize chunk by chunk?" translate=no>​</a></h4>
+<p>When fory will use first key-value pair to predict header optimistically, it can't know how many pairs have same
+meta(tracking kef ref, key has null and so on). If we don't write chunk by chunk with max chunk size, we must write at
+least <code>X</code> bytes to take up a place for later to update the number which has same elements, <code>X</code> is the num_bytes for
+encoding varint encoding of map size.</p>
+<p>And most map size are smaller than 255, if all pairs have same data, the chunk will be 1. This is common in golang/rust,
+which object are not reference by default.</p>
+<p>Also, if only one or two keys have different meta, we can make it into a different chunk, so that most pairs can share
+meta.</p>
+<p>The implementation can accumulate read count with map size to decide whether to read more chunks.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=enum>enum<a href=#enum class=hash-link aria-label="Direct link to enum" title="Direct link to enum" translate=no>​</a></h3>
+<p>Enums are serialized as an unsigned varint enum ID.</p>
+<ul>
+<li class="">If the enum definition provides an explicit enum ID / variant ID / stable numeric tag for a
+value, that ID MUST be used.</li>
+<li class="">If no explicit enum ID is specified, the declaration ordinal is used as the enum ID by default.</li>
+</ul>
+<p>This means the wire contract is always an enum ID. When the enum ID comes from declaration order,
+reordering enum values changes the wire IDs and can change the deserialized result. For
+cross-language or long-lived schemas, users should prefer explicit stable enum IDs.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=timestamp>timestamp<a href=#timestamp class=hash-link aria-label="Direct link to timestamp" title="Direct link to timestamp" translate=no>​</a></h3>
+<p>Timestamp represents a point in time independent of any calendar/timezone. It is encoded as:</p>
+<ul>
+<li class=""><code>seconds</code> (int64): seconds since Unix epoch (1970-01-01T00:00:00Z)</li>
+<li class=""><code>nanos</code> (uint32): nanosecond adjustment within the second</li>
+</ul>
+<p>On write, implementations must normalize negative timestamps so that <code>nanos</code> is always in <code>[0, 1_000_000_000)</code>.
+This is a fixed-size 12-byte payload (8 bytes seconds + 4 bytes nanos).</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=date>date<a href=#date class=hash-link aria-label="Direct link to date" title="Direct link to date" translate=no>​</a></h3>
+<p>Date represents a date without timezone. It is encoded as:</p>
+<ul>
+<li class=""><code>days</code> (varint64): signed count of days since the Unix epoch (<code>1970-01-01</code>)</li>
+</ul>
+<p>The value is reconstructed as <code>LocalDate.ofEpochDay(days)</code> or the equivalent calendar-date constructor in
+the target language implementation.</p>
+<p>This <code>varint64</code> encoding applies to xlang serialization only. Native, language-specific local-date
+encodings are unchanged.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=decimal>decimal<a href=#decimal class=hash-link aria-label="Direct link to decimal" title="Direct link to decimal" translate=no>​</a></h3>
+<p>A decimal value is encoded as:</p>
+<ol>
+<li class=""><code>scale</code>: signed varint32</li>
+<li class=""><code>unscaledHeader</code>: unsigned varint64</li>
+<li class="">optional <code>payload</code>: present only for large unscaled values</li>
+</ol>
+<p>The mathematical value is:</p>
+<p><code>value = unscaled × 10^-scale</code></p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=scale>Scale<a href=#scale class=hash-link aria-label="Direct link to Scale" title="Direct link to Scale" translate=no>​</a></h4>
+<ul>
+<li class=""><code>scale</code> is encoded as signed varint32.</li>
+<li class=""><code>scale</code> carries no extra flags or mode bits.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=unscaled-header>Unscaled Header<a href=#unscaled-header class=hash-link aria-label="Direct link to Unscaled Header" title="Direct link to Unscaled Header" translate=no>​</a></h4>
+<p><code>unscaledHeader</code> selects the encoding of <code>unscaled</code>:</p>
+<ul>
+<li class="">If <code>(unscaledHeader & 1) == 0</code>, the value uses the small encoding.</li>
+<li class="">If <code>(unscaledHeader & 1) == 1</code>, the value uses the big encoding.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=small-encoding>Small Encoding<a href=#small-encoding class=hash-link aria-label="Direct link to Small Encoding" title="Direct link to Small Encoding" translate=no>​</a></h4>
+<p>For small values, <code>unscaled</code> must fit in signed 64-bit range and the zigzag-encoded value must fit in 63 bits.</p>
+<p>Encoding:</p>
+<ul>
+<li class=""><code>unscaledHeader = zigzag(unscaled) &lt;&lt; 1</code></li>
+<li class="">no payload is written</li>
+</ul>
+<p>Decoding:</p>
+<ul>
+<li class=""><code>unscaled = zigzagDecode(unscaledHeader >>> 1)</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=big-encoding>Big Encoding<a href=#big-encoding class=hash-link aria-label="Direct link to Big Encoding" title="Direct link to Big Encoding" translate=no>​</a></h4>
+<p>For big values, <code>unscaled</code> is encoded as sign plus magnitude bytes.</p>
+<p>Encoding:</p>
+<ul>
+<li class=""><code>sign = 0</code> if <code>unscaled >= 0</code>, otherwise <code>1</code></li>
+<li class=""><code>magnitude = abs(unscaled)</code></li>
+<li class=""><code>len = byte length of magnitude in canonical minimal little-endian form</code></li>
+<li class=""><code>meta = (len &lt;&lt; 1) | sign</code></li>
+<li class=""><code>unscaledHeader = (meta &lt;&lt; 1) | 1</code></li>
+<li class=""><code>payload = magnitude as canonical minimal little-endian bytes</code></li>
+</ul>
+<p>Decoding:</p>
+<ul>
+<li class=""><code>meta = unscaledHeader >>> 1</code></li>
+<li class=""><code>sign = meta & 1</code></li>
+<li class=""><code>len = meta >>> 1</code></li>
+<li class="">read <code>len</code> bytes as little-endian unsigned magnitude</li>
+<li class=""><code>unscaled = magnitude</code> if <code>sign == 0</code>, otherwise <code>-magnitude</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=canonical-rules-1>Canonical Rules<a href=#canonical-rules-1 class=hash-link aria-label="Direct link to Canonical Rules" title="Direct link to Canonical Rules" translate=no>​</a></h4>
+<ul>
+<li class="">Zero must use the small encoding.</li>
+<li class="">Big encoding must not be used for zero.</li>
+<li class="">In big encoding, <code>payload</code> must be the minimal little-endian representation.</li>
+<li class="">Therefore, for big encoding, <code>len > 0</code> and <code>payload[len - 1] != 0</code>.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=final-value-1>Final Value<a href=#final-value-1 class=hash-link aria-label="Direct link to Final Value" title="Direct link to Final Value" translate=no>​</a></h4>
+<p>After decoding <code>scale</code> and <code>unscaled</code>, the decimal value is reconstructed as:</p>
+<p><code>value = unscaled × 10^-scale</code></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=struct>struct<a href=#struct class=hash-link aria-label="Direct link to struct" title="Direct link to struct" translate=no>​</a></h3>
+<p>Struct means object of <code>class/pojo/struct/bean/record</code> type. Struct values are serialized by writing
+fields in Fory order. The type meta before the value is written according to the rules in
+<a href=#type-meta class="">Type Meta</a>.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-order>Field order<a href=#field-order class=hash-link aria-label="Direct link to Field order" title="Direct link to Field order" translate=no>​</a></h4>
+<p>Field order must be deterministic and identical across languages. This section defines the
+language-neutral ordering algorithm; implementations must follow the rules here rather than any
+language-specific helper classes.</p>
+<h5 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-1-field-identifier>Step 1: Field identifier<a href=#step-1-field-identifier class=hash-link aria-label="Direct link to Step 1: Field identifier" title="Direct link to Step 1: Field identifier" translate=no>​</a></h5>
+<p>For every field, compute a stable identifier used for ordering:</p>
+<ul>
+<li class="">If a non-negative tag ID is configured (e.g., <code>@ForyField(id=...)</code>), use the tag ID.</li>
+<li class="">Otherwise, use the field name converted to <code>snake_case</code>.</li>
+</ul>
+<p>Configured tag IDs must be non-negative. A negative configured tag ID is invalid; languages may
+use a negative value only as a default or internal sentinel for "no tag ID configured", which falls
+back to the <code>snake_case</code> field name and is not a tag ID. Tag IDs must be unique within a type;
+duplicate tag IDs are invalid.</p>
+<p>Field identifiers compare as follows:</p>
+<ol>
+<li class="">If both fields have tag IDs, compare the IDs numerically.</li>
+<li class="">If only one field has a tag ID, the tagged field sorts first.</li>
+<li class="">If neither field has a tag ID, compare the <code>snake_case</code> names lexicographically.</li>
+<li class="">If fields still compare equal, use deterministic language-local tie-breakers such as declaring
+class name, original field name, or original field index.</li>
+</ol>
+<h5 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-2-group-assignment>Step 2: Group assignment<a href=#step-2-group-assignment class=hash-link aria-label="Direct link to Step 2: Group assignment" title="Direct link to Step 2: Group assignment" translate=no>​</a></h5>
+<p>Assign each field to exactly one group in the following order:</p>
+<ol>
+<li class=""><strong>Primitive (non-nullable)</strong>: primitive or boxed numeric/boolean types without nullable metadata.</li>
+<li class=""><strong>Primitive (nullable)</strong>: primitive or boxed numeric/boolean types with nullable metadata.</li>
+<li class=""><strong>Non-primitive</strong>: every other field, including strings, time/date/duration/decimal/binary
+values, unions, primitive arrays, collections, maps, enums, structs, ext/user-defined types,
+UNKNOWN fields, object arrays, and all other non-primitive schemas.</li>
+</ol>
+<h5 class="anchor anchorTargetStickyNavbar_Vzrq" id=step-3-intra-group-ordering>Step 3: Intra-group ordering<a href=#step-3-intra-group-ordering class=hash-link aria-label="Direct link to Step 3: Intra-group ordering" title="Direct link to Step 3: Intra-group ordering" translate=no>​</a></h5>
+<p>Within each group, apply the following sort keys in order until a difference is found:</p>
+<p><strong>Primitive groups (1 and 2):</strong></p>
+<ol>
+<li class=""><strong>Compression category</strong>: fixed-size numeric and boolean types first, then compressed numeric
+types (<code>VARINT32</code>, <code>VAR_UINT32</code>, <code>VARINT64</code>, <code>VAR_UINT64</code>, <code>TAGGED_INT64</code>, <code>TAGGED_UINT64</code>).</li>
+<li class=""><strong>Primitive size</strong> (descending): 8-byte > 4-byte > 2-byte > 1-byte.</li>
+<li class=""><strong>Internal type ID</strong> (ascending) as a tie-breaker for equal sizes.</li>
+<li class=""><strong>Field identifier</strong> using the comparator from Step 1.</li>
+</ol>
+<p><strong>Non-primitive group (3):</strong></p>
+<ol>
+<li class=""><strong>Field identifier</strong> using the comparator from Step 1.</li>
+</ol>
+<p>If two fields still compare equal after the rules above, preserve a deterministic order by
+comparing declaring class name and then the original field name. This tie-breaker should be
+reachable only in invalid schemas (e.g., duplicate tag IDs).</p>
+<h5 class="anchor anchorTargetStickyNavbar_Vzrq" id=notes>Notes<a href=#notes class=hash-link aria-label="Direct link to Notes" title="Direct link to Notes" translate=no>​</a></h5>
+<ul>
+<li class="">The ordering above is used for serialization order and TypeDef field lists. Schema hashes use
+the field identifier ordering described in the schema hash section.</li>
+<li class="">Non-primitive type IDs and codec categories must not affect field order. Implementations may keep
+internal categories to preserve optimized serializers and generated code paths, but the categories
+are not ordering keys.</li>
+<li class="">The compressed numeric rule is critical for cross-language consistency: compressed integer
+fields are always placed after all fixed-width integer fields.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=same-schema-mode-meta-share-disabled>Same-schema mode (meta share disabled)<a href=#same-schema-mode-meta-share-disabled class=hash-link aria-label="Direct link to Same-schema mode (meta share disabled)" title="Direct link to Same-schema mode (meta share disabled)" translate=no>​</a></h4>
+<p>Object value layout:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| [optional 4-byte schema hash] | field values |</span><br/></div></code></pre></div></div>
+<p>The schema hash is written only when class-version checking is enabled. It is the low 32 bits of a
+MurmurHash3 x64_128 of the struct fingerprint string:</p>
+<ul>
+<li class="">For each field, build <code>&lt;field_id_or_name>,&lt;field_type_fingerprint>;</code>.</li>
+<li class="">Field identifier is the tag ID if present, otherwise the snake_case field name.</li>
+<li class="">Sort by the field identifier comparator from <a href=#field-order class="">Field order</a> before concatenation.</li>
+<li class=""><code>field_type_fingerprint</code> is recursive:<!-- -->
+<ul>
+<li class="">Leaf: <code>&lt;type_id>,&lt;ref>,&lt;nullable></code></li>
+<li class=""><code>LIST</code> / <code>SET</code>: <code>&lt;type_id>,&lt;ref>,&lt;nullable>[&lt;element_fingerprint>]</code></li>
+<li class=""><code>MAP</code>: <code>&lt;type_id>,&lt;ref>,&lt;nullable>[&lt;key_fingerprint>|&lt;value_fingerprint>]</code></li>
+</ul>
+</li>
+<li class="">Nested container element/key/value fingerprints include nested type ID, container shape, and effective integer encoding, but nested <code>nullable</code> and <code>ref</code> policy are always hashed as <code>0</code>. Only the root field <code>nullable</code> and <code>ref</code> bits participate in schema hash, because nested reads honor the wire null/ref flags directly.</li>
+<li class="">This schema-hash rule is only for same-schema mode without TypeDef metadata. It
+does not permit compatible-mode matched-field classification to accept nested
+nullability or reference-tracking mismatches.</li>
+</ul>
+<p>Field values are serialized in Fory order. Primitive fields are written as raw values (nullable
+primitives include a null flag). Non-primitive fields write ref/null flags as needed and then the
+value; polymorphic fields include type meta.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=compatible-mode-meta-share-enabled>Compatible mode (meta share enabled)<a href=#compatible-mode-meta-share-enabled class=hash-link aria-label="Direct link to Compatible mode (meta share enabled)" title="Direct link to Compatible mode (meta share enabled)" translate=no>​</a></h4>
+<p>The field value layout is the same as same-schema mode, but the type meta for
+<code>COMPATIBLE_STRUCT</code> and <code>NAMED_COMPATIBLE_STRUCT</code> uses shared TypeDef entries. Deserializers use
+TypeDef to map fields by name or tag ID and to honor nullable/ref flags from metadata; unknown fields
+are skipped.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=union>Union<a href=#union class=hash-link aria-label="Direct link to Union" title="Direct link to Union" translate=no>​</a></h3>
+<p>Union values are encoded using three union type IDs so the union schema identity lives in type meta (like
+<code>STRUCT/ENUM/EXT</code>) and is easy to carry inside <code>Any</code>.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=idl-syntax>IDL syntax<a href=#idl-syntax class=hash-link aria-label="Direct link to IDL syntax" title="Direct link to IDL syntax" translate=no>​</a></h4>
+<div class="language-fdl codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-fdl codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">union Contact [id=0] {</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  string email = 0;</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  int32  phone = 1;</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">}</span><br/></div></code></pre></div></div>
+<p>Rules:</p>
+<ul>
+<li class="">A union schema MUST declare at least one schema-defined alternative. The
+unknown-case carrier used by some language bindings is implementation-provided and is
+omitted from the schema's alternative table.</li>
+<li class="">Each union alternative MUST have a stable non-negative tag number (<code>= 0</code>, <code>= 1</code>, ...).</li>
+<li class="">Tag numbers MUST be unique within the union and MUST NOT be reused.</li>
+<li class="">Unknown-case carriers exposed by language bindings have no local schema tag of
+their own; they replay the original peer schema tag when reserialized.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-ids-and-type-meta>Type IDs and type meta<a href=#type-ids-and-type-meta class=hash-link aria-label="Direct link to Type IDs and type meta" title="Direct link to Type IDs and type meta" translate=no>​</a></h4>
+<table><thead><tr><th style=text-align:right>Type ID<th>Name<th>Meaning<tbody><tr><td style=text-align:right>33<td>UNION<td>Union value, schema identity not embedded<tr><td style=text-align:right>34<td>TYPED_UNION<td>Union value with registered numeric type ID<tr><td style=text-align:right>35<td>NAMED_UNION<td>Union value with embedded type name / shared TypeDef</table>
+<p>Type meta encoding:</p>
+<ul>
+<li class=""><code>UNION (33)</code>: no additional type meta payload.</li>
+<li class=""><code>TYPED_UNION (34)</code>: write <code>user_type_id</code> as varuint32 after the type ID.</li>
+<li class=""><code>NAMED_UNION (35)</code>: followed by named type meta (namespace + type name, or shared TypeDef marker/body).</li>
+</ul>
+<p>Field TypeDef metadata MUST use <code>UNION</code> for statically typed union fields,
+including generated typed ADT union fields. It MUST NOT use <code>TYPED_UNION</code> or
+<code>NAMED_UNION</code> there, because the field owner already supplies the union schema.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=union-value-payload>Union value payload<a href=#union-value-payload class=hash-link aria-label="Direct link to Union value payload" title="Direct link to Union value payload" translate=no>​</a></h4>
+<p>A union payload is:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| case_id (varuint32) | case_value (Any-style value) |</span><br/></div></code></pre></div></div>
+<p><code>case_id</code> is the union alternative tag number.
+Runtime APIs MAY expose zero-based ordinal indexes for generic union carriers;
+those ordinals are valid wire <code>case_id</code> values when they are the schema's
+alternative IDs.</p>
+<p><code>case_value</code> MUST be encoded as a full xlang value:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| field_ref_meta | field_value_type_meta | field_value_bytes |</span><br/></div></code></pre></div></div>
+<p>This is required even for primitives so unknown alternatives can be skipped safely.</p>
+<p>If a reader sees a <code>case_id</code> that is not present in its local union
+schema, it SHOULD preserve the unknown case when the target language has a
+language-neutral carrier for it. Such a carrier MUST expose the original case
+ID and decoded value, and it MUST retain only implementation-internal wire type ID
+state needed for reserialization. It MUST NOT store resolver-owned type
+metadata or other context-owned state. Writers MUST use the stored original
+case ID for the union envelope, not any generated carrier marker. Unknown-case
+payload writers MUST emit the Any-style payload body in wire order: ref
+metadata first, then full value type metadata, then value bytes. For internal
+numeric type IDs, the type ID byte is the complete value type metadata and the
+payload writer MAY use the stored wire type ID to preserve fixed, variable, or
+tagged integer encodings when the decoded value has the expected concrete value type.
+These scalar numeric payloads are not reference-tracked, so their ref metadata
+is <code>NotNullValue</code>. Otherwise it MUST fall back to the language implementation's
+ordinary polymorphic Any-value writer. Unknown carriers are implementation-provided
+forward-compatibility containers, not entries in the local schema case table;
+schema-defined union cases MAY use <code>0..N</code>. When an unknown carrier is written
+back, the union envelope MUST use the carrier's original peer schema case ID
+unchanged, including <code>0</code> if that was the original peer schema case ID.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=wire-layouts>Wire layouts<a href=#wire-layouts class=hash-link aria-label="Direct link to Wire layouts" title="Direct link to Wire layouts" translate=no>​</a></h4>
+<p><strong>UNION (schema known from context)</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| ... outer ref meta ... | type_id=UNION(33) | case_id | case_value |</span><br/></div></code></pre></div></div>
+<p><strong>TYPED_UNION (schema identified by numeric id)</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| ... outer ref meta ... | type_id=TYPED_UNION(34) | user_type_id | case_id | case_value |</span><br/></div></code></pre></div></div>
+<p>user_type_id: varuint32 numeric registration ID for the union schema.</p>
+<p><strong>NAMED_UNION (schema embedded by name/typedef)</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| ... outer ref meta ... | type_id=NAMED_UNION(35) | name_or_typedef | case_id | case_value |</span><br/></div></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=decoding-rules>Decoding rules<a href=#decoding-rules class=hash-link aria-label="Direct link to Decoding rules" title="Direct link to Decoding rules" translate=no>​</a></h4>
+<ol>
+<li class="">Read outer ref meta and <code>type_id</code>.</li>
+<li class="">If <code>TYPED_UNION</code>, read <code>user_type_id</code> and resolve the union schema by ID.</li>
+<li class="">If <code>NAMED_UNION</code>, read named type meta and resolve the union schema.</li>
+<li class="">Read <code>case_id</code>.</li>
+<li class="">Read <code>case_value</code> as Any-style value (ref meta + type meta + value).</li>
+</ol>
+<p>If <code>case_id</code> is unknown, the decoder MUST still consume the case value using <code>field_value_type_meta</code> and
+standard <code>skipValue(type_id)</code>.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=when-to-use-each-type-id>When to use each type ID<a href=#when-to-use-each-type-id class=hash-link aria-label="Direct link to When to use each type ID" title="Direct link to When to use each type ID" translate=no>​</a></h4>
+<ul>
+<li class="">Use <code>UNION</code> when the union schema is known from context. This includes
+statically typed generated union fields: the owning field metadata supplies
+the union schema, so the field type ID remains <code>UNION</code> even if the root or
+dynamic value form would identify the union as <code>TYPED_UNION</code> or <code>NAMED_UNION</code>.</li>
+<li class="">Use <code>TYPED_UNION</code> for dynamic containers when numeric registration is available.</li>
+<li class="">Use <code>NAMED_UNION</code> when name-based resolution is preferred or required.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=compatibility-notes>Compatibility notes<a href=#compatibility-notes class=hash-link aria-label="Direct link to Compatibility notes" title="Direct link to Compatibility notes" translate=no>​</a></h4>
+<ul>
+<li class=""><code>case_id</code> is a stable identifier; added alternatives are forward compatible and unknown cases can be skipped.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=type>Type<a href=#type class=hash-link aria-label="Direct link to Type" title="Direct link to Type" translate=no>​</a></h3>
+<p>Type will be serialized using type meta format.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=common-pitfalls>Common Pitfalls<a href=#common-pitfalls class=hash-link aria-label="Direct link to Common Pitfalls" title="Direct link to Common Pitfalls" translate=no>​</a></h2>
+<ol>
+<li class=""><strong>Byte Order</strong>: Always use little-endian for multi-byte values</li>
+<li class=""><strong>Varint Sign Extension</strong>: Ensure proper handling of signed vs unsigned varints</li>
+<li class=""><strong>Reference ID Ordering</strong>: IDs must be assigned in serialization order</li>
+<li class=""><strong>Field Order Consistency</strong>: Must match exactly across languages in same-schema mode; in compatible mode, match by TypeDef field names or tag IDs</li>
+<li class=""><strong>String Encoding</strong>: Use best encoding for current language</li>
+<li class=""><strong>Null Handling</strong>: Different languages represent null differently</li>
+<li class=""><strong>Empty Collections</strong>: Still write length (0) and header byte</li>
+<li class=""><strong>Schema Hash Calculation</strong>: Must use the same fingerprint and MurmurHash3 algorithm across languages when enabled</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=language-implementation-guidelines>Language Implementation Guidelines<a href=#language-implementation-guidelines class=hash-link aria-label="Direct link to Language Implementation Guidelines" title="Direct link to Language Implementation Guidelines" translate=no>​</a></h2>
+<p>See <a class="" href=/docs/1.4/specification/xlang_implementation_guide>Xlang Implementation Guide</a> documentation.</div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/docs/specification/xlang_serialization_spec.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--next" href=/docs/1.4/specification/java_serialization_spec><div class=pagination-nav__sublabel>Next</div><div class=pagination-nav__label>Java Serialization Format</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#cross-language-serialization-specification class="table-of-contents__link toc-highlight">Cross-language Serialization Specification</a><li><a href=#type-systems class="table-of-contents__link toc-highlight">Type Systems</a><ul><li><a href=#data-types class="table-of-contents__link toc-highlight">Data Types</a><li><a href=#polymorphisms class="table-of-contents__link toc-highlight">Polymorphisms</a><li><a href=#type-disambiguation class="table-of-contents__link toc-highlight">Type disambiguation</a><li><a href=#list-and-array-semantics class="table-of-contents__link toc-highlight">List and Array Semantics</a><li><a href=#type-id class="table-of-contents__link toc-highlight">Type ID</a><li><a href=#type-mapping class="table-of-contents__link toc-highlight">Type mapping</a></ul><li><a href=#spec-overview class="table-of-contents__link toc-highlight">Spec overview</a><li><a href=#fory-header class="table-of-contents__link toc-highlight">Fory header</a><li><a href=#reference-meta class="table-of-contents__link toc-highlight">Reference Meta</a><ul><li><a href=#reference-flags class="table-of-contents__link toc-highlight">Reference Flags</a><li><a href=#reference-tracking-algorithm class="table-of-contents__link toc-highlight">Reference Tracking Algorithm</a><li><a href=#reference-id-assignment class="table-of-contents__link toc-highlight">Reference ID Assignment</a><li><a href=#when-reference-tracking-is-disabled class="table-of-contents__link toc-highlight">When Reference Tracking is Disabled</a><li><a href=#language-specific-considerations class="table-of-contents__link toc-highlight">Language-Specific Considerations</a></ul><li><a href=#type-meta class="table-of-contents__link toc-highlight">Type Meta</a><ul><li><a href=#type-id-encoding class="table-of-contents__link toc-highlight">Type ID encoding</a><li><a href=#type-meta-payload class="table-of-contents__link toc-highlight">Type meta payload</a><li><a href=#shared-type-meta-streaming class="table-of-contents__link toc-highlight">Shared Type Meta (streaming)</a><li><a href=#typedef-schema-evolution-metadata class="table-of-contents__link toc-highlight">TypeDef (schema evolution metadata)</a></ul><li><a href=#meta-string class="table-of-contents__link toc-highlight">Meta String</a><ul><li><a href=#encoding-type-ids class="table-of-contents__link toc-highlight">Encoding Type IDs</a><li><a href=#character-mapping-tables class="table-of-contents__link toc-highlight">Character Mapping Tables</a><li><a href=#encoding-algorithms class="table-of-contents__link toc-highlight">Encoding Algorithms</a><li><a href=#encoding-selection-algorithm class="table-of-contents__link toc-highlight">Encoding Selection Algorithm</a><li><a href=#meta-string-header-format class="table-of-contents__link toc-highlight">Meta String Header Format</a><li><a href=#special-character-sets-by-context class="table-of-contents__link toc-highlight">Special Character Sets by Context</a><li><a href=#deduplication class="table-of-contents__link toc-highlight">Deduplication</a></ul><li><a href=#value-format class="table-of-contents__link toc-highlight">Value Format</a><ul><li><a href=#basic-types class="table-of-contents__link toc-highlight">Basic types</a><li><a href=#string class="table-of-contents__link toc-highlight">string</a><li><a href=#duration class="table-of-contents__link toc-highlight">duration</a><li><a href=#collectionlist class="table-of-contents__link toc-highlight">collection/list</a><li><a href=#array class="table-of-contents__link toc-highlight">array</a><li><a href=#map class="table-of-contents__link toc-highlight">map</a><li><a href=#enum class="table-of-contents__link toc-highlight">enum</a><li><a href=#timestamp class="table-of-contents__link toc-highlight">timestamp</a><li><a href=#date class="table-of-contents__link toc-highlight">date</a><li><a href=#decimal class="table-of-contents__link toc-highlight">decimal</a><li><a href=#struct class="table-of-contents__link toc-highlight">struct</a><li><a href=#union class="table-of-contents__link toc-highlight">Union</a><li><a href=#type class="table-of-contents__link toc-highlight">Type</a></ul><li><a href=#common-pitfalls class="table-of-contents__link toc-highlight">Common Pitfalls</a><li><a href=#language-implementation-guidelines class="table-of-contents__link toc-highlight">Language Implementation Guidelines</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Community</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>Mailing list<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Docs</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/docs/start/>Install</a><li class=footer__item><a class=footer__link-item href=/docs/start/>Usage</a><li class=footer__item><a class=footer__link-item href=/docs/benchmarks/>Benchmark</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Repositories</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>Website<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/img/asf_logo.svg alt="ASF Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/img/asf_logo.svg alt="ASF Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+      <p>
+        Copyright © 2026 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>
+        Apache Fory, Fory, Apache, the Apache Logo and the Apache Fory logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
+      </p>
+      </div></div></div></div></footer></div></body>

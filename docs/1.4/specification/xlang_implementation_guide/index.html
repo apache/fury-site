@@ -1,0 +1,605 @@
+<!doctype html><html lang=en-US dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-1.4.0 docs-doc-page docs-doc-id-specification/xlang_implementation_guide" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Xlang Implementation Guide | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/docs/1.4/specification/xlang_implementation_guide /><meta data-rh=true property=og:locale content=en_US /><meta data-rh=true property=og:locale:alternate content=zh_CN /><meta data-rh=true name=docusaurus_locale content=en-US /><meta data-rh=true name=docsearch:language content=en-US /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=1.4.0 /><meta data-rh=true name=docusaurus_tag content=docs-default-1.4.0 /><meta data-rh=true name=docsearch:version content=1.4.0 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-1.4.0 /><meta data-rh=true property=og:title content="Xlang Implementation Guide | Apache Fory™"/><meta data-rh=true name=description content=Overview /><meta data-rh=true property=og:description content=Overview /><link data-rh=true rel=icon href=/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/docs/1.4/specification/xlang_implementation_guide /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.4/specification/xlang_implementation_guide hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/1.4/specification/xlang_implementation_guide hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.4/specification/xlang_implementation_guide hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/docs/1.4/specification/xlang_implementation_guide","name":"Xlang Implementation Guide","position":1}]}</script><link rel=alternate type=application/rss+xml href=/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=["0.17","0.16","0.15","0.14","0.13","0.12","0.11","0.10"];if(0!==i.length){var t=window.location.pathname.split("/").filter(Boolean),a=/^[a-z]{2}-[A-Z]{2}$/.test(t[0])?t[0]:null,e=+!!a;if(!("docs"!==t[e]||0>i.indexOf(t[e+1]))){var o=["/archive"];a&&o.push(a),o.push.apply(o,t.slice(e));var n=window.location.pathname.endsWith("/")?"/":"";window.location.replace(o.join("/")+n+window.location.search+window.location.hash)}}}(),function(){var i=window.location.pathname.split("/").filter(Boolean),t="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(t<0)){var a=t+1,e=i[a];if(!/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(e)){"next"===e&&a++;var o=i.slice(a).join("/"),n=o.split("/"),r=2===n.length&&"guide"===n[0]?n[1]:null,s=r&&["cpp","csharp","dart","go","java","javascript","kotlin","python","rust","scala","swift"].indexOf(r)>=0?"object-serialization/"+r:({"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","guide/rust/external_types":"object-serialization/rust/external-types","guide/dart/external_types":"object-serialization/dart/external-types","guide/swift/external_types":"object-serialization/swift/external-types","guide/csharp/external_types":"object-serialization/csharp/external-types","guide/csharp/basic_serialization":"object-serialization/csharp/basic-serialization","guide/dart/inheritance":"object-serialization/dart/inheritance","benchmarks/rust":"benchmarks/object-serialization/xlang/rust","compiler/compiler_guide":"compiler/getting-started","community/development":"development"})[o];if(s){var l="/"+i.slice(0,a).join("/");window.location.replace(l+"/"+s+"/"+window.location.search+window.location.hash)}}}}(),function(){var i=window.location.pathname,t=i.split("/").filter(Boolean),a="docs"===t[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(t[0])&&"docs"===t[1]?1:-1;if(!(a<0)){var e=a+1,o=t[e];if(("next"===o||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(o))&&e++,!("docs"!==t[e]||0>["guide","introduction","start"].indexOf(t[e+1]))){t.splice(e,1);var n="/"+t.join("/");i.endsWith("/")&&(n+="/"),window.location.replace(n+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/assets/css/styles.eba6f8f8.css /><script src=/assets/js/runtime~main.f4acdbcd.js defer></script><script src=/assets/js/main.12028d08.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label="Skip to main content"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>Skip to main content</a></div><nav aria-label=Main class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/><div class=navbar__logo><img src=/img/fory-logo-light.png alt="Apache Fory™ Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/img/fory-logo-dark.png alt="Apache Fory™ Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/docs/1.4/introduction/overview>Docs</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/docs/1.4/specification/xlang_serialization_spec>Specification</a><a class="navbar__item navbar__link" href=/docs/1.4/community/>Community</a><a class="navbar__item navbar__link" href=/user>Users</a><a class="navbar__item navbar__link" href=/download>Download</a><a class="navbar__item navbar__link" href=/blog>Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>Foundation</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>License</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>Events</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>Privacy</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>Security</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>Sponsorship</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>Thanks</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>Code of Conduct</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/docs/1.4/specification/xlang_implementation_guide>1.4</a><ul class=dropdown__menu><li><a class=dropdown__link href=/docs/next/specification/xlang_implementation_guide>dev</a><li><a class=dropdown__link href=/docs/specification/xlang_implementation_guide>1.6</a><li><a class=dropdown__link href=/docs/1.5/specification/xlang_implementation_guide>1.5</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/docs/1.4/specification/xlang_implementation_guide>1.4</a><li><a class=dropdown__link href=/docs/1.3/specification/xlang_implementation_guide>1.3</a><li><a class=dropdown__link href=/docs/1.2/specification/xlang_implementation_guide>1.2</a><li><a class=dropdown__link href=/docs/1.1/specification/xlang_implementation_guide>1.1</a><li><a class=dropdown__link href=/docs/1.0/specification/xlang_implementation_guide>1.0</a><li><a href=https://fory.apache.org/archive/docs/0.17/introduction/overview/ target=_blank rel="noopener noreferrer" class=dropdown__link>More versions<svg width=12 height=12 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>English</a><ul class=dropdown__menu><li><a href=/docs/1.4/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=en-US>English</a><li><a href=/zh-CN/docs/1.4/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class=dropdown__link lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/xlang_serialization_spec><span title="Xlang Serialization Format" class=linkLabel_WmDU>Xlang Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/java_serialization_spec><span title="Java Serialization Format" class=linkLabel_WmDU>Java Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/row_format_spec><span title="Row Format" class=linkLabel_WmDU>Row Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.4/specification/xlang_type_mapping><span title="Xlang Type Mapping" class=linkLabel_WmDU>Xlang Type Mapping</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/docs/1.4/specification/xlang_implementation_guide><span title="Xlang Implementation Guide" class=linkLabel_WmDU>Xlang Implementation Guide</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role=alert><div>This is documentation for <!-- -->Apache Fory™<!-- --> <b>1.4</b>, which is no longer actively maintained.</div><div class=margin-top--md>For up-to-date documentation, see the <b><a href=/docs/specification/xlang_implementation_guide>latest version</a></b> (<!-- -->1.6<!-- -->).</div></div><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=Breadcrumbs><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label="Home page" class=breadcrumbs__link href=/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Xlang Implementation Guide</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">Version: 1.4</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Xlang Implementation Guide</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=overview>Overview<a href=#overview class=hash-link aria-label="Direct link to Overview" title="Direct link to Overview" translate=no>​</a></h2>
+<p>This guide describes the current xlang implementation ownership model used by
+the xlang runtimes.</p>
+<p>The wire format is defined by
+<a class="" href=/docs/1.4/specification/xlang_serialization_spec>Xlang Serialization Spec</a>. This document is about
+service boundaries, operation flow, and internal ownership. New language implementations do not
+need the same class names, but they should preserve the same control flow:</p>
+<ul>
+<li class="">root operations stay on the <code>Fory</code> facade</li>
+<li class="">nested payload work stays on explicit read and write contexts</li>
+<li class="">type metadata stays in the type resolver layer</li>
+<li class="">serializers stay payload-focused</li>
+</ul>
+<p>When this guide conflicts with the wire-format specification, follow
+<code>docs/specification/xlang_serialization_spec.md</code>. When it conflicts with a
+language-specific implementation detail, follow the current implementation code for
+that language.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=source-of-truth>Source Of Truth<a href=#source-of-truth class=hash-link aria-label="Direct link to Source Of Truth" title="Direct link to Source Of Truth" translate=no>​</a></h2>
+<p>Use these sources in this order:</p>
+<ol>
+<li class=""><code>docs/specification/xlang_serialization_spec.md</code></li>
+<li class="">the current implementation for the language</li>
+<li class="">cross-language tests under <code>integration_tests/</code></li>
+</ol>
+<p>For Dart, the implementation shape is centered on:</p>
+<ul>
+<li class=""><code>Fory</code></li>
+<li class=""><code>WriteContext</code></li>
+<li class=""><code>ReadContext</code></li>
+<li class=""><code>RefWriter</code></li>
+<li class=""><code>RefReader</code></li>
+<li class=""><code>TypeResolver</code></li>
+<li class=""><code>StructSerializer</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=implementation-ownership-model>Implementation Ownership Model<a href=#implementation-ownership-model class=hash-link aria-label="Direct link to Implementation Ownership Model" title="Direct link to Implementation Ownership Model" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=fory-is-the-root-operation-facade><code>Fory</code> is the root-operation facade<a href=#fory-is-the-root-operation-facade class=hash-link aria-label="Direct link to fory-is-the-root-operation-facade" title="Direct link to fory-is-the-root-operation-facade" translate=no>​</a></h3>
+<p><code>Fory</code> owns the reusable services for one Fory instance.</p>
+<p>In Dart, <code>Fory</code> owns exactly four reusable members:</p>
+<ul>
+<li class=""><code>Buffer</code></li>
+<li class=""><code>WriteContext</code></li>
+<li class=""><code>ReadContext</code></li>
+<li class=""><code>TypeResolver</code></li>
+</ul>
+<p>In Java, <code>Fory</code> also owns instance-local services such as <code>JITContext</code> and
+<code>CopyContext</code>, but the ownership rule is the same: <code>Fory</code> is the root facade,
+not the place where nested serializers do their work.</p>
+<p><code>Fory</code> is responsible for:</p>
+<ul>
+<li class="">preparing the shared buffer for root operations</li>
+<li class="">writing and reading the root xlang header bitmap</li>
+<li class="">delegating nested value encoding to <code>WriteContext</code></li>
+<li class="">delegating nested value decoding to <code>ReadContext</code></li>
+<li class="">owning registration through <code>TypeResolver</code></li>
+<li class="">resetting operation-local context state in a top-level <code>finally</code></li>
+</ul>
+<p>Nested serializers must not call back into root <code>serialize(...)</code> or
+<code>deserialize(...)</code> entry points.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext-and-readcontext-hold-operation-local-state><code>WriteContext</code> and <code>ReadContext</code> hold operation-local state<a href=#writecontext-and-readcontext-hold-operation-local-state class=hash-link aria-label="Direct link to writecontext-and-readcontext-hold-operation-local-state" title="Direct link to writecontext-and-readcontext-hold-operation-local-state" translate=no>​</a></h3>
+<p><code>WriteContext</code> and <code>ReadContext</code> are prepared by <code>Fory</code> for one root operation
+and reset by <code>Fory</code> in a <code>finally</code> block before reuse.</p>
+<p><code>prepare(...)</code> should only bind the active buffer and root-operation inputs.
+<code>reset()</code> should clear operation-local mutable state.</p>
+<p>That operation-local state includes:</p>
+<ul>
+<li class="">the current buffer</li>
+<li class="">the active <code>RefWriter</code> or <code>RefReader</code></li>
+<li class="">meta-string state</li>
+<li class="">shared type-definition state</li>
+<li class="">operation-local scratch state keyed by identity</li>
+<li class="">logical object-graph depth</li>
+</ul>
+<p>Generated and hand-written serializers should treat these contexts as the only
+source of operation-local services. Serializers must not keep ambient instance
+state in thread locals, globals, or serializer instance fields.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext><code>WriteContext</code><a href=#writecontext class=hash-link aria-label="Direct link to writecontext" title="Direct link to writecontext" translate=no>​</a></h3>
+<p><code>WriteContext</code> owns all write-side per-operation state:</p>
+<ul>
+<li class="">current <code>Buffer</code></li>
+<li class=""><code>RefWriter</code></li>
+<li class=""><code>MetaStringWriter</code></li>
+<li class="">shared TypeDef write state</li>
+<li class="">root <code>trackRef</code> mode</li>
+<li class="">recursion depth and limits</li>
+</ul>
+<p>It exposes one-shot primitive helpers such as:</p>
+<ul>
+<li class=""><code>writeBool</code></li>
+<li class=""><code>writeInt32</code></li>
+<li class=""><code>writeVarUInt32</code></li>
+</ul>
+<p>These helpers are convenience methods. Serializers that perform repeated
+primitive IO should cache <code>final buffer = context.buffer;</code> and call buffer
+methods directly.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext><code>ReadContext</code><a href=#readcontext class=hash-link aria-label="Direct link to readcontext" title="Direct link to readcontext" translate=no>​</a></h3>
+<p><code>ReadContext</code> owns all read-side per-operation state:</p>
+<ul>
+<li class="">current <code>Buffer</code></li>
+<li class=""><code>RefReader</code></li>
+<li class=""><code>MetaStringReader</code></li>
+<li class="">shared TypeDef read state</li>
+<li class="">recursion depth and limits</li>
+</ul>
+<p>It exposes matching one-shot primitive helpers such as:</p>
+<ul>
+<li class=""><code>readBool</code></li>
+<li class=""><code>readInt32</code></li>
+<li class=""><code>readVarUInt32</code></li>
+</ul>
+<p>Generated struct serializers call <code>context.reference(value)</code> immediately after
+constructing the target instance so back-references can resolve to that object.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-tracking>Reference Tracking<a href=#reference-tracking class=hash-link aria-label="Direct link to Reference Tracking" title="Direct link to Reference Tracking" translate=no>​</a></h2>
+<p>Reference handling is split behind two explicit services:</p>
+<ul>
+<li class=""><code>RefWriter</code> writes null, ref, and new-value markers and remembers previously
+written objects by identity.</li>
+<li class=""><code>RefReader</code> decodes those markers, reserves read reference IDs, and resolves
+previously materialized objects.</li>
+</ul>
+<p>The xlang ref markers are:</p>
+<ul>
+<li class=""><code>NULL_FLAG (-3)</code></li>
+<li class=""><code>REF_FLAG (-2)</code></li>
+<li class=""><code>NOT_NULL_VALUE_FLAG (-1)</code></li>
+<li class=""><code>REF_VALUE_FLAG (0)</code></li>
+</ul>
+<p>Key behavior:</p>
+<ul>
+<li class="">basic values never use ref tracking</li>
+<li class="">field metadata controls ref behavior inside generated structs</li>
+<li class="">root <code>trackRef</code> is only for top-level graphs and container roots with no
+field metadata</li>
+<li class="">serializers that allocate an object before all nested reads complete must bind
+that object early with <code>context.reference(...)</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-resolution>Type Resolution<a href=#type-resolution class=hash-link aria-label="Direct link to Type Resolution" title="Direct link to Type Resolution" translate=no>​</a></h2>
+<p><code>TypeResolver</code> owns:</p>
+<ul>
+<li class="">built-in type resolution</li>
+<li class="">registration by numeric id or by <code>namespace + typeName</code></li>
+<li class="">serializer lookup</li>
+<li class="">struct metadata lookup</li>
+<li class="">type metadata encoding and decoding</li>
+<li class="">canonical encoded meta strings for package names, type names, and field names</li>
+<li class="">encoded-name lookup for named type resolution</li>
+<li class="">wire type decisions for struct, compatible struct, enum, ext, and union forms</li>
+</ul>
+<p>In Java xlang mode the concrete implementation is <code>XtypeResolver</code>. In Dart the
+same ownership stays behind the internal <code>TypeResolver</code>.</p>
+<p>Serializers do not resolve class metadata themselves. They ask the current
+context to read or write nested values, and the context delegates type work to
+<code>TypeResolver</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-frame-responsibilities>Root Frame Responsibilities<a href=#root-frame-responsibilities class=hash-link aria-label="Direct link to Root Frame Responsibilities" title="Direct link to Root Frame Responsibilities" translate=no>​</a></h2>
+<p>Every root payload starts with a one-byte bitmap written and read by <code>Fory</code>
+itself, not by serializers.</p>
+<p>Current xlang root bits:</p>
+<table><thead><tr><th>Bit<th>Meaning<tbody><tr><td><code>0</code><td>null root payload<tr><td><code>1</code><td>xlang payload<tr><td><code>2</code><td>out-of-band buffers in use</table>
+<p>Keep the root bitmap separate from per-object ref markers:</p>
+<ul>
+<li class="">the root bitmap describes the whole payload</li>
+<li class="">ref flags describe one nested value at a time</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=serialization-flow>Serialization Flow<a href=#serialization-flow class=hash-link aria-label="Direct link to Serialization Flow" title="Direct link to Serialization Flow" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-write-path>Root write path<a href=#root-write-path class=hash-link aria-label="Direct link to Root write path" title="Direct link to Root write path" translate=no>​</a></h3>
+<p>The current root write flow is:</p>
+<ol>
+<li class=""><code>Fory.serialize(...)</code> or <code>serializeTo(...)</code> prepares the target buffer.</li>
+<li class=""><code>Fory</code> calls <code>writeContext.prepare(...)</code>.</li>
+<li class=""><code>Fory</code> writes the root bitmap.</li>
+<li class=""><code>Fory</code> delegates the root object to <code>WriteContext</code>.</li>
+<li class=""><code>writeContext.reset()</code> runs in <code>finally</code>.</li>
+</ol>
+<p>For a non-null root value, <code>WriteContext.writeRootValue(...)</code> performs:</p>
+<ol>
+<li class="">ref/null framing</li>
+<li class="">type metadata write</li>
+<li class="">payload write</li>
+</ol>
+<p>Payload serializers are responsible only for the payload of their type. They do
+not write the root bitmap and they do not own registration or type-header
+encoding.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=nested-writes-use-writecontext>Nested writes use <code>WriteContext</code><a href=#nested-writes-use-writecontext class=hash-link aria-label="Direct link to nested-writes-use-writecontext" title="Direct link to nested-writes-use-writecontext" translate=no>​</a></h3>
+<p>Important rules:</p>
+<ul>
+<li class="">nested serializers must use <code>WriteContext</code> helpers such as <code>writeRef(...)</code>,
+<code>writeNonRef(...)</code>, and container helpers when they need ref handling or type
+metadata</li>
+<li class="">repeated primitive writes should go directly through the buffer</li>
+<li class="">nested serializer flow should stay straight-line; do not add internal
+<code>try/finally</code> blocks just to clean per-operation state</li>
+<li class="">top-level <code>Fory.serialize(...)</code> owns the operation reset <code>finally</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=deserialization-flow>Deserialization Flow<a href=#deserialization-flow class=hash-link aria-label="Direct link to Deserialization Flow" title="Direct link to Deserialization Flow" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-read-path>Root read path<a href=#root-read-path class=hash-link aria-label="Direct link to Root read path" title="Direct link to Root read path" translate=no>​</a></h3>
+<p>The current root read flow mirrors the write flow:</p>
+<ol>
+<li class=""><code>Fory.deserialize(...)</code> or <code>deserializeFrom(...)</code> reads the root bitmap.</li>
+<li class="">null roots return immediately.</li>
+<li class=""><code>Fory</code> validates xlang mode and other root framing requirements.</li>
+<li class=""><code>Fory</code> calls <code>readContext.prepare(...)</code>.</li>
+<li class=""><code>Fory</code> delegates to <code>ReadContext</code>.</li>
+<li class=""><code>readContext.reset()</code> runs in <code>finally</code>.</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext-owns-ref-reservation-and-payload-materialization><code>ReadContext</code> owns ref reservation and payload materialization<a href=#readcontext-owns-ref-reservation-and-payload-materialization class=hash-link aria-label="Direct link to readcontext-owns-ref-reservation-and-payload-materialization" title="Direct link to readcontext-owns-ref-reservation-and-payload-materialization" translate=no>​</a></h3>
+<p><code>ReadContext.readRef()</code> performs the normal xlang read sequence:</p>
+<ol>
+<li class="">consume the next ref marker</li>
+<li class="">return <code>null</code> or a back-reference immediately when appropriate</li>
+<li class="">reserve a fresh read ref id for new reference-tracked values</li>
+<li class="">read type metadata</li>
+<li class="">read the payload</li>
+<li class="">bind the reserved read ref id to the completed object</li>
+</ol>
+<p>Primitive and string-like hot paths should read directly from the buffer;
+complex payloads delegate to the resolved serializer.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=stream-and-buffer-byte-reads>Stream And Buffer Byte Reads<a href=#stream-and-buffer-byte-reads class=hash-link aria-label="Direct link to Stream And Buffer Byte Reads" title="Direct link to Stream And Buffer Byte Reads" translate=no>​</a></h3>
+<p>Implementations must keep byte availability in the byte owner layer while
+keeping string, binary, primitive-array, compression, and collection semantics in
+serializers.</p>
+<p>The required byte-owner primitive for allocation-before-read checks is a
+readability check such as <code>checkReadableBytes(byteCount)</code>. Implementations do
+not need additional generic read-context methods for this design. After the
+readability check succeeds, serializers use their existing local buffer read,
+copy, or decode paths.</p>
+<p>The readability check is a byte operation only. It must not decode strings,
+primitive-array element counts, compression modes, or collection capacity
+policy.</p>
+<p>For large byte-counted values, every implementation should call the byte-owner
+readability check before allocating a variable-length result. This applies to
+binary values, strings, decimal or metadata bodies, and primitive wire arrays
+whose encoded body is measured in bytes. For multi-byte primitive wire arrays,
+compare the encoded byte count, not only the logical element count, with the
+readable bytes.</p>
+<ol>
+<li class="">Validate the encoded byte count in the serializer. For fixed-width primitive
+arrays, check overflow and element alignment before allocation, such as
+<code>wireByteCount % elementByteWidth == 0</code>, then derive the logical element
+count from the encoded byte count.</li>
+<li class="">Call <code>checkReadableBytes(wireByteCount)</code> unconditionally before allocating
+the variable-length result. Buffer-backed inputs normally return from this
+check with only a bounds comparison. Stream-backed inputs use the same call;
+the byte owner handles the fast path when enough bytes are already buffered
+and otherwise fills the read buffer until the requested encoded body is
+readable or an input error is recorded.</li>
+<li class="">After readability is proven, allocate the final value once and copy or decode
+from the current readable buffer into the final result.</li>
+</ol>
+<p><code>checkReadableBytes</code> is not an <code>ensureCapacity(wireByteCount)</code> operation. In
+stream mode it may end with the byte owner holding the full encoded body in its
+read buffer, but it must grow that buffer as bytes are successfully read from
+the stream. It should grow from current proven buffer capacity, such as by
+doubling current capacity, and cap only when that bounded growth step reaches
+the immediate target. A byte owner may use an owner-local availability signal as
+a one-shot growth hint when the stream implementation itself is caller-owned
+trusted code; if that hint is absent or insufficient, it must fall back to
+bounded growth from already buffered bytes. It must not reserve the
+attacker-declared length before input bytes or an owner-local growth hint
+justify that intermediate buffer capacity. The stream slow path may pay one
+extra intermediate buffer copy; this is preferable to serializer-local chunk
+accumulation and repeated final-container growth.</p>
+<p>For byte-counted values, the serializer should not duplicate the byte owner's
+fast-path branch by testing <code>availableBytes()</code> before calling
+<code>checkReadableBytes</code>. Keeping that branch in the byte owner gives every language
+the same correctness rule and keeps serializer hot paths focused on their own
+wire semantics.</p>
+<p>For primitive wire arrays:</p>
+<ul>
+<li class="">Compare and prove the encoded wire byte count, not only the logical element
+count.</li>
+<li class="">Keep compression, bit-packing, byte-order conversion, and other primitive
+array encoding semantics in the serializer. <code>checkReadableBytes</code> only proves
+that the encoded bytes are present.</li>
+<li class="">For compressed or transformed bodies, the serializer must still validate the
+decoded length and encoding-specific metadata before allocating or returning
+the final value.</li>
+</ul>
+<p>The common serializer shape is:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">wireByteCount = readVarUint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elementWidth = primitiveWireElementWidth(kind)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">validate wireByteCount and element alignment</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elementCount = wireByteCount / elementWidth</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">ctx.checkReadableBytes(wireByteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">result = allocatePrimitiveResult(elementCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">copy or decode wireByteCount bytes from the current readable buffer into result</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">advance the reader index by wireByteCount</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">return result</span><br/></div></code></pre></div></div>
+<p>Byte values are the <code>elementWidth == 1</code> specialization of the same policy. In
+that case the serializer shape is:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">byteCount = readVarUint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">ctx.checkReadableBytes(byteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">result = allocateBytes(byteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">copy byteCount bytes from the current readable buffer into result</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">advance the reader index by byteCount</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">return result</span><br/></div></code></pre></div></div>
+<p>This policy avoids three inefficient implementation shapes:</p>
+<ul>
+<li class="">allocating the complete final contiguous value before the encoded body is
+readable</li>
+<li class="">growing or repeatedly copying the final result container on stream slow paths</li>
+<li class="">adding serializer-local chunk buffers when the byte owner can prove
+readability once and expose a normal buffered read</li>
+</ul>
+<p>Scratch buffers remain appropriate when the target representation is not a
+direct byte target, such as string transcoding, compression, byte-order
+conversion that is not performed in place, bit-packed values, or runtimes whose
+stream API cannot read into a caller-provided target.</p>
+<p>For fixed-width primitive arrays, the final result must not become visible to
+callers until the exact encoded byte count has been read successfully.</p>
+<p>For list, set, map, and other container readers, the declared logical element
+count is not an encoded byte count, so serializers must still own all element,
+chunk, nullability, reference, and type-dispatch semantics. It is still the
+right allocation proof for count-based preallocation: after validating a
+non-empty count and reading any serializer-owned header or type metadata that
+precedes allocation, call <code>checkReadableBytes(logicalCount)</code> before allocating,
+reserving backing capacity, or size-hinting from that count. The byte owner
+handles buffer versus stream readiness; the container serializer then allocates
+with the declared count and reads elements through its normal owner path.</p>
+<p>This check is not a full container-body validation. It only prevents a small or
+truncated input from causing a large count-based preallocation. Chunk sizes,
+duplicate keys, element value semantics, and protocol strictness remain owned by
+the container/map serializer and should be validated only when they protect a
+real owner invariant.</p>
+<p>Materializing readers should also reserve a root-operation estimated graph
+memory budget before allocation or size hinting. The budget state belongs to
+<code>ReadContext</code> or the equivalent root read state, not to ambient thread-local
+state. Root facades set or reset the per-operation budget only; they must not
+pre-reserve root type or root self bytes. <code>maxGraphMemoryBytes</code> defaults to a
+fixed <code>128 MiB</code>; positive configuration overrides the default; explicit
+non-positive configuration is invalid and must be rejected when the runtime is
+created. Do not derive this budget from root input size, and do not add dynamic
+stream bytes-read accounting for this budget.
+Because the budget is fixed per root, read state should not mirror the
+configured maximum into a second active-limit field. Use the existing
+configuration, or one configured maximum field when the config is not otherwise
+available, plus the mutable remaining budget.</p>
+<p>Read context or equivalent read state owns only raw byte reservation. It must
+not expose counted arithmetic helpers or collection, map, array, struct, or
+object semantic reservation APIs. Concrete serializers and generated serializer
+owners compute the storage constants and formulas for the owner path they
+allocate, including counted-byte overflow checks.
+Read state must not grow non-memory-budget APIs for this feature, including
+ref-publication controls, temporary-owner controls, serializer-owner controls,
+conversion helpers, or APIs that encode the kind of value being materialized.
+Concrete serializers and generated serializers own those decisions.</p>
+<p>The budget is an approximate gate for materialized graph owners, mainly
+collections, maps, arrays, structs, and objects. It does not measure exact heap
+bytes, and actual process memory can be higher. Reserve self storage exactly
+once at the owner that stores or allocates the value. Root facades reset the
+budget only and must not reserve root value storage. Reference-backed
+containers, maps, sets, and
+object/reference arrays reserve nonzero owner self cost plus reference slots;
+each referenced heap owner then reserves its own shallow self cost when
+materialized. Inline/value containers reserve element storage; inline/value maps
+reserve key plus value storage; pointer, box, and dynamic materialization owners
+reserve the heap or boxed storage they allocate. Value serializers, including
+root and generated struct/product read paths, do not reserve their own self
+storage. Struct/record/POJO/tuple, compatible, generated, and dynamic object
+owners reserve a nonzero shallow self cost plus shallow field storage only in
+reference-object runtimes or dynamic/boxed materialization paths.
+Parents must not recursively include child object, collection, map, string,
+binary, or primitive dense-array contents. Skip enum/union as separate owners and
+skip dedicated string, binary, primitive scalar, primitive array, and primitive
+dense-array leaf owners, but do not skip general inline-value containers such as
+vectors or lists of value objects. If reference slot size is not cheap or
+reliable to query, use a 4-byte reference slot. Native runtimes may use
+conservative lower-bound estimates instead of guessing non-portable object,
+container, allocator, table, node, entry, or debug-layout details. Reject
+arithmetic overflow before budget comparison or allocation, and keep the
+existing <code>checkReadableBytes</code> proof before backing
+allocation or capacity reservation.
+Skipped leaf owners must still be gated by remaining input bytes. If unread
+bytes are insufficient for a string, binary value, primitive scalar, primitive
+array, or primitive dense array, the runtime must not read or create that leaf
+value.</p>
+<p>For TypeDef or TypeMeta bodies, first prove that the encoded metadata body bytes
+are readable through the byte owner. Field-list allocation should happen after
+that body readability check and should not use a separate small initial-capacity
+cap as a security rule.</p>
+<p>Implementations should also bound received metadata bodies and struct field
+lists on the cold metadata parse path. <code>maxTypeMetaBytes</code> limits one encoded
+TypeDef or TypeMeta body, excluding the 8-byte header and any extended-size
+varint, and is checked before copying or decompressing that body.
+<code>maxTypeFields</code> limits the number of fields declared by one received struct
+metadata body and is checked before reserving or allocating the field list.
+These limits are runtime resource controls; they do not change wire encoding,
+type identity, dynamic loading, unknown-type behavior, deserialization policy,
+or schema-evolution semantics. Metadata cache hits and generated field readers
+remain hot paths and must not add work for these limits.</p>
+<p>Remote schema-version limits belong to the same cold metadata owner path.
+Header cache hits must skip the remaining metadata body and return cached
+metadata without schema-limit checks, hash revalidation, allocation, or policy
+work. On a header miss, keep the handling in one concrete owner path: prove and
+read the metadata body bytes, validate the body against its header, validate
+field counts, resolve the type through the existing registration and
+deserialization-policy checks, compare exact local metadata by original encoded
+bytes when applicable, check schema-version limits for non-local remote
+metadata, build the required read state, publish to the persistent metadata
+cache, and then record the schema count. Failed or incompatible metadata must
+not publish to the persistent cache and must not consume schema-version counts.</p>
+<p>Remote metadata whose encoded bytes exactly match the local registered metadata
+may use the local metadata without consuming the remote schema-version limit,
+after the existing type and deserialization-policy checks for selecting that
+local type have run. This exact-local bypass is not struct-only; it also applies
+to named enum, ext, and union metadata when those metadata bodies are present and
+match the local encoded bytes. Pure id-based enum, ext, and typed-union values
+do not carry TypeDef or TypeMeta bodies and must stay on the normal type-id plus
+user-type-id path. Compatible named enum, ext, and union metadata normally has
+one version, but it still counts against accepted remote metadata totals when it
+is sent as shared metadata and does not exactly match local metadata.
+<code>maxTypeFields</code> applies only to struct field lists.</p>
+<p>The exact-local candidate must be derived inside the metadata owner path from
+the decoded metadata identity: <code>userTypeId</code> for id-registered metadata, or
+<code>(namespace, typeName)</code> for name-registered metadata. Do not thread extra
+expected-type parameters through read callers solely for this check. This rule
+applies to every runtime. Java and Python may lazy-build the local encoded
+metadata only after this identity lookup selects a local class and the existing
+class, registration, and deserialization-policy checks for that class have run.</p>
+<p>When a statically declared compatible named enum, ext, or union field reads
+shared metadata, the decoded metadata must match the declared type id,
+namespace, and type name before the metadata owner publishes it to the
+persistent cache or records a schema count. Already accepted header or reference
+cache hits still skip the body and must not rerun body-hash, schema-limit, or
+registration checks, but the field reader must not treat metadata for a
+different declared named type as the current field's metadata.</p>
+<p>Skip paths do not need to materialize skipped values. Existing byte-skip
+operations should consume any available buffered prefix first, then skip or drop
+remaining stream bytes in bounded steps.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=nested-reads-use-readcontext>Nested reads use <code>ReadContext</code><a href=#nested-reads-use-readcontext class=hash-link aria-label="Direct link to nested-reads-use-readcontext" title="Direct link to nested-reads-use-readcontext" translate=no>​</a></h3>
+<p>Important rules:</p>
+<ul>
+<li class="">serializers that allocate the result object early must call
+<code>context.reference(obj)</code> before reading nested children that may refer back to
+it</li>
+<li class="">nested serializer flow should stay straight-line; do not add internal
+<code>try/finally</code> blocks just to restore operation-local state</li>
+<li class="">top-level <code>Fory.deserialize(...)</code> owns the operation reset <code>finally</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=depth-tracking>Depth Tracking<a href=#depth-tracking class=hash-link aria-label="Direct link to Depth Tracking" title="Direct link to Depth Tracking" translate=no>​</a></h2>
+<p><code>WriteContext</code> and <code>ReadContext</code> track logical object depth explicitly.
+<code>increaseDepth()</code> enforces <code>Config.maxDepth</code>.</p>
+<p>Depth should stay explicit on the contexts rather than relying on the native
+call stack alone. At the same time, depth cleanup should not depend on nested
+<code>try/finally</code> blocks throughout serializer code. Top-level context reset must be
+able to recover operation-local state after failures.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=struct-compatibility>Struct Compatibility<a href=#struct-compatibility class=hash-link aria-label="Direct link to Struct Compatibility" title="Direct link to Struct Compatibility" translate=no>​</a></h2>
+<p>Struct-specific schema/version framing and compatible-field layout belong in the
+struct serializer layer, not on <code>Fory</code> and not on the public serializer API.</p>
+<p>In Dart that internal owner is <code>StructSerializer</code>.</p>
+<p><code>StructSerializer</code> is responsible for:</p>
+<ul>
+<li class="">schema-hash framing when compatibility mode is off and version checks are on</li>
+<li class="">compatible-struct field remapping when compatibility mode is on</li>
+<li class="">caching compatible read layouts</li>
+<li class="">skipping unknown compatible fields</li>
+<li class="">passing compatible read layouts explicitly to generated serializers</li>
+<li class="">classifying matched compatible fields as exact direct reads, compatible
+conversions, or remote-only skips before generated dispatch</li>
+</ul>
+<p>When <code>Config.compatible</code> is enabled and the struct is marked evolving:</p>
+<ul>
+<li class="">the wire type uses the compatible struct form</li>
+<li class="">the writer emits shared TypeDef metadata</li>
+<li class="">reads map incoming fields by identifier and skip unknown fields</li>
+<li class="">generated serializers apply matched fields directly while preserving their own
+object construction and default-value rules</li>
+<li class="">exact matched field schemas use the same direct read shape as same-schema
+reads and must not receive remote compatible metadata</li>
+<li class="">matched scalar fields may use compatible scalar conversion only when the
+layout has classified a remote/local top-level scalar pair as lossless
+convertible and both field schemas have <code>trackingRef = false</code></li>
+<li class="">compatible scalar conversion applies only to the immediate matched field.
+Nested collection, array, map key, and map value schemas must not be accepted
+by recursively applying scalar conversion to child schemas.</li>
+<li class="">direct top-level <code>list&lt;T?></code> to dense <code>array&lt;T></code> matched fields must be
+classified as compatible when element domains match; the nullable element
+schema bit alone is not a schema-pair rejection. Actual null element payloads
+fail in the dense-array reader. Ref-tracked list-element framing is separate
+and may remain rejected when the runtime cannot materialize it without
+generic/reference paths.</li>
+</ul>
+<p>When <code>compatible</code> is disabled and <code>checkStructVersion</code> is enabled:</p>
+<ul>
+<li class="">the writer emits the schema hash for struct payloads</li>
+<li class="">the read side checks that hash before reading fields</li>
+</ul>
+<p>Compatible scalar conversion is owned by the compatible struct field reader or
+the generated compatible layout action. Root facades, read/write contexts, type
+resolvers, class resolvers, xlang type resolvers, and raw buffer utilities must
+not expose public conversion APIs or carry conversion state. Resolvers may
+provide field schema metadata for layout classification, but the conversion
+decision and value adaptation stay with the serializer-owned compatible field
+layout. Layout classification must reject top-level scalar conversions when
+either matched schema has <code>trackingRef = true</code> and must reject same scalar type
+pairs whose top-level <code>trackingRef</code> framing differs; converters must not add a
+reference-table path for scalar mismatches. Recursive schema comparison inside
+containers must reject scalar mismatches instead of reusing the top-level scalar
+conversion matrix. Generated serializers should consume the classified layout
+decision directly:</p>
+<ul>
+<li class="">source-generated serializers use the layout's matched-field dispatch key to
+select exact direct field code, compatible conversion code, or skip code</li>
+<li class="">regenerated serializers may instead compile a remote-schema-specific
+straight-line reader after classification, without a second outer matched-id
+switch, when the generated source still has pure direct, pure conversion, and
+explicit skip operations</li>
+<li class="">compatible scalar conversion cases must read the concrete remote wire scalar
+selected by classification and compose only the required lossless conversion;
+they must not call a generic runtime converter that redispatches by remote and
+local scalar type IDs, field descriptors, field names, or schema eligibility
+helpers</li>
+</ul>
+<p>Same-schema readers with matching reference and null/optional framing must keep
+direct scalar read paths without conversion branches or per-field conversion
+objects. Same raw scalar types with different null/optional framing may still
+use the compatible nullable/optional composition path when both fields are not
+reference-tracked.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-strings-and-shared-type-metadata>Meta Strings And Shared Type Metadata<a href=#meta-strings-and-shared-type-metadata class=hash-link aria-label="Direct link to Meta Strings And Shared Type Metadata" title="Direct link to Meta Strings And Shared Type Metadata" translate=no>​</a></h2>
+<p>Two explicit pieces of state back xlang type metadata:</p>
+<ul>
+<li class=""><code>MetaStringWriter</code> and <code>MetaStringReader</code> deduplicate and decode namespace
+and type-name strings</li>
+<li class="">shared TypeDef write/read state tracks announced TypeDef metadata</li>
+</ul>
+<p>Ownership rules:</p>
+<ul>
+<li class="">canonical encoded names live in <code>TypeResolver</code></li>
+<li class="">per-operation dynamic meta-string ids live on <code>MetaStringWriter</code> and
+<code>MetaStringReader</code></li>
+<li class="">shared type-definition tables are operation-local context state</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=enums-in-xlang-mode>Enums In Xlang Mode<a href=#enums-in-xlang-mode class=hash-link aria-label="Direct link to Enums In Xlang Mode" title="Direct link to Enums In Xlang Mode" translate=no>​</a></h2>
+<p>In xlang mode, enums are serialized by numeric tag, not by name.</p>
+<p>In Java:</p>
+<ul>
+<li class="">the default tag is the declaration ordinal</li>
+<li class=""><code>@ForyEnumId</code> can override that with a stable explicit tag</li>
+<li class=""><code>serializeEnumByName(true)</code> affects native Java mode, not xlang mode</li>
+</ul>
+<p>Other language implementations should preserve the same wire rule even if the configuration or
+annotation surface differs.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=out-of-band-buffer-objects>Out-Of-Band Buffer Objects<a href=#out-of-band-buffer-objects class=hash-link aria-label="Direct link to Out-Of-Band Buffer Objects" title="Direct link to Out-Of-Band Buffer Objects" translate=no>​</a></h2>
+<p>Buffer-object handling follows the same split:</p>
+<ul>
+<li class="">one root bit advertises whether out-of-band buffers are in play</li>
+<li class="">nested buffer-object payloads still decide in-band vs out-of-band one value at
+a time</li>
+<li class="">serializers use read/write context helpers rather than bypassing the context layer</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=code-generation>Code Generation<a href=#code-generation class=hash-link aria-label="Direct link to Code Generation" title="Direct link to Code Generation" translate=no>​</a></h2>
+<p>The normal Dart integration path is:</p>
+<ol>
+<li class="">annotate structs with <code>@ForyStruct</code></li>
+<li class="">annotate field overrides with <code>@ForyField</code></li>
+<li class="">run <code>build_runner</code></li>
+<li class="">call the generated per-library helper, such as
+<code>&lt;InputFile>Fory.register(...)</code>, to bind private generated metadata and
+register generated types</li>
+</ol>
+<p>Generated code should emit:</p>
+<ul>
+<li class="">private serializer classes</li>
+<li class="">private metadata constants</li>
+<li class="">a public per-library registration helper that users call from application code</li>
+<li class="">private generated installation helpers that keep serializer factories private</li>
+</ul>
+<p>The public helper should be a thin generated wrapper around the Fory
+registration API, not a public global registry or a second unrelated
+registration API family.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=directory-layout>Directory Layout<a href=#directory-layout class=hash-link aria-label="Direct link to Directory Layout" title="Direct link to Directory Layout" translate=no>​</a></h2>
+<p>Under each Dart package <code>lib/</code> tree, only one nested source layer is allowed.</p>
+<p>Allowed:</p>
+<ul>
+<li class=""><code>lib/fory.dart</code></li>
+<li class=""><code>lib/src/&lt;file>.dart</code></li>
+<li class=""><code>lib/src/&lt;area>/&lt;file>.dart</code></li>
+</ul>
+<p>Not allowed:</p>
+<ul>
+<li class=""><code>lib/src/&lt;area>/&lt;subarea>/&lt;file>.dart</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=serializer-design-rules-for-new-implementations>Serializer Design Rules For New Implementations<a href=#serializer-design-rules-for-new-implementations class=hash-link aria-label="Direct link to Serializer Design Rules For New Implementations" title="Direct link to Serializer Design Rules For New Implementations" translate=no>​</a></h2>
+<p>Any new xlang implementation should follow these rules even if its surface API looks
+different:</p>
+<ol>
+<li class="">Keep root operations on the <code>Fory</code> facade and nested payload work on
+explicit read and write contexts.</li>
+<li class="">Keep reference tracking behind dedicated read-side and write-side services
+so the disabled path stays cheap.</li>
+<li class="">Make serializers payload-only. Type metadata, registration, and root
+framing belong to the <code>Fory</code> and type resolver layers.</li>
+<li class="">Track per-operation state explicitly. Do not rely on ambient thread-local
+instance state.</li>
+<li class="">Reserve read reference IDs before materializing new objects, and bind
+partially built objects as soon as a nested child may refer back to them.</li>
+<li class="">Keep operation setup and operation cleanup separate. <code>prepare(...)</code> binds
+the current operation inputs, and <code>reset()</code> clears operation-local state.</li>
+<li class="">Preserve the separation between the root bitmap, per-object ref flags, type
+headers, and payload bytes.</li>
+<li class="">Keep internal naming in the serialization domain. Prefer words like
+<code>serializer</code>, <code>binding</code>, and <code>layout</code>; avoid RPC-style terms such as
+<code>session</code> or vague control-flow terms such as <code>plan</code>.</li>
+<li class="">After any xlang protocol or ownership change, run the cross-language test
+matrix and update both this guide and
+<a class="" href=/docs/1.4/specification/xlang_serialization_spec>Xlang Serialization Spec</a>.</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=validation>Validation<a href=#validation class=hash-link aria-label="Direct link to Validation" title="Direct link to Validation" translate=no>​</a></h2>
+<p>For Dart implementation changes, run at minimum:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build --delete-conflicting-outputs</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart analyze</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div>
+<p>For generated consumer coverage, also run:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart/packages/fory-test</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build --delete-conflicting-outputs</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/docs/specification/xlang_implementation_guide.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href=/docs/1.4/specification/xlang_type_mapping><div class=pagination-nav__sublabel>Previous</div><div class=pagination-nav__label>Xlang Type Mapping</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#overview class="table-of-contents__link toc-highlight">Overview</a><li><a href=#source-of-truth class="table-of-contents__link toc-highlight">Source Of Truth</a><li><a href=#implementation-ownership-model class="table-of-contents__link toc-highlight">Implementation Ownership Model</a><ul><li><a href=#fory-is-the-root-operation-facade class="table-of-contents__link toc-highlight"><code>Fory</code> is the root-operation facade</a><li><a href=#writecontext-and-readcontext-hold-operation-local-state class="table-of-contents__link toc-highlight"><code>WriteContext</code> and <code>ReadContext</code> hold operation-local state</a><li><a href=#writecontext class="table-of-contents__link toc-highlight"><code>WriteContext</code></a><li><a href=#readcontext class="table-of-contents__link toc-highlight"><code>ReadContext</code></a></ul><li><a href=#reference-tracking class="table-of-contents__link toc-highlight">Reference Tracking</a><li><a href=#type-resolution class="table-of-contents__link toc-highlight">Type Resolution</a><li><a href=#root-frame-responsibilities class="table-of-contents__link toc-highlight">Root Frame Responsibilities</a><li><a href=#serialization-flow class="table-of-contents__link toc-highlight">Serialization Flow</a><ul><li><a href=#root-write-path class="table-of-contents__link toc-highlight">Root write path</a><li><a href=#nested-writes-use-writecontext class="table-of-contents__link toc-highlight">Nested writes use <code>WriteContext</code></a></ul><li><a href=#deserialization-flow class="table-of-contents__link toc-highlight">Deserialization Flow</a><ul><li><a href=#root-read-path class="table-of-contents__link toc-highlight">Root read path</a><li><a href=#readcontext-owns-ref-reservation-and-payload-materialization class="table-of-contents__link toc-highlight"><code>ReadContext</code> owns ref reservation and payload materialization</a><li><a href=#stream-and-buffer-byte-reads class="table-of-contents__link toc-highlight">Stream And Buffer Byte Reads</a><li><a href=#nested-reads-use-readcontext class="table-of-contents__link toc-highlight">Nested reads use <code>ReadContext</code></a></ul><li><a href=#depth-tracking class="table-of-contents__link toc-highlight">Depth Tracking</a><li><a href=#struct-compatibility class="table-of-contents__link toc-highlight">Struct Compatibility</a><li><a href=#meta-strings-and-shared-type-metadata class="table-of-contents__link toc-highlight">Meta Strings And Shared Type Metadata</a><li><a href=#enums-in-xlang-mode class="table-of-contents__link toc-highlight">Enums In Xlang Mode</a><li><a href=#out-of-band-buffer-objects class="table-of-contents__link toc-highlight">Out-Of-Band Buffer Objects</a><li><a href=#code-generation class="table-of-contents__link toc-highlight">Code Generation</a><li><a href=#directory-layout class="table-of-contents__link toc-highlight">Directory Layout</a><li><a href=#serializer-design-rules-for-new-implementations class="table-of-contents__link toc-highlight">Serializer Design Rules For New Implementations</a><li><a href=#validation class="table-of-contents__link toc-highlight">Validation</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Community</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>Mailing list<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Docs</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/docs/start/>Install</a><li class=footer__item><a class=footer__link-item href=/docs/start/>Usage</a><li class=footer__item><a class=footer__link-item href=/docs/benchmarks/>Benchmark</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Repositories</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>Website<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/img/asf_logo.svg alt="ASF Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/img/asf_logo.svg alt="ASF Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+      <p>
+        Copyright © 2026 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>
+        Apache Fory, Fory, Apache, the Apache Logo and the Apache Fory logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
+      </p>
+      </div></div></div></div></footer></div></body>

@@ -1,0 +1,416 @@
+<!doctype html><html lang=zh-CN dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-1.2.0 docs-doc-page docs-doc-id-specification/java_serialization_spec" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Java Serialization Format | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/zh-CN/docs/1.2/specification/java_serialization_spec /><meta data-rh=true property=og:locale content=zh_CN /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-CN /><meta data-rh=true name=docsearch:language content=zh-CN /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=1.2.0 /><meta data-rh=true name=docusaurus_tag content=docs-default-1.2.0 /><meta data-rh=true name=docsearch:version content=1.2.0 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-1.2.0 /><meta data-rh=true property=og:title content="Java Serialization Format | Apache Fory™"/><meta data-rh=true name=description content=Scope /><meta data-rh=true property=og:description content=Scope /><link data-rh=true rel=icon href=/zh-CN/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/zh-CN/docs/1.2/specification/java_serialization_spec /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.2/specification/java_serialization_spec hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/1.2/specification/java_serialization_spec hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.2/specification/java_serialization_spec hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/zh-CN/docs/1.2/specification/java_serialization_spec","name":"Java Serialization Format","position":1}]}</script><link rel=alternate type=application/rss+xml href=/zh-CN/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/zh-CN/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=["0.17","0.16","0.15","0.14","0.13","0.12","0.11","0.10"];if(0!==i.length){var t=window.location.pathname.split("/").filter(Boolean),a=/^[a-z]{2}-[A-Z]{2}$/.test(t[0])?t[0]:null,e=+!!a;if(!("docs"!==t[e]||0>i.indexOf(t[e+1]))){var o=["/archive"];a&&o.push(a),o.push.apply(o,t.slice(e));var n=window.location.pathname.endsWith("/")?"/":"";window.location.replace(o.join("/")+n+window.location.search+window.location.hash)}}}(),function(){var i=window.location.pathname.split("/").filter(Boolean),t="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(t<0)){var a=t+1,e=i[a];if(!/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(e)){"next"===e&&a++;var o=i.slice(a).join("/"),n=o.split("/"),r=2===n.length&&"guide"===n[0]?n[1]:null,s=r&&["cpp","csharp","dart","go","java","javascript","kotlin","python","rust","scala","swift"].indexOf(r)>=0?"object-serialization/"+r:({"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","guide/rust/external_types":"object-serialization/rust/external-types","guide/dart/external_types":"object-serialization/dart/external-types","guide/swift/external_types":"object-serialization/swift/external-types","guide/csharp/external_types":"object-serialization/csharp/external-types","guide/csharp/basic_serialization":"object-serialization/csharp/basic-serialization","guide/dart/inheritance":"object-serialization/dart/inheritance","benchmarks/rust":"benchmarks/object-serialization/xlang/rust","compiler/compiler_guide":"compiler/getting-started","community/development":"development"})[o];if(s){var l="/"+i.slice(0,a).join("/");window.location.replace(l+"/"+s+"/"+window.location.search+window.location.hash)}}}}(),function(){var i=window.location.pathname,t=i.split("/").filter(Boolean),a="docs"===t[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(t[0])&&"docs"===t[1]?1:-1;if(!(a<0)){var e=a+1,o=t[e];if(("next"===o||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(o))&&e++,!("docs"!==t[e]||0>["guide","introduction","start"].indexOf(t[e+1]))){t.splice(e,1);var n="/"+t.join("/");i.endsWith("/")&&(n+="/"),window.location.replace(n+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/zh-CN/assets/css/styles.eba6f8f8.css /><script src=/zh-CN/assets/js/runtime~main.9b3387b8.js defer></script><script src=/zh-CN/assets/js/main.b0e29a1d.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label=跳到主要内容><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>跳到主要内容</a></div><nav aria-label=主导航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切换导航栏 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/zh-CN/><div class=navbar__logo><img src=/zh-CN/img/fory-logo-light.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/zh-CN/img/fory-logo-dark.png alt="Fory Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/zh-CN/docs/1.2/introduction/overview>文档</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/zh-CN/docs/1.2/specification/xlang_serialization_spec>规范</a><a class="navbar__item navbar__link" href=/zh-CN/docs/1.2/community/>社区</a><a class="navbar__item navbar__link" href=/zh-CN/user>用户</a><a class="navbar__item navbar__link" href=/zh-CN/download>下载</a><a class="navbar__item navbar__link" href=/zh-CN/blog>博客</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>基金会</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>许可证</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>事件</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>隐私</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>安全</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>赞助</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>感谢</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>行为准则</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/zh-CN/docs/1.2/specification/java_serialization_spec>1.2.0</a><ul class=dropdown__menu><li><a class=dropdown__link href=/zh-CN/docs/next/specification/java_serialization_spec>dev</a><li><a class=dropdown__link href=/zh-CN/docs/specification/java_serialization_spec>1.6.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.5/specification/java_serialization_spec>1.5.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.4/specification/java_serialization_spec>1.4.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.3/specification/java_serialization_spec>1.3.0</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/zh-CN/docs/1.2/specification/java_serialization_spec>1.2.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.1/specification/java_serialization_spec>1.1.0</a><li><a class=dropdown__link href=/zh-CN/docs/1.0/specification/java_serialization_spec>1.0.0</a><li><a href=https://fory.apache.org/archive/zh-CN/docs/0.17/introduction/overview/ target=_blank rel="noopener noreferrer" class=dropdown__link>更多版本<svg width=12 height=12 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>简体中文</a><ul class=dropdown__menu><li><a href=/docs/1.2/specification/java_serialization_spec target=_self rel="noopener noreferrer" class=dropdown__link lang=en-US>English</a><li><a href=/zh-CN/docs/1.2/specification/java_serialization_spec target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label=回到顶部 class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label=文档侧边栏 class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/1.2/specification/xlang_serialization_spec><span title="Xlang Serialization Format" class=linkLabel_WmDU>Xlang Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/zh-CN/docs/1.2/specification/java_serialization_spec><span title="Java Serialization Format" class=linkLabel_WmDU>Java Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/1.2/specification/row_format_spec><span title="Row Format" class=linkLabel_WmDU>Row Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/1.2/specification/xlang_type_mapping><span title="Xlang Type Mapping" class=linkLabel_WmDU>Xlang Type Mapping</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/zh-CN/docs/1.2/specification/xlang_implementation_guide><span title="Xlang Implementation Guide" class=linkLabel_WmDU>Xlang Implementation Guide</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role=alert><div>此为 <!-- -->Apache Fory™<!-- --> <b>1.2.0</b> 版的文档，现已不再积极维护。</div><div class=margin-top--md>最新的文档请参阅 <b><a href=/zh-CN/docs/specification/java_serialization_spec>最新版本</a></b> (<!-- -->1.6.0<!-- -->)。</div></div><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=页面路径><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label=主页面 class=breadcrumbs__link href=/zh-CN/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Java Serialization Format</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">版本：1.2.0</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>Java Serialization Format</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=scope>Scope<a href=#scope class=hash-link aria-label=Scope的直接链接 title=Scope的直接链接 translate=no>​</a></h2>
+<p>This document specifies the Apache Fory Java native binary format: the format
+used by Java when <code>withXlang(false)</code> is configured. The format is optimized for
+Java object graphs, Java collection implementations, Java primitive arrays,
+Java class registration, Java serialization hooks, and optional schema
+evolution.</p>
+<p>Java native mode and xlang mode share low-level building blocks such as
+little-endian numeric payloads, variable-length integer encodings, reference
+flags, meta string encodings, and TypeDef/ClassDef concepts. They are different
+wire formats. In Java native mode, only the scalar type IDs from <code>BOOL</code> through
+<code>STRING</code> are shared with xlang. Collection, map, struct, array, enum, and
+native Java implementation type IDs are Java native IDs unless this document
+explicitly says otherwise.</p>
+<p>See <a class="" href=/zh-CN/docs/1.2/specification/xlang_serialization_spec>Xlang Serialization Format</a> for the
+cross-language format.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=stream-layout>Stream Layout<a href=#stream-layout class=hash-link aria-label="Stream Layout的直接链接" title="Stream Layout的直接链接" translate=no>​</a></h2>
+<p>A Java native stream contains one header byte followed by one or more root
+objects. Each root object is encoded as a normal object slot:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| header | root_0 | root_1 | ... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">root:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| reference flag | [type metadata] | [value payload] |</span><br/></div></code></pre></div></div>
+<p>All multi-byte fixed-width values are little endian. A big-endian Java implementation
+must still write and read little-endian payloads.</p>
+<p>The stream is stateful. Type metadata, class definitions, and object references
+are assigned indexes as they are first encountered and may be referenced later
+in the same stream.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=header>Header<a href=#header class=hash-link aria-label=Header的直接链接 title=Header的直接链接 translate=no>​</a></h2>
+<p>The header is a single byte:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| bits 7..2 reserved | bit 1 out-of-band | bit 0 xlang |</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><code>xlang</code> must be <code>0</code> for Java native mode.</li>
+<li class=""><code>out-of-band</code> is <code>1</code> when a <code>BufferCallback</code> is configured.</li>
+<li class="">Reserved bits must be <code>0</code>.</li>
+</ul>
+<p>Java native mode does not write a language ID after the header.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-slots>Reference Slots<a href=#reference-slots class=hash-link aria-label="Reference Slots的直接链接" title="Reference Slots的直接链接" translate=no>​</a></h2>
+<p>Objects, nullable fields, and reference-tracked fields use the standard Fory
+reference slot. The first byte is signed:</p>
+<table><thead><tr><th>Flag<th>Byte<th>Payload that follows<tbody><tr><td><code>NULL_FLAG</code><td><code>-3</code><td>No payload. The slot value is <code>null</code>.<tr><td><code>REF_FLAG</code><td><code>-2</code><td><code>varuint32</code> reference ID of an earlier object.<tr><td><code>NOT_NULL_VALUE_FLAG</code><td><code>-1</code><td>Value payload. No reference ID is assigned for this occurrence.<tr><td><code>REF_VALUE_FLAG</code><td><code>0</code><td>Value payload. Assign the next reference ID before reading data.</table>
+<p>When reference tracking is disabled for a slot, writers use only <code>NULL_FLAG</code>
+and <code>NOT_NULL_VALUE_FLAG</code>.</p>
+<p>Primitive field fast paths do not wrap non-null primitive values in a reference
+slot. Boxed primitives and other nullable values use the slot selected by field
+metadata.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-metadata>Type Metadata<a href=#type-metadata class=hash-link aria-label="Type Metadata的直接链接" title="Type Metadata的直接链接" translate=no>​</a></h2>
+<p>Dynamic object slots write type metadata before the value payload. Type metadata
+identifies the serializer and, when needed, carries class names or ClassDef
+metadata.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32 type_id | [type-specific metadata] |</span><br/></div></code></pre></div></div>
+<p>Registered Java classes, Java native built-ins, and Fory internal serializers
+use numeric type IDs. Unregistered classes or classes registered by name carry
+name metadata. Schema-evolution classes may carry a ClassDef.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=native-type-id-ranges>Native Type ID Ranges<a href=#native-type-id-ranges class=hash-link aria-label="Native Type ID Ranges的直接链接" title="Native Type ID Ranges的直接链接" translate=no>​</a></h3>
+<table><thead><tr><th>Range<th>Meaning<tbody><tr><td><code>0</code><td><code>UNKNOWN</code>, used in metadata for dynamic or object-typed positions.<tr><td><code>1..21</code><td>Shared scalar IDs from <code>BOOL</code> through <code>STRING</code>.<tr><td><code>22..63</code><td>Reserved in Java native mode for the xlang internal ID range.<tr><td><code>64..68</code><td>Reserved for future Java native internal IDs.<tr><td><code>69..98</code><td>Java native built-ins listed below.<tr><td><code>99+</code><td>User and Fory class IDs assigned by the Java <code>ClassResolver</code>.</table>
+<p>The shared scalar IDs are:</p>
+<table><thead><tr><th>ID<th>Name<th>Java value domain<tbody><tr><td>1<td><code>BOOL</code><td>boolean values in xlang metadata<tr><td>2<td><code>INT8</code><td>signed 8-bit integer metadata<tr><td>3<td><code>INT16</code><td>signed 16-bit integer metadata<tr><td>4<td><code>INT32</code><td>fixed-width signed 32-bit metadata<tr><td>5<td><code>VARINT32</code><td>variable-width signed 32-bit metadata<tr><td>6<td><code>INT64</code><td>fixed-width signed 64-bit metadata<tr><td>7<td><code>VARINT64</code><td>variable-width signed 64-bit metadata<tr><td>8<td><code>TAGGED_INT64</code><td>tagged signed 64-bit metadata<tr><td>9<td><code>UINT8</code><td>unsigned 8-bit metadata<tr><td>10<td><code>UINT16</code><td>unsigned 16-bit metadata<tr><td>11<td><code>UINT32</code><td>fixed-width unsigned 32-bit metadata<tr><td>12<td><code>VAR_UINT32</code><td>variable-width unsigned 32-bit metadata<tr><td>13<td><code>UINT64</code><td>fixed-width unsigned 64-bit metadata<tr><td>14<td><code>VAR_UINT64</code><td>variable-width unsigned 64-bit metadata<tr><td>15<td><code>TAGGED_UINT64</code><td>tagged unsigned 64-bit metadata<tr><td>16<td><code>FLOAT8</code><td>reserved 8-bit float metadata<tr><td>17<td><code>FLOAT16</code><td>half precision float metadata<tr><td>18<td><code>BFLOAT16</code><td>bfloat16 metadata<tr><td>19<td><code>FLOAT32</code><td>32-bit floating point metadata<tr><td>20<td><code>FLOAT64</code><td>64-bit floating point metadata<tr><td>21<td><code>STRING</code><td>Java <code>String</code></table>
+<p>Java native built-ins start at ID <code>69</code>:</p>
+<table><thead><tr><th>ID<th>Name<th>Java type or serializer owner<tbody><tr><td>69<td><code>VOID_ID</code><td><code>java.lang.Void</code><tr><td>70<td><code>CHAR_ID</code><td><code>java.lang.Character</code><tr><td>71<td><code>PRIMITIVE_VOID_ID</code><td><code>void</code><tr><td>72<td><code>PRIMITIVE_BOOL_ID</code><td><code>boolean</code><tr><td>73<td><code>PRIMITIVE_INT8_ID</code><td><code>byte</code><tr><td>74<td><code>PRIMITIVE_CHAR_ID</code><td><code>char</code><tr><td>75<td><code>PRIMITIVE_INT16_ID</code><td><code>short</code><tr><td>76<td><code>PRIMITIVE_INT32_ID</code><td><code>int</code><tr><td>77<td><code>PRIMITIVE_FLOAT32_ID</code><td><code>float</code><tr><td>78<td><code>PRIMITIVE_INT64_ID</code><td><code>long</code><tr><td>79<td><code>PRIMITIVE_FLOAT64_ID</code><td><code>double</code><tr><td>80<td><code>PRIMITIVE_BOOLEAN_ARRAY_ID</code><td><code>boolean[]</code><tr><td>81<td><code>PRIMITIVE_BYTE_ARRAY_ID</code><td><code>byte[]</code><tr><td>82<td><code>PRIMITIVE_CHAR_ARRAY_ID</code><td><code>char[]</code><tr><td>83<td><code>PRIMITIVE_SHORT_ARRAY_ID</code><td><code>short[]</code><tr><td>84<td><code>PRIMITIVE_INT_ARRAY_ID</code><td><code>int[]</code><tr><td>85<td><code>PRIMITIVE_FLOAT_ARRAY_ID</code><td><code>float[]</code><tr><td>86<td><code>PRIMITIVE_LONG_ARRAY_ID</code><td><code>long[]</code><tr><td>87<td><code>PRIMITIVE_DOUBLE_ARRAY_ID</code><td><code>double[]</code><tr><td>88<td><code>STRING_ARRAY_ID</code><td><code>String[]</code><tr><td>89<td><code>OBJECT_ARRAY_ID</code><td><code>Object[]</code> and object array serializers<tr><td>90<td><code>ARRAYLIST_ID</code><td><code>java.util.ArrayList</code><tr><td>91<td><code>HASHMAP_ID</code><td><code>java.util.HashMap</code><tr><td>92<td><code>HASHSET_ID</code><td><code>java.util.HashSet</code><tr><td>93<td><code>CLASS_ID</code><td><code>java.lang.Class</code><tr><td>94<td><code>EMPTY_OBJECT_ID</code><td>Empty-object serializer<tr><td>95<td><code>LAMBDA_STUB_ID</code><td>Lambda replacement type ID<tr><td>96<td><code>JDK_PROXY_STUB_ID</code><td>JDK proxy replacement type ID<tr><td>97<td><code>REPLACE_STUB_ID</code><td><code>writeReplace</code>/<code>readResolve</code> type ID<tr><td>98<td><code>NONEXISTENT_META_SHARED_ID</code><td>Unknown-class marker type ID</table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=registered-named-and-unregistered-classes>Registered, Named, and Unregistered Classes<a href=#registered-named-and-unregistered-classes class=hash-link aria-label="Registered, Named, and Unregistered Classes的直接链接" title="Registered, Named, and Unregistered Classes的直接链接" translate=no>​</a></h3>
+<p>Java native mode supports three class identity forms:</p>
+<ul>
+<li class="">ID registration: the type ID is the registered numeric class ID.</li>
+<li class="">Name registration: the type metadata carries namespace and type name strings.</li>
+<li class="">Unregistered class: the type metadata carries the package name as namespace
+and the simple Java class name as type name.</li>
+</ul>
+<p>Class registration is the fastest and most compact form. Name-based forms are
+used when stable names are required or class registration is disabled.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-sharing>Meta Sharing<a href=#meta-sharing class=hash-link aria-label="Meta Sharing的直接链接" title="Meta Sharing的直接链接" translate=no>​</a></h3>
+<p>When meta sharing is enabled, class metadata is written once and referenced by a
+stream-local index:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32 marker | [class definition bytes if new] |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">marker = (index &lt;&lt; 1) | flag</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">flag = 0: new definition, class definition bytes follow</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">flag = 1: reference to an earlier definition</span><br/></div></code></pre></div></div>
+<p>Indexes are assigned in first-use order.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=schema-modes>Schema Modes<a href=#schema-modes class=hash-link aria-label="Schema Modes的直接链接" title="Schema Modes的直接链接" translate=no>​</a></h2>
+<p>Java native mode has two object schema modes.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=same-schema-mode>Same-Schema Mode<a href=#same-schema-mode class=hash-link aria-label="Same-Schema Mode的直接链接" title="Same-Schema Mode的直接链接" translate=no>​</a></h3>
+<p>Same-schema mode is used when compatible mode is disabled. The writer and
+reader must have matching fields and field order. No per-object ClassDef is
+required for ordinary registered classes. Field values are written directly in
+protocol order.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=compatible-mode>Compatible Mode<a href=#compatible-mode class=hash-link aria-label="Compatible Mode的直接链接" title="Compatible Mode的直接链接" translate=no>​</a></h3>
+<p>Compatible mode writes ClassDef metadata for struct-like classes. Readers match
+local fields against remote ClassDef fields by identifier, read matching fields,
+and skip unknown fields using the remote field type metadata. Compatible mode is
+the Java native schema-evolution path.</p>
+<p>In compatible mode, a matched field may read between direct top-level scalar
+ClassDef schemas when the remote value can be represented by the local scalar
+schema without changing the logical value. This is a read adaptation only:
+writers keep emitting their local canonical field schema and payload, and
+ClassDef metadata, same-schema mode, dynamic value serialization, and
+unknown-field skipping continue to treat the original field schemas as distinct.</p>
+<p>The rule applies only to the immediate schema of a matched field. It does not
+apply to dynamic root values, map keys, map values, collection elements, array
+elements, enum values, temporal values, binary values, structs, or nested
+generic/container positions.</p>
+<p>The scalar domains are Java boolean/boxed boolean, <code>String</code>, Java primitive and
+boxed numeric scalar fields, Fory scalar annotations whose ClassDef metadata
+identifies a narrower numeric wire domain, and <code>BigDecimal</code> as the exact decimal
+numeric scalar. Java native-only metadata outside the type IDs shared with xlang
+must still use the Java ClassDef metadata to identify the scalar domain.
+Compatible scalar conversion applies only when both the remote and local
+top-level ClassDef field metadata have <code>trackingRef = false</code>; if either matched
+field has <code>trackingRef = true</code>, scalar type changes are schema/type incompatible
+during compatible layout construction. Same scalar ClassDef field types with
+matching top-level <code>trackingRef</code> and null/optional framing are exact same-schema
+direct reads, not compatible scalar conversion. Same scalar ClassDef field types
+with different top-level <code>trackingRef</code> framing are schema/type incompatible
+because the wire framing differs. Same scalar ClassDef field types with
+different top-level null/optional framing may still use the nullable/optional
+composition rule below when both fields have <code>trackingRef = false</code>.</p>
+<p>Compatible scalar conversion follows the xlang scalar conversion contract:</p>
+<ul>
+<li class=""><code>String</code> to boolean accepts exactly <code>"0"</code>, <code>"1"</code>, <code>"false"</code>, and <code>"true"</code>.
+Boolean to <code>String</code> produces <code>"false"</code> or <code>"true"</code>.</li>
+<li class="">numeric to boolean accepts only exact zero and one. Boolean to numeric
+produces exact zero or one in the local numeric domain.</li>
+<li class="">numeric to numeric succeeds only when the local numeric domain represents the
+same mathematical value, including range checks, signedness checks, exact
+integer/floating round-trip checks, floating signed-zero preservation, and
+rejection of <code>NaN</code> across different floating type IDs.</li>
+<li class=""><code>BigDecimal</code> participates as an exact numeric scalar. Converted decimal values
+use canonical scale: zero and non-zero integers use scale <code>0</code>; finite
+fractional values use the smallest non-negative scale that preserves the
+mathematical value and leaves an unscaled value not divisible by <code>10</code>.
+Compatible conversion rejects numeric strings longer than <code>320</code> bytes before
+arbitrary precision parsing. It also rejects converted decimal values whose
+canonical exponent or scale work exceeds the <code>256</code> digit bound before
+constructing large powers of ten or formatting plain decimal text. Same-type
+<code>BigDecimal</code> reads preserve the ordinary decimal payload.</li>
+<li class=""><code>String</code> to numeric accepts only the finite compatible numeric literal grammar
+from the xlang serialization spec and then applies the same lossless
+target-domain checks. <code>NaN</code>, infinities, whitespace, leading plus signs,
+Unicode decimal digits, underscores, grouping separators, non-decimal radices,
+and type suffixes fail.</li>
+<li class="">numeric to <code>String</code> emits canonical finite numeric text: integers use plain
+decimal text, floating values use exact plain decimal text with a decimal point
+and signed-zero preservation, and <code>BigDecimal</code> values use exact plain decimal
+text without exponent notation or insignificant trailing fractional zeros.</li>
+</ul>
+<p>Nullable fields, boxed carriers, and primitive defaults compose with scalar
+conversion when the matched top-level field schemas have <code>trackingRef = false</code>.
+Readers first consume the remote null/optional framing described by the remote
+ClassDef field metadata. Present values are converted and then assigned or
+wrapped into the local carrier. Null or absent remote values use the same
+compatible-mode missing/null behavior already defined for the local field.
+Reference-tracked scalar conversion is not supported.</p>
+<p>Schema pairs outside the scalar conversion matrix remain schema/type
+compatibility errors while building the compatible layout. Once a matched field
+is accepted as a scalar conversion action, invalid payload values are
+deserialization data errors and must be reported as
+<code>org.apache.fory.exception.DeserializationException</code>, not as schema misses or
+registration errors.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-order>Field Order<a href=#field-order class=hash-link aria-label="Field Order的直接链接" title="Field Order的直接链接" translate=no>​</a></h2>
+<p>Java native object serializers use the same deterministic field-order
+categories as the current xlang protocol:</p>
+<ol>
+<li class="">Primitive non-nullable numeric and boolean scalar fields.</li>
+<li class="">Primitive nullable numeric and boolean scalar fields, including boxed Java
+primitive wrappers.</li>
+<li class="">Non-primitive fields.</li>
+</ol>
+<p>Primitive groups keep the primitive comparator:</p>
+<ol>
+<li class="">Fixed-width primitive encodings before compressed or variable-width
+primitive encodings.</li>
+<li class="">Larger primitive width before smaller primitive width.</li>
+<li class="">Internal primitive type ID ascending.</li>
+<li class="">Field identifier.</li>
+</ol>
+<p>Non-primitive fields sort directly by field identifier. Non-primitive type ID,
+serializer kind, collection kind, map kind, and Java implementation class do not
+participate in field order.</p>
+<p>Field identifiers are selected as follows:</p>
+<ul>
+<li class="">If a field has an explicit non-negative <code>@ForyField(id = ...)</code>, that numeric
+ID is the field identifier.</li>
+<li class="">Otherwise, the Java field name converted to snake_case is the field
+identifier.</li>
+<li class="">Negative annotation values are not valid field IDs. The annotation default
+value <code>-1</code> means no explicit ID and is ignored for identifier selection.</li>
+</ul>
+<p>Identifier comparison is:</p>
+<ol>
+<li class="">If both fields have explicit IDs, compare IDs numerically.</li>
+<li class="">If only one field has an explicit ID, the ID-based field sorts before the
+name-based field.</li>
+<li class="">If neither field has an explicit ID, compare snake_case names
+lexicographically.</li>
+<li class="">If identifiers are equal, use deterministic tie-breakers such as declaring
+class and original field name. Untagged fields with the same snake_case
+identifier in the same class are invalid. A child field that hides an
+inherited field with the same Java field name keeps only the nearest field in
+xlang TypeDef metadata because the inherited field has no distinct untagged
+identifier.</li>
+</ol>
+<p>Generated serializers may keep separate internal descriptor groups for
+primitive, collection, map, built-in, and user-defined serializers so they can
+emit specialized fast paths. Those internal groups are an implementation detail
+and must not change wire field order.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=classdef-encoding>ClassDef Encoding<a href=#classdef-encoding class=hash-link aria-label="ClassDef Encoding的直接链接" title="ClassDef Encoding的直接链接" translate=no>​</a></h2>
+<p>Compatible mode and meta sharing encode Java class definitions as TypeDef
+records. A TypeDef has an 8-byte header followed by class metadata bytes:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| 8-byte header | [varuint32 extra_size] | class metadata bytes |</span><br/></div></code></pre></div></div>
+<p>Header bits:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| 52-bit hash | 3 reserved bits | 1 compress bit | 8 size bits |</span><br/></div></code></pre></div></div>
+<ul>
+<li class=""><code>size</code>: the lower 8 bits. If the value is <code>0xff</code>, read <code>extra_size</code> as
+<code>varuint32</code> and add it to <code>0xff</code>.</li>
+<li class=""><code>compress</code>: set when class metadata bytes are compressed by the configured
+meta compressor.</li>
+<li class=""><code>reserved</code>: must be zero.</li>
+<li class=""><code>hash</code>: 52 bits derived from MurmurHash3 x64_128 seed 47 over
+<code>class_metadata_bytes || header_low12_le</code>. <code>header_low12_le</code> is the low 12
+header bits encoded as two little-endian bytes with the upper four bits of the
+second byte clear. Take lane 0 of the MurmurHash3 result, left-shift it by 12
+with signed 64-bit wraparound, apply signed absolute value, and mask with
+<code>0xfffffffffffff000</code>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=class-metadata-body>Class Metadata Body<a href=#class-metadata-body class=hash-link aria-label="Class Metadata Body的直接链接" title="Class Metadata Body的直接链接" translate=no>​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| root_kind_and_layer_count | class_layer_0 | class_layer_1 | ... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">class_layer:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32 class_header | [registered type IDs or names] | field_info... |</span><br/></div></code></pre></div></div>
+<p><code>root_kind_and_layer_count</code> stores the root TypeDef kind in the high four bits
+and <code>(num_layers - 1)</code> in the low four bits. If the low four bits are <code>0b1111</code>,
+read an extra <code>varuint32</code> and add it to <code>15</code>.</p>
+<p>Root kind codes:</p>
+<table><thead><tr><th>Code<th>Kind<tbody><tr><td>0<td><code>STRUCT</code><tr><td>1<td><code>COMPATIBLE_STRUCT</code><tr><td>2<td><code>NAMED_STRUCT</code><tr><td>3<td><code>NAMED_COMPATIBLE_STRUCT</code><tr><td>4<td><code>ENUM</code><tr><td>5<td><code>NAMED_ENUM</code><tr><td>6<td><code>EXT</code><tr><td>7<td><code>NAMED_EXT</code><tr><td>8<td><code>TYPED_UNION</code><tr><td>9<td><code>NAMED_UNION</code><tr><td>10-14<td>Reserved<tr><td>15<td>Extended-kind escape, rejected until defined</table>
+<p><code>class_header = (num_fields &lt;&lt; 1) | registered_flag</code>.</p>
+<ul>
+<li class="">If <code>registered_flag == 1</code>, write the class type ID as one byte. For
+user-registered <code>ENUM</code>, <code>STRUCT</code>, <code>COMPATIBLE_STRUCT</code>, <code>EXT</code>, and
+<code>TYPED_UNION</code>, write the user type ID as <code>varuint32</code>.</li>
+<li class="">If <code>registered_flag == 0</code>, write namespace and type name as meta strings.</li>
+</ul>
+<p>Class layers are encoded from parent to leaf. Field lists inside each layer use
+the field order defined above.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-info>Field Info<a href=#field-info class=hash-link aria-label="Field Info的直接链接" title="Field Info的直接链接" translate=no>​</a></h3>
+<p>Each field is encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| field_header | [extended_name_or_id_size] | [field name bytes] | field_type |</span><br/></div></code></pre></div></div>
+<p><code>field_header</code> bits:</p>
+<table><thead><tr><th>Bits<th>Meaning<tbody><tr><td>0<td><code>trackingRef</code><tr><td>1<td><code>nullable</code><tr><td>2..3<td>field name encoding<tr><td>4..6<td>encoded name length minus one, or compact tag ID<tr><td>7<td>reserved, must be zero</table>
+<p>Field name encodings:</p>
+<table><thead><tr><th>Code<th>Encoding<tbody><tr><td>0<td>UTF-8<tr><td>1<td>all-to-lower special encoding<tr><td>2<td>lower/upper/digit special encoding<tr><td>3<td>tag ID; field name bytes are omitted</table>
+<p>For name encodings, bits <code>4..6</code> store <code>encoded_length - 1</code> when it is less than
+<code>7</code>. If the value is <code>7</code>, read an extra <code>varuint32</code> and add it to <code>7</code>.</p>
+<p>For tag ID encoding, bits <code>4..6</code> store the numeric field ID when it is less than
+<code>7</code>. If the value is <code>7</code>, read an extra <code>varuint32</code> and add it to <code>7</code>. Field IDs
+must be non-negative. Duplicate field IDs in one TypeDef are invalid.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=field-type>Field Type<a href=#field-type class=hash-link aria-label="Field Type的直接链接" title="Field Type的直接链接" translate=no>​</a></h3>
+<p>Field types describe how compatible readers read or skip the field payload.
+Top-level field types write only the type tag. Nested field types store
+<code>nullable</code> and <code>trackingRef</code> in the low bits:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">nested_field_type_header = (type_tag &lt;&lt; 2) | (nullable &lt;&lt; 1) | trackingRef</span><br/></div></code></pre></div></div>
+<p>Type tags:</p>
+<table><thead><tr><th>Tag<th>Field type<th>Payload<tbody><tr><td>0<td>Object/dynamic<td>none<tr><td>1<td>Map<td>key field type, value field type<tr><td>2<td>Collection/List/Set<td>element field type<tr><td>3<td>Java array<td>dimensions, component field type<tr><td>4<td>Enum<td>none<tr><td>5+<td>Registered or built-in type<td><code>tag - 5</code> is the type ID</table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-strings>Meta Strings<a href=#meta-strings class=hash-link aria-label="Meta Strings的直接链接" title="Meta Strings的直接链接" translate=no>​</a></h2>
+<p>Namespaces, type names, and field names use the meta string encodings defined
+by the xlang specification. A meta string header stores the byte length and
+encoding kind; extended lengths are written as <code>varuint32</code>.</p>
+<p>Package and namespace names use UTF-8, all-to-lower special encoding, or
+lower/upper/digit special encoding. Type names use UTF-8,
+lower/upper/digit special encoding, first-to-lower special encoding, or
+all-to-lower special encoding. Field names use the field-info encoding table
+above.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=primitive-values>Primitive Values<a href=#primitive-values class=hash-link aria-label="Primitive Values的直接链接" title="Primitive Values的直接链接" translate=no>​</a></h2>
+<p>Primitive values are written without type metadata when the field serializer is
+known statically:</p>
+<table><thead><tr><th>Java type<th>Payload<tbody><tr><td><code>boolean</code><td>one byte: <code>0</code> or <code>1</code><tr><td><code>byte</code><td>one signed byte<tr><td><code>char</code><td>two-byte UTF-16 code unit, little endian<tr><td><code>short</code><td>two-byte signed integer, little endian<tr><td><code>int</code><td>fixed int32 little endian, or ZigZag varint32 when configured<tr><td><code>long</code><td>fixed int64 little endian, ZigZag varint64, or tagged int64 when configured<tr><td><code>float</code><td>IEEE 754 binary32, little endian<tr><td><code>double</code><td>IEEE 754 binary64, little endian</table>
+<p>Boxed primitives use the same value payload after the selected null/reference
+slot.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=string-values>String Values<a href=#string-values class=hash-link aria-label="String Values的直接链接" title="String Values的直接链接" translate=no>​</a></h2>
+<p>Java strings are encoded as:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint36_small7 header | bytes |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">header = (num_bytes &lt;&lt; 2) | coder</span><br/></div></code></pre></div></div>
+<p><code>coder</code> values:</p>
+<table><thead><tr><th>Value<th>Encoding<tbody><tr><td>0<td>Latin-1<tr><td>1<td>UTF-16 little endian<tr><td>2<td>UTF-8</table>
+<p><code>num_bytes</code> is the byte length of the encoded payload.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=enum-values>Enum Values<a href=#enum-values class=hash-link aria-label="Enum Values的直接链接" title="Enum Values的直接链接" translate=no>​</a></h2>
+<p>Enum value payload depends on configuration:</p>
+<ul>
+<li class="">Ordinal mode writes the enum ordinal as <code>varuint32</code>.</li>
+<li class=""><code>@ForyEnumId</code> mode writes the configured non-negative enum tag as
+<code>varuint32</code>.</li>
+<li class="">Name mode writes the enum constant name as a meta string.</li>
+</ul>
+<p><code>@ForyEnumId</code> may be declared on enum constants, on one integer field, or on one
+zero-argument integer getter, according to the Java API contract. Duplicate or
+negative enum tags are invalid.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=arrays>Arrays<a href=#arrays class=hash-link aria-label=Arrays的直接链接 title=Arrays的直接链接 translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=primitive-arrays>Primitive Arrays<a href=#primitive-arrays class=hash-link aria-label="Primitive Arrays的直接链接" title="Primitive Arrays的直接链接" translate=no>​</a></h3>
+<p>Primitive arrays write a length prefix and contiguous little-endian element
+payload:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32 byte_length | raw element bytes |</span><br/></div></code></pre></div></div>
+<p>Compressed <code>int[]</code> and <code>long[]</code> arrays use element count followed by compressed
+elements:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">int[] compressed:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32 length | varint32... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">long[] compressed:</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32 length | varint64 or tagged_int64... |</span><br/></div></code></pre></div></div>
+<p><code>byte[]</code> is the binary serializer and writes <code>varuint32 length</code> followed by raw
+bytes.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=object-arrays>Object Arrays<a href=#object-arrays class=hash-link aria-label="Object Arrays的直接链接" title="Object Arrays的直接链接" translate=no>​</a></h3>
+<p>Object arrays write the array length and an element type mode:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 (length &lt;&lt; 1 | monomorphic_flag) |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| [shared element class metadata] |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| element slots... |</span><br/></div></code></pre></div></div>
+<ul>
+<li class="">If <code>monomorphic_flag == 1</code>, all non-null elements use the same element
+serializer. The shared element class metadata is written once.</li>
+<li class="">If <code>monomorphic_flag == 0</code>, each non-null element writes its own type
+metadata.</li>
+</ul>
+<p>Each nullable or reference-tracked element is still represented by a reference
+slot before its element payload.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=collections>Collections<a href=#collections class=hash-link aria-label=Collections的直接链接 title=Collections的直接链接 translate=no>​</a></h2>
+<p>Java collection serializers write collection size, element flags, optional
+shared element type metadata, and element payloads:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 size | elements_header | [element type metadata] | elements... |</span><br/></div></code></pre></div></div>
+<p><code>elements_header</code> bits:</p>
+<table><thead><tr><th>Bit<th>Meaning<tbody><tr><td>0<td>Element reference tracking is enabled<tr><td>1<td>At least one element may be null<tr><td>2<td>Declared element type is used<tr><td>3<td>All non-null elements share one type</table>
+<p>When all non-null elements share a type and the declared element type is not
+used, the shared element type metadata is written once before element payloads.
+Otherwise each non-null element writes its own type metadata. Null and reference
+flags follow the reference-slot rules.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=collection-subclasses>Collection Subclasses<a href=#collection-subclasses class=hash-link aria-label="Collection Subclasses的直接链接" title="Collection Subclasses的直接链接" translate=no>​</a></h3>
+<p>Specialized serializers for supported JDK collection subclasses write
+subclass-owned field layers before the element payload:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 size |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| [comparator reference for sorted/priority collections] |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 num_class_layers |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| class_layer_fields... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| elements_header | [element type metadata] | elements... |</span><br/></div></code></pre></div></div>
+<p><code>num_class_layers</code> is the exact number of subclass field layers encoded in the
+payload. Readers must reject a payload whose layer count does not match the
+local serializer because the value payload does not carry enough layer identity
+to skip a mismatched subclass layout.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=maps>Maps<a href=#maps class=hash-link aria-label=Maps的直接链接 title=Maps的直接链接 translate=no>​</a></h2>
+<p>Maps write entry count followed by one or more chunks. Each chunk groups entries
+with compatible key and value metadata:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 size | chunk... |</span><br/></div></code></pre></div></div>
+<p>Non-null chunks:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| header | uint8 chunk_size | [key type metadata] | [value type metadata] | entries... |</span><br/></div></code></pre></div></div>
+<p><code>chunk_size</code> is in <code>1..255</code>.</p>
+<p><code>header</code> bits:</p>
+<table><thead><tr><th>Bit<th>Meaning<tbody><tr><td>0<td>Key reference tracking is enabled<tr><td>1<td>Chunk may contain null keys<tr><td>2<td>Declared key type is used<tr><td>3<td>Value reference tracking is enabled<tr><td>4<td>Chunk may contain null values<tr><td>5<td>Declared value type is used</table>
+<p>Null key or null value entries are encoded as single-entry special chunks
+without a <code>chunk_size</code> byte:</p>
+<ul>
+<li class="">null key and non-null value: special null-key header, then value payload.</li>
+<li class="">non-null key and null value: special null-value header, then key payload.</li>
+<li class="">null key and null value: <code>KV_NULL</code> header only.</li>
+</ul>
+<p><code>EnumMap</code> writes its entry count, key enum class metadata, and then its normal
+map entry payload:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 size | key enum class metadata | chunk... |</span><br/></div></code></pre></div></div>
+<p>The key enum class metadata is present even when <code>size</code> is zero so an empty
+<code>EnumMap</code> can be reconstructed with the original key type.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=map-subclasses>Map Subclasses<a href=#map-subclasses class=hash-link aria-label="Map Subclasses的直接链接" title="Map Subclasses的直接链接" translate=no>​</a></h3>
+<p>Specialized serializers for supported JDK map subclasses write subclass-owned
+field layers before entry chunks:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 size |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| [comparator reference for sorted maps] |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 num_class_layers |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| class_layer_fields... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| chunk... |</span><br/></div></code></pre></div></div>
+<p>Readers must reject mismatched <code>num_class_layers</code> for the same reason as
+collection subclasses.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=jdk-wrappers-and-views>JDK Wrappers and Views<a href=#jdk-wrappers-and-views class=hash-link aria-label="JDK Wrappers and Views的直接链接" title="JDK Wrappers and Views的直接链接" translate=no>​</a></h2>
+<p>Java native mode has serializers for selected JDK wrappers and views:</p>
+<ul>
+<li class="">Unmodifiable and synchronized collection/map wrappers keep the wrapper type
+metadata and write the wrapped source collection or map as a normal object
+payload.</li>
+<li class="">Recognized sublist views keep the sublist type metadata and write one
+serializer-owned mode byte. Mode <code>0</code> writes visible elements as a collection
+payload. Mode <code>1</code> writes view offset, size, and source list reference.</li>
+<li class=""><code>Collections.newSetFromMap</code> writes the backing map payload.</li>
+<li class="">Immutable JDK collection serializers keep list, set, or map payload
+semantics and materialize an equivalent immutable or unmodifiable container
+on read.</li>
+</ul>
+<p>Android and JVM implementations may choose different concrete public backing
+types for wrapper payloads, but the serializer-owned payload modes above define
+the wire shape.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=struct-and-object-payloads>Struct and Object Payloads<a href=#struct-and-object-payloads class=hash-link aria-label="Struct and Object Payloads的直接链接" title="Struct and Object Payloads的直接链接" translate=no>​</a></h2>
+<p>Struct-like object payloads contain field values in protocol field order. The
+selected serializer owns the exact field fast path:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| field_0 payload | field_1 payload | ... |</span><br/></div></code></pre></div></div>
+<p>For each field, field metadata decides whether the field writes a primitive
+payload directly, a nullable slot, a reference-tracked slot, type metadata, or a
+specialized collection/map/array payload.</p>
+<p>Compatible-mode readers use the remote ClassDef field list to map fields by
+identifier. Unknown fields are skipped using their remote field type metadata.</p>
+<p>Generated serializers may split large generated methods and hoist serializers,
+field offsets, collection metadata, or map metadata. Those generated-code
+decisions must preserve the same object payload order.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=throwable-payloads>Throwable Payloads<a href=#throwable-payloads class=hash-link aria-label="Throwable Payloads的直接链接" title="Throwable Payloads的直接链接" translate=no>​</a></h2>
+<p><code>Throwable</code> serializers preserve standard Java throwable state and
+subclass-owned fields:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">| stack_trace_ref | cause_ref | message_ref |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32 suppressed_count | suppressed_ref... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32 extra_field_count | extra_field_name/value... |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| varuint32_small7 num_class_layers |</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">| class_layer_fields... |</span><br/></div></code></pre></div></div>
+<p><code>extra_field_count</code> is reserved for serializer-owned extension fields and is
+currently written as zero. <code>num_class_layers</code> must match the local throwable
+serializer layout on read.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=replacement-and-java-serialization-hooks>Replacement and Java Serialization Hooks<a href=#replacement-and-java-serialization-hooks class=hash-link aria-label="Replacement and Java Serialization Hooks的直接链接" title="Replacement and Java Serialization Hooks的直接链接" translate=no>​</a></h2>
+<p>Java native mode supports serializer-owned handling for Java object replacement
+and Java serialization hooks:</p>
+<ul>
+<li class=""><code>writeReplace</code>/<code>readResolve</code> values use replacement metadata and payloads
+owned by the replacement serializer.</li>
+<li class="">JDK proxy and lambda replacements use their registered native type IDs.</li>
+<li class="">Types that require Java Object Serialization compatibility may be delegated to
+serializers that reproduce the required Java semantics inside a Fory object
+slot.</li>
+</ul>
+<p>These serializers still obey the stream header, reference slot, and type
+metadata rules in this document.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=unknown-classes>Unknown Classes<a href=#unknown-classes class=hash-link aria-label="Unknown Classes的直接链接" title="Unknown Classes的直接链接" translate=no>​</a></h2>
+<p>When meta sharing is enabled and a reader does not have a local class for a
+remote ClassDef, Java may materialize an unknown-class value using
+<code>NONEXISTENT_META_SHARED_ID</code>. The value stores enough field data to preserve and
+copy the unknown value according to the unknown-class serializer. It does not
+make the unknown Java class available to user code.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=out-of-band-buffers>Out-of-Band Buffers<a href=#out-of-band-buffers class=hash-link aria-label="Out-of-Band Buffers的直接链接" title="Out-of-Band Buffers的直接链接" translate=no>​</a></h2>
+<p>When the header out-of-band bit is set, serializers may write references to
+external buffers instead of writing all bytes inline. The callback defines the
+external buffer transport. The main stream remains a valid Fory stream
+containing references to those buffers at serializer-owned payload positions.</div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/i18n/zh-CN/docusaurus-plugin-content-docs/version-1.2.0/specification/java_serialization_spec.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label=文件选项卡><a class="pagination-nav__link pagination-nav__link--prev" href=/zh-CN/docs/1.2/specification/xlang_serialization_spec><div class=pagination-nav__sublabel>上一页</div><div class=pagination-nav__label>Xlang Serialization Format</div></a><a class="pagination-nav__link pagination-nav__link--next" href=/zh-CN/docs/1.2/specification/row_format_spec><div class=pagination-nav__sublabel>下一页</div><div class=pagination-nav__label>Row Format</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#scope class="table-of-contents__link toc-highlight">Scope</a><li><a href=#stream-layout class="table-of-contents__link toc-highlight">Stream Layout</a><li><a href=#header class="table-of-contents__link toc-highlight">Header</a><li><a href=#reference-slots class="table-of-contents__link toc-highlight">Reference Slots</a><li><a href=#type-metadata class="table-of-contents__link toc-highlight">Type Metadata</a><ul><li><a href=#native-type-id-ranges class="table-of-contents__link toc-highlight">Native Type ID Ranges</a><li><a href=#registered-named-and-unregistered-classes class="table-of-contents__link toc-highlight">Registered, Named, and Unregistered Classes</a><li><a href=#meta-sharing class="table-of-contents__link toc-highlight">Meta Sharing</a></ul><li><a href=#schema-modes class="table-of-contents__link toc-highlight">Schema Modes</a><ul><li><a href=#same-schema-mode class="table-of-contents__link toc-highlight">Same-Schema Mode</a><li><a href=#compatible-mode class="table-of-contents__link toc-highlight">Compatible Mode</a></ul><li><a href=#field-order class="table-of-contents__link toc-highlight">Field Order</a><li><a href=#classdef-encoding class="table-of-contents__link toc-highlight">ClassDef Encoding</a><ul><li><a href=#class-metadata-body class="table-of-contents__link toc-highlight">Class Metadata Body</a><li><a href=#field-info class="table-of-contents__link toc-highlight">Field Info</a><li><a href=#field-type class="table-of-contents__link toc-highlight">Field Type</a></ul><li><a href=#meta-strings class="table-of-contents__link toc-highlight">Meta Strings</a><li><a href=#primitive-values class="table-of-contents__link toc-highlight">Primitive Values</a><li><a href=#string-values class="table-of-contents__link toc-highlight">String Values</a><li><a href=#enum-values class="table-of-contents__link toc-highlight">Enum Values</a><li><a href=#arrays class="table-of-contents__link toc-highlight">Arrays</a><ul><li><a href=#primitive-arrays class="table-of-contents__link toc-highlight">Primitive Arrays</a><li><a href=#object-arrays class="table-of-contents__link toc-highlight">Object Arrays</a></ul><li><a href=#collections class="table-of-contents__link toc-highlight">Collections</a><ul><li><a href=#collection-subclasses class="table-of-contents__link toc-highlight">Collection Subclasses</a></ul><li><a href=#maps class="table-of-contents__link toc-highlight">Maps</a><ul><li><a href=#map-subclasses class="table-of-contents__link toc-highlight">Map Subclasses</a></ul><li><a href=#jdk-wrappers-and-views class="table-of-contents__link toc-highlight">JDK Wrappers and Views</a><li><a href=#struct-and-object-payloads class="table-of-contents__link toc-highlight">Struct and Object Payloads</a><li><a href=#throwable-payloads class="table-of-contents__link toc-highlight">Throwable Payloads</a><li><a href=#replacement-and-java-serialization-hooks class="table-of-contents__link toc-highlight">Replacement and Java Serialization Hooks</a><li><a href=#unknown-classes class="table-of-contents__link toc-highlight">Unknown Classes</a><li><a href=#out-of-band-buffers class="table-of-contents__link toc-highlight">Out-of-Band Buffers</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>社区</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>邮件列表<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>文档</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/>安装</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/start/>使用</a><li class=footer__item><a class=footer__link-item href=/zh-CN/docs/benchmarks/>基准测试</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>代码库</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>网站<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/zh-CN/img/asf_logo.svg alt="Apache Incubator 标志" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+      <p> 版权所有 © 2025 The Apache Software Foundation，许可证：Apache License, Version 2.0。 <br/>
+        Apache Fory、Fory、Apache、Apache Logo、Apache Fory Logo 是 Apache 软件基金会在美国和/或其他国家的注册商标或商标。
+      </p>
+      </div></div></div></div></footer></div></body>
