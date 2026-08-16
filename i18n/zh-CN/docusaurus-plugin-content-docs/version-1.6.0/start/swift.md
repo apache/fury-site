@@ -39,7 +39,7 @@ swift package init --type executable --name ForyExample
 
 ```swift title="Package.swift"
 dependencies: [
-    .package(url: "https://github.com/apache/fory.git", exact: "1.6.0")
+    .package(url: "https://github.com/apache/fory.git", exact: "1.6.1")
 ],
 targets: [
     .executableTarget(

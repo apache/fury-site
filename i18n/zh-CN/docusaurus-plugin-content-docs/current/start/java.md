@@ -39,14 +39,14 @@ Maven：
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.6.0</version>
+  <version>1.6.1</version>
 </dependency>
 ```
 
 Gradle：
 
 ```kotlin
-implementation("org.apache.fory:fory-core:1.6.0")
+implementation("org.apache.fory:fory-core:1.6.1")
 ```
 
 运行下面完整的 xlang 往返示例：
@@ -85,7 +85,7 @@ public final class ForyExample {
 Fory JSON 将 Java 对象映射为标准 JSON 文本和 UTF-8 字节。如果应用只需要 JSON，请添加 `fory-json`，无需添加 `fory-core`：
 
 ```kotlin
-implementation("org.apache.fory:fory-json:1.6.0")
+implementation("org.apache.fory:fory-json:1.6.1")
 ```
 
 在 `ForyExample.java` 中添加 import：

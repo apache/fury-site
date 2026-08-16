@@ -32,14 +32,14 @@ Maven:
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-json</artifactId>
-  <version>1.6.0</version>
+  <version>1.6.1</version>
 </dependency>
 ```
 
 Gradle:
 
 ```kotlin
-implementation("org.apache.fory:fory-json:1.6.0")
+implementation("org.apache.fory:fory-json:1.6.1")
 ```
 
 同一应用中的所有 Fory 模块应使用相同版本。
