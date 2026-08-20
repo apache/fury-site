@@ -100,6 +100,19 @@ use ordinary-constructor side effects as a deserialization completion hook: when
 constructor runs, property assignment happens afterward, and constructor-bypassing paths do not run
 it at all.
 
+## Kotlin object mapping
+
+Install `fory-json-kotlin` and use `ForyJsonKotlin.builder()` for Kotlin/JVM classes. Kotlin
+ordinary and data classes use their selected constructor, exact property types, compiler defaults,
+and declared nullability; they do not use Java's constructor-bypassing fallback. A default applies
+only when the member is missing. An explicit JSON null remains a present value and is rejected for
+a non-null parameter.
+
+Use `jsonTypeRef<T>()` for generic, nullable, unsigned, and value-class roots. Standard arrays,
+collections, and maps continue to use their normal Fory JSON representation. The complete language
+type table, singleton/value-class behavior, and omission rules are in the
+[Kotlin guide](kotlin.md).
+
 ## Supported Java types
 
 The following groups have built-in mappings. Exact wire representations are stable JSON values, but

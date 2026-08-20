@@ -72,6 +72,26 @@ ForyJson json =
         .build();
 ```
 
+Use `JsonCodecFactory` when one factory owns a family of declared or parameterized types:
+
+```java
+import org.apache.fory.json.JsonCodecFactory;
+
+JsonCodecFactory factory =
+    (type, resolver, runtimeType) ->
+        type.getRawType() == Money.class ? new MoneyCodec() : null;
+
+ForyJson json =
+    ForyJson.builder()
+        .withModule(context -> context.registerCodecFactory(factory))
+        .build();
+```
+
+`runtimeType` is `true` only when the factory is selecting a codec for the actual class of a value
+during a dynamic write. Declared roots and composite child types receive `false`. A composite codec
+that needs this distinction after construction must retain the flag for its later `resolveTypes`
+call; it must not infer the value from resolver state.
+
 The containing property still controls its name, ignore direction, and null-inclusion policy. If a
 null property is omitted, the value codec is not called. If the property is emitted, or the value
 is an array element, collection element, map value, Optional value, or atomic-reference value, the
@@ -178,6 +198,31 @@ The child members have these meanings:
 | `contentCodec` | `Optional<T>`, `AtomicReference<T>`               | `T`                               |
 | `keyCodec`     | `Map<K, V>`                                       | JSON member name for `K`          |
 | `valueCodec`   | `Map<K, V>`                                       | direct `V` value                  |
+
+### Kotlin occurrences
+
+Kotlin uses the same codec registrations and `JsonCodec` annotation. Apply property annotations to
+an explicit supported use site, for example:
+
+```kotlin
+import org.apache.fory.json.annotation.JsonCodec
+
+data class Ledger(
+  @field:JsonCodec(value = MoneyCodec::class)
+  val total: Money,
+  @field:JsonCodec(elementCodec = MoneyCodec::class)
+  val entries: List<Money>,
+)
+```
+
+The complete-value codec owns the whole JSON value. Child codecs leave the standard array,
+collection, Optional/atomic, or map representation in control. Kotlin nullability is still the
+declared occurrence contract around a selected application codec: after a non-null JSON token, the
+codec must return the exact declared type and must not return null for a non-null occurrence.
+
+An unsigned or eligible value-class map key can use the built-in member-name mapping without an
+annotation. Use an explicit `keyCodec` or whole-map codec when the key has a different tagged text
+shape. An exact application registration still takes precedence over the Kotlin module defaults.
 
 A custom Map-key codec converts between the declared key and a JSON member name:
 

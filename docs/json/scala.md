@@ -115,8 +115,11 @@ Use a complete `TypeRef` when reading a parameterized Scala type:
 import org.apache.fory.reflect.TypeRef
 
 val typeRef = new TypeRef[Map[String, Option[Int]]]() {}
-val value = json.fromJson("{\"count\":1}", typeRef)
+val value = json.fromJson("""{"count":1}""", typeRef)
 ```
+
+Scala raw strings can be passed directly to `fromJson`; JSON double quotes do not need backslash
+escaping.
 
 Scala value-type arguments can erase to `Object` in a normal JVM signature. `ScalaTypeRef` is a
 compile-time type-token constructor that preserves those arguments on Scala 2.13 and Scala 3:

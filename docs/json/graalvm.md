@@ -1,6 +1,6 @@
 ---
 title: GraalVM Native Image
-sidebar_position: 9
+sidebar_position: 10
 id: graalvm
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,8 +21,9 @@ license: |
 
 ## Reachable Models
 
-Fory JSON has its own Native Image Feature and does not use the Fory annotation processor. Add
-`@JsonType` to each reachable concrete object model that the native executable reads or writes:
+Fory JSON has one Native Image Feature. Java models are discovered from reachable annotations; the
+Feature does not use the Java annotation processor. Add `@JsonType` to each reachable concrete
+Java object model that the native executable reads or writes:
 
 ```java
 import org.apache.fory.json.ForyJson;
@@ -95,10 +96,40 @@ needed, and the provider package does not need to be exported or opened to Fory.
 methods and fields are not supported.
 
 Only configurations returned by a provider receive generated codecs. The default configuration is
-not generated implicitly. If a codegen-enabled `ForyJson` configuration was not included, Fory JSON
-uses its prepared interpreted codecs and logs one process-wide warning recommending a reachable
-`@ForyJsonProvider`. `withCodegen(false)` explicitly selects interpreted codecs and does not request
-generated-codec lookup. Asynchronous compilation is disabled in a native executable.
+not generated implicitly. If a codegen-enabled `ForyJson` configuration was not included, ordinary
+Java models and complete value codecs use their prepared interpreted codecs, and Fory JSON logs one
+process-wide warning recommending a reachable `@ForyJsonProvider`. Language-module object models
+that require hosted capabilities fail before reading or writing a value. `withCodegen(false)`
+explicitly selects interpreted codecs and does not request generated-codec lookup. Asynchronous
+compilation is disabled in a native executable.
+
+### Kotlin configurations
+
+Kotlin Native Image support uses the same Feature and provider API. Add the Kotlin runtime, then
+return a codegen-enabled configuration that installs `ForyJsonKotlin`:
+
+```kotlin
+import org.apache.fory.json.ForyJson
+import org.apache.fory.json.annotation.ForyJsonProvider
+import org.apache.fory.json.kotlin.ForyJsonKotlin
+
+@ForyJsonProvider
+class JsonConfigs {
+  fun api(): ForyJson = ForyJsonKotlin.builder().build()
+}
+```
+
+Annotate each reachable concrete Kotlin model with `@JsonType`, or register an exact reachable
+Mixin for a third-party target. Fory reads and validates Kotlin metadata while building the image,
+then generates the provider-selected codecs. A provider configuration with disabled code
+generation or an unsupported metadata ABI fails image construction. A Kotlin-enabled runtime
+configuration that was not returned by a provider fails before it reads or writes a Kotlin object;
+it never falls back to reflective construction.
+
+An exact generic Kotlin root is available only when its complete binding is reached through a
+property, constructor argument, container/map child, or closed subtype of a provider-selected
+concrete root. Keep using `jsonTypeRef<T>()` at the direct root call; no public root registry or
+reflection configuration is needed.
 
 ## Mixins
 
@@ -146,7 +177,8 @@ by a class name resolved at runtime is not reachable;
 `JsonSubTypes.Type.className` is therefore unsupported in a native image.
 
 Do not add application reflection configuration as a replacement for the generated configuration.
-The native executable resolves the same effective annotations as the JVM.
+The native executable resolves the same effective annotations as the JVM. Kotlin applications use
+the provider workflow above and must also avoid package-wide opens or reflection configuration.
 
 ## Annotations and Custom Codecs
 

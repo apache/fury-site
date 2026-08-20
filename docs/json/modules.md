@@ -74,6 +74,21 @@ Application registrations made directly on `ForyJsonBuilder` take precedence ove
 registrations. Conflicting module registrations fail during `build()` instead of depending on
 installation order.
 
+## Kotlin Module
+
+`ForyJsonKotlin` is the optional module for Kotlin/JVM models. Prefer its builder when an
+application uses Kotlin models:
+
+```kotlin
+import org.apache.fory.json.kotlin.ForyJsonKotlin
+
+val json = ForyJsonKotlin.builder().build()
+```
+
+This is equivalent to `ForyJson.builder().withModule(ForyJsonKotlin)`. It does not scan the
+classpath or register application models. Exact application codec registrations retain normal
+precedence. See [Kotlin](kotlin.md) for type tokens and optional Android minification setup.
+
 ## Module Identity
 
 `moduleKey()` identifies the module configuration for generated-code reuse and conflict checking.
