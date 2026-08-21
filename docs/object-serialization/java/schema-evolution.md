@@ -65,10 +65,8 @@ This compatible mode involves serializing class metadata into the serialized out
 
 `DeflaterMetaCompressor` is the default metadata compressor. If a compatible reader uses a custom
 `MetaCompressor`, implement `decompress(byte[], int, int, int maxOutputSize)` and enforce the output
-limit before allocating the declared output, or incrementally during decompression. Custom
-compressors that only implement the unbounded three-argument method fail bounded metadata reads
-before decompression starts. See [Configuration](configuration.md#custom-metadata-compressors) for
-the required reader setup.
+limit before allocating the declared output, or incrementally during decompression. See
+[Configuration](configuration.md#custom-metadata-compressors) for the required reader setup.
 
 ## Meta Sharing
 

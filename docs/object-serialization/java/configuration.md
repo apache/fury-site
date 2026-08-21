@@ -61,10 +61,6 @@ When passing a custom `MetaCompressor` to `withMetaCompressor`, keep it thread-s
 `maxOutputSize` before allocating that output, or enforce the limit incrementally while
 decompressing.
 
-A custom compressor that implements only the unbounded three-argument `decompress` method can
-still compress metadata, but bounded metadata deserialization fails before decompression starts.
-Update such a compressor to implement the bounded overload before using it in a reader.
-
 ## Example Configuration
 
 ```java
