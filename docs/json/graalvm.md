@@ -180,17 +180,17 @@ built with.
 
 ## Type Discovery and Construction
 
-The `fory-json` artifact activates its Native Image Feature automatically. `@JsonType` is not
-inherited, so annotate every concrete application model. An annotated base with a class-literal
-`@JsonSubTypes` table registers its listed subtypes automatically. Dedicated supported containers,
-including `EnumMap` and `EnumSet`, use their built-in factories. Other reachable concrete
-`Collection` and `Map` root types require a public no-argument constructor. A class referenced only
-by a class name resolved at runtime is not reachable;
+No extra Native Image feature configuration is required. `@JsonType` is not inherited, so annotate
+every concrete application model. An annotated base with a class-literal `@JsonSubTypes` table
+registers its explicit or inferred subtypes automatically. Empty tables are supported for reachable
+Java, Kotlin, and Scala 3 sealed schemas. Other reachable concrete `Collection` and `Map` root types
+require a public no-argument constructor. A class referenced only by a class name resolved at
+runtime is not reachable;
 `JsonSubTypes.Type.className` is therefore unsupported in a native image.
 
-Do not add application reflection configuration as a replacement for the generated configuration.
-The native executable resolves the same effective annotations as the JVM. Kotlin applications use
-the provider workflow above and must also avoid package-wide opens or reflection configuration.
+Do not add application reflection configuration. The native executable uses the same effective
+annotations as the JVM. Kotlin applications use the provider workflow above and must also avoid
+package-wide opens.
 
 ## Annotations and Custom Codecs
 
