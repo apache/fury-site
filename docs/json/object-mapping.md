@@ -145,12 +145,19 @@ Non-finite float and double values use the quoted strings `"NaN"`, `"Infinity"`,
 `"-Infinity"`. Use explicit `BigInteger` or `BigDecimal` targets when arbitrary precision must be
 preserved.
 
+Declared boolean and numeric targets also accept their ordinary token text in a JSON string, such
+as `"true"`, `"42"`, or `"123.45"`; no builder option is required. This applies to roots, object
+members, arrays, collections, and maps. Fory continues to write native JSON boolean and number
+tokens. An `Object` target retains natural JSON typing, so a quoted value remains a `String`; a
+quoted numeric value read as `Number` uses `Double`.
+
 ### Built-in representations
 
 These built-in values use the following ordinary JSON shapes:
 
 | Java type                                                                 | JSON representation                                                                                                                |
 | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Boolean and numeric scalars                                               | Native JSON boolean or number when written; declared targets also read the same token text quoted                                  |
 | Enum                                                                      | Constant name as a string                                                                                                          |
 | `Date`, `Calendar`, `java.sql.Date`, `Time`, `Timestamp`                  | Epoch milliseconds as a number                                                                                                     |
 | `TimeZone`                                                                | Time-zone ID as a string                                                                                                           |
