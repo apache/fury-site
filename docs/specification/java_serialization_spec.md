@@ -448,7 +448,8 @@ For name encodings, bits `4..6` store `encoded_length - 1` when it is less than
 
 For tag ID encoding, bits `4..6` store the numeric field ID when it is less than
 `7`. If the value is `7`, read an extra `varuint32` and add it to `7`. Field IDs
-must be non-negative. Duplicate field IDs in one TypeDef are invalid.
+must satisfy `0 <= tag_id < 2^29`; the largest legal value is `536870911`.
+Duplicate field IDs in one TypeDef are invalid.
 
 ### Field Type
 
