@@ -840,8 +840,12 @@ Field info list:
 Each field is encoded as:
 
 ```
-| field header (1 byte) | field type info | [field name bytes] |
+| field header (1 byte) | [extended name or tag value] | field type info | [field name bytes] |
 ```
+
+The optional extended value is a `varuint32`. It is present when the four-bit
+size field is saturated for a long encoded name or an extended tag ID, as
+defined below.
 
 Field header layout:
 
