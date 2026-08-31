@@ -1,0 +1,67 @@
+---
+title: 介绍
+sidebar_position: 0
+id: index
+license: |
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+---
+
+二进制对象序列化会重建对象图，包括已注册的应用类型、集合、多态值以及可选的共享引用。
+
+## 选择模式
+
+| 模式          | 适用场景                               | 从这里开始               |
+| ------------- | -------------------------------------- | ------------------------ |
+| Xlang（默认） | 字节需要跨越语言边界                         | [Xlang 序列化](xlang.md) |
+| Native        | 所有写入端和读取端都使用一个 Fory 实现家族   | [原生序列化](native.md)  |
+
+Xlang 和原生模式是仅有的两种对象序列化模式。Row Format 是可随机访问的分析表示形式，
+Fory JSON 是 Java JSON codec；如果目标不是重建对象，请使用
+[格式选择指南](../introduction/choose-a-format.md)。
+
+## 阅读核心概念和序列化模式
+
+为某种语言选择具体 Fory API 之前，请按以下顺序阅读：
+
+1. [核心概念](core-concepts.md)介绍两种模式共用的对象图、类型、Schema、引用、多态和
+   Schema 演进。
+2. [Xlang 序列化](xlang.md)介绍默认使用的可移植格式，以及不同语言的 Fory 实现必须共同遵守的规则。
+3. [原生序列化](native.md)介绍适合使用特定于实现的原生格式的场景。
+
+## 按语言浏览
+
+选择语言以查看其安装方式、生命周期、具体 API、配置、类型注册、Schema 行为、扩展、
+平台支持和故障排除信息：
+
+| 语言                  | 模式              | 文档                                                  |
+| --------------------- | ----------------- | ----------------------------------------------------- |
+| Java                  | xlang 和原生      | [Java 指南](./java/index.md)                          |
+| Python                | xlang 和原生      | [Python 指南](./python/index.md)                      |
+| C++                   | xlang 和原生      | [C++ 指南](./cpp/index.md)                            |
+| Go                    | xlang 和原生      | [Go 指南](./go/index.md)                              |
+| Rust                  | xlang 和原生      | [Rust 指南](./rust/index.md)                          |
+| JavaScript/TypeScript | xlang             | [JavaScript/TypeScript 指南](./javascript/index.md)   |
+| C#                    | xlang             | [C# 指南](./csharp/index.md)                          |
+| Swift                 | xlang             | [Swift 指南](./swift/index.md)                        |
+| Dart                  | xlang             | [Dart 指南](./dart/index.md)                          |
+| Scala                 | xlang 和 JVM 原生 | [Scala 指南](./scala/index.md)                        |
+| Kotlin                | xlang 和 JVM 原生 | [Kotlin 指南](./kotlin/index.md)                      |
+
+## 规范
+
+- [Xlang 序列化格式](../specification/xlang_serialization_spec.md)
+- [Java 原生对象图格式](../specification/java_serialization_spec.md)
+- [Xlang 类型映射](../specification/xlang_type_mapping.md)
