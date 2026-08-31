@@ -1,0 +1,1408 @@
+<!doctype html><html lang=en-US dir=ltr class="docs-wrapper plugin-docs plugin-id-default docs-version-1.6.0 docs-doc-page docs-doc-id-specification/xlang_implementation_guide" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.10.1"><title data-rh=true>Xlang Implementation Guide | Apache Fory™</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true property=og:url content=https://fory.apache.org/docs/1.6/specification/xlang_implementation_guide /><meta data-rh=true property=og:locale content=en_US /><meta data-rh=true property=og:locale:alternate content=zh_CN /><meta data-rh=true name=docusaurus_locale content=en-US /><meta data-rh=true name=docsearch:language content=en-US /><meta data-rh=true http-equiv=Content-Security-Policy content="frame-src 'self' https://ghbtns.com/;"/><meta data-rh=true property=og:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true property=og:image:width content=1500 /><meta data-rh=true property=og:image:height content=1500 /><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true name=twitter:image content=https://fory.apache.org/img/logo.png /><meta data-rh=true name=docusaurus_version content=1.6.0 /><meta data-rh=true name=docusaurus_tag content=docs-default-1.6.0 /><meta data-rh=true name=docsearch:version content=1.6.0 /><meta data-rh=true name=docsearch:docusaurus_tag content=docs-default-1.6.0 /><meta data-rh=true property=og:title content="Xlang Implementation Guide | Apache Fory™"/><meta data-rh=true name=description content=Overview /><meta data-rh=true property=og:description content=Overview /><link data-rh=true rel=icon href=/img/favicon.ico /><link data-rh=true rel=canonical href=https://fory.apache.org/docs/1.6/specification/xlang_implementation_guide /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.6/specification/xlang_implementation_guide hreflang=en-US /><link data-rh=true rel=alternate href=https://fory.apache.org/zh-CN/docs/1.6/specification/xlang_implementation_guide hreflang=zh-CN /><link data-rh=true rel=alternate href=https://fory.apache.org/docs/1.6/specification/xlang_implementation_guide hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://fory.apache.org/docs/1.6/specification/xlang_implementation_guide","name":"Xlang Implementation Guide","position":1}]}</script><link rel=alternate type=application/rss+xml href=/blog/rss.xml title="Apache Fory™ RSS Feed"><link rel=alternate type=application/atom+xml href=/blog/atom.xml title="Apache Fory™ Atom Feed"><script type=text/javascript>"fury.apache.org"===window.location.host&&(window.location.href="https://fory.apache.org"),function(){var i=["0.17","0.16","0.15","0.14","0.13","0.12","0.11","0.10"];if(0!==i.length){var t=window.location.pathname.split("/").filter(Boolean),a=/^[a-z]{2}-[A-Z]{2}$/.test(t[0])?t[0]:null,e=+!!a;if(!("docs"!==t[e]||0>i.indexOf(t[e+1]))){var o=["/archive"];a&&o.push(a),o.push.apply(o,t.slice(e));var n=window.location.pathname.endsWith("/")?"/":"";window.location.replace(o.join("/")+n+window.location.search+window.location.hash)}}}(),function(){var i=window.location.pathname.split("/").filter(Boolean),t="docs"===i[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(i[0])&&"docs"===i[1]?1:-1;if(!(t<0)){var a=t+1,e=i[a];if(!/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(e)){"next"===e&&a++;var o=i.slice(a).join("/"),n=o.split("/"),r=2===n.length&&"guide"===n[0]?n[1]:null,s=r&&["cpp","csharp","dart","go","java","javascript","kotlin","python","rust","scala","swift"].indexOf(r)>=0?"object-serialization/"+r:({"introduction/overview":"introduction","introduction/benchmark":"benchmarks","start/install":"start","start/usage":"start","guide/xlang":"object-serialization/xlang","guide/xlang/getting_started":"object-serialization/xlang","guide/xlang/serialization":"object-serialization/xlang","guide/java/json_support":"json","guide/rust/external_types":"object-serialization/rust/external-types","guide/dart/external_types":"object-serialization/dart/external-types","guide/swift/external_types":"object-serialization/swift/external-types","guide/csharp/external_types":"object-serialization/csharp/external-types","guide/csharp/basic_serialization":"object-serialization/csharp/basic-serialization","guide/dart/inheritance":"object-serialization/dart/inheritance","benchmarks/rust":"benchmarks/object-serialization/xlang/rust","compiler/compiler_guide":"compiler/getting-started","community/development":"development"})[o];if(s){var l="/"+i.slice(0,a).join("/");window.location.replace(l+"/"+s+"/"+window.location.search+window.location.hash)}}}}(),function(){var i=window.location.pathname,t=i.split("/").filter(Boolean),a="docs"===t[0]?0:/^[a-z]{2}-[A-Z]{2}$/.test(t[0])&&"docs"===t[1]?1:-1;if(!(a<0)){var e=a+1,o=t[e];if(("next"===o||/^[0-9]+[.][0-9]+(?:[.][0-9]+)?$/.test(o))&&e++,!("docs"!==t[e]||0>["guide","introduction","start"].indexOf(t[e+1]))){t.splice(e,1);var n="/"+t.join("/");i.endsWith("/")&&(n+="/"),window.location.replace(n+window.location.search+window.location.hash)}}}()</script><link rel=stylesheet href=/assets/css/styles.6b3f6c42.css /><script src=/assets/js/runtime~main.25bc5111.js defer></script><script src=/assets/js/main.3e1f1df6.js defer></script></head><body><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><div role=region aria-label="Skip to main content"><a class=skipToContent_fXgn href=#__docusaurus_skipToContent_fallback>Skip to main content</a></div><nav aria-label=Main class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/><div class=navbar__logo><img src=/img/fory-logo-light.png alt="Apache Fory™ Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"/><img src=/img/fory-logo-dark.png alt="Apache Fory™ Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"/></div><b class="navbar__title text--truncate"></b></a><a class="navbar__item navbar__link" href=/docs/1.6/introduction/>Docs</a><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/docs/1.6/specification/xlang_serialization_spec>Specification</a><a class="navbar__item navbar__link" href=/docs/1.6/community/>Community</a><a class="navbar__item navbar__link" href=/user>Users</a><a class="navbar__item navbar__link" href=/download>Download</a><a class="navbar__item navbar__link" href=/blog>Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link>ASF</a><ul class=dropdown__menu><li><a href=https://www.apache.org/ target=_blank rel="noopener noreferrer" class=dropdown__link>Foundation</a><li><a href=https://www.apache.org/licenses/ target=_blank rel="noopener noreferrer" class=dropdown__link>License</a><li><a href=https://www.apache.org/events/current-event.html target=_blank rel="noopener noreferrer" class=dropdown__link>Events</a><li><a href=https://privacy.apache.org/policies/privacy-policy-public.html target=_blank rel="noopener noreferrer" class=dropdown__link>Privacy</a><li><a href=https://www.apache.org/security/ target=_blank rel="noopener noreferrer" class=dropdown__link>Security</a><li><a href=https://www.apache.org/foundation/sponsorship.html target=_blank rel="noopener noreferrer" class=dropdown__link>Sponsorship</a><li><a href=https://www.apache.org/foundation/thanks.html target=_blank rel="noopener noreferrer" class=dropdown__link>Thanks</a><li><a href=https://www.apache.org/foundation/policies/conduct.html target=_blank rel="noopener noreferrer" class=dropdown__link>Code of Conduct</a></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a class=navbar__link aria-haspopup=true aria-expanded=false role=button href=/docs/1.6/specification/xlang_implementation_guide>1.6</a><ul class=dropdown__menu><li><a class=dropdown__link href=/docs/next/specification/xlang_implementation_guide>dev</a><li><a class=dropdown__link href=/docs/specification/xlang_implementation_guide>1.7</a><li><a aria-current=page class="dropdown__link dropdown__link--active" href=/docs/1.6/specification/xlang_implementation_guide>1.6</a><li><a class=dropdown__link href=/docs/1.5/specification/xlang_implementation_guide>1.5</a><li><a class=dropdown__link href=/docs/1.4/specification/xlang_implementation_guide>1.4</a><li><a class=dropdown__link href=/docs/1.3/specification/xlang_implementation_guide>1.3</a><li><a class=dropdown__link href=/docs/1.2/specification/xlang_implementation_guide>1.2</a><li><a class=dropdown__link href=/docs/1.1/specification/xlang_implementation_guide>1.1</a><li><a class=dropdown__link href=/docs/1.0/specification/xlang_implementation_guide>1.0</a><li><a href=https://fory.apache.org/archive/docs/0.17/introduction/overview/ target=_blank rel="noopener noreferrer" class=dropdown__link>More versions<svg width=12 height=12 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository"></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href=# aria-haspopup=true aria-expanded=false role=button class=navbar__link><svg viewBox="0 0 24 24" width=20 height=20 aria-hidden=true class=iconLanguage_nlXk><path fill=currentColor d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>English</a><ul class=dropdown__menu><li><a href=/docs/1.6/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang=en-US>English</a><li><a href=/zh-CN/docs/1.6/specification/xlang_implementation_guide target=_self rel="noopener noreferrer" class=dropdown__link lang=zh-CN>简体中文</a></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type=button disabled title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_Bca1><div class=navbar__search><span aria-label="expand searchbar" role=button class=search-icon tabindex=0></span><input id=search_input_react type=search placeholder=Loading... aria-label=Search class="navbar__search-input search-bar" disabled/></div></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class=docsWrapper_hBAB><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type=button></button><div class=docRoot_UBD9><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class=sidebarViewport_aRkj><div class=sidebar_njMd><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.6/specification/xlang_serialization_spec><span title="Xlang Serialization Format" class=linkLabel_WmDU>Xlang Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.6/specification/java_serialization_spec><span title="Java Serialization Format" class=linkLabel_WmDU>Java Serialization Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.6/specification/row_format_spec><span title="Row Format" class=linkLabel_WmDU>Row Format</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class=menu__link href=/docs/1.6/specification/xlang_type_mapping><span title="Xlang Type Mapping" class=linkLabel_WmDU>Xlang Type Mapping</span></a><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current=page href=/docs/1.6/specification/xlang_implementation_guide><span title="Xlang Implementation Guide" class=linkLabel_WmDU>Xlang Implementation Guide</span></a></ul></nav></div></div></aside><main class=docMainContainer_TBSr><div class="container padding-top--md padding-bottom--lg"><div class=row><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role=alert><div>This is documentation for <!-- -->Apache Fory™<!-- --> <b>1.6</b>, which is no longer actively maintained.</div><div class=margin-top--md>For up-to-date documentation, see the <b><a href=/docs/specification/xlang_implementation_guide>latest version</a></b> (<!-- -->1.7<!-- -->).</div></div><div class=docItemContainer_Djhp><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label=Breadcrumbs><ul class=breadcrumbs><li class=breadcrumbs__item><a aria-label="Home page" class=breadcrumbs__link href=/><svg viewBox="0 0 24 24" class=breadcrumbHomeIcon_YNFT><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill=currentColor /></svg></a><li class="breadcrumbs__item breadcrumbs__item--active"><span class=breadcrumbs__link>Xlang Implementation Guide</span></ul></nav><span class="theme-doc-version-badge badge badge--secondary">Version: 1.6</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type=button class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Xlang Implementation Guide</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=overview>Overview<a href=#overview class=hash-link aria-label="Direct link to Overview" title="Direct link to Overview" translate=no>​</a></h2>
+<p>This guide describes the current xlang ownership model used by Fory implementations.</p>
+<p>The wire format is defined by
+<a class="" href=/docs/1.6/specification/xlang_serialization_spec>Xlang Serialization Spec</a>. This document is about
+service boundaries, operation flow, and internal ownership. New Fory implementations do not
+need the same class names, but they should preserve the same control flow:</p>
+<ul>
+<li class="">root operations stay on the <code>Fory</code> facade</li>
+<li class="">nested payload work stays on explicit read and write contexts</li>
+<li class="">type metadata stays in the type resolver layer</li>
+<li class="">serializers stay payload-focused</li>
+</ul>
+<p>When this guide conflicts with the wire-format specification, follow
+<code>docs/specification/xlang_serialization_spec.md</code>. When it conflicts with a
+language-specific implementation detail, follow the current implementation code for
+that language.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=source-of-truth>Source Of Truth<a href=#source-of-truth class=hash-link aria-label="Direct link to Source Of Truth" title="Direct link to Source Of Truth" translate=no>​</a></h2>
+<p>Use these sources in this order:</p>
+<ol>
+<li class=""><code>docs/specification/xlang_serialization_spec.md</code></li>
+<li class="">the current implementation for the language</li>
+<li class="">cross-language tests under <code>integration_tests/</code></li>
+</ol>
+<p>For Dart, the implementation shape is centered on:</p>
+<ul>
+<li class=""><code>Fory</code></li>
+<li class=""><code>WriteContext</code></li>
+<li class=""><code>ReadContext</code></li>
+<li class=""><code>RefWriter</code></li>
+<li class=""><code>RefReader</code></li>
+<li class=""><code>TypeResolver</code></li>
+<li class=""><code>StructSerializer</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=implementation-ownership-model>Implementation Ownership Model<a href=#implementation-ownership-model class=hash-link aria-label="Direct link to Implementation Ownership Model" title="Direct link to Implementation Ownership Model" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=fory-is-the-root-operation-facade><code>Fory</code> is the root-operation facade<a href=#fory-is-the-root-operation-facade class=hash-link aria-label="Direct link to fory-is-the-root-operation-facade" title="Direct link to fory-is-the-root-operation-facade" translate=no>​</a></h3>
+<p><code>Fory</code> owns the reusable services for one Fory instance.</p>
+<p>In Dart, <code>Fory</code> owns exactly four reusable members:</p>
+<ul>
+<li class=""><code>Buffer</code></li>
+<li class=""><code>WriteContext</code></li>
+<li class=""><code>ReadContext</code></li>
+<li class=""><code>TypeResolver</code></li>
+</ul>
+<p>In Java, <code>Fory</code> also owns instance-local services such as <code>JITContext</code> and
+<code>CopyContext</code>, but the ownership rule is the same: <code>Fory</code> is the root facade,
+not the place where nested serializers do their work.</p>
+<p><code>Fory</code> is responsible for:</p>
+<ul>
+<li class="">preparing the shared buffer for root operations</li>
+<li class="">writing and reading the root xlang header bitmap</li>
+<li class="">delegating nested value encoding to <code>WriteContext</code></li>
+<li class="">delegating nested value decoding to <code>ReadContext</code></li>
+<li class="">owning registration through <code>TypeResolver</code></li>
+<li class="">resetting operation-local context state in a top-level <code>finally</code></li>
+</ul>
+<p>Nested serializers must not call back into root <code>serialize(...)</code> or
+<code>deserialize(...)</code> entry points.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext-and-readcontext-hold-operation-local-state><code>WriteContext</code> and <code>ReadContext</code> hold operation-local state<a href=#writecontext-and-readcontext-hold-operation-local-state class=hash-link aria-label="Direct link to writecontext-and-readcontext-hold-operation-local-state" title="Direct link to writecontext-and-readcontext-hold-operation-local-state" translate=no>​</a></h3>
+<p><code>WriteContext</code> and <code>ReadContext</code> are prepared by <code>Fory</code> for one root operation
+and reset by <code>Fory</code> in a <code>finally</code> block before reuse.</p>
+<p><code>prepare(...)</code> should only bind the active buffer and root-operation inputs.
+<code>reset()</code> should clear operation-local mutable state.</p>
+<p>That operation-local state includes:</p>
+<ul>
+<li class="">the current buffer</li>
+<li class="">the active <code>RefWriter</code> or <code>RefReader</code></li>
+<li class="">meta-string state</li>
+<li class="">shared type-definition state</li>
+<li class="">operation-local scratch state keyed by identity</li>
+<li class="">logical object-graph depth</li>
+</ul>
+<p>Generated and hand-written serializers should treat these contexts as the only
+source of operation-local services. Serializers must not keep ambient instance
+state in thread locals, globals, or serializer instance fields.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=writecontext><code>WriteContext</code><a href=#writecontext class=hash-link aria-label="Direct link to writecontext" title="Direct link to writecontext" translate=no>​</a></h3>
+<p><code>WriteContext</code> owns all write-side per-operation state:</p>
+<ul>
+<li class="">current <code>Buffer</code></li>
+<li class=""><code>RefWriter</code></li>
+<li class=""><code>MetaStringWriter</code></li>
+<li class="">shared TypeDef write state</li>
+<li class="">root <code>trackRef</code> mode</li>
+<li class="">recursion depth and limits</li>
+</ul>
+<p>It exposes one-shot primitive helpers such as:</p>
+<ul>
+<li class=""><code>writeBool</code></li>
+<li class=""><code>writeInt32</code></li>
+<li class=""><code>writeVarUInt32</code></li>
+</ul>
+<p>These helpers are convenience methods. Serializers that perform repeated
+primitive IO should cache <code>final buffer = context.buffer;</code> and call buffer
+methods directly.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext><code>ReadContext</code><a href=#readcontext class=hash-link aria-label="Direct link to readcontext" title="Direct link to readcontext" translate=no>​</a></h3>
+<p><code>ReadContext</code> owns all read-side per-operation state:</p>
+<ul>
+<li class="">current <code>Buffer</code></li>
+<li class=""><code>RefReader</code></li>
+<li class=""><code>MetaStringReader</code></li>
+<li class="">shared TypeDef read state</li>
+<li class="">recursion depth and limits</li>
+</ul>
+<p>It exposes matching one-shot primitive helpers such as:</p>
+<ul>
+<li class=""><code>readBool</code></li>
+<li class=""><code>readInt32</code></li>
+<li class=""><code>readVarUInt32</code></li>
+</ul>
+<p>Generated struct serializers call <code>context.reference(value)</code> immediately after
+constructing the target instance so back-references can resolve to that object.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=reference-tracking>Reference Tracking<a href=#reference-tracking class=hash-link aria-label="Direct link to Reference Tracking" title="Direct link to Reference Tracking" translate=no>​</a></h2>
+<p>Reference handling is split behind two explicit services:</p>
+<ul>
+<li class=""><code>RefWriter</code> writes null, ref, and new-value markers and remembers previously
+written objects by identity.</li>
+<li class=""><code>RefReader</code> decodes those markers, reserves read reference IDs, and resolves
+previously materialized objects.</li>
+</ul>
+<p>The xlang ref markers are:</p>
+<ul>
+<li class=""><code>NULL_FLAG (-3)</code></li>
+<li class=""><code>REF_FLAG (-2)</code></li>
+<li class=""><code>NOT_NULL_VALUE_FLAG (-1)</code></li>
+<li class=""><code>REF_VALUE_FLAG (0)</code></li>
+</ul>
+<p>Key behavior:</p>
+<ul>
+<li class="">basic values never use ref tracking</li>
+<li class="">field metadata controls ref behavior inside generated structs</li>
+<li class="">root <code>trackRef</code> is only for top-level graphs and container roots with no
+field metadata</li>
+<li class="">serializers that allocate an object before all nested reads complete must bind
+that object early with <code>context.reference(...)</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=type-resolution>Type Resolution<a href=#type-resolution class=hash-link aria-label="Direct link to Type Resolution" title="Direct link to Type Resolution" translate=no>​</a></h2>
+<p><code>TypeResolver</code> owns:</p>
+<ul>
+<li class="">built-in type resolution</li>
+<li class="">registration by numeric id or by <code>namespace + typeName</code></li>
+<li class="">serializer lookup</li>
+<li class="">struct metadata lookup</li>
+<li class="">type metadata encoding and decoding</li>
+<li class="">canonical encoded meta strings for package names, type names, and field names</li>
+<li class="">encoded-name lookup for named type resolution</li>
+<li class="">wire type decisions for struct, compatible struct, enum, ext, and union forms</li>
+</ul>
+<p>In Java xlang mode the concrete implementation is <code>XtypeResolver</code>. In Dart the
+same ownership stays behind the internal <code>TypeResolver</code>.</p>
+<p>Serializers do not resolve class metadata themselves. They ask the current
+context to read or write nested values, and the context delegates type work to
+<code>TypeResolver</code>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=external-type-serialization-ownership>External-type serialization ownership<a href=#external-type-serialization-ownership class=hash-link aria-label="Direct link to External-type serialization ownership" title="Direct link to External-type serialization ownership" translate=no>​</a></h3>
+<p>A language binding that cannot attach Fory behavior directly to every
+application value type may separate a serializer provider from its target
+value.</p>
+<p>The ownership split is:</p>
+<ul>
+<li class="">the serializer provider owns static serialization behavior and, for an
+external structural serializer, the local schema declaration</li>
+<li class="">the target owns values of the target type, host type identity, storage size, and
+dynamic downcasts</li>
+<li class="">the value serializer owns target bodies, complete root values, defaults,
+value type identity, root/dynamic type information, and value-level
+polymorphism</li>
+<li class="">the internal field codec extends the value serializer for the same target
+and owns <code>FieldType</code>, field null/reference framing, field-capacity hints,
+remote field metadata, compatible-field composition, and recursive carrier
+field schemas</li>
+<li class="">one carrier implementation owns the body, allocation, insertion, and
+reference algorithms reused by root serializers and field codecs</li>
+<li class="">a custom serializer owns allocations inside its opaque body and must perform the
+corresponding readable-byte, policy, and graph-memory checks before
+allocation</li>
+<li class=""><code>Fory</code> owns root framing and operation setup/reset</li>
+<li class=""><code>TypeResolver</code> owns registration and dynamic lookup</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id=c-generated-structural-serializers>C# generated structural serializers<a href=#c-generated-structural-serializers class=hash-link aria-label="Direct link to C# generated structural serializers" title="Direct link to C# generated structural serializers" translate=no>​</a></h4>
+<p>C# uses one target-keyed source-generation path for ordinary and external
+structural serializers. <code>ForyStructAttribute</code> is non-inherited: every
+first-party class that participates in a serializable hierarchy carries a
+direct annotation. An external declaration supplies the equivalent contract
+for an unmodifiable target.</p>
+<p>For one concrete ordinary class, compilation-level hierarchy discovery
+produces two independent immutable outputs:</p>
+<ul>
+<li class="">one flattened wire-member set, used by field ordering, schema hashes,
+<code>TypeMeta</code>, and generated reads and writes; and</li>
+<li class="">one shallow-storage model, used only by graph-memory accounting.</li>
+</ul>
+<p>The wire set is assembled base-first from declaration-owned generated
+descriptors. Property override chains collapse to one logical slot before the
+complete set is validated and sorted by the protocol comparator. Hidden
+members retain their exact declaring type. A generated child never calls a
+parent serializer body and never encodes a base object as a nested value.</p>
+<p>Each inheritable ordinary class publishes a target-keyed compiler contract
+containing:</p>
+<ul>
+<li class="">its exact target;</li>
+<li class="">its exact directly declared wire-member count;</li>
+<li class="">one descriptor on each deterministic accessor for a directly declared wire
+member: fields use a writable <code>ref</code> accessor, while properties use a getter
+plus a matching setter; and</li>
+<li class="">a public static readonly cumulative <code>HierarchyShallowBytes</code> value.</li>
+</ul>
+<p>The provider's shallow value is the immediate parent provider value plus only
+the current class's directly declared physical instance fields. A sealed
+concrete serializer uses the same cumulative expression privately and does not
+publish a provider marker, descriptors, or hierarchy value. The concrete
+serializer adds object self storage once. Properties never directly add
+storage, while private, readonly, compiler-generated, and non-wire instance
+fields do. Referenced child compilations consume only an accessible provider
+contract; they do not import, enumerate, or reconstruct private parent fields.
+Provider-only targets emit a static provider; a concrete non-sealed
+serializer carries the same contract without a second type or forwarding path.
+An internal provider is available only to assemblies granted normal C#
+accessibility, such as through <code>InternalsVisibleTo</code>; an inaccessible or
+extern-alias-only contract does not own another compilation's hierarchy.</p>
+<p>The generator emits ordinary direct member access whenever C# accessibility
+allows it. A provider publishes an accessor when a referenced child must reach
+declaration-owned state. The accessor signature preserves the member's CLR
+type and nullability metadata. Missing or ambiguous providers fail generation.</p>
+<p>An abstract ordinary class emits only its generated hierarchy provider and does not
+create a serializer instance or registration. Its property descriptors may
+publish unresolved abstract override slots; a concrete descendant must supply
+the callable implementation. Concrete classes require legal parameterless
+construction and retain the existing allocate-before-children and reference
+publication order.</p>
+<p><code>ForyStructAttribute</code> and <code>ForyEnumAttribute</code> carry an optional <code>Target</code> type.
+A local non-generic abstract class supplies an external structural declaration,
+while an empty non-generic static class selects an external enum target:</p>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token punctuation" style=color:#393A34>[</span><span class="token attribute class-name">ForyStruct</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>(</span><span class="token attribute attribute-arguments">Target </span><span class="token attribute attribute-arguments operator" style=color:#393A34>=</span><span class="token attribute attribute-arguments"> </span><span class="token attribute attribute-arguments keyword" style=color:#00009f>typeof</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>(</span><span class="token attribute attribute-arguments type-expression class-name">ThirdParty</span><span class="token attribute attribute-arguments type-expression class-name punctuation" style=color:#393A34>.</span><span class="token attribute attribute-arguments type-expression class-name">User</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>)</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>)</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>internal</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>abstract</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">UserSerializer</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token punctuation" style=color:#393A34>[</span><span class="token attribute class-name">ForyField</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>(</span><span class="token attribute attribute-arguments"></span><br/></div><div class=token-line style=color:#393A34><span class="token attribute attribute-arguments">        </span><span class="token attribute attribute-arguments number" style=color:#36acaa>1</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>,</span><span class="token attribute attribute-arguments"></span><br/></div><div class=token-line style=color:#393A34><span class="token attribute attribute-arguments">        TargetDeclaringType </span><span class="token attribute attribute-arguments operator" style=color:#393A34>=</span><span class="token attribute attribute-arguments"> </span><span class="token attribute attribute-arguments keyword" style=color:#00009f>typeof</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>(</span><span class="token attribute attribute-arguments type-expression class-name">ThirdParty</span><span class="token attribute attribute-arguments type-expression class-name punctuation" style=color:#393A34>.</span><span class="token attribute attribute-arguments type-expression class-name">User</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>)</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>,</span><span class="token attribute attribute-arguments"></span><br/></div><div class=token-line style=color:#393A34><span class="token attribute attribute-arguments">        TargetMemberName </span><span class="token attribute attribute-arguments operator" style=color:#393A34>=</span><span class="token attribute attribute-arguments"> </span><span class="token attribute attribute-arguments string" style=color:#e3116c>"&lt;Name>k__BackingField"</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>)</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>public</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>abstract</span><span class="token plain"> </span><span class="token return-type class-name keyword" style=color:#00009f>string</span><span class="token plain"> Name </span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>get</span><span class="token punctuation" style=color:#393A34>;</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>}</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>[</span><span class="token attribute class-name">ForyEnum</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>(</span><span class="token attribute attribute-arguments">Target </span><span class="token attribute attribute-arguments operator" style=color:#393A34>=</span><span class="token attribute attribute-arguments"> </span><span class="token attribute attribute-arguments keyword" style=color:#00009f>typeof</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>(</span><span class="token attribute attribute-arguments type-expression class-name">ThirdParty</span><span class="token attribute attribute-arguments type-expression class-name punctuation" style=color:#393A34>.</span><span class="token attribute attribute-arguments type-expression class-name">Status</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>)</span><span class="token attribute attribute-arguments punctuation" style=color:#393A34>)</span><span class="token punctuation" style=color:#393A34>]</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>internal</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>static</span><span class="token plain"> </span><span class="token keyword" style=color:#00009f>class</span><span class="token plain"> </span><span class="token class-name">StatusSerializer</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><br/></div></code></pre></div></div>
+<p>External declarations are compile-time generator input only. They are never
+instantiated, reflected over at runtime, registered, reference-published,
+or used as wire identities. All serializer type positions, construction, <code>TypeInfo</code>,
+metadata, reference publication, generated factory keys, roots, fields,
+dynamic values, and carriers use the target type.</p>
+<p>An external member may bind a visible same-name field or property. For external
+class targets, setting <code>TargetDeclaringType</code> and <code>TargetMemberName</code> instead
+declares one exact field on the target or a non-<code>object</code> ancestor. An exact wire mapping
+also supplies physical storage; <code>Ignore = true</code> supplies only shallow storage.
+External struct targets support visible member mappings only. Unmapped visible
+public instance fields are added to external class shallow storage once. The
+generator never discovers private fields from a referenced assembly.</p>
+<p><code>BaseOnly = true</code> makes an external class declaration the terminal provider for
+a complete third-party hierarchy prefix. It may list exact target and
+target-ancestor fields and publishes no standalone factory or registration. An
+ordinary child consumes this provider exactly as it consumes an ordinary
+parent provider. A <code>BaseOnly</code> target may be abstract or nonconstructible
+because only the concrete ordinary child is materialized.</p>
+<p>Exact private mappings are version-pinned package ABI declarations. Wire
+accessors fail with the CLR missing-field error if the target ABI changes;
+there is no reflection or alternate-member fallback. On .NET 8, the generator
+rejects private wire access whose declaring owner or signature is generic.
+Visible closed-generic members and explicit storage-only field mappings remain
+supported for class targets. An inaccessible pointer field cannot be
+distinguished from fixed-buffer storage without importing private layout, so an
+exact private pointer mapping is rejected.</p>
+<p>Standalone external structural targets require an accessible concrete class
+or struct, legal parameterless construction, and writable declared wire state.
+Constructor-only, factory-only, readonly, init-only, converted, and
+custom-wire shapes use a custom <code>Serializer&lt;T></code>. Explicit nullability must
+match when target metadata is annotated; otherwise the declaration supplies
+schema nullability.</p>
+<p>Every generated ordinary or external struct uses
+<code>TypeResolver.RegisterGeneratedStruct&lt;T, TSerializer>(bool evolving)</code> to carry
+generator-owned <code>Evolving</code> into target <code>TypeInfo</code>. Generated enums and unions
+use <code>TypeResolver.RegisterGenerated&lt;T, TSerializer>()</code>. Abstract ordinary and
+<code>BaseOnly</code> providers do not register. Multiple generated owners for one target
+are rejected during generation or deterministically on the cold
+cross-assembly factory-registration path. Custom serializer replacement keeps
+the resolver's normal target rules.</p>
+<p>C# carrier composition remains target-based. The resolver recursively binds
+<code>Nullable&lt;T></code>, one-dimensional <code>T[]</code>, <code>List&lt;T></code>, <code>LinkedList&lt;T></code>, <code>Queue&lt;T></code>,
+<code>Stack&lt;T></code>, <code>HashSet&lt;T></code>, <code>SortedSet&lt;T></code>, <code>ImmutableHashSet&lt;T></code>,
+<code>Dictionary&lt;TKey, TValue></code>, <code>SortedDictionary&lt;TKey, TValue></code>,
+<code>SortedList&lt;TKey, TValue></code>, <code>ConcurrentDictionary&lt;TKey, TValue></code>, and
+<code>NullableKeyDictionary&lt;TKey, TValue></code>. Ordinary, external, and custom
+serializers use the same carrier bodies. There is no hierarchy lookup at runtime,
+provider object, callback, schema tree, per-element dispatch, or additional
+value allocation.</p>
+<p>Dynamic <code>object</code> values and unions resolve concrete target types through
+<code>TypeResolver</code>. Arbitrary statically typed interface or base-class
+polymorphism remains unsupported. Flat ordinary and external generated hot
+bodies retain the same work and allocation shape apart from target/member
+metadata tokens; hierarchy composition is static initialization and
+compile-time metadata work.</p>
+<p>Rust names these serializer operation boundaries explicitly:</p>
+<ul>
+<li class=""><code>Serializer::write</code> and <code>Serializer::read</code> process a complete value,
+including the requested reference and type-information envelopes.</li>
+<li class=""><code>Serializer::write_data</code> and <code>Serializer::read_data</code> process only the target
+body.</li>
+<li class=""><code>write_with_type_info</code> and <code>read_with_type_info</code> remain complete-value
+operations over already-resolved value metadata.</li>
+</ul>
+<p>Rust represents immutable value-serializer properties with five associated
+constants on <code>Serializer</code>:</p>
+<ul>
+<li class=""><code>IS_OPTIONAL</code> means the selected value shape carries Option semantics;</li>
+<li class=""><code>IS_POLYMORPHIC</code> means its concrete target is selected from the application
+value;</li>
+<li class=""><code>IS_SHARED_REF</code> means it uses the existing shared-reference wire behavior;</li>
+<li class=""><code>IS_WRAPPER</code> means it is a Fory-owned wrapper serializer without an
+independent registration identity; and</li>
+<li class=""><code>REQUIRES_SCOPED_ACCESS</code> means inspecting or using the contained dynamic
+value requires a borrow, lock, or weak upgrade.</li>
+</ul>
+<p>These are type-level value properties and must fold through monomorphization.
+<code>Codec&lt;T></code> inherits them through <code>Serializer&lt;Target = T></code> and does not
+redeclare them. <code>SerializerCodec&lt;S></code> forwards them from <code>S</code>. The
+value-dependent <code>is_none(value)</code> and <code>dynamic_type_id(value)</code> operations
+remain functions. <code>is_none</code> means only <code>Option::None</code>, including transparent
+Option propagation; weak-target expiry remains a separate weak-access result.</p>
+<p><code>Serializer</code> has no field API or field-schema argument. In particular, it does
+not expose <code>FieldType</code>, field-compatible reads, declared-field generic state,
+field null/reference policy, or field encoding selection. Rust's internal
+<code>Codec&lt;T></code> extends <code>Serializer&lt;Target = T></code> and owns those field operations.
+The leaf <code>SerializerCodec&lt;S></code> implements value behavior by forwarding to <code>S</code>
+and implements field behavior itself; it never calls a field hook on <code>S</code>.
+Its value-capacity hint is forwarded unchanged. Generated fields and
+field-mode carrier bodies use the codec-owned field-capacity hint, which adds
+or forwards field framing without changing root or value composition.</p>
+<p>Serializer-provider identity is a host implementation detail and is never
+encoded. External structural serializers use the same STRUCT, ENUM, or UNION
+metadata and value format as an equivalent directly supported target. Custom
+serializers that are not the Fory implementation's canonical serializer for an existing
+built-in use EXT or NAMED_EXT. Serializer-provider separation does not replace
+implementation-owned built-in mappings.</p>
+<p>Static generated fields and serializer-selected roots should dispatch directly
+to the serializer selected by their schema. A Rust field <code>with = S</code> selects the
+exact field node and requires <code>S::Target</code> to equal the declared field type.
+This accepts an ordinary, external structural, custom, or carrier serializer.
+For example, <code>with = VecSerializer&lt;UserSerializer></code> selects the structural
+<code>Vec&lt;User></code> field node, while <code>list(element(with = UserSerializer))</code> selects
+the child node recursively. Transparent fields select their exact carrier
+serializer, such as <code>OptionSerializer&lt;UserSerializer></code>. Field codegen lowers
+both forms recursively to carrier codecs.</p>
+<p>Rust procedural macros cannot resolve type aliases or renamed imports. Because
+the design has no associated codec mapping trait or runtime fallback, every
+carrier constructor in a schema-bearing derived field's declared Rust type and
+every Fory-owned carrier constructor in its <code>with</code> tree must use its canonical
+terminal name, optionally qualified. Leaf serializer aliases, root carrier
+aliases, and carrier aliases used only by a skipped field's value-level default
+remain valid. Derive recognizes the complete audited carrier syntax and lowers
+unknown types only as leaf serializers. The leaf adapter rejects an aliased
+non-wrapper carrier during cold field-schema construction using its existing
+wire category, before resolver publication. An aliased Fory-owned wrapper
+cannot be registered independently and therefore fails the ordinary
+required-provider lookup. The leaf adapter does not consume <code>IS_WRAPPER</code>,
+inspect runtime type names, or add a value-path branch.</p>
+<p>When a root is a transparent,
+collection, fixed-array, map, or heterogeneous tuple composition containing
+selected external children, the binding should expose binding-owned,
+carrier-specific static serializers parameterized recursively by child
+serializers. For example, a vector carrier serializer over <code>S</code> has the target
+vector of <code>S::Target</code>, a map carrier serializer over <code>KS</code> and <code>VS</code> has the
+target map of <code>KS::Target</code> to <code>VS::Target</code>, and an arity-N tuple carrier
+serializer has the target tuple formed
+positionally from every <code>Si::Target</code>.</p>
+<p>Root carrier composition recursively composes value serializers. Field
+composition recursively composes codecs. They are intentionally different
+compile-time type trees: a root carrier must not construct a field-codec tree
+or request or synthesize <code>FieldType</code>. Root carrier reads may use only direct or
+value-<code>TypeInfo</code> child state; remote <code>FieldType</code> belongs exclusively to the
+field-codec entrance. Each carrier implementation provides <code>Serializer</code>
+behavior when its children implement <code>Serializer</code>, and field <code>Codec</code> behavior
+only when its children implement <code>Codec</code>. Both layers call one carrier body,
+allocation, insertion, and reference implementation. They must not copy
+collection, map, reference, holder, fixed-array, tuple, or compatible-read
+algorithms. A metadata-only adapter that still calls a whole carrier
+serializer is not external-child support.</p>
+<p>Rust keeps an external structural serializer's generated <code>write_data</code> body
+non-inlined. Recursive carrier composition would otherwise duplicate that body
+into each list, map, tuple, and wrapper monomorph. This is a direct
+successful-path function boundary, not a cold path, and it adds no runtime
+selection, callback, or allocation. Self-owned generated serializers retain
+the ordinary compiler inlining heuristic.</p>
+<p>A transparent reference carrier consumes only its own null or reference
+envelope. If compatible mode places user-type metadata before the selected
+child body, the child must still consume that metadata and use its remote
+schema. If the containing schema instead declares a recursive carrier child,
+the child receives that declared field metadata directly. Implementations must
+not discard either metadata form or read the carrier envelope twice.</p>
+<p>Carrier serializers are not registered user types: they preserve the carrier's
+standard wire kind, have no resolver entry or dynamic harness, and any
+registration belongs to a selected user-type child when that child is reached.
+Carrier delegation must include every existing canonical specialization rather
+than forcing a generic collection shape. For example, a Rust vector carrier
+serializer over the canonical <code>i32</code> serializer retains <code>INT32_ARRAY</code>, one over
+the canonical <code>u8</code> serializer retains BINARY, and one over an external
+structural or custom serializer uses LIST. A nested vector retains the selected
+child representation in root bytes; the equivalent field-codec tree retains it
+in recursive <code>FieldType</code>.</p>
+<p>For Rust, the audited carrier serializer surface is exhaustive:</p>
+<ul>
+<li class=""><code>OptionSerializer&lt;S></code>, <code>BoxSerializer&lt;S></code>, <code>RcSerializer&lt;S></code>,
+<code>ArcSerializer&lt;S></code>, Fory <code>RcWeakSerializer&lt;S></code>/<code>ArcWeakSerializer&lt;S></code>,
+<code>RefCellSerializer&lt;S></code>, and <code>MutexSerializer&lt;S></code>;</li>
+<li class=""><code>VecSerializer&lt;S></code>, <code>VecDequeSerializer&lt;S></code>,
+<code>LinkedListSerializer&lt;S></code>, <code>HashSetSerializer&lt;S></code>,
+<code>BTreeSetSerializer&lt;S></code>, <code>BinaryHeapSerializer&lt;S></code>, and
+<code>ArraySerializer&lt;S, N></code>;</li>
+<li class=""><code>HashMapSerializer&lt;KS, VS></code> and <code>BTreeMapSerializer&lt;KS, VS></code>;</li>
+<li class=""><code>Tuple1Serializer&lt;S0></code> through
+<code>Tuple22Serializer&lt;S0, ..., S21></code>.</li>
+</ul>
+<p>Every carrier serializer target is formed recursively from child serializer
+targets. Each child can be an ordinary serializer targeting itself, an external
+structural serializer, a custom serializer, or another carrier serializer, and
+all four forms enter the same carrier body implementation. <code>Tuple1Serializer</code> through
+<code>Tuple22Serializer</code> and matching
+arity-specific codecs are macro-generated because Rust has no variadic
+generics; no public serializer-list trait or runtime tuple descriptor is
+introduced. Unit <code>()</code> and <code>PhantomData&lt;T></code> have no serialized child and require
+no serializer composition. Erased Any/application-trait carriers retain their
+dynamic registered-target owner rather than masquerading as static child
+serializers.</p>
+<p><code>Cell&lt;T></code> is not in the current Rust serializer surface: derive only recognizes
+its Send/Sync properties. There is no <code>Cell</code> serializer or codec, so this
+feature must not invent <code>CellSerializer&lt;S></code> or treat <code>Cell</code> as <code>RefCell</code>.
+Likewise, standard-library weak pointers are not aliases for Fory's weak
+carriers.</p>
+<p>For Swift, <code>Serializer</code> follows the same exact-target ownership boundary with
+an associated <code>Target</code>. A self-provided structural or custom serializer uses
+<code>Target == Self</code>; a separately provided structural or custom serializer names
+another target type. Serializer operations are static and accept or return
+<code>Target</code>. Fory never instantiates a serializer object, and generated external
+structural code reads target properties and constructs the target directly.</p>
+<p>Static selection follows provider ownership uniformly. A target that itself
+conforms to <code>Serializer</code> with <code>Target == Self</code> is selected implicitly at roots,
+generated fields, optionals, arrays, sets, and dictionaries. This includes an
+external type with an intentional retroactive conformance. A serializer type
+whose <code>Target</code> is another type must be selected explicitly at every static node
+where it is required. Registration does not infer that serializer, even if it
+is the only registered provider for the target, because Swift cannot
+reverse-infer a unique <code>S: Serializer</code> from <code>S.Target == T</code>.</p>
+<p>A retroactive conformance is process-global. <code>@retroactive</code> acknowledges
+Swift's ownership warning but does not make duplicate <code>(Target, Protocol)</code>
+conformances safe. Applications may use it when they intentionally own the
+single global binding; public libraries should generally use a separate
+serializer so applications can choose the implementation explicitly.</p>
+<p>Swift <code>StructSerializer</code> covers every structural registration category.
+Ordinary and external <code>@ForyStruct</code>, <code>@ForyEnum</code>, and <code>@ForyUnion</code> expansions
+all conform; custom EXT serializers do not.</p>
+<p>Swift's doc-hidden <code>FieldCodec</code> extends value serialization for the same exact
+target. It owns <code>FieldType</code>, recursive field generics, field null/reference
+policy, compatible-field reads, scalar conversion, and annotation-selected
+field encodings. <code>Serializer</code> has no <code>FieldType</code>, compatible-field hook, or
+declared-generics argument. <code>FieldCodec</code> alone carries the
+<code>hasDeclaredChildren</code> mode that preserves canonical collection and map header
+decisions when enclosing field metadata owns the recursive child schema.
+<code>SerializerCodec&lt;S></code> is the generated leaf adapter and has target <code>S.Target</code>.
+Because <code>FieldCodec</code> extends <code>Serializer</code>, its value-level half must remain a
+valid root serializer, but root code cannot observe any field-only operation.
+In non-compatible mode, exact nonoptional selected leaves with no
+type-information envelope call <code>S.readData</code> when no reference envelope is
+required; tracked reference targets continue through <code>S.read</code>. Compatible or
+recursively retained metadata remains owned by <code>SerializerCodec&lt;S></code> and enters
+the selected serializer with that scope intact.
+Numeric field codecs delegate that value-level half to the canonical numeric
+serializer, and packed-array field codecs delegate it to the canonical LIST
+carrier. Only their field operations use fixed, tagged, or packed field
+representations. Root eligibility therefore adds no alternate numeric or
+packed-array wire mapping.</p>
+<p>Swift <code>Serializer.isWrapper</code> is a doc-hidden value-level property used only to
+reject Fory-owned transparent wrappers as independent EXT registrations.
+<code>OptionalSerializer</code> sets it; collection carriers do not. A custom serializer
+does not acquire wrapper status from target spelling and may own an independent
+opaque carrier body. Target-identity conflicts prevent it from replacing a
+seeded canonical dynamic builtin.</p>
+<p>The exhaustive Swift recursive carrier serializer surface is:</p>
+<ul>
+<li class=""><code>OptionalSerializer&lt;S></code> with target <code>S.Target?</code>;</li>
+<li class=""><code>ArraySerializer&lt;S></code> with target <code>[S.Target]</code> and LIST wire shape;</li>
+<li class=""><code>SetSerializer&lt;S></code> with target <code>Set&lt;S.Target></code> where <code>S.Target: Hashable</code>;</li>
+<li class=""><code>DictionarySerializer&lt;KS, VS></code> with target
+<code>[KS.Target: VS.Target]</code> where <code>KS.Target: Hashable</code>.</li>
+</ul>
+<p>Each carrier serializer conditionally provides field-codec behavior when its
+children are field codecs. Root composition therefore contains serializers,
+while field composition contains recursively lowered field codecs, and both
+call the same carrier body, allocation, insertion, reference, and compatible
+implementation. Ordinary <code>Optional</code>, <code>Array</code>, <code>Set</code>, and <code>Dictionary</code>
+conformances delegate to the same owners under exact self-target constraints.
+Those constraints apply equally to user-declared and retroactively conforming
+external children. Carrier serializers are zero-state and unregistered.</p>
+<p>The transparent Swift <code>OptionalSerializer</code> has no independent field-metadata
+identity. Its field-codec metadata scope delegates recursively to the wrapped
+field codec, including nonnull reads, so accepted remote child metadata remains
+owned by the selected leaf or nested carrier.</p>
+<p>Swift <code>Array</code> is LIST for statically selected roots and carrier roots, including
+<code>[Int32]</code>. <code>@ArrayField</code> is a separate field-only dense bool/numeric selection,
+and exact primitive arrays hidden in dynamic <code>Any</code> use their canonical dynamic
+packed-array mapping. Only a canonical primitive field codec can select
+the packed form; a noncanonical selected child is rejected rather than gaining
+a mapping from its target syntax. <code>Data</code> remains the BINARY leaf.</p>
+<p>Swift has no supported generic tuple, fixed-length array, cell, box, weak,
+reference-holder, <code>ContiguousArray</code>, <code>ArraySlice</code>, result, range, deque,
+<code>NSSet</code>, or <code>NSDictionary</code> serializer. External-child composition must not
+invent those carriers. <code>AnyHashable</code>, <code>UnknownCase</code>, and <code>ByteBuffer</code> are a
+dynamic key holder, union value holder, and transport owner respectively, not
+recursive static carriers.</p>
+<p>Swift external structural declarations use the structural macros:</p>
+<div class="language-swift codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-swift codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token attribute atrule" style=color:#00a4db>@ForyStruct</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">target</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token class-name">ThirdParty</span><span class="token punctuation" style=color:#393A34>.</span><span class="token class-name">User</span><span class="token punctuation" style=color:#393A34>.</span><span class="token keyword" style=color:#00009f>self</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token keyword" style=color:#00009f>struct</span><span class="token plain"> </span><span class="token class-name">UserSerializer</span><span class="token plain"> </span><span class="token punctuation" style=color:#393A34>{</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>var</span><span class="token plain"> name</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token class-name">String</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">    </span><span class="token keyword" style=color:#00009f>var</span><span class="token plain"> age</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token class-name">UInt32</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain"></span><span class="token punctuation" style=color:#393A34>}</span><br/></div></code></pre></div></div>
+<p>Generated ordinary value declarations use <code>Target = Self</code>. Because Swift
+rejects a nested <code>Target = Self</code> type alias in a class, an ordinary generated
+class names the declaring class explicitly; both forms express the same exact
+self-target relationship.</p>
+<p>Equivalent target selection applies to <code>@ForyEnum</code> and <code>@ForyUnion</code>. A value
+schema declaration targets a value type and uses direct labeled construction.
+A class schema declaration targets a class, allocates the final target through
+an accessible zero-argument initializer, publishes it before reading child
+fields, and assigns accessible mutable properties. Generated Swift enforces
+the class target's <code>AnyObject</code> constraint. Swift has no negative generic
+constraint for the inverse case, so cold registration validation rejects a
+value-schema declaration that targets a class before publishing metadata. An
+inaccessible, immutable, invariant-bearing, or non-exhaustive target requires a
+custom serializer; the implementation must not use reflection, unsafe layout
+access, unavailable-overload tricks, schema mirror values, conversion wrappers,
+or builders as a fallback.</p>
+<p>Swift macros cannot inspect another type's stored layout. An external class's
+shallow graph-memory formula therefore uses its declaration fields only.
+<code>@ForyField(ignore: true)</code> adds a budget-only declaration field without schema,
+target access, construction, or wire code. Applications must use this form for
+substantial omitted storage.</p>
+<p>An external structural union requires the target to expose a lossless
+<code>unknown(UnknownCase)</code> case. A dependency-free target module may expose a
+generic unknown payload and let the application select its <code>UnknownCase</code>
+specialization; a target may also use Fory's carrier directly. Fory does not
+convert another module's unknown representation. A third-party union without
+this shape requires a custom serializer and does not claim structural-union
+wire equivalence.</p>
+<p>An ordinary Swift generated field recursively selects a self-provided declared
+type without annotation. Swift field selection uses
+<code>@ForyField(with: S.self)</code> for one exact declared node and <code>.with(S.self)</code>
+inside <code>ForyFieldType</code> list, set, map, and union payload nodes when selecting a
+separate serializer or another deliberate override. A selected optional or
+whole collection node names its exact carrier serializer. Canonical
+whole-carrier syntax is recursively lowered to the same field-codec tree as the
+structural field DSL. The compiler enforces that the selected serializer target
+equals the declared field node.</p>
+<p>Swift root selection uses a serializer metatype:</p>
+<div class="language-swift codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-swift codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token function" style=color:#d73a49>serialize</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">user</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> with</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token class-name">UserSerializer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token keyword" style=color:#00009f>self</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token function" style=color:#d73a49>deserialize</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">bytes</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> with</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token class-name">UserSerializer</span><span class="token punctuation" style=color:#393A34>.</span><span class="token keyword" style=color:#00009f>self</span><span class="token punctuation" style=color:#393A34>)</span><span class="token plain"></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">fory</span><span class="token punctuation" style=color:#393A34>.</span><span class="token function" style=color:#d73a49>serialize</span><span class="token punctuation" style=color:#393A34>(</span><span class="token plain">users</span><span class="token punctuation" style=color:#393A34>,</span><span class="token plain"> with</span><span class="token punctuation" style=color:#393A34>:</span><span class="token plain"> </span><span class="token class-name">ArraySerializer</span><span class="token operator" style=color:#393A34>&lt;</span><span class="token class-name">UserSerializer</span><span class="token operator" style=color:#393A34>></span><span class="token punctuation" style=color:#393A34>.</span><span class="token keyword" style=color:#00009f>self</span><span class="token punctuation" style=color:#393A34>)</span><br/></div></code></pre></div></div>
+<p>The <code>Data</code>, append-to-<code>Data</code>, and <code>ByteBuffer</code> forms share one root framing and
+the reusable contexts. Ordinary roots require <code>T.Target == T</code> and
+delegate to the same selected-serializer helper. This admits every
+self-provider, including an intentional retroactive external conformance, but
+does not infer a separate serializer from registration. There are no parallel
+serializer-selection aliases or application-declared structural container
+schemas. The root facade retains its existing module boundary and inlining
+policy; static specialization belongs to serializer, generated-code, and
+carrier owners below it. Do not expose resolver or reusable-context state as
+<code>@usableFromInline</code> merely to force the complete root flow into clients.
+Selected Swift read roots carry an inferred result generic constrained by
+<code>S.Target == T</code>. The call remains <code>deserialize(..., with: S.self)</code>, but the
+same-type generic lets the caller provide concrete target metadata and avoids
+an associated-target lookup and dynamic result-storage setup in every
+unspecialized root call.</p>
+<p>Generated value-struct <code>readData</code> owns target construction directly. When an
+external structural serializer has recursively selected carrier fields, that
+owner may be out of line to control code size, but a private large-value
+returning helper must not sit between <code>readData</code> and the final target result
+buffer. Generated class readers retain a private helper because the class
+allocation owner must publish a reserved reference before reading children.</p>
+<p>Swift <code>TypeResolver</code> indexes one immutable <code>TypeInfo</code> by both serializer
+identity and concrete target identity. Static schema and explicit selection use
+serializer identity; dynamic writes use target identity; wire reads use the
+numeric ID or name. All directions share one writer, exact reader, compatible
+reader, metadata, and registration owner. Public registration accepts the
+selected structural or custom serializer through the ID or name API. It rejects
+carrier, dynamic, builtin, and field codec identities before publication.</p>
+<p>Swift arbitrary application protocol existentials use a zero-state
+<code>DynamicSerializer&lt;T></code>. Dynamic writes resolve the registered concrete target,
+downcast once to its serializer's exact target, and invoke the shared
+<code>TypeInfo</code> harness. Dynamic reads materialize the final concrete target once
+and cast it to the requested existential. Normal target registration is the
+allowlist, so Swift needs no marker protocol, protocol-specific registry,
+closed target-list macro, protocol wire identity, serializer value, or wrapper
+collection. Protocol roots and root carriers select the dynamic serializer
+explicitly, for example <code>DynamicSerializer&lt;any Animal></code> and
+<code>ArraySerializer&lt;DynamicSerializer&lt;any Animal>></code>. Swift retains direct <code>Any</code>
+and <code>AnyObject</code> root overloads for source compatibility. Those overloads
+forward to the same selected-serializer roots with <code>DynamicSerializer&lt;Any></code> or
+<code>DynamicSerializer&lt;AnyObject></code> and add no parallel codec, framing, lookup, or
+allocation path. Their append-to-Data and ByteBuffer forms follow the same
+rule. Because Swift permits every value to convert to <code>Any</code>, a concrete
+non-self-serializing value may enter registered dynamic-target lookup through
+the <code>Any</code> overload. Explicit <code>with:</code> selection names a separate static
+serializer when required. Swift exposes no unconstrained generic dynamic root,
+<code>any Serializer</code> root, or specialized heterogeneous-container root overload.</p>
+<p><code>DynamicSerializer&lt;T></code> overrides complete-value reference handling. It resolves
+the concrete <code>TypeInfo</code> before deciding whether the target is a reference and
+uses conservative <code>isRefType == true</code> only for the outer dynamic field shape.
+The outer dynamic serializer owns nullability and type information. Its
+<code>TypeInfo</code> harness invokes body serialization for a value target and the
+concrete complete-value reference envelope for a class target. Dynamic slot
+accounting uses the declared existential layout rather than treating every
+value as a reference. <code>AnyObject</code> reads reject value-typed metadata before the
+cast so Swift cannot allocate a bridge object. An arbitrary nonoptional
+protocol has no synthetic default; optional protocol values compose through
+<code>OptionalSerializer</code>.</p>
+<p>An exact generated field whose selected codec has UNKNOWN static identity
+still writes and reads the concrete <code>TypeInfo</code>; carrier headers own this
+information for dynamic children and do not duplicate it. Dynamic map chunks
+retain the established key-type/value-type/key-body/value-body order and reuse
+the two resolved <code>TypeInfo</code> entries without another target lookup. A retained
+dynamic <code>TypeInfo</code> is scoped by the serializer that selected it, so
+<code>AnyHashable</code> and <code>DynamicSerializer&lt;T></code> share one implementation without
+substituting each other's scope identity.</p>
+<p>Swift rejects zero-sized non-null MAP chunks because they cannot advance the
+decoded entry count. A one-null entry encodes its non-null side as a complete
+field value: its reference envelope when present, then undeclared <code>TypeInfo</code>,
+then its body. The MAP writer, reader, and compatible-field skipper use that
+complete-field order rather than the shared type-prefix order of non-null
+chunks. Static and dynamic MAP branches use the same ordering and validation.</p>
+<p>Dynamic Any and protocol paths operate directly on final target values and
+containers. Static composition never enters target lookup; dynamic lookup
+occurs only at an explicit dynamic boundary.</p>
+<p>Swift heterogeneous dynamic collections use their exact supported target
+shapes: <code>[Any]</code>, <code>[String: Any]</code>, <code>[Int32: Any]</code>, and <code>[AnyHashable: Any]</code>.
+Assigning a homogeneous list or map to <code>Any</code> does not erase its concrete target
+identity and must not trigger a converted collection or a second collection
+codec. Homogeneous lists and maps use their ordinary or explicitly selected
+carrier serializer. Preseeded exact primitive arrays retain their packed
+dynamic mapping. A null dynamic key in <code>[AnyHashable: Any]</code> materializes as
+<code>AnyHashable(ForyAnyNullValue())</code>.</p>
+<p>When a carrier retains remote child metadata for a user-type field codec, the
+leaf codec enters the selected serializer without another envelope so its exact
+or compatible reader sees that retained <code>TypeInfo</code>. Builtin leaf codecs read
+their field bodies directly.</p>
+<p>Swift supports only the xlang wire mode. A known <code>@ForyUnion</code> case has zero or
+one associated value, and multiple logical fields use an explicit struct
+payload. There is no Swift-native multi-field enum encoding to preserve.</p>
+<p>Rust tuple field metadata selects sparse zero-based positions, while
+unmentioned positions use ordinary serializers. It lowers to the
+arity-specific tuple codec, while the root carrier recursively composes tuple
+serializers; both use the same arity-specific tuple body. The existing tuple wire
+contract remains unchanged: native non-compatible mode uses direct
+heterogeneous position bodies, while compatible native and xlang modes use
+the existing heterogeneous LIST form. Its existing UNKNOWN generic
+<code>FieldType</code> shape remains unchanged, and no serializer type or position index is
+encoded.</p>
+<p>Rust's primitive collection selection must have one owner shared by ordinary
+types, carrier serializers, and derive. Type ID, body encoding, reserved space,
+field metadata, and compatible reads cannot use independent tables. This
+includes canonical <code>u8</code> BINARY and the existing <code>isize</code>/<code>usize</code> dense-array
+types. The private primitive-array/carrier owner derives the parent kind from
+the child's scalar <code>static_type_id()</code>, the exact Rust child target, and
+the carrier mode. Scalar serializers and codecs declare only scalar behavior
+and scalar wire IDs; neither public serializer contracts nor the generic codec
+contract exposes a parent-array kind. The same private mapping validates unsafe
+bulk copies and supplies compatible LIST/array element metadata.</p>
+<p>Rust 1.70 cannot select a codec type from an associated const, so the existing
+Vec and fixed-array carrier implementation types are the single owners of both
+primitive and object bodies. The Vec implementation carries two established schema choices as compile-time
+consts. <code>STRUCTURAL_LIST</code> preserves unannotated and explicit <code>list(...)</code>
+generated fields as LIST even for canonical primitive children. Ordinary roots,
+Vec carrier serializers, <code>#[fory(bytes)]</code>, and <code>#[fory(array)]</code> disable it so
+the carrier can consume the validated canonical child kind. <code>DENSE_ARRAY</code> is true
+only for explicit <code>#[fory(array)]</code>; it maps canonical <code>u8</code> BINARY to
+<code>UINT8_ARRAY</code>. It is false for roots, carrier serializers, LIST fields, and
+<code>#[fory(bytes)]</code>. Consequently, an unannotated <code>Vec&lt;i32></code> field remains
+<code>LIST&lt;VARINT32></code>, an explicit fixed-element list remains <code>LIST&lt;INT32></code>, and
+ordinary or serializer-selected primitive Vec roots retain their dense-array or
+BINARY representation. An external structural or custom serializer targeting a
+primitive remains an object LIST child because its serializer does not expose the
+canonical scalar wire ID. Derive may validate the explicit primitive category
+but does not map Rust types to wire IDs. Inline scalar-ID and exact-target
+checks must fold after monomorphization. Derive always uses the same unified
+core carrier implementation and maintains no ordinary-composition AST
+primitive table.</p>
+<p>Registration is access-driven by the owning serializer or field codec. A
+selected user serializer must be registered before schema construction or value
+processing accesses its registered identity or registration-backed metadata.
+An absent Option, empty collection or map, empty weak value, zero-length fixed
+array, or equivalent recursive branch may complete without child registration
+when its owning path makes no such access. A declared-type body path invokes
+its statically selected serializer without a registration lookup; if a
+containing schema supplies that declaration, its metadata construction already
+owns the one required registration/mismatch check. A heterogeneous tuple whose
+existing outer <code>FieldType</code> does not declare positions instead reaches any
+required child registration through its ordinary per-position type-metadata
+operation. A binding must not add an eager recursive root validation pass,
+reached-body check, selector tree, composed-target lookup, per-element
+serializer dispatch, allocation, callback, or hot-path branch to change that
+behavior. An exact custom serializer for a whole container remains a separate
+opaque EXT/NAMED_EXT choice. It owns registered dynamic target identity, while
+unregistered carrier serializers continue to own explicit static structural
+composition.</p>
+<p>Carrier serializers have no independent registered identity. Structural
+registration requires the existing structural serializer contract and matching
+STRUCT/ENUM/UNION category. Custom registration requires an independent
+EXT/NAMED_EXT serializer and rejects <code>IS_WRAPPER</code>. Option, Box, Rc, Arc,
+RcWeak, ArcWeak, RefCell, and Mutex carrier serializers set this property
+independently of their child's category. Lists, sets, maps, fixed arrays, and
+tuples keep it false and are rejected through their own wire category. A
+custom serializer targeting one of the same Rust shapes also keeps it false
+because it owns an independent opaque EXT body. Private built-in registration
+validates only its expected internal type ID. These semantic checks use the
+existing serializer contracts and wire categories. Custom EXT registration is
+the only consumer of <code>IS_WRAPPER</code>.</p>
+<p>Dynamic values should resolve by the concrete target identity. When a Fory implementation
+needs both directions, its serializer-provider-to-type-info and target-to-type-info
+indexes must point to the same immutable registration metadata and serializer
+harness rather than creating parallel metadata or serialization paths.
+The internal context and resolver entry points must name the direction; Rust
+uses <code>write_provider_type_info</code>/<code>get_provider_type_info</code> for static schema
+identity and <code>write_target_type_info</code>/<code>get_target_type_info</code> for dynamic value
+identity. An ambiguous lookup must not probe one map and fall back to the other.
+Wire reads still resolve their encoded ID or name to that same metadata.</p>
+<p>When an existing homogeneous LIST/SET or MAP header emits one dynamically
+selected concrete type, that header owner resolves and validates the target
+once and retains the resolved registration metadata for the wire chunk. Each
+body borrows that exact metadata to invoke the existing dynamic harness; it
+must not repeat target lookup or clone a reference-counted metadata handle per
+element or entry. Heterogeneous chunks retain their existing per-value metadata
+path. This handoff adds no wire field, runtime serializer instance, callback,
+schema tree, cache, or static-path branch.</p>
+<p>Dynamic target inspection is fallible and represents an absent value without a
+sentinel target identity. A LIST/SET owner may pre-inspect a child when
+<code>!C::IS_POLYMORPHIC || !C::REQUIRES_SCOPED_ACCESS</code>; this caller-local decision
+must not become another serializer capability. A polymorphic child that needs
+a <code>RefCell</code> borrow, <code>Mutex</code> lock, or weak upgrade skips target/null
+pre-inspection and writes each value through the existing heterogeneous path
+under one holder access. A non-polymorphic nullable holder preserves the
+existing LIST/SET null-header scan, then performs one body access without
+repeating null inspection. MAP metadata and null flags for both sides precede
+either body, so a nullable or access-constrained polymorphic MAP holder
+performs one short null/target inspection, releases the borrow, guard, or
+upgraded owner, and later performs its normal body access. Implementations must
+not retain that access across the other map side, stage body bytes, allocate a
+prepared value, invoke a callback, or change MAP wire order. A weak wrapper
+does not keep its target alive; an operation requiring one coherent
+observation must retain its upgraded strong owner for that owned operation.</p>
+<p>If closed polymorphic membership needs the host target identity after a wire
+ID/name lookup, that shared harness or registration metadata must retain an
+optional target identity. Registered local behavior supplies it; a remote-only
+stub supplies none and must enter the missing-registration error before
+membership checks, serializer calls, or allocation. Do not scan a reverse map,
+invent a sentinel identity, or add a second metadata cache.</p>
+<p>Serializer code must not materialize a serializer provider value or a
+structural mirror value. Generated structural reads construct the target directly. Dynamic
+materializers allocate the requested final owner once and use target size for
+memory accounting.</p>
+<p>Fallible serializer defaults that can materialize values must receive the
+active read state or context. A field codec uses its inherited serializer
+default rather than defining a second default API. The concrete owner reserves
+graph memory before allocating; null, missing-compatible-field, and
+skipped-field paths must not bypass the normal allocation budget merely because
+they consume no body bytes.</p>
+<p>Compatible structural reads remain in the normal struct-compatibility owner.
+The checked metadata cache remains the sole owner of accepted remote metadata;
+serializer dispatch must not add another validation marker, metadata cache, or
+exact-schema decision.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-frame-responsibilities>Root Frame Responsibilities<a href=#root-frame-responsibilities class=hash-link aria-label="Direct link to Root Frame Responsibilities" title="Direct link to Root Frame Responsibilities" translate=no>​</a></h2>
+<p>Every root payload starts with a one-byte bitmap written and read by <code>Fory</code>
+itself, not by serializers.</p>
+<p>Current xlang root bits:</p>
+<table><thead><tr><th>Bit<th>Meaning<tbody><tr><td><code>0</code><td>null root payload<tr><td><code>1</code><td>xlang payload<tr><td><code>2</code><td>out-of-band buffers in use</table>
+<p>Keep the root bitmap separate from per-object ref markers:</p>
+<ul>
+<li class="">the root bitmap describes the whole payload</li>
+<li class="">ref flags describe one nested value at a time</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=serialization-flow>Serialization Flow<a href=#serialization-flow class=hash-link aria-label="Direct link to Serialization Flow" title="Direct link to Serialization Flow" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-write-path>Root write path<a href=#root-write-path class=hash-link aria-label="Direct link to Root write path" title="Direct link to Root write path" translate=no>​</a></h3>
+<p>The current root write flow is:</p>
+<ol>
+<li class=""><code>Fory.serialize(...)</code> or <code>serializeTo(...)</code> prepares the target buffer.</li>
+<li class=""><code>Fory</code> calls <code>writeContext.prepare(...)</code>.</li>
+<li class=""><code>Fory</code> writes the root bitmap.</li>
+<li class=""><code>Fory</code> delegates the root object to <code>WriteContext</code>.</li>
+<li class=""><code>writeContext.reset()</code> runs in <code>finally</code>.</li>
+</ol>
+<p>For a non-null root value, <code>WriteContext.writeRootValue(...)</code> performs:</p>
+<ol>
+<li class="">ref/null framing</li>
+<li class="">type metadata write</li>
+<li class="">payload write</li>
+</ol>
+<p>Payload serializers are responsible only for the payload of their type. They do
+not write the root bitmap and they do not own registration or type-header
+encoding.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=nested-writes-use-writecontext>Nested writes use <code>WriteContext</code><a href=#nested-writes-use-writecontext class=hash-link aria-label="Direct link to nested-writes-use-writecontext" title="Direct link to nested-writes-use-writecontext" translate=no>​</a></h3>
+<p>Important rules:</p>
+<ul>
+<li class="">nested serializers must use <code>WriteContext</code> helpers such as <code>writeRef(...)</code>,
+<code>writeNonRef(...)</code>, and container helpers when they need ref handling or type
+metadata</li>
+<li class="">repeated primitive writes should go directly through the buffer</li>
+<li class="">nested serializer flow should stay straight-line; do not add internal
+<code>try/finally</code> blocks just to clean per-operation state</li>
+<li class="">top-level <code>Fory.serialize(...)</code> owns the operation reset <code>finally</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=deserialization-flow>Deserialization Flow<a href=#deserialization-flow class=hash-link aria-label="Direct link to Deserialization Flow" title="Direct link to Deserialization Flow" translate=no>​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=root-read-path>Root read path<a href=#root-read-path class=hash-link aria-label="Direct link to Root read path" title="Direct link to Root read path" translate=no>​</a></h3>
+<p>The current root read flow mirrors the write flow:</p>
+<ol>
+<li class=""><code>Fory.deserialize(...)</code> or <code>deserializeFrom(...)</code> reads the root bitmap.</li>
+<li class="">null roots return immediately.</li>
+<li class=""><code>Fory</code> validates xlang mode and other root framing requirements.</li>
+<li class=""><code>Fory</code> calls <code>readContext.prepare(...)</code>.</li>
+<li class=""><code>Fory</code> delegates to <code>ReadContext</code>.</li>
+<li class=""><code>readContext.reset()</code> runs in <code>finally</code>.</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=readcontext-owns-ref-reservation-and-payload-materialization><code>ReadContext</code> owns ref reservation and payload materialization<a href=#readcontext-owns-ref-reservation-and-payload-materialization class=hash-link aria-label="Direct link to readcontext-owns-ref-reservation-and-payload-materialization" title="Direct link to readcontext-owns-ref-reservation-and-payload-materialization" translate=no>​</a></h3>
+<p><code>ReadContext.readRef()</code> performs the normal xlang read sequence:</p>
+<ol>
+<li class="">consume the next ref marker</li>
+<li class="">return <code>null</code> or a back-reference immediately when appropriate</li>
+<li class="">reserve a fresh read ref id for new reference-tracked values</li>
+<li class="">read type metadata</li>
+<li class="">read the payload</li>
+<li class="">bind the reserved read ref id to the completed object</li>
+</ol>
+<p>Primitive and string-like hot paths should read directly from the buffer;
+complex payloads delegate to the resolved serializer.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=stream-and-buffer-byte-reads>Stream And Buffer Byte Reads<a href=#stream-and-buffer-byte-reads class=hash-link aria-label="Direct link to Stream And Buffer Byte Reads" title="Direct link to Stream And Buffer Byte Reads" translate=no>​</a></h3>
+<p>Implementations must keep byte availability in the byte owner layer while
+keeping string, binary, primitive-array, compression, and collection semantics in
+serializers.</p>
+<p>The required byte-owner primitive for allocation-before-read checks is a
+readability check such as <code>checkReadableBytes(byteCount)</code>. Implementations do
+not need additional generic read-context methods for this design. After the
+readability check succeeds, serializers use their existing local buffer read,
+copy, or decode paths.</p>
+<p>The readability check is a byte operation only. It must not decode strings,
+primitive-array element counts, compression modes, or collection capacity
+policy.</p>
+<p>For large byte-counted values, every implementation should call the byte-owner
+readability check before allocating a variable-length result. This applies to
+binary values, strings, decimal or metadata bodies, and primitive wire arrays
+whose encoded body is measured in bytes. For multi-byte primitive wire arrays,
+compare the encoded byte count, not only the logical element count, with the
+readable bytes.</p>
+<ol>
+<li class="">Validate the encoded byte count in the serializer. For fixed-width primitive
+arrays, check overflow and element alignment before allocation, such as
+<code>wireByteCount % elementByteWidth == 0</code>, then derive the logical element
+count from the encoded byte count.</li>
+<li class="">Call <code>checkReadableBytes(wireByteCount)</code> unconditionally before allocating
+the variable-length result. Buffer-backed inputs normally return from this
+check with only a bounds comparison. Stream-backed inputs use the same call;
+the byte owner handles the fast path when enough bytes are already buffered
+and otherwise fills the read buffer until the requested encoded body is
+readable or an input error is recorded.</li>
+<li class="">After readability is proven, allocate the final value once and copy or decode
+from the current readable buffer into the final result.</li>
+</ol>
+<p><code>checkReadableBytes</code> is not an <code>ensureCapacity(wireByteCount)</code> operation. In
+stream mode it may end with the byte owner holding the full encoded body in its
+read buffer, but it must grow that buffer as bytes are successfully read from
+the stream. It should grow from current proven buffer capacity, such as by
+doubling current capacity, and cap only when that bounded growth step reaches
+the immediate target. A byte owner may use an owner-local availability signal as
+a one-shot growth hint when the stream implementation itself is caller-owned
+trusted code; if that hint is absent or insufficient, it must fall back to
+bounded growth from already buffered bytes. It must not reserve the
+attacker-declared length before input bytes or an owner-local growth hint
+justify that intermediate buffer capacity. The stream slow path may pay one
+extra intermediate buffer copy; this is preferable to serializer-local chunk
+accumulation and repeated final-container growth.</p>
+<p>For byte-counted values, the serializer should not duplicate the byte owner's
+fast-path branch by testing <code>availableBytes()</code> before calling
+<code>checkReadableBytes</code>. Keeping that branch in the byte owner gives every language
+the same correctness rule and keeps serializer hot paths focused on their own
+wire semantics.</p>
+<p>For primitive wire arrays:</p>
+<ul>
+<li class="">Compare and prove the encoded wire byte count, not only the logical element
+count.</li>
+<li class="">Keep compression, bit-packing, byte-order conversion, and other primitive
+array encoding semantics in the serializer. <code>checkReadableBytes</code> only proves
+that the encoded bytes are present.</li>
+<li class="">For compressed or transformed bodies, the serializer must still validate the
+decoded length and encoding-specific metadata before allocating or returning
+the final value.</li>
+</ul>
+<p>The common serializer shape is:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">wireByteCount = readVarUint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elementWidth = primitiveWireElementWidth(kind)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">validate wireByteCount and element alignment</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">elementCount = wireByteCount / elementWidth</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">ctx.checkReadableBytes(wireByteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">result = allocatePrimitiveResult(elementCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">copy or decode wireByteCount bytes from the current readable buffer into result</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">advance the reader index by wireByteCount</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">return result</span><br/></div></code></pre></div></div>
+<p>Byte values are the <code>elementWidth == 1</code> specialization of the same policy. In
+that case the serializer shape is:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">byteCount = readVarUint32()</span><br/></div><div class=token-line style=color:#393A34><span class="token plain" style=display:inline-block></span><br/></div><div class=token-line style=color:#393A34><span class="token plain">ctx.checkReadableBytes(byteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">result = allocateBytes(byteCount)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">copy byteCount bytes from the current readable buffer into result</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">advance the reader index by byteCount</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">return result</span><br/></div></code></pre></div></div>
+<p>This policy avoids three inefficient implementation shapes:</p>
+<ul>
+<li class="">allocating the complete final contiguous value before the encoded body is
+readable</li>
+<li class="">growing or repeatedly copying the final result container on stream slow paths</li>
+<li class="">adding serializer-local chunk buffers when the byte owner can prove
+readability once and expose a normal buffered read</li>
+</ul>
+<p>Scratch buffers remain appropriate when the target representation is not a
+direct byte target, such as string transcoding, compression, byte-order
+conversion that is not performed in place, bit-packed values, or implementations whose
+stream API cannot read into a caller-provided target.</p>
+<p>For fixed-width primitive arrays, the final result must not become visible to
+callers until the exact encoded byte count has been read successfully.</p>
+<p>For list, set, map, and other container readers, the declared logical element
+count is not an encoded byte count, so serializers must still own all element,
+chunk, nullability, reference, and type-dispatch semantics. It is still the
+right allocation proof for count-based preallocation: after validating a
+non-empty count and reading any serializer-owned header or type metadata that
+precedes allocation, call <code>checkReadableBytes(logicalCount)</code> before allocating,
+reserving backing capacity, or size-hinting from that count. The byte owner
+handles buffer versus stream readiness; the container serializer then allocates
+with the declared count and reads elements through its normal owner path.</p>
+<p>This check is not a full container-body validation. It only prevents a small or
+truncated input from causing a large count-based preallocation. Chunk sizes,
+duplicate keys, element value semantics, and protocol strictness remain owned by
+the container/map serializer and should be validated only when they protect a
+real owner invariant.</p>
+<p>Materializing readers should also reserve a root-operation estimated graph
+memory budget before allocation or size hinting. The budget state belongs to
+<code>ReadContext</code> or the equivalent root read state, not to ambient thread-local
+state. Root facades set or reset the per-operation budget only; they must not
+pre-reserve root type or root self bytes. <code>maxGraphMemoryBytes</code> defaults to a
+fixed <code>128 MiB</code>; positive configuration overrides the default; explicit
+non-positive configuration is invalid and must be rejected during configuration or Fory instance
+creation. Do not derive this budget from root input size, and do not add dynamic
+stream bytes-read accounting for this budget.
+Because the budget is fixed per root, read state should not mirror the
+configured maximum into a second active-limit field. Use the existing
+configuration, or one configured maximum field when the config is not otherwise
+available, plus the mutable remaining budget.</p>
+<p>Read context or equivalent read state owns only raw byte reservation. It must
+not expose counted arithmetic helpers or collection, map, array, struct, or
+object semantic reservation APIs. Concrete serializers and generated serializer
+owners compute the storage constants and formulas for the owner path they
+allocate, including counted-byte overflow checks.
+Read state must not grow non-memory-budget APIs for this feature, including
+ref-publication controls, temporary-owner controls, serializer-owner controls,
+conversion helpers, or APIs that encode the kind of value being materialized.
+Concrete serializers and generated serializers own those decisions.</p>
+<p>The budget is an approximate gate for materialized graph owners, mainly
+collections, maps, arrays, structs, and objects. It does not measure exact heap
+bytes, and actual process memory can be higher. Reserve self storage exactly
+once at the owner that stores or allocates the value. Root facades reset the
+budget only and must not reserve root value storage. Reference-backed
+containers, maps, sets, and
+object/reference arrays reserve nonzero owner self cost plus reference slots;
+each referenced heap owner then reserves its own shallow self cost when
+materialized. Inline/value containers reserve element storage; inline/value maps
+reserve key plus value storage; pointer, box, and dynamic materialization owners
+reserve the heap or boxed storage they allocate. Value serializers, including
+root and generated struct/product read paths, do not reserve their own self
+storage. Struct/record/POJO/tuple, compatible, generated, and dynamic object
+owners reserve a nonzero shallow self cost plus shallow field storage only in
+reference-object implementations or dynamic/boxed materialization paths.
+Parents must not recursively include child object, collection, map, string,
+binary, or primitive dense-array contents. Skip enum/union as separate owners and
+skip dedicated string, binary, primitive scalar, primitive array, and primitive
+dense-array leaf owners, but do not skip general inline-value containers such as
+vectors or lists of value objects. If reference slot size is not cheap or
+reliable to query, use a 4-byte reference slot. Native-code implementations may use
+conservative lower-bound estimates instead of guessing non-portable object,
+container, allocator, table, node, entry, or debug-layout details. Reject
+arithmetic overflow before budget comparison or allocation, and keep the
+existing <code>checkReadableBytes</code> proof before backing
+allocation or capacity reservation.
+Skipped leaf owners must still be gated by remaining input bytes. If unread
+bytes are insufficient for a string, binary value, primitive scalar, primitive
+array, or primitive dense array, the reader must not read or create that leaf
+value.</p>
+<p>For TypeDef or TypeMeta bodies, first prove that the encoded metadata body bytes
+are readable through the byte owner. Field-list allocation should happen after
+that body readability check and should not use a separate small initial-capacity
+cap as a security rule.</p>
+<p>Implementations should also bound received metadata bodies and struct field
+lists on the cold metadata parse path. <code>maxTypeMetaBytes</code> limits one encoded
+TypeDef or TypeMeta body, excluding the 8-byte header and any extended-size
+varint, and is checked before copying or decompressing that body.
+<code>maxTypeFields</code> limits the number of fields declared by one received struct
+metadata body and is checked before reserving or allocating the field list.
+These limits are runtime resource controls; they do not change wire encoding,
+type identity, dynamic loading, unknown-type behavior, deserialization policy,
+or schema-evolution semantics. Metadata cache hits and generated field readers
+remain hot paths and must not add work for these limits.</p>
+<p>Remote schema-version limits belong to the same cold metadata owner path.
+Header cache hits must skip the remaining metadata body and return cached
+metadata without schema-limit checks, hash revalidation, allocation, or policy
+work. On a header miss, keep the handling in one concrete owner path: prove and
+read the metadata body bytes, validate the body against its header, validate
+field counts, resolve the type through the existing registration and
+deserialization-policy checks, compare exact local metadata by original encoded
+bytes when applicable, check schema-version limits for non-local remote
+metadata, build the required read state, publish to the persistent metadata
+cache, and then record the schema count. Failed or incompatible metadata must
+not publish to the persistent cache and must not consume schema-version counts.</p>
+<p>Remote metadata whose encoded bytes exactly match the local registered metadata
+may use the local metadata without consuming the remote schema-version limit,
+after the existing type and deserialization-policy checks for selecting that
+local type have run. This exact-local bypass is not struct-only; it also applies
+to named enum, ext, and union metadata when those metadata bodies are present and
+match the local encoded bytes. Pure id-based enum, ext, and typed-union values
+do not carry TypeDef or TypeMeta bodies and must stay on the normal type-id plus
+user-type-id path. Compatible named enum, ext, and union metadata normally has
+one version, but it still counts against accepted remote metadata totals when it
+is sent as shared metadata and does not exactly match local metadata.
+<code>maxTypeFields</code> applies only to struct field lists.</p>
+<p>The exact-local candidate must be derived inside the metadata owner path from
+the decoded metadata identity: <code>userTypeId</code> for id-registered metadata, or
+<code>(namespace, typeName)</code> for name-registered metadata. Do not thread extra
+expected-type parameters through read callers solely for this check. This rule
+applies to every Fory implementation. Java and Python may lazy-build the local encoded
+metadata only after this identity lookup selects a local class and the existing
+class, registration, and deserialization-policy checks for that class have run.</p>
+<p>When a statically declared compatible named enum, ext, or union field reads
+shared metadata, the decoded metadata must match the declared type id,
+namespace, and type name before the metadata owner publishes it to the
+persistent cache or records a schema count. Already accepted header or reference
+cache hits still skip the body and must not rerun body-hash, schema-limit, or
+registration checks, but the field reader must not treat metadata for a
+different declared named type as the current field's metadata.</p>
+<p>Skip paths do not need to materialize skipped values. Existing byte-skip
+operations should consume any available buffered prefix first, then skip or drop
+remaining stream bytes in bounded steps.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=nested-reads-use-readcontext>Nested reads use <code>ReadContext</code><a href=#nested-reads-use-readcontext class=hash-link aria-label="Direct link to nested-reads-use-readcontext" title="Direct link to nested-reads-use-readcontext" translate=no>​</a></h3>
+<p>Important rules:</p>
+<ul>
+<li class="">serializers that allocate the result object early must call
+<code>context.reference(obj)</code> before reading nested children that may refer back to
+it</li>
+<li class="">nested serializer flow should stay straight-line; do not add internal
+<code>try/finally</code> blocks just to restore operation-local state</li>
+<li class="">top-level <code>Fory.deserialize(...)</code> owns the operation reset <code>finally</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=depth-tracking>Depth Tracking<a href=#depth-tracking class=hash-link aria-label="Direct link to Depth Tracking" title="Direct link to Depth Tracking" translate=no>​</a></h2>
+<p><code>WriteContext</code> and <code>ReadContext</code> track logical object depth explicitly.
+<code>increaseDepth()</code> enforces <code>Config.maxDepth</code>.</p>
+<p>Depth should stay explicit on the contexts rather than relying on the native
+call stack alone. At the same time, depth cleanup should not depend on nested
+<code>try/finally</code> blocks throughout serializer code. Top-level context reset must be
+able to recover operation-local state after failures.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=struct-compatibility>Struct Compatibility<a href=#struct-compatibility class=hash-link aria-label="Direct link to Struct Compatibility" title="Direct link to Struct Compatibility" translate=no>​</a></h2>
+<p>Struct-specific schema/version framing and compatible-field layout belong in the
+struct serializer layer, not on <code>Fory</code> and not on the public serializer API.</p>
+<p>In Dart that internal owner is <code>StructSerializer</code>.</p>
+<p><code>StructSerializer</code> is responsible for:</p>
+<ul>
+<li class="">schema-hash framing when compatibility mode is off and version checks are on</li>
+<li class="">compatible-struct field remapping when compatibility mode is on</li>
+<li class="">caching compatible read layouts</li>
+<li class="">skipping unknown compatible fields</li>
+<li class="">passing compatible read layouts explicitly to generated serializers</li>
+<li class="">classifying matched compatible fields as exact direct reads, compatible
+conversions, or remote-only skips before generated dispatch</li>
+</ul>
+<p>When <code>Config.compatible</code> is enabled and the struct is marked evolving:</p>
+<ul>
+<li class="">the wire type uses the compatible struct form</li>
+<li class="">the writer emits shared TypeDef metadata</li>
+<li class="">reads map incoming fields by identifier and skip unknown fields</li>
+<li class="">generated serializers apply matched fields directly while preserving their own
+object construction and default-value rules</li>
+<li class="">exact matched field schemas use the same direct read shape as same-schema
+reads and must not receive remote compatible metadata</li>
+<li class="">matched scalar fields may use compatible scalar conversion only when the
+layout has classified a remote/local top-level scalar pair as lossless
+convertible and both field schemas have <code>trackingRef = false</code></li>
+<li class="">compatible scalar conversion applies only to the immediate matched field.
+Nested collection, array, map key, and map value schemas must not be accepted
+by recursively applying scalar conversion to child schemas.</li>
+<li class="">direct top-level <code>list&lt;T?></code> to dense <code>array&lt;T></code> matched fields must be
+classified as compatible when element domains match; the nullable element
+schema bit alone is not a schema-pair rejection. Actual null element payloads
+fail in the dense-array reader. Ref-tracked list-element framing is separate
+and may remain rejected when the implementation cannot materialize it without
+generic/reference paths.</li>
+</ul>
+<p>When <code>compatible</code> is disabled and <code>checkStructVersion</code> is enabled:</p>
+<ul>
+<li class="">the writer emits the schema hash for struct payloads</li>
+<li class="">the read side checks that hash before reading fields</li>
+</ul>
+<p>Compatible scalar conversion is owned by the compatible struct field reader or
+the generated compatible layout action. Root facades, read/write contexts, type
+resolvers, class resolvers, xlang type resolvers, and raw buffer utilities must
+not expose public conversion APIs or carry conversion state. Resolvers may
+provide field schema metadata for layout classification, but the conversion
+decision and value adaptation stay with the serializer-owned compatible field
+layout. Layout classification must reject top-level scalar conversions when
+either matched schema has <code>trackingRef = true</code> and must reject same scalar type
+pairs whose top-level <code>trackingRef</code> framing differs; converters must not add a
+reference-table path for scalar mismatches. Recursive schema comparison inside
+containers must reject scalar mismatches instead of reusing the top-level scalar
+conversion matrix. Generated serializers should consume the classified layout
+decision directly:</p>
+<ul>
+<li class="">source-generated serializers use the layout's matched-field dispatch key to
+select exact direct field code, compatible conversion code, or skip code</li>
+<li class="">regenerated serializers may instead compile a remote-schema-specific
+straight-line reader after classification, without a second outer matched-id
+switch, when the generated source still has pure direct, pure conversion, and
+explicit skip operations</li>
+<li class="">compatible scalar conversion cases must read the concrete remote wire scalar
+selected by classification and compose only the required lossless conversion;
+they must not call a generic runtime converter that redispatches by remote and
+local scalar type IDs, field descriptors, field names, or schema eligibility
+helpers</li>
+</ul>
+<p>Same-schema readers with matching reference and null/optional framing must keep
+direct scalar read paths without conversion branches or per-field conversion
+objects. Same raw scalar types with different null/optional framing may still
+use the compatible nullable/optional composition path when both fields are not
+reference-tracked.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=meta-strings-and-shared-type-metadata>Meta Strings And Shared Type Metadata<a href=#meta-strings-and-shared-type-metadata class=hash-link aria-label="Direct link to Meta Strings And Shared Type Metadata" title="Direct link to Meta Strings And Shared Type Metadata" translate=no>​</a></h2>
+<p>Two explicit pieces of state back xlang type metadata:</p>
+<ul>
+<li class=""><code>MetaStringWriter</code> and <code>MetaStringReader</code> deduplicate and decode namespace
+and type-name strings</li>
+<li class="">shared TypeDef write/read state tracks announced TypeDef metadata</li>
+</ul>
+<p>Ownership rules:</p>
+<ul>
+<li class="">canonical encoded names live in <code>TypeResolver</code></li>
+<li class="">per-operation dynamic meta-string ids live on <code>MetaStringWriter</code> and
+<code>MetaStringReader</code></li>
+<li class="">shared type-definition tables are operation-local context state</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=enums-in-xlang-mode>Enums In Xlang Mode<a href=#enums-in-xlang-mode class=hash-link aria-label="Direct link to Enums In Xlang Mode" title="Direct link to Enums In Xlang Mode" translate=no>​</a></h2>
+<p>In xlang mode, enums are serialized by numeric tag, not by name.</p>
+<p>In Java:</p>
+<ul>
+<li class="">the default tag is the declaration ordinal</li>
+<li class=""><code>@ForyEnumId</code> can override that with a stable explicit tag</li>
+<li class=""><code>serializeEnumByName(true)</code> affects native Java mode, not xlang mode</li>
+</ul>
+<p>In C#, the enum's underlying numeric value is the xlang tag. Java peers for
+sparse C# enums must declare matching <code>@ForyEnumId</code> values instead of relying
+on declaration ordinals.</p>
+<p>Other Fory implementations should preserve the same wire rule even if the configuration or
+annotation surface differs.</p>
+<p>A Rust data-carrying enum is an xlang union only when each known variant is unit
+or carries exactly one alternative value and satisfies the union case rules.
+Rust native mode (<code>xlang = false</code>) may additionally encode tuple or named
+variants with multiple fields through its native enum format. Those
+struct-style enum shapes have no implicit xlang mapping. Registration in xlang
+mode must reject them on the cold schema/type-selection path before publishing
+resolver state; generated code must not drop fields, synthesize an undeclared
+variant struct, or fall back to EXT.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=out-of-band-buffer-objects>Out-Of-Band Buffer Objects<a href=#out-of-band-buffer-objects class=hash-link aria-label="Direct link to Out-Of-Band Buffer Objects" title="Direct link to Out-Of-Band Buffer Objects" translate=no>​</a></h2>
+<p>Buffer-object handling follows the same split:</p>
+<ul>
+<li class="">one root bit advertises whether out-of-band buffers are in play</li>
+<li class="">nested buffer-object payloads still decide in-band vs out-of-band one value at
+a time</li>
+<li class="">serializers use read/write context helpers rather than bypassing the context layer</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=code-generation>Code Generation<a href=#code-generation class=hash-link aria-label="Direct link to Code Generation" title="Direct link to Code Generation" translate=no>​</a></h2>
+<p>The normal Dart integration path is:</p>
+<ol>
+<li class="">annotate structs with <code>@ForyStruct</code></li>
+<li class="">annotate field overrides with <code>@ForyField</code></li>
+<li class="">run <code>build_runner</code></li>
+<li class="">call the generated per-library helper, such as
+<code>&lt;InputFile>ForyModule.register(...)</code>, to bind private generated metadata and
+register generated types</li>
+</ol>
+<p>Generated code should emit:</p>
+<ul>
+<li class="">private serializer classes</li>
+<li class="">private metadata constants</li>
+<li class="">a public per-library registration helper that users call from application code</li>
+<li class="">private generated installation helpers that keep serializer factories private</li>
+</ul>
+<p>The public helper should be a thin generated wrapper around the Fory
+registration API, not a public global registry or a second unrelated
+registration API family.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=dart-ordinary-struct-inheritance>Dart Ordinary Struct Inheritance<a href=#dart-ordinary-struct-inheritance class=hash-link aria-label="Direct link to Dart Ordinary Struct Inheritance" title="Direct link to Dart Ordinary Struct Inheritance" translate=no>​</a></h3>
+<p>Ordinary Dart <code>ForyStruct</code> inheritance is a code-generation-time field
+discovery, normalization, access, construction, and flattening change. It does
+not redesign the reference protocol.</p>
+<p>For a concrete annotated child, the generator walks the instantiated
+superclass and applied-mixin storage chain rather than only the child's direct
+<code>element.fields</code>. Each layer's <code>InterfaceType.element.fields</code> exposes its
+declared elements, including private declarations in another library. Dart
+privacy controls which generated expression can access an element; it does not
+control whether the element is discovered.</p>
+<p>The storage collector:</p>
+<ol>
+<li class="">visits the instantiated superclass;</li>
+<li class="">visits actually applied mixins in application order;</li>
+<li class="">visits the current class;</li>
+<li class="">collects concrete instance storage declared by each layer exactly once.</li>
+</ol>
+<p>It excludes <code>Object</code>, interfaces, mixin <code>on</code> constraints, abstract accessors,
+static fields, external fields, and synthetic members that do not own storage.
+A mixin slot is identified by its application site and declaring field, so
+multiple applications cannot be collapsed by spelling or <code>baseElement</code>.</p>
+<p>Every discovered storage field follows one pipeline:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">complete hierarchy discovery</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> declaration-owned @ForyField(ignore: true)</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> concrete-child ignoreInheritedPrivateFields policy</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> concrete generic substitution</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> direct or companion access resolution</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> constructor validation</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> one globally sorted child schema</span><br/></div></code></pre></div></div>
+<p><code>@ForyField(ignore: true)</code> is the declaration-owned, per-field omission.
+After that check, a concrete child with
+<code>ignoreInheritedPrivateFields: true</code> removes every private field declared by a
+superclass or applied mixin, including same-library, cross-library, direct, and
+transitive ancestors. It does not remove child-declared private fields or
+inherited public fields. Both omission forms bypass substitution, access,
+construction, wire identity, reference analysis, and codec work while their
+physical slots remain in the concrete object's shallow graph-memory field
+count. Any unresolved field that remains included is a generation error.</p>
+<p>Ownership is fixed:</p>
+<table><thead><tr><th>Concern<th>Owner<tbody><tr><td>Field identity and annotations<td>Declaring storage field<tr><td>Hierarchy discovery/substitution<td>Concrete-child generator<tr><td>Inherited-private omission<td>Concrete annotated child<tr><td>Cross-library private permission<td>Public boundary in the field's declaring library<tr><td>Schema, sort, and codec<td>Concrete annotated child<tr><td>Construction<td>Selected concrete-child generative constructor<tr><td>Reference analysis/publication<td>Existing concrete-child serializer path<tr><td>Graph-memory self charge<td>One concrete child object<tr><td>External target field list<td>Explicit external serializer declaration</table>
+<p>The concrete-child omission option defaults to <code>false</code>, is not inherited from
+ancestor annotations, and is valid only on an ordinary concrete declaration
+that owns a flattened schema. It is invalid on external target declarations
+and provider-only abstract, open-generic, or mixin boundaries. It is applied
+after complete storage discovery and before generic substitution or access
+resolution, so a matching field needs no direct access or companion even when
+a companion exists.</p>
+<p>For fields that remain included, public inherited fields and private inherited
+fields declared in the child's library use direct generated access and require
+no parent annotation. A private field declared in another library requires
+<code>ForyStruct(exposePrivateFields: true)</code> on a public hierarchy boundary in that
+field's declaring library. <code>exposePrivateFields</code> defaults to <code>false</code>, is
+invalid with <code>ForyStruct.target</code>, and authorizes only provider-library access
+generation. It does not enable discovery, alter same-library access, change
+field inclusion, or let a consumer authorize another library's private state.</p>
+<p>A public boundary may expose same-library private storage inherited from a
+private class or mixin. If private fields come from several Dart libraries,
+each declaring library must independently provide an opted-in public boundary
+and visible companion. The nearest qualifying child-visible boundary in the
+declaring library is selected.</p>
+<p>The provider's <code>.fory.dart</code> part emits a public <code>@nodoc</code> typed static access
+companion. It emits an exact getter for each exposed non-ignored private field,
+a setter only for mutable storage, and no setter for <code>final</code> or <code>late final</code>
+storage. The receiver is the public boundary type. Generic bounds and every
+type nested in a public signature must be nameable outside the provider
+library. The companion must not use <code>dynamic</code>, <code>Object?</code> bridge casts,
+reflection, callbacks, runtime lookup, a parent serializer, or stored runtime
+state. Companion generation is independent of every consumer child's
+<code>ignoreInheritedPrivateFields</code> value. A concrete boundary may enable both
+options: its own serializer applies the omission, while its provider companion
+continues to expose the declaring library's eligible private storage.</p>
+<p>The child source must have a direct import or re-export namespace that exposes
+the public boundary and companion. Provider output must be generated and
+published before a dependent package is built. Missing permission, a hidden or
+ambiguous companion namespace, an unnameable signature, or dispatch that no
+longer reaches the exact storage slot is a generation error. A child must also
+validate the complete concrete hierarchy so field hiding below the boundary
+cannot redirect a generated getter or setter to another slot.</p>
+<p>Every included <code>final</code> or <code>late final</code> field must be initialized by a
+statically proven identity flow:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">selected concrete-child constructor parameter</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> redirect or super parameter</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">  -> exact storage field</span><br/></div></code></pre></div></div>
+<p>Accepted edges are exact field formals, super formals, direct parameter
+references in constructor field initializers, and direct parameter references
+in redirecting or super-constructor arguments. Types must remain identical
+after concrete generic substitution, including nullability. Calls, operators,
+casts, null assertions, constants, constructor-body assignment, and matching
+names without element identity are not proof. A declaration initializer on a
+included final field is unsupported because the decoded value cannot own that
+slot. There is no post-construction final write, reflection, or fallback.</p>
+<p>Mutable fields connected to selected constructor parameters are initialized
+once through the same exact identity flow. Remaining mutable fields require an
+exact setter and are restored after construction. Required constructor
+parameters must have one unambiguous field source. Optional named parameters
+may be omitted; an omitted optional positional parameter cannot be followed by
+a passed positional parameter. Constructor arguments and assignments are
+matched by resolved storage-field identity rather than field-name strings. If
+omission removes the only serialized source for a required parameter,
+generation fails; the generator must not invent a value or relax identity
+proof.</p>
+<p>The concrete child owns one <code>GeneratedStructSchema</code>, one canonical field sort,
+one serializer and descriptor cache, one reconstruction, one reference
+publication path, and one graph-memory owner. Parent serializers are neither
+nested nor invoked, and parent type registration is not required. A
+separately annotated concrete parent has its own independently flattened
+schema only for values of that exact type.</p>
+<p>Included direct and inherited fields feed one normalized list into the
+existing recursive reference analysis and <code>needsRootRef</code> calculation.
+Included inherited <code>ref: true</code> and nested container metadata behave like
+equivalent direct child fields; omitted fields do not enter that list.
+Inheritance adds no reference state, <code>ReadContext</code> API, serializer signature,
+call-contract change, runtime branch, slot, sentinel, callback, wrapper,
+compatible-layout state, or parent reference owner. A failure shared by the
+equivalent flat model is a separate reference-subsystem issue.</p>
+<p>Java provides only the flattened-model comparison for this feature: its object
+serializer extends one field-descriptor list across inheritance and adds no
+inheritance-specific reference state. Java's existing reference contract uses
+the <code>readRefIds</code> stack, real reference IDs, and its <code>-1</code> sentinel to associate
+<code>reference(obj)</code> with the current serializer invocation. That contract differs
+from Dart's current reference subsystem and is not a design to transplant as
+part of Dart hierarchy support. Dart inheritance is required only to match its
+own equivalent flat model.</p>
+<p>Hierarchy traversal, substitution, access validation, and constructor proofs
+run during generation. Existing flat serializers gain no runtime work, public
+and same-library inherited fields emit the same direct operations as equivalent
+flat fields, policy filtering emits no runtime check, and included
+cross-library private fields add only an inlineable typed static companion
+call. Generation must not introduce runtime hierarchy traversal, allocation,
+callbacks, reflection, or parent dispatch.</p>
+<p>The child's shallow graph-memory formula is:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-text codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token plain">24 + 4 * actualConcreteStorageFieldCount</span><br/></div></code></pre></div></div>
+<p>It counts every real inherited and ignored storage slot once and adds no parent
+self charge.</p>
+<p>Generated diagnostics must identify the concrete child, declaring field,
+declaring library, and failed access or constructor path, then give an
+actionable remedy. Typical remedies are adding
+<code>exposePrivateFields: true</code> to a public owner-library boundary, importing its
+generated companion, forwarding a constructor value unchanged, placing
+<code>@ForyField(ignore: true)</code> on the field declaration, setting
+<code>ignoreInheritedPrivateFields: true</code> on the concrete child when all private
+ancestor state should be omitted, or using a custom serializer. Diagnostics
+must state that hierarchy discovery is independent of cross-library access.</p>
+<p>Changes to hierarchy storage, exposure boundaries, or
+<code>ignoreInheritedPrivateFields</code> require regeneration of every affected
+<code>.fory.dart</code> file. Compatible mode uses normal missing/unknown-field handling;
+fixed-schema peers must change together. Implementations must not add a
+special legacy reader, retain an alternative path limited to child
+declarations, bind constructors only by name, use a late-final setter path,
+fall back to another access model, or delegate to a parent serializer.</p>
+<p>Acceptance requires that every hierarchy storage slot is either omitted by its
+declaration, omitted by the concrete-child inherited-private policy, or
+represented exactly once with a valid type, access path, wire identity, and
+reconstruction path. Equivalent included flat and inherited models must
+produce the same canonical schema, wire bytes, reference IDs, and round-trip
+behavior. External target declarations remain explicit and unaffected.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id=dart-external-structural-serializers>Dart External Structural Serializers<a href=#dart-external-structural-serializers class=hash-link aria-label="Direct link to Dart External Structural Serializers" title="Direct link to Dart External Structural Serializers" translate=no>​</a></h3>
+<p>Dart external-type serialization extends <code>ForyStruct</code> with an optional
+compile-time <code>target</code> and named generative <code>constructor</code>. The annotated
+<code>abstract final</code> class is a schema declaration only. It has no runtime value or
+registration identity.</p>
+<p>The generator must analyze ordinary and external structs through one struct
+model and one emitter. Private generated symbol names come from the declaration
+name. Every generated serializer type position uses the target type: <code>Serializer&lt;Target></code>,
+<code>GeneratedStructSchema&lt;Target></code>, read and write signatures, constructor calls,
+schema <code>type</code>, and generated-module dispatch.</p>
+<p>For each serialized declaration field, resolve an accessible target getter
+with the same name and exact instantiated Dart type. Constructor parameters
+and any post-construction setter must also match exactly. A public named
+generative constructor is selected only when the annotation names it. Factory
+constructors, abstract targets, open target types, and constructor-based
+reference-tracked paths back to the target are rejected during generation.
+The recursive check includes target elements, keys, and values nested in the
+supported list, set, and map field metadata.</p>
+<p>The external declaration's fields are the complete schema. It may explicitly
+name an accessible property inherited by the target, but the generator does
+not automatically scan the external target hierarchy for schema fields.
+<code>exposePrivateFields</code> and <code>ignoreInheritedPrivateFields</code> are invalid on an
+external declaration.</p>
+<p>An external object's shallow graph-memory formula is the union of declaration
+fields and public instance fields discovered on the target, its superclasses,
+and applied mixins. A public target field represented by a declaration is
+counted once. <code>@ForyField(ignore: true)</code> adds budget-only declaration storage
+without target access, construction, metadata, or wire code.</p>
+<p>Generated code reads getters and invokes target constructors or setters
+directly. It must not allocate the declaration, copy values through an
+intermediate object, invoke runtime callbacks, perform member-name lookup, or
+branch on whether the struct is external. The existing generated struct,
+registration, resolver, field, collection, map, compatible-read, and reference
+paths remain the only runtime paths.</p>
+<p>Registration is keyed by <code>Target</code> through the generated module and the existing
+generated registration API. Direct roots, generated fields, dynamic values,
+and recursive collection/map children resolve the same target registration.
+Dart root collections retain their existing untyped outer shapes.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=directory-layout>Directory Layout<a href=#directory-layout class=hash-link aria-label="Direct link to Directory Layout" title="Direct link to Directory Layout" translate=no>​</a></h2>
+<p>Under each Dart package <code>lib/</code> tree, only one nested source layer is allowed.</p>
+<p>Allowed:</p>
+<ul>
+<li class=""><code>lib/fory.dart</code></li>
+<li class=""><code>lib/src/&lt;file>.dart</code></li>
+<li class=""><code>lib/src/&lt;area>/&lt;file>.dart</code></li>
+</ul>
+<p>Not allowed:</p>
+<ul>
+<li class=""><code>lib/src/&lt;area>/&lt;subarea>/&lt;file>.dart</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=serializer-design-rules-for-new-implementations>Serializer Design Rules For New Implementations<a href=#serializer-design-rules-for-new-implementations class=hash-link aria-label="Direct link to Serializer Design Rules For New Implementations" title="Direct link to Serializer Design Rules For New Implementations" translate=no>​</a></h2>
+<p>Any new xlang implementation should follow these rules even if its surface API looks
+different:</p>
+<ol>
+<li class="">Keep root operations on the <code>Fory</code> facade and nested payload work on
+explicit read and write contexts.</li>
+<li class="">Keep reference tracking behind dedicated read-side and write-side services
+so the disabled path stays cheap.</li>
+<li class="">Make serializers payload-only. Type metadata, registration, and root
+framing belong to the <code>Fory</code> and type resolver layers.</li>
+<li class="">Track per-operation state explicitly. Do not rely on ambient thread-local
+instance state.</li>
+<li class="">Reserve read reference IDs before materializing new objects, and bind
+partially built objects as soon as a nested child may refer back to them.</li>
+<li class="">Keep operation setup and operation cleanup separate. <code>prepare(...)</code> binds
+the current operation inputs, and <code>reset()</code> clears operation-local state.</li>
+<li class="">Preserve the separation between the root bitmap, per-object ref flags, type
+headers, and payload bytes.</li>
+<li class="">Keep internal naming in the serialization domain. Prefer words like
+<code>serializer</code>, <code>binding</code>, and <code>layout</code>; avoid RPC-style terms such as
+<code>session</code> or vague control-flow terms such as <code>plan</code>.</li>
+<li class="">When the implementation language supports cold and no-inline annotations,
+keep error, cache-miss, schema-mismatch, unsupported-capability, and other
+cold entrances reachable from serializer hot paths out of hot-path
+inlining. Do not mark successful dynamic dispatch cold.</li>
+<li class="">After any xlang protocol or ownership change, run the cross-language test
+matrix and update both this guide and
+<a class="" href=/docs/1.6/specification/xlang_serialization_spec>Xlang Serialization Spec</a>.</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id=validation>Validation<a href=#validation class=hash-link aria-label="Direct link to Validation" title="Direct link to Validation" translate=no>​</a></h2>
+<p>For Dart implementation changes, run at minimum:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart analyze</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div>
+<p>For generated consumer coverage, also run:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style=--prism-color:#393A34;--prism-background-color:#f6f8fa><div class=codeBlockContent_QJqH><pre tabindex=0 class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style=color:#393A34;background-color:#f6f8fa><code class=codeBlockLines_e6Vv><div class=token-line style=color:#393A34><span class="token builtin class-name">cd</span><span class="token plain"> dart/packages/fory-test</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart run build_runner build</span><br/></div><div class=token-line style=color:#393A34><span class="token plain">dart </span><span class="token builtin class-name">test</span><br/></div></code></pre></div></div></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href=https://github.com/apache/fory-site/tree/main/docs/specification/xlang_implementation_guide.md target=_blank rel="noopener noreferrer" class=theme-edit-this-page><svg fill=currentColor height=20 width=20 viewBox="0 0 40 40" class=iconEdit_Z9Sw aria-hidden=true><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"/></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href=/docs/1.6/specification/xlang_type_mapping><div class=pagination-nav__sublabel>Previous</div><div class=pagination-nav__label>Xlang Type Mapping</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#overview class="table-of-contents__link toc-highlight">Overview</a><li><a href=#source-of-truth class="table-of-contents__link toc-highlight">Source Of Truth</a><li><a href=#implementation-ownership-model class="table-of-contents__link toc-highlight">Implementation Ownership Model</a><ul><li><a href=#fory-is-the-root-operation-facade class="table-of-contents__link toc-highlight"><code>Fory</code> is the root-operation facade</a><li><a href=#writecontext-and-readcontext-hold-operation-local-state class="table-of-contents__link toc-highlight"><code>WriteContext</code> and <code>ReadContext</code> hold operation-local state</a><li><a href=#writecontext class="table-of-contents__link toc-highlight"><code>WriteContext</code></a><li><a href=#readcontext class="table-of-contents__link toc-highlight"><code>ReadContext</code></a></ul><li><a href=#reference-tracking class="table-of-contents__link toc-highlight">Reference Tracking</a><li><a href=#type-resolution class="table-of-contents__link toc-highlight">Type Resolution</a><ul><li><a href=#external-type-serialization-ownership class="table-of-contents__link toc-highlight">External-type serialization ownership</a></ul><li><a href=#root-frame-responsibilities class="table-of-contents__link toc-highlight">Root Frame Responsibilities</a><li><a href=#serialization-flow class="table-of-contents__link toc-highlight">Serialization Flow</a><ul><li><a href=#root-write-path class="table-of-contents__link toc-highlight">Root write path</a><li><a href=#nested-writes-use-writecontext class="table-of-contents__link toc-highlight">Nested writes use <code>WriteContext</code></a></ul><li><a href=#deserialization-flow class="table-of-contents__link toc-highlight">Deserialization Flow</a><ul><li><a href=#root-read-path class="table-of-contents__link toc-highlight">Root read path</a><li><a href=#readcontext-owns-ref-reservation-and-payload-materialization class="table-of-contents__link toc-highlight"><code>ReadContext</code> owns ref reservation and payload materialization</a><li><a href=#stream-and-buffer-byte-reads class="table-of-contents__link toc-highlight">Stream And Buffer Byte Reads</a><li><a href=#nested-reads-use-readcontext class="table-of-contents__link toc-highlight">Nested reads use <code>ReadContext</code></a></ul><li><a href=#depth-tracking class="table-of-contents__link toc-highlight">Depth Tracking</a><li><a href=#struct-compatibility class="table-of-contents__link toc-highlight">Struct Compatibility</a><li><a href=#meta-strings-and-shared-type-metadata class="table-of-contents__link toc-highlight">Meta Strings And Shared Type Metadata</a><li><a href=#enums-in-xlang-mode class="table-of-contents__link toc-highlight">Enums In Xlang Mode</a><li><a href=#out-of-band-buffer-objects class="table-of-contents__link toc-highlight">Out-Of-Band Buffer Objects</a><li><a href=#code-generation class="table-of-contents__link toc-highlight">Code Generation</a><ul><li><a href=#dart-ordinary-struct-inheritance class="table-of-contents__link toc-highlight">Dart Ordinary Struct Inheritance</a><li><a href=#dart-external-structural-serializers class="table-of-contents__link toc-highlight">Dart External Structural Serializers</a></ul><li><a href=#directory-layout class="table-of-contents__link toc-highlight">Directory Layout</a><li><a href=#serializer-design-rules-for-new-implementations class="table-of-contents__link toc-highlight">Serializer Design Rules For New Implementations</a><li><a href=#validation class="table-of-contents__link toc-highlight">Validation</a></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Community</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://lists.apache.org/list.html?dev@fory.apache.org target=_blank rel="noopener noreferrer" class=footer__link-item>Mailing list<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://join.slack.com/t/fory-project/shared_invite/zt-1u8soj4qc-ieYEu7ciHOqA2mo47llS8A target=_blank rel="noopener noreferrer" class=footer__link-item>Slack<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://twitter.com/ApacheFory target=_blank rel="noopener noreferrer" class=footer__link-item>Twitter<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Docs</div><ul class="footer__items clean-list"><li class=footer__item><a class=footer__link-item href=/docs/start/>Install</a><li class=footer__item><a class=footer__link-item href=/docs/start/>Usage</a><li class=footer__item><a class=footer__link-item href=/docs/benchmarks/>Benchmark</a></ul></div><div class="theme-layout-footer-column col footer__col"><div class=footer__title>Repositories</div><ul class="footer__items clean-list"><li class=footer__item><a href=https://github.com/apache/fory target=_blank rel="noopener noreferrer" class=footer__link-item>Apache Fory™<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a><li class=footer__item><a href=https://github.com/apache/fory-site target=_blank rel="noopener noreferrer" class=footer__link-item>Website<svg width=13.5 height=13.5 aria-label="(opens in new tab)" class=iconExternalLink_nPIU><use href=#theme-svg-external-link /></svg></a></ul></div></div><div class="footer__bottom text--center"><div class=margin-bottom--sm><a href=https://apache.org/ rel="noopener noreferrer" class=footerLogoLink_BH7S><img src=/img/asf_logo.svg alt="ASF Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE" width=200 /><img src=/img/asf_logo.svg alt="ASF Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU" width=200 /></a></div><div class=footer__copyright><div>
+      <p>
+        Copyright © 2026 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. <br/>
+        Apache Fory, Fory, Apache, the Apache Logo and the Apache Fory logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
+      </p>
+      </div></div></div></div></footer></div></body>
