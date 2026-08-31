@@ -363,6 +363,5 @@ See [Troubleshooting](troubleshooting.md) for Kotlin metadata, nullability, gene
 Android shrinking, Native Image, syntax, limits, custom codecs, subtypes, and root-operation
 failures.
 
-The source-aligned four-library benchmark methodology and publication status are in the
-[Kotlin JSON benchmark report](../benchmarks/json/kotlin/README.md). No Kotlin result is inferred
-from the Java or Scala benchmark.
+See [Kotlin JSON benchmarks](../benchmarks/json/kotlin/README.md) for the workloads and setup
+used to compare Fory JSON Kotlin, kotlinx.serialization, Moshi, and Jackson Kotlin.

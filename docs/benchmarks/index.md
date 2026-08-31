@@ -52,10 +52,8 @@ For additional benchmark notes, raw data, and the complete Java benchmark README
 ## Kotlin JSON Benchmark
 
 The Kotlin JSON harness compares Fory JSON Kotlin, kotlinx.serialization, Moshi, and Jackson Kotlin
-with one immutable model and 16 isolated String/UTF-8 operations. The
-[Kotlin JSON report](json/kotlin/README.md) is intentionally marked pending until a complete
-measured run is published; no placeholder performance result is inferred from another language or
-project.
+with one immutable model and 16 String/UTF-8 operations. See [Kotlin JSON benchmarks](json/kotlin/README.md)
+for the workloads and benchmark setup.
 
 ## Python Benchmark
 

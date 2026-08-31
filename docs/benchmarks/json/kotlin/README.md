@@ -1,10 +1,6 @@
-# Kotlin JSON Benchmark Report
+# Kotlin JSON Benchmarks
 
-Measured results are pending. This page will be replaced only by a complete run of the repository
-Kotlin JSON benchmark harness; no performance number or chart is inferred from the Java, Scala, or
-historical external benchmark projects.
-
-The source-aligned harness is in
+The benchmark harness is in
 [`benchmarks/kotlin`](https://github.com/apache/fory/tree/main/benchmarks/kotlin).
 It compares Fory JSON Kotlin, kotlinx.serialization, Moshi, and Jackson Kotlin with:
 
@@ -16,7 +12,3 @@ It compares Fory JSON Kotlin, kotlinx.serialization, Moshi, and Jackson Kotlin w
 - one standard JMH invocation for all 16 methods;
 - retained declared-type serializers, adapters, readers, and writers prepared outside timing;
 - fixture decode, own-output round-trip, and all-output JSON-tree equivalence checks before timing.
-
-The eventual measured report will record the source revision, date, hardware, operating system,
-JDK, Kotlin, JMH, Moshi codegen KSP plugin, library versions, and the exact benchmark settings.
-Standard JMH JSON and the process log remain available together.
