@@ -62,17 +62,17 @@ dependencies {
 import org.apache.fory.json.kotlin.ForyJsonKotlin
 import org.apache.fory.json.kotlin.jsonTypeRef
 
-data class Account(
+data class User(
   val id: ULong,
   val name: String,
   val nickname: String? = null,
 )
 
 val json = ForyJsonKotlin.builder().build()
-val accountType = jsonTypeRef<Account>()
+val userType = jsonTypeRef<User>()
 
-val account = json.fromJson("""{"id":7,"name":"Alice"}""", accountType)
-val text = json.toJson(account, accountType)
+val user = json.fromJson("""{"id":7,"name":"Alice"}""", userType)
+val text = json.toJson(user, userType)
 ```
 
 成员缺失时，如果构造函数提供默认值，就调用该默认值。显式 JSON `null` 按 Kotlin 声明进行检查，不会请求使用默认值。Fory 会调用模型构造函数，因此初始化和验证逻辑仍会执行。sealed 类和接口可通过 `JsonSubTypes` 声明一组封闭的逻辑子类型名。
