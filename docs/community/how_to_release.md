@@ -425,8 +425,18 @@ that a build is reproducible.
    other build inputs. Rebuild from source without reusing CI-produced binaries
    or build-output caches. Run packaging steps only: do not invoke `stage_jvm`,
    `publish_jvm`, or upload another candidate merely to verify an existing one.
-   Local reproduction does not require the CI private signing key or Nexus
-   deployment credentials.
+   For the source archive, run this unsigned build from the repository root:
+
+   ```bash
+   python3 ci/release.py build -v "$release_version" --skip-sign
+   ```
+
+   This writes the source archive and its SHA-512 file under `dist/` without
+   invoking GPG or generating an `.asc` file. CI continues to use `build` without
+   `--skip-sign` to sign the staged archive. Local verification must not sign
+   artifacts, import the CI private key, or require Nexus deployment credentials.
+   Use only the public key to verify the signatures downloaded from staging.
+
 3. Compare the complete locally rebuilt files with the staged files. The scope
    includes the source `.tar.gz` and every CI-signed JVM artifact in both Nexus
    repositories: binary, source, and documentation JARs, POMs, and any other
