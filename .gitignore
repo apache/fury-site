@@ -22,6 +22,8 @@ i18n/zh-CN/docusaurus-plugin-content-docs/*/specification/
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-1.5.0/specification/*.md
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-1.6.0/specification/
 !i18n/zh-CN/docusaurus-plugin-content-docs/version-1.6.0/specification/*.md
+!i18n/zh-CN/docusaurus-plugin-content-docs/version-1.7.0/specification/
+!i18n/zh-CN/docusaurus-plugin-content-docs/version-1.7.0/specification/*.md
 
 # English fallback files generated for capability-first current docs. Existing
 # tracked Chinese translations remain tracked and take precedence.

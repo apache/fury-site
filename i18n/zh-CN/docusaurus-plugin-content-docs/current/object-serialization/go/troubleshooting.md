@@ -206,7 +206,7 @@ f2 := fory.New(fory.WithTrackRef(true))  // Must match!
 
 **常见原因**：
 
-1. **标签 ID 无效**：ID 必须为非负数
+1. **无效 tag ID**：ID 必须满足 `0 <= id < 2^29`（`0` 至 `536870911`）
 
 ```go
 // Wrong: negative ID
@@ -217,6 +217,11 @@ type Bad struct {
 // Correct
 type Good struct {
     Field int `fory:"id=0"`
+}
+
+// Wrong: ID reaches the exclusive upper bound
+type TooLarge struct {
+    Field int `fory:"id=536870912"`
 }
 ```
 
@@ -256,7 +261,7 @@ type User struct {
 }
 ```
 
-2. **使用字段 ID 保持顺序一致**：字段 ID（非负整数）作为字段名称的别名，同时用于排序和反序列化期间的字段匹配：
+2. **使用字段 ID 保持一致顺序**：协议范围内的字段 ID 充当字段名的别名，在反序列化时同时用于排序和字段匹配：
 
 ```go
 type User struct {

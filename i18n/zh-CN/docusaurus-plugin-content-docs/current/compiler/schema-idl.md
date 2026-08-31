@@ -408,7 +408,7 @@ message Payment {
    `kotlin_package`)
 2. Fory IDL package 声明（回退选项）
 
-**例子：**
+**示例：**
 
 ```protobuf
 package myapp.models;
@@ -899,10 +899,7 @@ union_field := ['repeated'] field_type IDENTIFIER '=' INTEGER [field_options] ';
 
 ## 服务定义 {#service-definition}
 
-服务用于在 Fory IDL 中定义 RPC 方法契约。服务定义是可选的：即使 Schema 包含服务，
-也仍会生成常规数据模型类型。只有为 Java、Python、Go、Rust、C#、Dart、Scala、Kotlin 或
-JavaScript 等受支持目标使用 `--grpc` 运行编译器时，才会额外生成 gRPC 服务代码。
-JavaScript 浏览器 gRPC-Web 客户端使用 `--grpc-web` 生成。
+服务在 Fory IDL 中定义 RPC 方法契约。服务是可选的：包含服务的 Schema 仍会生成常规数据模型类型；只有在编译器使用 `--grpc` 且输出语言受支持时，才生成 gRPC 服务代码，例如 Java、Python、Go、Rust、C#、Swift、Dart、Scala、Kotlin 和 JavaScript。JavaScript 浏览器 gRPC-Web 客户端使用 `--grpc-web` 生成。
 
 ```protobuf
 message GetPetRequest [id=200] {
@@ -963,6 +960,8 @@ rpc_method  := 'rpc' IDENTIFIER '(' ['stream'] named_type ')'
 ```protobuf
 field_type field_name = field_number;
 ```
+
+`field_number` 是字段 tag ID，必须在消息内唯一，并满足 `0 <= field_number < 2^29`（`0` 至 `536870911`）。已分配的编号应保持稳定；删除字段后应保留其编号，不要分配给其他字段。
 
 ### 带修饰符
 
@@ -1133,22 +1132,22 @@ Rust 中的 `Arc`。
 
 ## 字段编号
 
-每个字段必须有一个唯一的正整数标识符：
+每个字段都必须使用协议范围内唯一的 tag ID：
 
 ```protobuf
 message Example {
-    string first = 1;
-    string second = 2;
-    string third = 3;
+    string first = 0;
+    string second = 1;
+    string third = 2;
 }
 ```
 
 **规则和最佳实践：**
 
 - 消息中的数字必须是唯一的。
-- 数字必须是正整数。
+- 编号必须满足 `0 <= field_number < 2^29`（`0` 至 `536870911`）。
 - 允许有间隙，并且在删除字段时很有用。
-- 优先选择从 `1` 开始的顺序编号。
+- 建议连续编号。
 - 切勿将已删除的字段编号重复用于其他字段。
 
 ## 类型系统 {#type-system}

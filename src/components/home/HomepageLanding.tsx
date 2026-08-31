@@ -138,7 +138,7 @@ const runtimeExamples: RuntimeExample[] = [
     install: `<dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.6.1</version>
+  <version>1.7.0</version>
 </dependency>`,
     codeLanguage: "java",
     guide: "/docs/object-serialization/java/",
@@ -159,7 +159,7 @@ Person out = (Person) fory.deserialize(bytes);`,
     id: "python",
     label: "Python",
     installLanguage: "bash",
-    install: `pip install pyfory==1.6.1`,
+    install: `pip install pyfory==1.7.0`,
     codeLanguage: "python",
     guide: "/docs/object-serialization/python/",
     summary: "pyfory supports xlang, Python native mode, dataclasses, row format, and out-of-band buffers.",
@@ -181,7 +181,7 @@ out = fory.deserialize(data)`,
     id: "rust",
     label: "Rust",
     installLanguage: "bash",
-    install: `cargo add fory@1.6.1`,
+    install: `cargo add fory@1.7.0`,
     codeLanguage: "rust",
     guide: "/docs/object-serialization/rust/",
     summary: "Rust uses derive macros for type-safe structs and supports both xlang and native payloads.",
@@ -206,7 +206,7 @@ fn main() -> Result<(), Error> {
     id: "go",
     label: "Go",
     installLanguage: "bash",
-    install: `go get github.com/apache/fory/go/fory@v1.6.1`,
+    install: `go get github.com/apache/fory/go/fory@v1.7.0`,
     codeLanguage: "go",
     guide: "/docs/object-serialization/go/",
     summary: "Go supports xlang and native modes with exported structs, circular references, and schema-aware serializers.",
@@ -230,7 +230,7 @@ _ = f.Deserialize(payload, &out)`,
 FetchContent_Declare(
   fory
   GIT_REPOSITORY https://github.com/apache/fory.git
-  GIT_TAG v1.6.1
+  GIT_TAG v1.7.0
   SOURCE_SUBDIR cpp
 )
 FetchContent_MakeAvailable(fory)`,
@@ -257,7 +257,7 @@ auto out = fory.deserialize<Person>(bytes).value();`,
     id: "javascript",
     label: "JavaScript",
     installLanguage: "bash",
-    install: `npm install @apache-fory/core@1.6.1 @apache-fory/hps@1.6.1`,
+    install: `npm install @apache-fory/core@1.7.0 @apache-fory/hps@1.7.0`,
     codeLanguage: "typescript",
     guide: "/docs/object-serialization/javascript/",
     summary: "JavaScript/TypeScript is xlang-only, schema-driven, and runs in Node.js or browsers.",
@@ -278,7 +278,7 @@ const out = deserialize(payload);`,
     id: "csharp",
     label: "C#",
     installLanguage: "bash",
-    install: `dotnet add package Apache.Fory --version 1.6.1`,
+    install: `dotnet add package Apache.Fory --version 1.7.0`,
     codeLanguage: "csharp",
     guide: "/docs/object-serialization/csharp/",
     summary: ".NET support uses source-generated serializers for Fory structs, enums, and unions.",
@@ -301,7 +301,7 @@ Person out = fory.Deserialize<Person>(payload);`,
     id: "swift",
     label: "Swift",
     installLanguage: "swift",
-    install: `.package(url: "https://github.com/apache/fory.git", exact: "1.6.1")`,
+    install: `.package(url: "https://github.com/apache/fory.git", exact: "1.7.0")`,
     codeLanguage: "swift",
     guide: "/docs/object-serialization/swift/",
     summary: "Swift uses @ForyStruct, @ForyEnum, and @ForyUnion macros for xlang-compatible models.",
@@ -324,7 +324,7 @@ let out: Person = try fory.deserialize(payload)`,
     label: "Dart",
     installLanguage: "yaml",
     install: `dependencies:
-  fory: ^1.6.1
+  fory: ^1.7.0
 
 dev_dependencies:
   build_runner: ^2.4.13`,
@@ -359,7 +359,7 @@ final out = fory.deserialize<Person>(payload);`,
     id: "scala",
     label: "Scala",
     installLanguage: "sbt",
-    install: `libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.6.1"`,
+    install: `libraryDependencies += "org.apache.fory" %% "fory-scala" % "1.7.0"`,
     codeLanguage: "scala",
     guide: "/docs/object-serialization/scala/",
     summary: "Scala builds on Fory Java with optimized serializers for case classes, collections, tuples, and Option.",
@@ -379,8 +379,8 @@ val out = fory.deserialize(payload).asInstanceOf[Person]`,
     id: "kotlin",
     label: "Kotlin",
     installLanguage: "kotlin",
-    install: `implementation("org.apache.fory:fory-kotlin:1.6.1")
-ksp("org.apache.fory:fory-kotlin-ksp:1.6.1")`,
+    install: `implementation("org.apache.fory:fory-kotlin:1.7.0")
+ksp("org.apache.fory:fory-kotlin-ksp:1.7.0")`,
     codeLanguage: "kotlin",
     guide: "/docs/object-serialization/kotlin/",
     summary: "Kotlin adds data-class support, Android guidance, and KSP static serializers for xlang/schema mode.",
