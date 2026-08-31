@@ -62,17 +62,17 @@ Use `jsonTypeRef<T>()` to retain Kotlin type information at the root and in nest
 import org.apache.fory.json.kotlin.ForyJsonKotlin
 import org.apache.fory.json.kotlin.jsonTypeRef
 
-data class Account(
+data class User(
   val id: ULong,
   val name: String,
   val nickname: String? = null,
 )
 
 val json = ForyJsonKotlin.builder().build()
-val accountType = jsonTypeRef<Account>()
+val userType = jsonTypeRef<User>()
 
-val account = json.fromJson("""{"id":7,"name":"Alice"}""", accountType)
-val text = json.toJson(account, accountType)
+val user = json.fromJson("""{"id":7,"name":"Alice"}""", userType)
+val text = json.toJson(user, userType)
 ```
 
 A missing member invokes its constructor default when one exists. An explicit JSON `null` is checked against the Kotlin declaration and never requests a default. Fory calls the model's constructor, so initialization and validation still run. Sealed classes and interfaces can use `JsonSubTypes` to declare a closed set of logical subtype names.
