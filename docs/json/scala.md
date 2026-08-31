@@ -41,6 +41,11 @@ val person = json.fromJson(text, classOf[Person])
 ```
 
 Reuse the resulting `ForyJson` instance. It is immutable and thread-safe after construction.
+Use `ForyJsonScala.builder().writeLongAsString(true)` to emit Scala `Long` values, including
+declared collection and map values, `Option[Long]`, `Long`-backed value classes, and Java Long-like
+wrappers as quoted decimal strings. Readers accept both quoted and unquoted integer tokens.
+Use `ScalaTypeRef` when a parameterized declaration contains `Long` because normal JVM signatures
+can erase Scala value-type arguments to `Object`.
 
 ## Case classes and annotations
 
