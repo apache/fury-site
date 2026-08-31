@@ -221,7 +221,27 @@ git tag go/fory/v${release_version}
 git push apache go/fory/v${release_version}
 ```
 
-### Build and upload artifacts to SVN dist/dev repo
+### Stage a release candidate in CI
+
+The proposed [Stage Release Candidate workflow](https://github.com/apache/fory/pull/3983)
+stages source artifacts to Apache Trusted Releases (ATR) using GitHub OIDC and JVM
+artifacts to Nexus. Once the workflow is available and approved for automated
+signing, use CI staging by default. Use the manual SVN and Nexus steps below only
+when manual staging is explicitly requested.
+
+Run the workflow on the release-candidate tag, not a branch:
+
+```bash
+gh workflow run stage-release-candidate.yml --repo apache/fory \
+  --ref "v${release_version}-${rc_version}" -f source=true -f jvm=true
+```
+
+Record the workflow run URL, the exact tag commit, the ATR candidate URL, and both
+Nexus staging repository URLs from that run. CI stages a candidate; it does not
+approve or publish a release. Before opening the vote, complete
+[independent reproducibility verification](#verify-ci-artifacts-on-trusted-hardware).
+
+### Manual staging: build and upload artifacts to SVN dist/dev repo
 
 First you need to build source release artifacts by `python ci/release.py build -v ${release_version}`.
 
@@ -268,7 +288,9 @@ Fory requires votes from the Fory Community.
 - maven_artifact_number: the number for Maven staging artifacts, like 1001. Specifically, the maven_artifact_number can
   be found by searching "fory" on https://repository.apache.org/#stagingRepositories.
 
-### Build the source code of fory and release it to nexus
+### Manual staging: build the source code of fory and release it to nexus
+
+Skip this section when the CI workflow has already staged the JVM artifacts.
 
 #### Configure Apache Account Passwords
 
@@ -379,6 +401,65 @@ For release-candidate tags that contain `-`, workflows publish prerelease or sta
 it, such as TestPyPI for Python packages and the `next` tag for npm packages. Monitor all triggered workflows before
 starting the vote.
 
+### Verify CI artifacts on trusted hardware
+
+For a candidate signed in CI, the release manager must independently rebuild and
+compare **every CI-signed artifact** on trusted hardware before opening the vote.
+Voters should repeat this check and report their results before casting a `+1`.
+Trusted hardware means a machine the verifier controls and trusts, not another
+GitHub Actions job. This implements the validation step in the ASF guidance on
+[automated release signing](https://infra.apache.org/release-signing.html#automated-release-signing).
+
+Before enabling CI signing, demonstrate that all artifacts to be signed can be
+reproduced this way and obtain the required workflow approval through the Infra
+request. Adding this procedure to the documentation does not itself establish
+that a build is reproducible.
+
+1. Download the candidate artifacts, signatures, and checksum files from the
+   exact ATR candidate and both Nexus staging repositories recorded for the run.
+   Verify their checksums and PGP signatures against the expected public key in
+   the project's `KEYS` file. This checks the downloaded files, but is not yet a
+   reproducibility check.
+2. On trusted hardware, use a fresh checkout of the exact RC tag commit. Match
+   the CI build's toolchain versions, dependency versions, release profiles, and
+   other build inputs. Rebuild from source without reusing CI-produced binaries
+   or build-output caches. Run packaging steps only: do not invoke `stage_jvm`,
+   `publish_jvm`, or upload another candidate merely to verify an existing one.
+   Local reproduction does not require the CI private signing key or Nexus
+   deployment credentials.
+3. Compare the complete locally rebuilt files with the staged files. The scope
+   includes the source `.tar.gz` and every CI-signed JVM artifact in both Nexus
+   repositories: binary, source, and documentation JARs, POMs, and any other
+   signed distributions. Do not check only representative modules. Each staged
+   artifact must have a corresponding local result; missing artifacts fail the
+   check.
+4. Compute SHA-512 checksums for both copies and compare the bytes. For each
+   artifact, set these paths to its staged and locally rebuilt copies:
+
+   ```bash
+   set -euo pipefail
+   : "${staged_file:?path to the downloaded artifact}"
+   : "${rebuilt_file:?path to the independently rebuilt artifact}"
+   sha512sum "$staged_file" "$rebuilt_file"
+   cmp "$staged_file" "$rebuilt_file"
+   ```
+
+   The checksums must match and `cmp` must succeed. Compare archives as complete
+   files, including their metadata; matching extracted contents alone is not
+   sufficient. Verify detached `.asc` signatures separately rather than trying
+   to reproduce signature bytes.
+
+5. Record the RC tag and commit, workflow and staging URLs, exact local build
+   commands, toolchain versions, and the staged/local SHA-512 values and result
+   for every artifact. Link this report in the vote email; voters can include
+   their own results in replies to the vote thread.
+
+Any mismatch, missing artifact, or inability to perform the independent rebuild
+blocks the CI-signed candidate. Investigate and fix the build before staging a
+new RC; do not ignore timestamps or other differing bytes, replace staged files
+in place, or publish the candidate. A successful CI run, a valid signature, and
+matching downloaded checksum files do not replace this independent comparison.
+
 ### Fory Community Vote
 
 you need send a email to Fory Community: dev@fory.apache.org:
@@ -408,7 +489,10 @@ The change lists about this release:
 https://github.com/apache/fory/compare/v${previous_release_version}...v${release_version}-${rc_version}
 
 The release candidates:
-https://dist.apache.org/repos/dist/dev/fory/${release_version}-${rc_version}/
+${release_candidate_url}
+
+Independent rebuild and SHA-512 comparison report (for CI-signed candidates):
+${reproducibility_report_url}
 
 The maven staging for this release:
 https://repository.apache.org/content/repositories/orgapachefory-${maven_artifact_number}
@@ -445,6 +529,7 @@ To learn more about Fory, please see https://fory.apache.org/
 [ ] All files have license headers if necessary.
 [ ] No compiled archives bundled in source archive.
 [ ] Can compile from source.
+[ ] For CI-signed artifacts, independently rebuilt every artifact on trusted hardware and confirmed byte-for-byte equality with the staged files.
 
 How to Build and Test, please refer to: https://github.com/apache/fory/blob/main/docs/development/index.md
 
@@ -508,6 +593,11 @@ Address the raised issues, then bump `rc_version` and file a new vote again.
 ## Official Release
 
 ### Publish artifacts to SVN Release Directory
+
+This section applies to candidates staged manually in SVN. For an ATR-staged
+candidate, complete publication through ATR only after the vote passes and the
+independent reproducibility checks above succeed. Publish the verified candidate
+files, not a fresh build.
 
 - release_version: the release version for fory, like 1.0.0
 - release_candidate_version: the version for voting, like 1.0.0-rc1
