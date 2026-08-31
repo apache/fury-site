@@ -47,6 +47,22 @@ const byName = Type.struct(
 
 使用 `.` 在 `typeName` 中添加命名空间前缀。
 
+## 字段 ID {#field-ids}
+
+在字段类型上调用 `setId(id)`，即可分配稳定的数字字段身份：
+
+```ts
+const userType = Type.struct(
+  { typeId: 1001 },
+  {
+    id: Type.int64().setId(0),
+    name: Type.string().setId(1),
+  },
+);
+```
+
+配置的 ID 必须在结构体 Schema 内唯一，并满足 `0 <= id < 2^29`（`0` 至 `536870911`）。已分配的 ID 应保持稳定，不要复用于其他字段。未设置 ID 的字段使用字段名。
+
 ## 装饰器元数据
 
 装饰器可以让 Schema 与 TypeScript 类声明放在一起：

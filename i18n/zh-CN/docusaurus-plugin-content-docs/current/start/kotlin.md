@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory Kotlin 提供二进制对象序列化、生成的模型、Fory gRPC 和 Android 支持。它基于 Fory Java 运行，支持 Java 8 及更高版本。
+Fory Kotlin 提供二进制对象序列化、标准 JSON 映射、生成模型、Fory gRPC 和 Android 支持。它基于 Fory Java 运行，支持 Java 8 及更新版本。
 
 ## 验证工具链
 
@@ -31,11 +31,18 @@ java -version
 
 ## 对象序列化
 
-在应用模块中添加运行时：
+以下仓库从 Maven Central 解析发布版本坐标，从 Apache 快照仓库解析 `-SNAPSHOT` 坐标。所有 Fory 模块应使用同一版本：
 
 ```kotlin title="build.gradle.kts"
+repositories {
+  maven("https://repository.apache.org/snapshots/") {
+    mavenContent { snapshotsOnly() }
+  }
+  mavenCentral()
+}
+
 dependencies {
-  implementation("org.apache.fory:fory-kotlin:1.6.1")
+  implementation("org.apache.fory:fory-kotlin:1.7.0")
 }
 ```
 
@@ -67,6 +74,30 @@ fun main() {
 ```
 
 与其他 Fory 运行时共享的数据使用 xlang 模式，仅供 Kotlin/JVM 使用的数据使用 native 模式。接下来可阅读 [Kotlin 对象序列化](../object-serialization/kotlin/index.md)、[xlang](../object-serialization/kotlin/basic-serialization.md#cross-language-interoperability)或 [native 模式](../object-serialization/kotlin/native.md)。
+
+## 标准 JSON {#standard-json}
+
+Fory JSON 是独立于二进制对象序列化的文本格式。与普通 JSON API、浏览器、日志或其他 JSON 库交互时，可添加其可选 Kotlin 模块：
+
+```kotlin title="build.gradle.kts"
+dependencies {
+  implementation("org.apache.fory:fory-json-kotlin:1.7.0")
+}
+```
+
+```kotlin
+import org.apache.fory.json.kotlin.ForyJsonKotlin
+import org.apache.fory.json.kotlin.jsonTypeRef
+
+data class User(val id: Long, val name: String)
+
+val json = ForyJsonKotlin.builder().build()
+val userType = jsonTypeRef<User>()
+val text = json.toJson(User(1, "Alice"), userType)
+val decoded = json.fromJson(text, userType)
+```
+
+运行时直接读取 Kotlin/JVM 元数据。仅在使用 R8 或 ProGuard 的 Android 构建中添加 `fory-json-kotlin-ksp`；它为 Kotlin `@JsonType` 模型和应用源码中声明的精确 Mixin 生成精确保留规则。Native Image 使用常规 `@ForyJsonProvider` 流程。继续阅读 [Kotlin JSON](../json/kotlin.md)。
 
 ## 其他能力
 

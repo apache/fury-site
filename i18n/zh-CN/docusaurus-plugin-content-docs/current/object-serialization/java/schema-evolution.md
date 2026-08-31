@@ -51,6 +51,10 @@ System.out.println(fory.deserialize(bytes));
 
 兼容模式会将类元数据写入序列化输出。尽管 Fory 使用先进的压缩技术尽量降低开销，类元数据仍会带来一定的额外空间成本。
 
+### 元数据压缩 {#metadata-compression}
+
+`DeflaterMetaCompressor` 是默认元数据压缩器。如果兼容模式读取器使用自定义 `MetaCompressor`，请实现 `decompress(byte[], int, int, int maxOutputSize)`，并在分配声明的输出之前或解压过程中逐步执行输出限制。所需读取器设置见[配置](configuration.md#custom-metadata-compressors)。
+
 ## 元数据共享
 
 为了进一步降低元数据成本，Fory 引入类元数据共享机制，使元数据只需向反序列化进程发送一次。

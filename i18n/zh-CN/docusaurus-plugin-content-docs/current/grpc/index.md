@@ -85,19 +85,18 @@ Fory 软件包不会将某个 gRPC 实现作为强制依赖。应用负责选择
 
 ## 语言指南
 
-Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Dart、Scala 和 Kotlin 均有相应的
-gRPC 配套代码文档。当前依赖和流式调用支持请参阅[支持矩阵](../introduction/support-matrix.md)
-以及所选语言页面。
+Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 均提供 gRPC 配套代码文档。当前依赖及流式调用支持见[支持矩阵](../introduction/support-matrix.md)和相应语言页面。
 
-| 语言                  | 指南                                 |
+| 语言 | 指南 |
 | --------------------- | ------------------------------------ |
-| Java                  | [Java](java.md)                      |
-| Python                | [Python](python.md)                  |
-| C++                   | [C++](cpp.md)                        |
-| Go                    | [Go](go.md)                          |
-| Rust                  | [Rust](rust.md)                      |
+| Java | [Java](java.md) |
+| Python | [Python](python.md) |
+| C++ | [C++](cpp.md) |
+| Go | [Go](go.md) |
+| Rust | [Rust](rust.md) |
 | JavaScript/TypeScript | [Node.js 与 gRPC-Web](javascript.md) |
-| C#                    | [C#](csharp.md)                      |
-| Dart                  | [Dart](dart.md)                      |
-| Scala                 | [Scala](scala.md)                    |
-| Kotlin                | [Kotlin](kotlin.md)                  |
+| C# | [C#](csharp.md) |
+| Dart | [Dart](dart.md) |
+| Scala | [Scala](scala.md) |
+| Kotlin | [Kotlin](kotlin.md) |
+| Swift | [Swift](swift.md) |

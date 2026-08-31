@@ -130,21 +130,13 @@ foryc user.fdl order.fdl product.fdl --output ./generated
 foryc compiler/examples/service.fdl --java_out=./generated/java --python_out=./generated/python --go_out=./generated/go --rust_out=./generated/rust --csharp_out=./generated/csharp --dart_out=./generated/dart --scala_out=./generated/scala --kotlin_out=./generated/kotlin --javascript_out=./generated/javascript
 ```
 
-**生成 Java、Python、Go、Rust、C++、C#、Dart、Scala、Kotlin 和 Node.js JavaScript gRPC 服务配套代码：**
+**生成 Java、Python、Go、Rust、C++、C#、Dart、Scala、Kotlin、Node.js JavaScript 和 Swift gRPC 配套服务代码：**
 
 ```bash
-foryc compiler/examples/service.fdl --java_out=./generated/java --python_out=./generated/python --go_out=./generated/go --rust_out=./generated/rust --cpp_out=./generated/cpp --csharp_out=./generated/csharp --dart_out=./generated/dart --scala_out=./generated/scala --kotlin_out=./generated/kotlin --javascript_out=./generated/javascript --grpc
+foryc compiler/examples/service.fdl --java_out=./generated/java --python_out=./generated/python --go_out=./generated/go --rust_out=./generated/rust --cpp_out=./generated/cpp --csharp_out=./generated/csharp --dart_out=./generated/dart --scala_out=./generated/scala --kotlin_out=./generated/kotlin --javascript_out=./generated/javascript --swift_out=./generated/swift --grpc
 ```
 
-生成的 gRPC 服务代码使用 Fory 序列化请求和响应载荷。Java 输出导入 grpc-java API，Python 输出默认使用
-`grpc.aio`，Go 输出导入 grpc-go，Rust 输出导入 `tonic` 和 `bytes`；
-C++ 输出包含 gRPC C++ 的 `grpcpp` 头文件，编译它的目标必须将生成代码目录加入 include 路径，
-并链接 `fory::serialization` 和 `gRPC::grpc++`。
-Scala 输出导入 grpc-java API；Kotlin 输出导入 grpc-java 和 grpc-kotlin API，并使用协程 stub。
-C# 输出导入 `Grpc.Core.Api` 类型，可以通过 `Grpc.AspNetCore` 等常规 .NET gRPC 包托管，
-也可以通过 `Grpc.Net.Client` 调用。Dart 输出导入 `package:grpc`。
-JavaScript 输出导入 `@grpc/grpc-js`。
-编译或运行这些生成服务文件的应用必须自行提供 gRPC 依赖。Fory 软件包不会为此功能引入强制 gRPC 依赖。
+生成的 gRPC 服务代码使用 Fory 序列化请求和响应体。Java 输出导入 grpc-java API，Python 输出默认使用 `grpc.aio`，Go 输出导入 grpc-go，Rust 输出导入 `tonic` 和 `bytes`。C++ 输出包含 gRPC C++ 的 `grpcpp` 头文件；编译这些文件的目标必须将生成目录加入头文件搜索路径，并链接 `fory::serialization` 和 `gRPC::grpc++`。Scala 输出导入 grpc-java API；Kotlin 输出导入 grpc-java 和 grpc-kotlin API，并使用协程 stub。C# 输出导入 `Grpc.Core.Api` 类型，可通过 `Grpc.AspNetCore` 等常规 .NET gRPC 包托管，或通过 `Grpc.Net.Client` 调用。Dart 输出导入 `package:grpc`，JavaScript 输出导入 `@grpc/grpc-js`。Swift 输出面向 grpc-swift 1.x，同时生成 `async`/`await` provider、客户端及 `EventLoopFuture` provider。编译或运行生成服务文件的应用必须自行提供 gRPC 依赖；Fory 包不会为此引入强制 gRPC 依赖。
 
 对于现有的同步 `grpcio` 应用，可使用以下命令生成同步 Python gRPC 配套代码：
 
@@ -390,12 +382,13 @@ generated/
         └── addressbook.swift
 ```
 
-- 每个 Schema 对应一个 `.swift` 文件
-- package 各段映射为嵌套 Swift 枚举（例如 `addressbook.*` -> `Addressbook.*`）
+- 每个 Schema 生成一个 `.swift` 文件
+- 包名各段映射为嵌套 Swift 枚举，例如 `addressbook.*` 映射为 `Addressbook.*`
 - 生成的消息使用 `@ForyStruct`，枚举使用 `@ForyEnum`，联合类型使用 `@ForyUnion`/`@ForyCase`
-- 联合类型生成为带关联载荷值的标签枚举
-- 每个 Schema 都包含 Schema 文件模块所有者和 `toBytes`/`fromBytes` 辅助函数
-- 生成的模块辅助函数会传递式安装导入的 Schema
+- 联合类型生成为携带关联载荷值的带标签枚举
+- 每个 Schema 包含一个 Schema 文件级模块及 `toBytes`/`fromBytes` 辅助方法
+- 生成的模块辅助方法会传递安装导入的 Schema
+- 使用 `--grpc` 时，在模型旁为每个服务生成一个面向 grpc-swift 1.x 的 `<ServiceName>Grpc.swift` 配套文件
 
 ### Dart
 
@@ -666,5 +659,5 @@ fory = "x.y.z"
 
 ```yaml
 dependencies:
-  fory: ^1.6.1
+  fory: ^1.7.0
 ```

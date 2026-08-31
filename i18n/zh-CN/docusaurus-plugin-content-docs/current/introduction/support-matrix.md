@@ -22,15 +22,15 @@ license: |
 选择能力前，请使用此矩阵确认文档所覆盖的 API。存在某个语言页面，并不表示该语言
 支持所有 Fory 能力。
 
-| 能力                | 已有文档的语言                                                                     | 互操作能力                             |
+| 能力 | 已有文档的语言 | 互操作能力 |
 | ------------------- | ---------------------------------------------------------------------------------- | -------------------------------------- |
-| Xlang 对象序列化    | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin | 共享一种 xlang 编码格式                |
-| Native 对象序列化   | Java、Python、C++、Go、Rust、Scala、Kotlin                                         | 仅限一个 Fory 实现家族                 |
-| Standard Row Format | Java、Python、C++、Rust                                                            | 共享 Standard Row 布局                 |
-| Compact Row Format  | Java                                                                               | 仅供 Java 使用的紧凑布局               |
-| Fory JSON           | Java                                                                               | 标准 JSON 文本                         |
-| Fory 编译器输出     | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin | 生成模型使用受支持的 Fory API          |
-| Fory gRPC           | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Dart、Scala、Kotlin        | 对等端必须使用匹配的生成 Fory 服务契约 |
+| Xlang 对象序列化 | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin | 共享一种 xlang 编码格式 |
+| Native 对象序列化 | Java、Python、C++、Go、Rust、Scala、Kotlin | 仅限一个 Fory 实现家族 |
+| Standard Row Format | Java、Python、C++、Rust | 共享 Standard Row 布局 |
+| Compact Row Format | Java | 仅供 Java 使用的紧凑布局 |
+| Fory JSON | Java、Kotlin、Scala | 标准 JSON 文本 |
+| Fory 编译器输出 | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin | 生成模型使用受支持的 Fory API |
+| Fory gRPC | Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala、Kotlin | 对等端必须使用匹配的生成 Fory 服务契约 |
 
 [Android](../object-serialization/java/android.md) 和
 [GraalVM Native Image](../object-serialization/java/graalvm.md) 等平台限制，由相应的 Java

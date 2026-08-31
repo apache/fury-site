@@ -71,6 +71,36 @@ ForyJson json =
         .build();
 ```
 
+对拥有专用读取/写入操作的类型，不允许精确 `registerCodec` 注册或精确类工厂注册：
+
+- `boolean`、`byte`、`short`、`int`、`long`、`float`、`double` 和 `char`，以及各自的装箱类型
+- `String`、`CharSequence`、`Number`、`BigInteger`、`BigDecimal` 和 `UUID`
+- `LocalDate`、`LocalTime`、`LocalDateTime`、`Instant`、`Duration`、`ZoneOffset`、`ZonedDateTime`、`Year`、`YearMonth`、`MonthDay`、`Period`、`OffsetTime` 和 `OffsetDateTime`
+- `byte[]`、`String[]` 和 `long[]`
+
+该限制仅匹配精确类型，不包括应用子类，也不禁用具体使用位置上的 `JsonCodec`、`JsonFormat` 或其他语义映射。如果这些类型的字段或参数需要不同表示，请使用上述机制。
+
+`ObjectCodec` 实例属于创建它的 resolver，不能直接注册。语言模块需要提供对象模型时，应使用精确的 `JsonCodecFactory`。
+
+当一个工厂负责一组声明类型或参数化类型时，使用 `JsonCodecFactory`：
+
+```java
+import org.apache.fory.json.JsonCodecFactory;
+
+JsonCodecFactory factory =
+    (type, resolver, runtimeType) ->
+        type.getRawType() == Money.class ? new MoneyCodec() : null;
+
+ForyJson json =
+    ForyJson.builder()
+        .withModule(context -> context.registerCodecFactory(factory))
+        .build();
+```
+
+可配置工厂必须重写 `factoryKey()`，返回一个确定性值，覆盖所有可能改变生成编解码器类、对象模型或生成操作的选项。默认的工厂类名仅适用于无配置工厂。
+
+仅当工厂在动态写入期间为值的实际类选择编解码器时，`runtimeType` 才为 `true`；声明的根类型和复合子类型收到的是 `false`。复合编解码器如果在构造后仍需此区分，必须保留该标志供后续 `resolveTypes` 调用使用，不能从 resolver 状态推断。
+
 外层属性仍控制其名称、忽略方向和 null 包含策略。如果 null 属性被省略，就不会调用值编解码器。
 如果属性会被输出，或者该值是数组元素、集合元素、Map 值、Optional 值或原子引用值，
 编解码器就会接收并负责处理 null。注册的实例会在并发操作之间共享，因此必须是线程安全的。
@@ -170,6 +200,25 @@ public final class InvoiceGroup {
 | `keyCodec`     | `Map<K, V>`                                       | `K` 对应的 JSON 成员名称 |
 | `valueCodec`   | `Map<K, V>`                                       | 直接的 `V` 值            |
 
+### Kotlin 类型使用位置 {#kotlin-occurrences}
+
+Kotlin 使用相同的编解码器注册机制和 `JsonCodec` 注解。请将属性注解放在显式支持的使用位置，例如：
+
+```kotlin
+import org.apache.fory.json.annotation.JsonCodec
+
+data class Ledger(
+  @field:JsonCodec(value = MoneyCodec::class)
+  val total: Money,
+  @field:JsonCodec(elementCodec = MoneyCodec::class)
+  val entries: List<Money>,
+)
+```
+
+完整值编解码器负责整个 JSON 值；子编解码器则保留标准数组、集合、Optional/原子类型或 Map 的外层表示。选定应用编解码器后，Kotlin 可空性仍是该类型使用位置的契约：对于非 null JSON token，编解码器必须返回精确的声明类型，并且不得为非空位置返回 null。
+
+无符号类型或符合条件的值类作为 Map 键时，无需注解即可使用内置成员名映射。如果键需要不同的带标签文本表示，请使用显式 `keyCodec` 或完整 Map 编解码器。精确的应用注册仍优先于 Kotlin 模块默认映射。
+
 自定义 Map 键编解码器负责在声明的键与 JSON 成员名称之间转换：
 
 ```java
@@ -250,9 +299,7 @@ Map 键是 JSON 对象成员名称，使用 `MapKeyCodec` 而不是 `JsonValueCo
 
 ## 编解码器构造与平台支持
 
-注解编解码器类必须是 public、具体的顶层类或静态嵌套类，并具有 public 无参构造函数。
-构建完成的 `ForyJson` 会在所有注解位置和并发操作之间共享同一个实例，因此该实例必须是
-线程安全的。如果完整值编解码器需要配置，请使用 `registerCodec(Target.class, instance)`。
+注解指定的编解码器类必须是公共、具体的顶层类或静态嵌套类，并拥有公共无参构造函数。构建后的 `ForyJson` 会在所有注解位置和并发操作之间共享同一个实例，因此该实例必须线程安全。对于允许注册的类型，如果完整值编解码器需要配置，请使用 `registerCodec(Target.class, instance)`。
 
 在 GraalVM Native Image 之外，具名 Java 模块必须将编解码器包导出或开放给
 `org.apache.fory.json`。Native Image 会在镜像构建期间准备注解编解码器的构造函数，

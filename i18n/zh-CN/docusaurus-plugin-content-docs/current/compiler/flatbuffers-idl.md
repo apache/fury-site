@@ -118,10 +118,7 @@ message Container {
 
 ### 服务
 
-FlatBuffers `rpc_service` 定义会转换为 Fory 服务。使用 `--grpc` 时，编译器会为 Java、
-Python、Go、Rust、C#、Dart、Scala、Kotlin 和 JavaScript 等支持的输出生成 gRPC 服务
-配套代码。JavaScript 浏览器客户端使用 `--grpc-web` 生成。这些配套代码使用 Fory
-序列化请求和响应载荷。
+FlatBuffers 的 `rpc_service` 定义会转换为 Fory 服务。使用 `--grpc` 时，编译器会为 Java、Python、Go、Rust、C#、Swift、Dart、Scala、Kotlin 和 JavaScript 等受支持的输出生成 gRPC 配套服务代码。JavaScript 浏览器客户端使用 `--grpc-web` 生成。这些代码使用 Fory 序列化请求和响应载荷。
 
 ```fbs
 rpc_service SearchService {

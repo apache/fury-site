@@ -1,6 +1,6 @@
 ---
 title: Android
-sidebar_position: 6
+sidebar_position: 9
 id: android
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,6 +21,8 @@ license: |
 
 从 Android API level 26 开始，Fory JSON 可通过常规的 `fory-json` artifact 支持普通类。运行时 JSON 代码生成和异步编译会被自动禁用，因此 `ForyJson.builder().build()` 会使用解释执行的对象映射器。
 
+Kotlin 应用使用常规 `fory-json-kotlin` 运行时。当 R8 或 ProGuard 可能重命名或移除 Kotlin 模型成员，或者 Kotlin 源码中的 Mixin 为 Java sealed 目标添加推导式 `JsonSubTypes` 时，需要使用 Kotlin Symbol Processing（KSP）。
+
 ## 安装与 Codec 模型
 
 将 Fory JSON 添加到应用中：
@@ -30,6 +32,32 @@ dependencies {
   implementation("org.apache.fory:fory-json:${foryVersion}")
 }
 ```
+
+对于 Kotlin，请使用 Kotlin 2.3.20 并添加 Kotlin JSON 运行时：
+
+```kotlin
+plugins {
+  kotlin("android") version "2.3.20"
+}
+
+dependencies {
+  implementation("org.apache.fory:fory-json-kotlin:${foryVersion}")
+}
+```
+
+如果应用启用 R8 或 ProGuard，或者 Kotlin 源码中的 Mixin 为 Java sealed 目标添加推导式 `JsonSubTypes`，还需使用 KSP 2.3.8：
+
+```kotlin
+plugins {
+  id("com.google.devtools.ksp") version "2.3.8"
+}
+
+dependencies {
+  ksp("org.apache.fory:fory-json-kotlin-ksp:${foryVersion}")
+}
+```
+
+通过 `ForyJsonKotlin.builder()` 创建运行时。对于启用代码压缩的构建，请为每个必需的 Kotlin 源码模型标注 `@JsonType`。对于第三方 Kotlin 目标，应在应用源码中声明匹配该目标的 `@JsonMixin`。如果 Kotlin 源码中的 Mixin 为 Java sealed 目标添加推导式 `JsonSubTypes`，还需使用 `fory-annotation-processor` 并在 JDK 17 或更新版本上编译。
 
 ## 自定义 Codec
 
@@ -54,7 +82,7 @@ public final class Invoice {
 
 子 Codec 只作用于一个直接层级。例如，`elementCodec` 在 `Money[][]` 上会处理每个 `Money[]`，而 `elementCodec` 在 `AtomicReferenceArray<Money>` 上会处理每个 `Money`。需要更深层的自定义行为时，请使用完整的 `value` Codec。
 
-## 生成的访问代码与 R8 规则
+## Java 生成访问代码与 R8 规则 {#java-generated-access-and-r8-rules}
 
 添加注解处理器，并使用 `JsonType` 标注应用的对象模型，以生成直接的字段、getter、setter、Record 构造函数、`JsonCreator` 和 `JsonValidator` 操作以及精确的 R8 规则：
 
@@ -99,19 +127,19 @@ ForyJson json =
     ForyJson.builder().registerMixin(ThirdPartyInvoiceMixin.class).build();
 ```
 
-使用 `fory-annotation-processor` 编译每个非空 Mixin 源。处理器会生成精确的 R8 规则，以及构建完成的 `ForyJson` 实例可使用的、特定于该 Mixin 与目标配对的操作。已注册的 Codec、有效的类型 Codec 和内置映射仍遵循其常规的 Codec 选择优先级。空 Mixin 不会生成任何输出。
+为 Java 目标编写的非空 Java 源码 Mixin 需通过 `fory-annotation-processor` 编译。注册的 Mixin 仅作用于其精确目标类型。已注册编解码器、有效类型编解码器和内置映射仍遵循常规选择优先级。
 
-Mixin 可以将 `JsonValidator` 放在一个 public abstract、无参数、返回 `void` 的方法上，该方法必须与目标类中的一个 public 方法完全匹配。生成的配对代码会直接调用该目标方法。目标类不需要仅为了 Mixin validator 而添加 `JsonType`。
+Mixin 可在与目标公共方法精确匹配的公共抽象无参 `void` 方法上标注 `JsonValidator`。目标无需仅为了 Mixin 验证器而标注 `JsonType`。
 
-目标类也不需要仅因为拥有 Mixin 而添加 `JsonType`。`JsonMixin` 本身就是该配对的处理器入口。如果目标类同时使用 `JsonType`，构建完成的 `ForyJson` 实例会为已注册的非空 Mixin 选择特定于该配对的 companion，而不是将 overlay 与目标类的直接 companion 组合起来。
+目标无需仅因使用 Mixin 而标注 `JsonType`。如果目标同时使用 `JsonType`，该 `ForyJson` 实例的有效注解仍由注册的 Mixin 定义。
 
-在一个构建完成的 `ForyJson` 实例中，一个明确的目标只能启用一个源。在 builder 上，针对该目标的后续注册会替换先前注册，`build()` 会对选定映射生成快照。处理器可以为多个候选源生成 artifact；构建完成的实例只使用最后注册的源。
+一个构建完成的 `ForyJson` 实例中，每个精确目标只能启用一个 Mixin 来源。在 builder 上后注册的同目标 Mixin 会替换此前的注册，`build()` 会冻结选定的映射。
 
-对于非空 Mixin，请使用处理器生成的 R8 规则，而不要使用宽泛的 package keep 规则。
+应使用 Fory 处理器，而不是宽泛的包级 keep 规则。纯 Java Mixin 配对需要 `fory-annotation-processor`；涉及 Kotlin 的配对需要 `fory-json-kotlin-ksp`。如果 Kotlin 源码中的 Mixin 为 Java sealed 目标添加推导式 `JsonSubTypes`，则两个处理器都需要，并且必须在 JDK 17 或更新版本上编译。
 
 ## 基于反射的模型
 
-未使用 `JsonType` 的普通非 Record 类可以自行提供等效的精确规则，但声明了 `JsonValidator` 的类除外。直接 validator 需要 `JsonType` 生成的处理器调用；不要用反射规则替代它们。需要保留 Fory JSON 使用的每个模型构造函数、字段、方法、泛型签名、声明注解和参数注解，以及每个由注解选中的 Codec 的 public 无参数构造函数。对于没有 validator 的模型：
+未标注 `JsonType` 的普通非 Record 类可以自行提供等效的精确规则，但声明了 `JsonValidator` 的类除外。直接声明的验证器要求使用 `JsonType` 和 `fory-annotation-processor`，手写反射规则不足以支持。请保留 Fory JSON 使用的每个模型构造函数、字段、方法、泛型签名、声明注解和参数注解，以及每个通过注解选择的编解码器的公共无参构造函数。对于没有验证器的模型：
 
 ```proguard
 -keepattributes Signature,RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations
@@ -128,10 +156,16 @@ Mixin 可以将 `JsonValidator` 放在一个 public abstract、无参数、返�
 
 同样的精确规则方法支持每一种 `JsonCodec` 成员，并不局限于完整值 Codec。普通类上的 Codec 选择不要求使用 `JsonType`。
 
-对于 `@JsonType` 模型，生成的操作和 R8 规则还会覆盖有效的 `JsonValidator` 方法、`JsonValue` 字段和有效方法、固定的 `JsonRawValue` 和 `JsonBase64` 字段及 getter、`JsonFormat` 日期/时间字段、它们的运行时注解，以及 Base64 Codec 构造函数。如果不使用 `@JsonType`，value、raw、Base64、format 和 Codec 注解仍可通过反射工作，但经过 release 混淆压缩的应用必须保留精确的被注解成员、注解属性和 Codec 构造函数本身。`JsonValue` 方法可以使用非 JavaBean 名称，因此其手动规则必须明确写出该方法名。`JsonFormat` 保持与 JVM 相同的直接字段和单层包装行为，包括 `timezone` 对 `Instant`、`ZonedDateTime` 和 `OffsetDateTime` 的支持。
+本节的反射规则适用于 Java 模型。Kotlin 模型使用 Kotlin JSON 模块；启用代码压缩的 Android 构建应使用 KSP，而不是编写宽泛的包级 keep 规则。
 
-Android Fory JSON 要求为普通可变类保留无参数构造函数；当 Android 反射可以使其可访问时，该构造函数可以不是 public。由 `JsonCreator` 构造函数支持的类遵循常规 creator 规则。请保留所有通过反射使用的字段和方法；如果模型无法满足这些要求，请使用应用自定义 Codec。`JsonUnwrapped` 通过各自正常的属性和构造路径支持可变类、由 creator 支持的类和 Record。当包含它的模型及其 unwrapped 子对象都使用 `JsonType` 时，它们生成的 companion 会提供这些操作。
+Java `@JsonType` 模型支持有效的 `JsonValidator`、`JsonValue`、`JsonRawValue`、`JsonBase64` 和 `JsonFormat` 注解。未标注 `@JsonType` 时，这些注解仍可通过反射工作，但经过发布压缩的应用必须自行保留精确的注解成员、注解属性和编解码器构造函数。`JsonValue` 方法可以使用不符合 JavaBean 约定的名称，因此手写规则必须明确指定该方法。
+
+Kotlin 模型使用相同的有效注解。启用代码压缩时，请使用 KSP。`JsonFormat` 与 JVM 上一样支持直接字段和一层包装，包括为 `Instant`、`ZonedDateTime` 和 `OffsetDateTime` 指定 `timezone`。
+
+Android 支持为 Java 和 Kotlin sealed 层次结构推导 `JsonSubTypes`。Java sealed 推导需要 `fory-annotation-processor` 和 JDK 17 或更新版本；启用代码压缩的 Kotlin 模型需要 `fory-json-kotlin-ksp`。如果 Kotlin 源码中的 Mixin 为 Java sealed 目标添加推导式 `JsonSubTypes`，即使未启用压缩，也需要两个处理器。推导仅检查 sealed 层次结构，不支持按包或类路径扫描子类型。
+
+Android Fory JSON 要求普通可变类保留无参构造函数；当 Android 反射能够使其可访问时，该构造函数可以不是公共的。通过 `JsonCreator` 构造的类遵循常规 creator 规则。应保留反射使用的每个字段和方法；模型无法满足这些要求时，应使用应用自定义编解码器。`JsonUnwrapped` 通过常规属性和构造路径支持可变类、creator 构造类及 Record。包含模型与每个展开的子模型均需满足常规 `JsonType` 要求。启用代码压缩的 Kotlin 构建需为每个必需模型添加注解并启用 KSP。
 
 ## Record
 
-经过 Android desugaring 的 Record 需要由直接的 `@JsonType` 声明或已编译的精确 `@JsonMixin` 配对生成处理器操作。仅靠手动 R8 规则无法重建 Record component 的顺序，因为 Android 不提供 Java Record 反射 API。这也适用于完整表示形式为 `JsonValue` String 的 Record：生成的 companion 会识别传播的 component accessor，并直接调用带注解的单 String canonical constructor。生成的子 Codec 与 JVM 上一样只作用于一个层级。`JsonUnwrapped` 路径中的每个 Record 都需要自己的直接 `JsonType` 声明或已编译的精确 `JsonMixin` 配对。对于更深层的嵌套行为，请使用完整值 Codec。
+经过 Android 脱糖处理的 Record 必须直接声明 `@JsonType`，或使用经 `fory-annotation-processor` 处理的精确 `@JsonMixin`。仅有手写 R8 规则不够，因为 Android 不提供 Java Record 反射 API。此要求也适用于完整表示为 `JsonValue` 字符串的 Record。`JsonUnwrapped` 路径中的每个 Record 都需要自己的直接 `JsonType` 声明或已处理的精确 `JsonMixin`。子编解码器与 JVM 上一样仅作用于一层；更深层的嵌套行为应使用完整值编解码器。

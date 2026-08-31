@@ -56,7 +56,7 @@ FORY_STRUCT(DataV2, id, (timestamp, fory::F().tagged()), version);
 FORY_STRUCT(Counter, FORY_PROPERTY(value, fory::F().varint()));
 ```
 
-`fory::F(id)` 使用显式的 ID 字段标识。ID 必须为非负数：
+`fory::F(id)` 使用显式基于 ID 的字段身份。配置的 ID 必须在完整结构体 Schema 内唯一，并满足 `0 <= id < 2^29`（`0` 至 `536870911`）：
 
 ```cpp
 FORY_STRUCT(DataV2, (id, fory::F(0)), (timestamp, fory::F(1).tagged()),

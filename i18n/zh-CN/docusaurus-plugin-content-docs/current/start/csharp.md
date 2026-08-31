@@ -34,7 +34,7 @@ dotnet --version
 ```bash
 dotnet new console -n ForyExample
 cd ForyExample
-dotnet add package Apache.Fory --version 1.6.1
+dotnet add package Apache.Fory --version 1.7.0
 ```
 
 将 `Program.cs` 替换为：

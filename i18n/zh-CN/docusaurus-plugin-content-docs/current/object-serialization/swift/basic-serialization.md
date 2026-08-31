@@ -137,6 +137,8 @@ let decoded = try fory.deserialize(
 - `String`
 - `Data`
 
+`Int` 和 `UInt` 在所有平台上都保留 64 位编码。在 32 位目标上，如果解码值超出本机类型范围，反序列化会抛出 `ForyError.invalidData`。
+
 ### 日期和时间
 
 - `Date`

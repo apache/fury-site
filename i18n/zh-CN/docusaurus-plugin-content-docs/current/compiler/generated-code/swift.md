@@ -100,3 +100,9 @@ public enum ForyModule {
 
 对于没有显式 `[id=...]` 的 Schema，安装代码使用计算得到的数字 ID。如果设置了
 `option enable_auto_type_id = false;`，生成的代码使用基于名称的注册 API。
+
+当所有字段都支持时，生成的模型会声明 `Equatable`，但不会声明 `Sendable`。请以 Swift 5 语言模式编译；Swift 6 严格并发检查会拒绝将它们传递跨越隔离边界。
+
+## gRPC 配套服务代码 {#grpc-service-companions}
+
+使用 `--grpc` 时，Swift 为每个服务生成一个 `<Service>Grpc.swift`，包含 `<Base>Provider`、`<Base>AsyncProvider`、`<Base>AsyncClient` 和 `<Base>Metadata`，其中 `<Base>` 带有包名前缀。依赖、流式调用形式和使用方法见 [Swift gRPC](../../grpc/swift.md)。

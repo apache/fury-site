@@ -1,6 +1,6 @@
 ---
 title: GraalVM 原生镜像
-sidebar_position: 7
+sidebar_position: 10
 id: graalvm
 license: |
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,7 +21,7 @@ license: |
 
 ## 可达模型
 
-Fory JSON 拥有自己的 Native Image Feature，不使用 Fory 注解处理器。请为原生可执行文件读写的每个可达具体对象模型添加 `@JsonType`：
+Fory JSON 使用一个 Native Image Feature。Java 模型通过可达注解发现，Feature 不使用 Java 注解处理器。请为原生可执行文件需要读写的每个可达具体 Java 对象模型添加 `@JsonType`：
 
 ```java
 import org.apache.fory.json.ForyJson;
@@ -50,11 +50,15 @@ public class JsonExample {
 }
 ```
 
-这样就足以保证原生执行的正确性。构建镜像时，Fory JSON 会保留模型元数据，并准备其字段、属性、creator、record 和 `JsonAnySetter` 访问。因此在运行时，`ForyJson.builder().build()` 可以使用解释执行的 Codec，而无需应用提供反射配置、package export 或 open，也无需进行构建时初始化。
+这已足以支持正确的原生执行。构建镜像期间，Fory JSON 保留模型元数据，准备字段、属性、creator、Record 和 `JsonAnySetter` 的访问方式，并为默认配置下的可达模型生成编解码器。运行时，`ForyJson.builder().build()` 使用这些生成的编解码器；没有匹配的生成编解码器时回退到解释执行，无需应用提供反射配置、包 exports/opens 或构建期初始化。
+
+配置为构建期初始化的应用类可以在镜像堆中保留静态 `ForyJson`。如果运行时处理器数量可能与构建机器不同，请显式设置 `withConcurrencyLevel`。该 `ForyJson` 保留的任何自定义编解码器或模块实例，也必须能够安全地在构建期创建和存储。
+
+如果自定义配置只能在运行时实例化，请从可达的 `@ForyJsonProvider` 返回一个等价的临时配置，供镜像构建阶段生成代码，然后在镜像启动后创建应用实际使用的 `ForyJson`。provider 自身在镜像分析期间运行，并不负责创建运行时实例。
 
 ## 生成的 Codec
 
-要为某项配置包含生成的 Codec，请从可达的 `@ForyJsonProvider` 返回该完整配置：
+默认配置的编解码器会自动生成。要为自定义配置增加生成的编解码器，请从可达的 `@ForyJsonProvider` 返回该完整配置：
 
 ```java
 import org.apache.fory.json.ForyJson;
@@ -78,11 +82,32 @@ public final class JsonConfigs {
 }
 ```
 
-provider 类必须是 public 的具体类，并且具有 public 无参数构造函数。Provider 成员是 public、非 static、无参数的实例方法，其精确返回类型为 `ForyJson`。其中也包括继承的父类方法和 public 接口默认方法。一个 provider 可以返回多项配置，也可以存在多个可达 provider。等效配置只会生成一次。
+provider 类必须是公共具体类，且拥有公共无参构造函数。provider 成员必须是公共、非静态、无参的实例方法，并且精确返回类型为 `ForyJson`。继承的父类方法和公共接口默认方法也包括在内。一个 provider 可返回多个配置，也可同时存在多个可达 provider。
 
 Provider 对象仅在镜像构建期间存在。建议像上例一样使用带有实例字段和方法的专用配置类；不需要应用添加 `native-image.properties` 条目，也不需要将 provider package export 或 open 给 Fory。不支持 static provider 方法和字段。
 
-只有 provider 返回的配置会获得生成的 Codec。默认配置不会隐式生成。如果某项启用了代码生成的 `ForyJson` 配置未被包含，Fory JSON 会使用已准备好的解释执行 Codec，并在整个进程范围内记录一条警告，建议提供可达的 `@ForyJsonProvider`。`withCodegen(false)` 会明确选择解释执行的 Codec，且不会请求查找生成的 Codec。原生可执行文件中会禁用异步编译。
+存在 provider 时，默认配置的编解码器仍然可用，每个可达 provider 还会为其配置增加编解码器。启用代码生成的运行时在找不到匹配的生成编解码器时使用解释执行编解码器。两种情况下都保留反射元数据。
+
+`withCodegen(false)` 显式选择解释执行编解码器，不查找生成的编解码器。原生可执行文件中禁用异步编译。
+
+### Kotlin 配置 {#kotlin-configurations}
+
+Kotlin Native Image 支持使用相同的 Feature 和 provider API。添加 Kotlin 运行时，然后返回安装了 `ForyJsonKotlin` 且启用代码生成的配置：
+
+```kotlin
+import org.apache.fory.json.ForyJson
+import org.apache.fory.json.annotation.ForyJsonProvider
+import org.apache.fory.json.kotlin.ForyJsonKotlin
+
+@ForyJsonProvider
+class JsonConfigs {
+  fun api(): ForyJson = ForyJsonKotlin.builder().build()
+}
+```
+
+为每个可达具体 Kotlin 模型标注 `@JsonType`，或为第三方目标注册精确且可达的 Mixin。Fory 在构建镜像时读取并验证 Kotlin 元数据，然后为每个可达、启用 Kotlin 的 provider 配置生成编解码器。如果 provider 配置禁用代码生成，或使用不支持的元数据 ABI，镜像构建会失败。启用 Kotlin 的运行时配置若没有匹配的生成编解码器，则使用已准备的解释执行编解码器。
+
+精确的 Kotlin 泛型根类型只有在其完整绑定通过可达具体根类型的属性、构造函数参数、容器/Map 子类型或封闭子类型可达时才可用。直接调用根操作时仍使用 `jsonTypeRef<T>()`，不需要公共根类型注册表或反射配置。
 
 ## Mixin
 
@@ -115,9 +140,9 @@ public class JsonExample {
 
 ## 类型发现与构造
 
-`fory-json` artifact 会自动激活其 Native Image Feature。`@JsonType` 不会被继承，因此请标注每个具体的应用模型。带有 class-literal `@JsonSubTypes` 表的已标注基类会自动注册表中列出的子类型。专门支持的容器（包括 `EnumMap` 和 `EnumSet`）使用其内置 factory。其他可达的具体 `Collection` 和 `Map` 根类型需要 public 无参数构造函数。仅由运行时解析的类名引用的类是不可达的；因此原生镜像不支持 `JsonSubTypes.Type.className`。
+无需额外配置 Native Image Feature。`@JsonType` 不会被继承，因此每个具体应用模型都要单独标注。带有 class literal `@JsonSubTypes` 表的已标注基类型会自动注册其显式或推导子类型。可达的 Java、Kotlin 和 Scala 3 sealed Schema 支持空表。其他可达的具体 `Collection` 和 `Map` 根类型需要公共无参构造函数。仅通过运行时解析类名引用的类不可达，因此原生镜像不支持 `JsonSubTypes.Type.className`。
 
-不要添加应用反射配置来替代生成的配置。原生可执行文件会解析与 JVM 相同的有效注解。
+不要添加应用反射配置。原生可执行文件使用与 JVM 相同的有效注解。Kotlin 应用使用上面的 provider 流程，也应避免包级 opens。
 
 ## 注解与自定义 Codec
 

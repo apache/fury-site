@@ -89,7 +89,13 @@ Android 无法构造不具备可用无参构造函数的普通类。JDK 25 及�
 普通构造函数的副作用用作反序列化完成钩子：即使无参构造函数会运行，属性赋值也发生在其后；
 而绕过构造函数的路径根本不会运行它。
 
-## 支持的 Java 类型
+## Kotlin 对象映射 {#kotlin-object-mapping}
+
+为 Kotlin/JVM 类安装 `fory-json-kotlin` 并使用 `ForyJsonKotlin.builder()`。Kotlin 普通类和 data class 使用选定的构造函数、精确属性类型、编译器默认值和声明的可空性，不使用 Java 绕过构造函数的回退路径。默认值仅在成员缺失时生效。显式 JSON null 仍是已提供的值，非空参数会拒绝它。
+
+泛型、可空、无符号和值类根类型应使用 `jsonTypeRef<T>()`。标准数组、集合和 Map 继续使用常规 Fory JSON 表示。完整语言类型表、单例/值类行为和省略规则见 [Kotlin 指南](kotlin.md)。
+
+## 支持的 Java 类型 {#supported-java-types}
 
 下列类型组具有内置映射。具体编码表示形式都是稳定的 JSON 值，但在精度或构造方式很重要时，应用
 Schema 仍应声明预期的 Java 类型。
@@ -118,20 +124,23 @@ Schema 仍应声明预期的 Java 类型。
 非有限 float 和 double 值使用带引号的字符串 `"NaN"`、`"Infinity"` 和 `"-Infinity"`。
 需要保留任意精度时，请使用显式的 `BigInteger` 或 `BigDecimal` 目标类型。
 
+声明为布尔和数值的目标也接受 JSON 字符串中的常规 token 文本，例如 `"true"`、`"42"` 或 `"123.45"`，无需 builder 选项。此行为适用于根值、对象成员、数组、集合和 Map。Fory 写入时仍输出原生 JSON 布尔与数字 token。`Object` 目标保留自然 JSON 类型，因此带引号的值仍是 `String`；以 `Number` 读取带引号的数值时使用 `Double`。
+
 ### 内置表示形式
 
 这些内置值使用以下常规 JSON 形式：
 
-| Java 类型                                                                 | JSON 表示形式                                                                                      |
+| Java 类型 | JSON 表示形式 |
 | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Enum                                                                      | 常量名称字符串                                                                                     |
-| `Date`、`Calendar`、`java.sql.Date`、`Time`、`Timestamp`                  | 表示 epoch 毫秒数的数值                                                                            |
-| `TimeZone`                                                                | 时区 ID 字符串                                                                                     |
-| Java 时间类型以及受支持的 chronology 日期类型                             | 对应的标准文本形式字符串                                                                           |
+| 布尔和数值标量 | 写入原生 JSON 布尔或数字；声明类型的目标也可读取带引号的相同 token 文本 |
+| Enum | 常量名称字符串 |
+| `Date`、`Calendar`、`java.sql.Date`、`Time`、`Timestamp` | 表示 epoch 毫秒数的数值 |
+| `TimeZone` | 时区 ID 字符串 |
+| Java 时间类型以及受支持的 chronology 日期类型 | 对应的标准文本形式字符串 |
 | `UUID`、`URI`、`File`、`Path`、`Locale`、`Charset`、`Currency`、`Pattern` | 对应类型的文本字符串；`File` 和 `Path` 使用路径文本，`Locale` 使用语言标签，`Pattern` 不保留 flags |
-| `BitSet`                                                                  | 由有符号 `long` 字组成的数组，来源为 `BitSet.toLongArray()`                                        |
-| `ByteBuffer`                                                              | 从 position 到 limit 的剩余范围所对应的有符号字节值数组                                            |
-| Optional 和原子包装类型                                                   | 直接使用其中包含的标量、数组或值                                                                   |
+| `BitSet` | 由有符号 `long` 字组成的数组，来源为 `BitSet.toLongArray()` |
+| `ByteBuffer` | 从 position 到 limit 的剩余范围所对应的有符号字节值数组 |
+| Optional 和原子包装类型 | 直接使用其中包含的标量、数组或值 |
 
 `Calendar` 会把 epoch 毫秒数读入新的 `GregorianCalendar`；不会保留原始日历子类型、时区和其他配置。
 null `Optional` 引用和空 `Optional` 都会写为 JSON null；将 JSON null 读取为声明的 Optional 类型时，
@@ -175,18 +184,18 @@ JSON 对象成员名都是字符串。声明的 Map 键支持 `String`、`byte`�
 
 ## Builder 配置
 
-| Builder 方法                           | 默认值                                    | 用户可见的效果                                 |
+| Builder 方法 | 默认值 | 用户可见的效果 |
 | -------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
-| `writeNullFields(boolean)`             | `false`                                   | 是否默认包含值为 null 的对象属性               |
-| `withCodegen(boolean)`                 | `true`                                    | 启用生成的对象编解码器                         |
-| `withAsyncCompilation(boolean)`        | `true`                                    | 异步编译生成的编解码器                         |
-| `withFieldMode(boolean)`               | `false`                                   | 为 true 时，仅发现字段而不使用 getter/setter   |
-| `withPropertyNamingStrategy(strategy)` | `LOWER_CAMEL_CASE`                        | 为未显式指定 `JsonProperty` 名称的属性命名     |
-| `withMaxCachedFieldNames(int)`         | `DEFAULT_MAX_CACHED_FIELD_NAMES` (`8192`) | 每个 reader 的字段名缓存条目数；零表示禁用缓存 |
-| `withConcurrencyLevel(int)`            | `max(1, 2 * processors)`                  | 根操作的最大并发数                             |
-| `withBufferSizeLimitBytes(int)`        | 2 MiB                                     | 每个池化 writer 可保留的最大复用容量           |
-| `registerCodec(type, codec)`           | None                                      | 替换该精确类的完整 JSON 编解码器               |
-| `registerMixin(mixinType)`             | None                                      | 将一个注解 Mixin 应用于其精确声明的目标        |
+| `writeNullFields(boolean)` | `false` | 是否默认包含值为 null 的对象属性 |
+| `withCodegen(boolean)` | `true` | 启用生成的对象编解码器 |
+| `withAsyncCompilation(boolean)` | `true` | 异步编译生成的编解码器 |
+| `withFieldMode(boolean)` | `false` | 为 true 时，仅发现字段而不使用 getter/setter |
+| `withPropertyNamingStrategy(strategy)` | `LOWER_CAMEL_CASE` | 为未显式指定 `JsonProperty` 名称的属性命名 |
+| `withMaxCachedFieldNames(int)` | `DEFAULT_MAX_CACHED_FIELD_NAMES` (`8192`) | 每个 reader 的字段名缓存条目数；零表示禁用缓存 |
+| `withConcurrencyLevel(int)` | `max(1, 2 * processors)` | 根操作的最大并发数 |
+| `withBufferSizeLimitBytes(int)` | 2 MiB | 每个池化 writer 可保留的最大复用容量 |
+| `registerCodec(type, codec)` | None | 替换允许注册的精确类的完整 JSON 编解码器 |
+| `registerMixin(mixinType)` | None | 将一个注解 Mixin 应用于其精确声明的目标 |
 
 并发级别和缓冲区保留限制必须为正数。字段名缓存上限分别应用于每个 reader；零会禁用该缓存。该上限
 只限制缓存的字段名数量，不限制输入中可接受的名称。缓冲区保留设置不会限制 JSON 输入或输出大小，
@@ -197,6 +206,4 @@ JSON 对象成员名都是字符串。声明的 Map 键支持 `String`、`byte`�
 
 调用 `build()` 之后再修改 builder，不会改变已有的 `ForyJson` 实例。
 
-在 Android 上，运行时代码生成和异步编译会被禁用。在 GraalVM native image 中，运行时编译不可用；
-可达 `ForyJsonProvider` 返回的配置会使用构建 image 时生成的编解码器，其他配置则使用带有构建时
-预处理访问元数据的解释型编解码器。其他所有 builder 选项仍保持上述行为。
+在 Android 上禁用运行时代码生成和异步编译。GraalVM 原生镜像中无法进行运行时编译。Fory JSON 会为默认配置以及每个可达 `ForyJsonProvider` 配置下的可达模型生成编解码器。没有匹配生成编解码器的模型使用解释执行编解码器。其他 builder 选项保持上述行为。

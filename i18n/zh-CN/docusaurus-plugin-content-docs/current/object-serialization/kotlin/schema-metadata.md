@@ -49,6 +49,8 @@ data class User(
 `@field:ForyField(id = 1)`。不要使用 `@get:ForyField` 或 `@set:ForyField`；访问器不是
 Schema 字段，处理器会拒绝它们。
 
+配置的字段 ID 必须在结构体 Schema 内唯一，并满足 `0 <= id < 2^29`（`0` 至 `536870911`）。已分配的 ID 应保持稳定，不要复用于其他字段。省略 `id` 时使用字段名。
+
 ## 可空性
 
 使用 Kotlin `?` 描述可空的 Schema 位置。集合和 map 内部会保留可空性：

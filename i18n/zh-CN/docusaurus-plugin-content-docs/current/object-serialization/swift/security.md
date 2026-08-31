@@ -35,13 +35,11 @@ license: |
 
 安全相关配置：
 
-- 反序列化不可信载荷前，只注册预期的生成模型。
-- 对有意采用相同 Schema 的载荷，将 `checkClassVersion` 与 `compatible: false` 配合使用。
-- 将 `maxDepth` 设置为服务允许的最大动态 `Any` 嵌套深度。
-- 将 `maxGraphMemoryBytes` 设置为 collection、map、array、struct、class 和对象密集型载荷的
-  近似限制。它不是精确的堆上限；叶子值受剩余输入字节限制。
-- 除非数据确定无恶意，且可信对等端会发送更大的元数据或大量 Schema 版本，否则保留远程
-  Schema 元数据限制的默认值。
+- 反序列化不可信载荷前，仅注册预期的生成模型。
+- 对明确采用相同 Schema 的载荷，结合 `compatible: false` 使用 `checkClassVersion`。
+- 根据服务接受的最大嵌套用户值对象图设置 `maxDepth`。静态递归值、动态 `Any` 值和兼容模式字段跳过共享同一根预算。
+- 使用 `maxGraphMemoryBytes` 对集合、Map、数组、结构体、类和对象密集型载荷设置近似限制。它不是精确的堆上限；叶子值由剩余输入字节限制。
+- 保持远程 Schema 元数据限制的默认值，除非数据可信，且可信对端会发送更大的元数据或大量 Schema 版本。
 
 ## 验证
 

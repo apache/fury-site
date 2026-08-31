@@ -51,7 +51,7 @@ Fory core 支持 Java 8 及更高版本。Java Record 序列化需要 Java 17 �
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-core</artifactId>
-  <version>1.6.1</version>
+  <version>1.7.0</version>
 </dependency>
 ```
 
@@ -59,7 +59,7 @@ Fory core 支持 Java 8 及更高版本。Java Record 序列化需要 Java 17 �
 
 ```kotlin
 // Binary object serialization
-implementation("org.apache.fory:fory-core:1.6.1")
+implementation("org.apache.fory:fory-core:1.7.0")
 ```
 
 #### JDK 25 及更高版本

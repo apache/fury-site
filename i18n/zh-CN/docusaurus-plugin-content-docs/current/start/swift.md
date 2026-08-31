@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory Swift 提供 xlang 对象序列化和编译器生成的模型。它通过 Swift Package Manager 分发，使用 Swift tools 6.0，目标平台为 macOS 13 及更高版本和 iOS 16 及更高版本。
+Fory Swift 提供 xlang 对象序列化和编译器生成模型，通过 Swift Package Manager 分发，使用 Swift tools 6.0，支持 macOS 13 及以上、iOS 和 tvOS 16 及以上、watchOS 9 及以上和 visionOS 1 及以上。Linux 需要 Swift 6.0 或更新版本的工具链。
 
 ## 验证工具链
 
@@ -39,7 +39,7 @@ swift package init --type executable --name ForyExample
 
 ```swift title="Package.swift"
 dependencies: [
-    .package(url: "https://github.com/apache/fory.git", exact: "1.6.1")
+    .package(url: "https://github.com/apache/fory.git", exact: "1.7.0")
 ],
 targets: [
     .executableTarget(

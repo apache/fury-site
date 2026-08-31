@@ -53,14 +53,14 @@ Fory Kotlin 继承了 Fory Java 的全部功能，并增加了 Kotlin 特有优�
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-kotlin</artifactId>
-  <version>1.6.1</version>
+  <version>1.7.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```kotlin
-implementation("org.apache.fory:fory-kotlin:1.6.1")
+implementation("org.apache.fory:fory-kotlin:1.7.0")
 ```
 
 ### JDK25+

@@ -19,12 +19,12 @@ license: |
   limitations under the License.
 ---
 
-| 格式或模式    | 数据模型                    | 适用场景                             | 互操作范围                                                          | 入门文档                                       |
-| ------------- | --------------------------- | ------------------------------------ | ------------------------------------------------------------------- | ---------------------------------------------- |
-| Xlang 二进制  | 可移植对象图                | 数据需要跨语言传输                   | 受支持的 Fory 实现共享同一种编码格式                                 | [跨语言指南](../object-serialization/xlang.md) |
-| Native 二进制 | 语言原生对象图              | 生产端和消费端使用同一 Fory 实现家族 | 仅限一个 Fory 实现家族                                              | [对象序列化](../object-serialization/index.md) |
-| Row Format    | 可随机访问的二进制行        | 需要随机字段访问或分析场景的部分读取 | Standard Row 由 Java、Python、C++ 和 Rust 共享；Compact 仅支持 Java | [Row Format 指南](../row-format/index.md)      |
-| Fory JSON     | 映射到 Java 对象的标准 JSON | Java 应用需要高性能标准 JSON         | 标准 JSON 文本                                                      | [Fory JSON 指南](../json/index.md)             |
+| 格式或模式 | 数据模型 | 适用场景 | 互操作范围 | 入门文档 |
+| ------------- | ----------------------------- | ------------------------------------ | ------------------------------------------------------------------- | ---------------------------------------------- |
+| Xlang 二进制 | 可移植对象图 | 数据需要跨语言传输 | 受支持的 Fory 实现共享同一种编码格式 | [跨语言指南](../object-serialization/xlang.md) |
+| Native 二进制 | 语言原生对象图 | 生产端和消费端使用同一 Fory 实现家族 | 仅限一个 Fory 实现家族 | [对象序列化](../object-serialization/index.md) |
+| Row Format | 可随机访问的二进制行 | 需要随机字段访问或分析场景的部分读取 | Standard Row 由 Java、Python、C++ 和 Rust 共享；Compact 仅支持 Java | [Row Format 指南](../row-format/index.md) |
+| Fory JSON | 映射到 JVM 对象的标准 JSON | Java、Kotlin 或 Scala 应用需要标准 JSON | 标准 JSON 文本 | [Fory JSON 指南](../json/index.md) |
 
 Xlang 和 native 是对象序列化的两种并列模式，适用于接收端需要重建对象图的场景。Row Format
 和 Fory JSON 是独立格式，不是额外的对象序列化模式。
@@ -51,9 +51,7 @@ pickle 和 cloudpickle。
 
 ## 选择总结
 
-需要重建对象图时选择 xlang 或 native 模式。对于可信的分析数据，如果随机字段访问能带来
-收益，请选择 Row Format。Java 应用需要标准 JSON 时选择 Fory JSON。多个团队需要统一的
-Schema 优先契约时，请使用 Fory IDL 和编译器；它会生成使用相应 Fory 能力的模型。
+需要重建对象图时，选择 xlang 或 native 模式。对于受信任且需要随机字段访问的分析数据，选择 Row Format。Java、Kotlin 或 Scala 应用需要标准 JSON 时，选择 Fory JSON。多个团队需要共享以 Schema 为先的契约时，使用 Fory IDL 和编译器，它会生成使用相应 Fory 能力的模型。
 
 ## 相关能力
 

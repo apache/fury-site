@@ -92,8 +92,7 @@ let fory = Fory(compatible: false, checkClassVersion: true)
 
 ### 大小和深度限制
 
-`maxDepth` 限制反序列化可以将通过 `Any` 动态选择具体类型的值物化到多深。静态声明的
-array、dictionary、struct、class 和 union 不消耗此限制。
+`maxDepth` 限制一次根反序列化过程中嵌套用户值的实例化深度。静态声明的递归结构体、类和联合类型，动态选择的 `Any` 值，以及兼容模式字段跳过共享该根深度预算。null 和对已实例化值的引用不会额外消耗一层深度。
 
 TypeMeta 泛型元数据的最大嵌套深度固定为 `20`。写入端拒绝超过此限制的元数据，读取端应用
 相同限制。

@@ -50,6 +50,10 @@ Java 基准测试使用 `docs/benchmarks/object-serialization/native/java` 中�
 
 更多基准测试说明、原始数据和完整 Java benchmark README，请参阅 [Java 基准测试](object-serialization/native/java/README.md)。
 
+## Kotlin JSON 基准测试 {#kotlin-json-benchmark}
+
+Kotlin JSON 测试程序使用同一个不可变模型和 16 项 String/UTF-8 操作，对比 Fory JSON Kotlin、kotlinx.serialization、Moshi 和 Jackson Kotlin。测试负载与设置见 [Kotlin JSON 基准测试](json/kotlin/README.md)。
+
 ## Python 基准测试
 
 在对象和列表工作负载中，Fory Python 相比 `pickle` 和 Protobuf 展现出优秀性能。

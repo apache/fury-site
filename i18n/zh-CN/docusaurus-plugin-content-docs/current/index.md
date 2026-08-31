@@ -31,13 +31,13 @@ Schema 驱动的模型以及由 Fory 支持的 gRPC 服务。
 
 ## 功能
 
-| 功能              | 适用场景                               | 文档                                        |
-| ----------------- | -------------------------------------- | ------------------------------------------- |
-| 对象序列化        | 重建 xlang 或语言原生对象图            | [对象序列化](object-serialization/index.md) |
-| Row Format        | 随机和部分访问可信分析数据             | [行格式](row-format/index.md)               |
-| Fory JSON         | 将高吞吐量标准 JSON 映射到 Java 对象   | [Fory JSON](json/index.md)                  |
-| Fory IDL 与编译器 | 从共享 Schema 生成语言原生模型         | [编译器](compiler/index.md)                 |
-| Fory gRPC         | 生成用于编组 Fory 模型的 gRPC 配套代码 | [Fory gRPC](grpc/index.md)                  |
+| 功能 | 适用场景 | 文档 |
+| ----------------- | ------------------------------------------- | ------------------------------------------- |
+| 对象序列化 | 重建 xlang 或语言原生对象图 | [对象序列化](object-serialization/index.md) |
+| Row Format | 随机和部分访问可信分析数据 | [行格式](row-format/index.md) |
+| Fory JSON | 面向 Java、Kotlin、Scala 的高吞吐量标准 JSON | [Fory JSON](json/index.md) |
+| Fory IDL 与编译器 | 从共享 Schema 生成语言原生模型 | [编译器](compiler/index.md) |
+| Fory gRPC | 生成用于编组 Fory 模型的 gRPC 配套代码 | [Fory gRPC](grpc/index.md) |
 
 ## 语言指南
 
@@ -49,6 +49,8 @@ Schema 驱动的模型以及由 Fory 支持的 gRPC 服务。
 [C#](object-serialization/csharp/index.md)、[Swift](object-serialization/swift/index.md)、
 [Dart](object-serialization/dart/index.md)、[Scala](object-serialization/scala/index.md) 和
 [Kotlin](object-serialization/kotlin/index.md)。
+
+除了 Java API 文档，Fory JSON 还提供 [Kotlin](json/kotlin.md) 和 [Scala](json/scala.md) 语言指南。
 
 ## 参考与开发
 

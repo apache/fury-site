@@ -60,6 +60,7 @@ targets: [
 - [共享引用和循环引用](references.md)
 - [多态和动态类型](polymorphism.md)
 - [Schema 演进](schema-evolution.md)
+- [gRPC 支持](../../grpc/swift.md)
 - [故障排查](troubleshooting.md)
 
 ## 快速示例

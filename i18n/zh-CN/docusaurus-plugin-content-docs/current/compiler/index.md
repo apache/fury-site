@@ -19,11 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory IDL 是 Apache Fory 的 Schema 定义语言，可实现类型安全的跨语言序列化。只需定义
-一次数据结构，即可为 Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、
-Dart、Scala 和 Kotlin 生成原生数据结构代码。Fory IDL 还可以描述 RPC 服务；对于 Java、
-Python、Go、Rust、C++、C#、Dart、Scala、Kotlin 和 JavaScript，编译器可以生成使用 Fory
-序列化请求和响应载荷的 gRPC 服务配套代码。
+Fory IDL 是 Apache Fory 的 Schema 定义语言，用于实现类型安全的跨语言序列化。只需定义一次数据结构，即可为 Java、Python、C++、Go、Rust、JavaScript/TypeScript、C#、Swift、Dart、Scala 和 Kotlin 生成原生数据结构代码。Fory IDL 也可描述 RPC 服务；编译器可为 Java、Python、Go、Rust、C++、C#、Swift、Dart、Scala、Kotlin 和 JavaScript 生成使用 Fory 序列化请求与响应载荷的 gRPC 配套服务代码。
 
 ## Schema 示例
 
@@ -86,11 +82,10 @@ service AnimalService {
 }
 ```
 
-使用以下命令生成 Java、Python、Go、Rust、C++、C#、Dart、Scala、Kotlin 和 JavaScript
-模型及 gRPC 服务配套代码：
+使用以下命令生成 Java、Python、Go、Rust、C++、C#、Swift、Dart、Scala、Kotlin 和 JavaScript 模型及 gRPC 配套服务代码：
 
 ```bash
-foryc animals.fdl --java_out=./generated/java --python_out=./generated/python --go_out=./generated/go --rust_out=./generated/rust --cpp_out=./generated/cpp --csharp_out=./generated/csharp --dart_out=./generated/dart --scala_out=./generated/scala --kotlin_out=./generated/kotlin --javascript_out=./generated/javascript --grpc
+foryc animals.fdl --java_out=./generated/java --python_out=./generated/python --go_out=./generated/go --rust_out=./generated/rust --cpp_out=./generated/cpp --csharp_out=./generated/csharp --swift_out=./generated/swift --dart_out=./generated/dart --scala_out=./generated/scala --kotlin_out=./generated/kotlin --javascript_out=./generated/javascript --grpc
 ```
 
 生成的服务代码使用常规 gRPC API，但请求和响应对象通过 Fory 序列化。各语言的依赖项、

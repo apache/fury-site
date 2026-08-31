@@ -19,20 +19,27 @@ license: |
   limitations under the License.
 ---
 
-Fory JSON 在 `org.apache.fory.json.annotation` 中提供以下映射和校验注解：
-`JsonAnyGetter`, `JsonAnyProperty`, `JsonAnySetter`, `JsonBase64`, `JsonCodec`, `JsonCreator`, `JsonFormat`,
-`JsonIgnore`, `JsonProperty`, `JsonPropertyOrder`, `JsonRawValue`, `JsonSubTypes`, `JsonUnwrapped`,
-`JsonValidator` 和 `JsonValue`。`JsonType` 是独立的构建时生成标记。这些都是 Fory JSON API，
-并非 Jackson、Gson 或用于兼容 Fory 二进制协议的注解。
+Fory JSON 在 `org.apache.fory.json.annotation` 中提供以下映射和验证注解：`JsonAnyGetter`、`JsonAnyProperty`、`JsonAnySetter`、`JsonBase64`、`JsonCodec`、`JsonCreator`、`JsonFormat`、`JsonIgnore`、`JsonProperty`、`JsonPropertyOrder`、`JsonRawValue`、`JsonSubTypes`、`JsonUnwrapped`、`JsonValidator` 和 `JsonValue`。`JsonType` 是独立的构建期模型标记。这些属于 Fory JSON API，不是 Jackson、Gson 或 Fory 二进制协议兼容注解。
 
-`JsonType` 要求注解处理器生成直接的属性与创建器操作，以及适用于 JVM 和 Android 的精确保留规则。
-该注解不可继承，因此在这些平台上，每个需要生成配套类且符合条件的具体模型都必须单独添加注解。
-直接标注的 `JsonValue` Record 也会为其值访问器和规范构造函数生成配套类。普通的未标注类仍可使用反射；
-在 Android 上，则需要应用自行编写精确的 R8 规则。经过 Android desugar 的 Record 必须通过直接声明
-`JsonType` 或编译后的精确 `JsonMixin` 配对获得处理器生成的操作。在 Native Image 之外，若直接标注的
-模型使用默认对象编解码器却缺少生成的配套类，则创建编解码器时会失败。GraalVM Native Image 会直接发现
-`JsonType`，不使用注解处理器的输出。有关平台工作流，请参阅 [GraalVM 指南](graalvm.md)和
-[Android 指南](android.md)。
+`JsonType` 不会被继承，因此每个需要参与平台构建流程且符合要求的具体模型都必须单独标注。Java 源码需要使用 `fory-annotation-processor`。未标注的普通 Java 类仍可使用反射；在 Android 上，它们需要由应用编写精确 R8 规则。经过 Android 脱糖处理的 Record 必须直接声明 `JsonType`，或使用已编译的精确 `JsonMixin` 配对。在 Native Image 之外，直接标注的 Java 模型如果使用默认对象编解码器却未运行注解处理器，会在创建编解码器时失败。
+
+Kotlin/JVM 模型使用 Kotlin JSON 模块。平台设置见 [Kotlin 指南](kotlin.md)、[GraalVM 指南](graalvm.md)和 [Android 指南](android.md)。
+
+## Kotlin 注解使用位置 {#kotlin-use-site-targets}
+
+Kotlin 注解与对应 Java 字段、访问器或选定构造函数参数合并为同一个逻辑属性。请显式指定使用位置，避免依赖 Kotlin 的默认目标策略：
+
+| Kotlin 使用位置 | 逻辑声明 |
+| ------------ | ---------------------------------------------- |
+| `@field:` | 后备字段 |
+| `@get:` | getter |
+| `@set:` | setter |
+| `@param:` | 选定构造函数的参数 |
+| `@setparam:` | 支持参数注解的 setter 值参数 |
+
+不支持 `@property:`，因为 Fory JSON 注解不以 Kotlin 专有的属性元数据为目标。`@setparam:JsonProperty` 会被拒绝，因为 setter 参数命名不属于 JSON 属性名契约。`@setparam:JsonIgnore`、`@setparam:JsonCodec` 和 `@setparam:JsonUnwrapped` 作用于对应的单参数 setter 属性，也直接支持有效的 `@set:JsonCodec`。
+
+当显式值一致时，`JsonProperty` 的各成员分别合并；名称、索引或包含策略冲突会导致失败。`JsonIgnore` 的读写方向按单调规则合并，重复的 `JsonCodec` 声明必须完全一致。Mixin 的替换或移除先于合并执行。符合 Kotlin 习惯的示例见 [Kotlin](kotlin.md#annotations-and-use-site-targets)。
 
 ## Mixin
 
@@ -85,8 +92,7 @@ abstract class QuotedMessageMixin {
 Mixin 提供的 `JsonCodec` 会成为目标的有效注解。精确的 `registerCodec` 注册仍具有更高优先级，
 而有效的类型注解优先于内置映射。
 
-在 Android 上，应使用 Fory 注解处理器编译非空 Mixin，以提供所需的生成操作和平台配置。
-GraalVM Native Image 会直接发现可达的 Mixin。详情请参阅上文链接的平台指南。
+在 Android 上，纯 Java Mixin 配对需要 `fory-annotation-processor`，涉及 Kotlin 的配对需要 `fory-json-kotlin-ksp`。Kotlin 源码中的 Mixin 若为 Java sealed 目标添加推导式 `JsonSubTypes`，则需要两个处理器，并且必须在 JDK 17 或更新版本上编译。详情见上方平台指南。
 
 ## `JsonProperty`
 
@@ -607,14 +613,30 @@ Mixin 方法采用与其他 Mixin 方法相同的精确方法签名匹配规则�
 
 ## `JsonSubTypes`
 
-`JsonSubTypes` 为接口或抽象类声明完整且有限的子类型表。每个条目都有一个区分大小写的逻辑 JSON 名称，
-以及恰好一个可信 Java 类型来源：
+`JsonSubTypes` 为接口或抽象类声明有限的子类型表。非空 `value` 即完整的显式表，每个条目包含一个区分大小写的逻辑 JSON 名称，并且恰好指定一个可信 Java 类型来源：
 
 - `value = Circle.class`；或者
 - 使用精确 Java 二进制名称的 `className = "com.example.shape.Circle"`。
 
 当 API JAR 不能依赖实现 JAR 时，`className` 很有用。构建子类型表时，它由固定的构建器类加载器解析。
 JSON 输入绝不会提供 Java 类名，也无法添加条目。不支持构建后的子类型注册和开放式子类型发现。
+
+将 `value` 留空即可推导 sealed 层次结构：
+
+```java
+@JsonSubTypes(property = "kind")
+public sealed interface Shape permits Circle, Polygon {}
+
+public final class Circle implements Shape {}
+
+public sealed interface Polygon extends Shape permits Rectangle {}
+
+public final class Rectangle implements Polygon {}
+```
+
+Fory 递归遍历 sealed 抽象类和接口，以源码中的简单名称添加每个具体类，包括本身也是 sealed 的具体类，并继续遍历具体 sealed 类的子类型。具体的 open 或 non-sealed 类仅作为一个精确条目加入，不包含其后代。开放抽象类或接口会导致推导失败，因为该分支不是封闭的。重复名称和逻辑名称哈希冲突也会失败。推导出的名称属于编码名称，不受属性命名策略转换。
+
+Java sealed 类型要求 JDK 17 或更新版本。在 Android 上，Java sealed 推导还需要 `fory-annotation-processor`，启用代码压缩的 Kotlin 模型需要 `fory-json-kotlin-ksp`。如果 Kotlin 源码中的 Mixin 为 Java sealed 目标添加推导，则需要两个处理器。Scala 3 sealed 类型使用 `derives ScalaJsonCodec` 或 builder 推导；不推导 Scala 2 sealed trait 和类。
 
 默认的 `PROPERTY` 包含方式会将内联判别字段写为第一个输出成员：
 
@@ -677,9 +699,8 @@ public interface Shape {}
 两种包装形式都可以委托给精确的自定义子类型编解码器。三种包含方式都会将 null 写为普通 JSON null；
 唯一例外是编解码器优先级为声明的基类型选择了自定义完整值编解码器，从而替代该注解。
 
-基类型必须是接口或抽象类。每个条目都必须解析为唯一、具体且可赋值的类，序列化只接受表中精确列出的
-具体类。列出父类不会隐式允许其后代。该注解从声明的基类型本身读取，不会从其他带注解的接口或抽象类
-继承。读取器只接受已配置的包含方式；更改包含方式会改变编码格式，并且不存在兼容两种形式的读取回退。
+基类型必须是接口或抽象类。每个有效条目都必须是唯一、具体且可赋值给基类型的类；序列化仅接受表中的精确成员。在显式表中，列出父类不会隐式允许其后代。注解从声明的基类型自身读取，不会继承另一个已标注接口或抽象类上的注解。读取器仅接受已配置的包含形式；改变包含形式会改变编码格式，不提供同时读取两种形式的回退机制。
 
-在 GraalVM native-image 中，请使用 `JsonType` 标注基类型，并使用类字面量条目而不是 `className`
-条目。列出的类字面量子类型会自动注册。
+选定的顶层基类型授权使用其推导出的静态 sealed 闭包。如果只应开放更小的子集，请使用显式表，或配置 `JsonTypeChecker` 过滤精确的推导候选类型。完整的推导闭包都必须通过固定禁用列表检查。显式表保持精确匹配，条目与 checker 冲突时会失败。
+
+对于 GraalVM Native Image，如果基类型未通过 provider 根类型可达，请为其标注 `JsonType`。可达的 Java、Kotlin 和 Scala 3 sealed Schema 支持空表。显式表必须使用 class literal 条目，不能使用 `className`。

@@ -19,9 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory JSON 是 Apache Fory 提供的线程安全 Java JSON 编解码器。它为 Java 对象、record、
-基于 creator 的不可变类、常见 JDK 类型、泛型容器和自定义完整值 codec 提供解释执行和
-运行时生成的 codec。
+Fory JSON 是 Apache Fory 面向 Java、Kotlin 和 Scala 的线程安全 JSON 编解码器。它为 Java 对象、Record、基于 creator 的不可变类、常见 JDK 类型、泛型容器、Kotlin 模型与语义类型、Scala 模型与集合，以及自定义完整值编解码器提供解释执行和代码生成支持。
 
 Fory JSON 与 Fory 的 native 和 xlang 二进制协议是不同的数据格式。当系统需要与浏览器、API、
 日志、配置或其他 JSON 实现交换普通 JSON 时，请使用 Fory JSON。需要跨语言 Schema 元数据、
@@ -29,16 +27,19 @@ Fory JSON 与 Fory 的 native 和 xlang 二进制协议是不同的数据格式�
 
 ## 文档导航
 
-| 目标                                      | 页面                               |
-| ----------------------------------------- | ---------------------------------- |
-| 运行第一个 JSON 往返示例                  | [快速开始](getting-started.md)     |
-| 了解 Java 对象映射和配置                  | [对象映射](object-mapping.md)      |
-| 配置属性、creator、值、validator 和 Mixin  | [注解](annotations.md)             |
-| 扩展完整值、子值和 Map 键                 | [自定义 Codec](custom-codecs.md)   |
-| 部署到 Android                            | [Android](android.md)              |
-| 构建 GraalVM Native Image                 | [GraalVM Native Image](graalvm.md) |
-| 安全解码输入                              | [安全](security.md)                |
-| 诊断故障                                  | [故障排查](troubleshooting.md)     |
+| 目标 | 页面 |
+| --------------------------------------------------------------- | ---------------------------------- |
+| 运行第一个 JSON 往返示例 | [快速开始](getting-started.md) |
+| 了解 Java 对象映射和配置 | [对象映射](object-mapping.md) |
+| 配置属性、creator、值、validator 和 Mixin | [注解](annotations.md) |
+| 扩展完整值、子值和 Map 键 | [自定义 Codec](custom-codecs.md) |
+| 打包并分发可复用的 JSON 扩展 | [模块](modules.md) |
+| 使用 data class、Kotlin 可空性、默认值和值类型 | [Kotlin](kotlin.md) |
+| 使用 case class、Scala 集合和 Scala 枚举 | [Scala](scala.md) |
+| 部署到 Android | [Android](android.md) |
+| 构建 GraalVM Native Image | [GraalVM Native Image](graalvm.md) |
+| 安全解码输入 | [安全](security.md) |
+| 诊断故障 | [故障排查](troubleshooting.md) |
 
 ## 性能
 
