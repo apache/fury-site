@@ -8,7 +8,10 @@
   align-items: center; /* 垂直居中 */
   text-align: center; /* 水平居中文本 */
 }
-.user-main h3,
+.user-main h3 {
+  font-size: 48px;
+  margin: 0 auto;
+}
 .user-main .divider,
 .user-main .desc {
   margin: 0 auto;
@@ -28,34 +31,69 @@
 
 .user-main .user_case {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  grid-row-gap: 20px;
-  grid-column-gap: 20px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
 }
 
 .user-main .user_case .case_item {
   display: flex;
-  min-width: 0;
-  background: #ebedf0;
-  margin: 5px;
-  height: 80px;
-  border: 1px solid #eaecef;
-  box-shadow: #f8f9fa 0 1px 2px 0;
-  border-radius: 4px;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  padding: 24px 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 200px;
+  text-align: center;
+}
+
+[data-theme='dark'] .user-main .user_case .case_item {
+  background: #1e1e2d;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .user-main .user_case .case_item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 1.0rem 2rem rgba(0, 0, 0, .05);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: var(--ifm-color-primary);
 }
 
-.user-main .user_case .case_item > img {
-  max-width: 90%;
-  max-height: 90%;
+.user-main .user_case .case_logo {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.user-main .user_case .case_logo img {
+  max-width: 85%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(0.2);
+  transition: filter 0.3s;
+}
+
+.user-main .user_case .case_item:hover .case_logo img {
+  filter: grayscale(0);
+}
+
+.user-main .user_case .company_name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0;
+  line-height: 1.4;
+}
+
+[data-theme='dark'] .user-main .user_case .company_name {
+  color: #a0aec0;
 }
 
 .user_page a {
@@ -65,24 +103,30 @@
 .user_page {
   margin-top: 50px !important;
 }
-.company_name{
-  font-size: 20px;
-  font-weight: 500;
-  margin-top: 25px;
-  color: rgba(21, 22, 34, 0.95);
-}
-.case_item {
-  font-weight: bold ;
-}
 
+.user_page.container {
+  max-width: 1600px;
+}
 
 /* mobile theme */
+@media screen and (max-width: 1200px) {
+  .user-main .user_case {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media screen and (max-width: 996px) {
   .user_page {
     margin-top: 20px !important;
   }
+  .user-main .user_case {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
 
-  .user-main .desc {
-    line-height: 30px;
+@media screen and (max-width: 640px) {
+  .user-main .user_case {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

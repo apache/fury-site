@@ -49,10 +49,13 @@ export default function UserPage() {
                       rel="noopener noreferrer"
                     >
                       <div className="case_item case_hover">
-                        <img
-                          src={useBaseUrl("/user/" + item.imgUrl)}
-                          alt={item.name}
-                        />
+                        <div className="case_logo">
+                          <img
+                            src={useBaseUrl("/user/" + item.imgUrl)}
+                            alt={item.name}
+                          />
+                        </div>
+                        <div className="company_name">{item.name}</div>
                       </div>
                     </a>
                   </div>
@@ -62,8 +65,10 @@ export default function UserPage() {
                     key={i}
                     className="company-item"
                   >
-                    <a className="company_name ">
-                      <div className="case_item case_hover">{item.name}</div>
+                    <a className="company_name_link">
+                      <div className="case_item case_hover">
+                        <div className="company_name">{item.name}</div>
+                      </div>
                     </a>
                   </div>
                 ))}
