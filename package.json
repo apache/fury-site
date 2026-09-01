@@ -21,33 +21,32 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "3.10.1",
-    "@docusaurus/faster": "3.10.1",
-    "@docusaurus/plugin-content-docs": "3.10.1",
-    "@docusaurus/preset-classic": "3.10.1",
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/faster": "3.10.2",
+    "@docusaurus/plugin-content-docs": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
     "@mdx-js/react": "^3.0.0",
-    "@tailwindcss/postcss7-compat": "^2.2.17",
     "aos": "^2.3.4",
     "clsx": "^2.0.0",
-    "docusaurus-lunr-search": "^3.3.1",
+    "docusaurus-lunr-search": "^3.6.0",
     "framer-motion": "^12.18.1",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-syntax-highlighter": "^15.5.0"
+    "react-syntax-highlighter": "^16.1.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.10.1",
-    "@docusaurus/tsconfig": "3.10.1",
-    "@docusaurus/types": "3.10.1",
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/tsconfig": "3.10.2",
+    "@docusaurus/types": "3.10.2",
     "autoprefixer": "^10.4.21",
     "css-loader": "^7.1.2",
     "esbuild-loader": "^4.2.2",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.26",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^4.0.17",
+    "tailwindcss": "^3.4.19",
     "typescript": "~5.2.2",
-    "yaml": "^2.8.0"
+    "yaml": "^2.9.0"
   },
   "browserslist": {
     "production": [
@@ -63,5 +62,16 @@
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "overrides": {
+    "copy-webpack-plugin": {
+      "serialize-javascript": "7.0.5"
+    },
+    "css-minimizer-webpack-plugin": {
+      "serialize-javascript": "7.0.5"
+    },
+    "sockjs": {
+      "uuid": "11.1.1"
+    }
   }
 }
