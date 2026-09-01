@@ -22,7 +22,7 @@ public class Example {
     // Registering types can reduce class name serialization
     // overhead but not mandatory.
     // If secure mode enabled
-    //all custom types must be registered.
+    // all custom types must be registered.
     fory.register(SomeClass.class);
   }
 
