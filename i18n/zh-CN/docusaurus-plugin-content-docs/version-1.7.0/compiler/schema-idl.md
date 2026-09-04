@@ -961,6 +961,8 @@ rpc_method  := 'rpc' IDENTIFIER '(' ['stream'] named_type ')'
 field_type field_name = field_number;
 ```
 
+`field_number` 是字段 tag ID，必须在消息内唯一，并满足 `0 <= field_number < 2^29`（`0` 至 `536870911`）。已分配的编号应保持稳定；删除字段后应保留其编号，不要分配给其他字段。
+
 ### 带修饰符
 
 ```protobuf
@@ -1130,22 +1132,22 @@ Rust 中的 `Arc`。
 
 ## 字段编号
 
-每个字段必须有一个唯一的正整数标识符：
+每个字段都必须使用协议范围内唯一的 tag ID：
 
 ```protobuf
 message Example {
-    string first = 1;
-    string second = 2;
-    string third = 3;
+    string first = 0;
+    string second = 1;
+    string third = 2;
 }
 ```
 
 **规则和最佳实践：**
 
 - 消息中的数字必须是唯一的。
-- 数字必须是正整数。
+- 编号必须满足 `0 <= field_number < 2^29`（`0` 至 `536870911`）。
 - 允许有间隙，并且在删除字段时很有用。
-- 优先选择从 `1` 开始的顺序编号。
+- 建议连续编号。
 - 切勿将已删除的字段编号重复用于其他字段。
 
 ## 类型系统 {#type-system}

@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  implementation("org.apache.fory:fory-json-kotlin:1.7.0")
+  implementation("org.apache.fory:fory-json-kotlin:1.7.1")
 }
 ```
 
@@ -50,7 +50,7 @@ plugins {
 }
 
 dependencies {
-  ksp("org.apache.fory:fory-json-kotlin-ksp:1.7.0")
+  ksp("org.apache.fory:fory-json-kotlin-ksp:1.7.1")
 }
 ```
 
@@ -76,6 +76,11 @@ val accountType = jsonTypeRef<Account>()
 val text = json.toJson(Account(7u, "Alice"), accountType)
 val decoded = json.fromJson(text, accountType)
 ```
+
+当有符号 `Long` 和无符号 `ULong` 值需要以带引号的十进制字符串输出时，请使用
+`ForyJsonKotlin.builder().writeLongAsString(true)`。该设置还适用于声明的 collection 和 Map 值、
+可空值、以这些类型为底层值的 Kotlin 值类、`ULongArray`，以及核心 JSON 运行时支持的 Java Long
+类包装器。Reader 同时接受带引号和不带引号的整数 token。
 
 `jsonTypeRef<T>()` 是类型令牌，不是编解码器查找操作。应创建一次并复用。Java `Class` 或普通 Java `TypeRef` 无法表达 `List<Account?>`、`UInt` 或降低为基本类型载体的逻辑值类等区别。
 
@@ -212,7 +217,7 @@ Fory 执行经过验证的编译器构造操作，因此值类初始化检查仍
 | 文本 | `String`、精确 `CharSequence`、`StringBuilder` 和 `StringBuffer` 使用字符串表示 |
 | 任意精度/低精度数值 | `BigInteger`、`BigDecimal`、Fory `Float16` 和 `BFloat16` 使用核心数值表示与限制 |
 | 枚举 | 带引号的枚举常量名 |
-| Java/Kotlin 数组 | 常规 JSON 数组；`ByteArray` 默认表示数字，除非 `JsonBase64` 选择二进制表示；无符号语义数组见下文 |
+| Java/Kotlin 数组 | 除 `ByteArray` 默认使用 Base64 字符串外，均为普通 JSON 数组；`@field:JsonByteArray(JsonByteArray.Format.ARRAY)` 可选择数字数组；无符号语义数组见下文 |
 | Optional 与原子类 | `Optional<T>`、基本类型 Optional、原子标量/引用和原子数组保持核心透明表示，并受上述可空性规则约束 |
 | 带引号的 JDK 值 | `Currency`、`File`、`URI`、`Path`、`Pattern`、`UUID`、`Locale`、`Charset` 和 `TimeZone` 保持核心字符串表示 |
 | 旧版日期/时间 | `Date`、`Calendar` 及可用的 `java.sql.Date`、`Time` 和 `Timestamp` 保持自 Unix 纪元起的毫秒数表示 |

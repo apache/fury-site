@@ -36,7 +36,7 @@ gRPC 客户端、服务基类、方法描述符、元数据、截止时间、取
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.7.0" />
+  <PackageReference Include="Apache.Fory" Version="1.7.1" />
   <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
 </ItemGroup>
 ```
@@ -45,7 +45,7 @@ gRPC 客户端、服务基类、方法描述符、元数据、截止时间、取
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Apache.Fory" Version="1.7.0" />
+  <PackageReference Include="Apache.Fory" Version="1.7.1" />
   <PackageReference Include="Grpc.Core.Api" Version="2.71.0" />
   <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
 </ItemGroup>

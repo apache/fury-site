@@ -150,7 +150,7 @@ public class JsonExample {
 
 支持在类型、字段、有效的普通 getter、setter 值参数和 `JsonCreator` 参数上使用 `@JsonCodec` 注解。Feature 会保留每个选定的完整值、元素、内容、Map 键和 Map 值 Codec 的构造函数。这与 JVM 和 Android 使用的注解模型相同。
 
-支持 `JsonValue` 字段和有效的 public 无参数方法，包括匹配的单 String `JsonCreator` 构造函数和 public static factory。固定的 `JsonRawValue` 字段和 getter 支持可信的原始 String 值；固定的 `JsonBase64` 字段和 getter 与 JVM 上一样支持 Base64 `byte[]` 值。`JsonFormat` 日期/时间字段使用与 JVM 相同的直接字段、单层包装和 `timezone` 行为。对于直接放在目标类上的注解，请使用 `JsonType` 标注每个可达的所属模型，以便 Native Image 保留这些成员和 Base64 Codec 构造函数。
+支持 `JsonValue` 字段和有效的 public 无参数方法，包括匹配的单 String `JsonCreator` 构造函数和 public static factory。固定的 `JsonRawValue` 字段和 getter 支持可信的原始 String 值；`JsonByteArray` 字段和 getter 与 JVM 上一样选择 Base64 字符串或数字字节数组。`JsonFormat` 日期/时间字段使用与 JVM 相同的直接字段、单层包装和 `timezone` 行为。对于直接放在目标类上的注解，请使用 `JsonType` 标注每个可达的所属模型，以便 Native Image 保留这些成员和所选字节数组编解码器的构造函数。
 直接标注的 `JsonValue` Record 会使用生成的 component accessor 和 canonical constructor 操作。由 Mixin 提供的有效声明则使用上述 Mixin 工作流。
 
 `JsonAnyProperty` 和 `JsonAnyGetter` 会将其 Map 展平到外层对象中。可以在该字段或 getter 上使用 `@JsonCodec(valueCodec = ...)` 来定制每个动态值。`JsonAnySetter` 的第二个参数可以对自身的值结构使用常规配置。

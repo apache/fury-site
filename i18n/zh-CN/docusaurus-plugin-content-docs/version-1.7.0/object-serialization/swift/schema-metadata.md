@@ -26,6 +26,7 @@ license: |
 - `@ForyStruct`：用于 struct/class 模型和外部结构化序列化器
 - `@ForyEnum`：用于 C 风格 enum 模型和外部 enum 序列化器
 - `@ForyUnion` 和 `@ForyCase`：用于关联值 enum 模型和外部 union 序列化器
+- `@ForyField(id: ...)` 用于稳定的数字字段身份
 - `@ForyField(encoding: ...)`：用于数值字段
 - `@ForyField(with: ...)`：用于精确选择序列化器
 - `@ListField`、`@ArrayField`、`@SetField` 和 `@MapField`：用于集合字段元数据
@@ -44,6 +45,20 @@ struct UserSerializer {
 
 `@ForyEnum` 和 `@ForyUnion` 也提供等价的目标参数。目标访问和构造要求请参阅
 [外部类型序列化](external-types.md)。
+
+## `@ForyField(id:)`
+
+需要在重命名或 Schema 演进中保持字段身份稳定时，请分配 ID：
+
+```swift
+@ForyStruct
+struct User {
+    @ForyField(id: 1)
+    var name: String
+}
+```
+
+配置的 ID 必须在结构体 Schema 内唯一，并满足 `0 <= id < 2^29`（`0` 至 `536870911`）。已分配的 ID 应保持稳定，不要复用于其他字段。未设置 ID 的字段使用字段名。
 
 ## `@ForyField(with:)`
 

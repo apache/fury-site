@@ -619,18 +619,20 @@ struct TypeDef 的元信息 header 字节：
 每个字段的编码如下：
 
 ```
-| field header (1 byte) | field type info | [field name bytes] |
+| field header (1 byte) | [extended name or tag value] | field type info | [field name bytes] |
 ```
+
+可选扩展值为 `varuint32`。当较长的编码名称或扩展 tag ID 使四位大小字段饱和时出现，具体规则如下。
 
 字段 header 布局：
 
-- Bits 6-7：字段名称编码（`UTF8`、`ALL_TO_LOWER_SPECIAL`、`LOWER_UPPER_DIGIT_SPECIAL` 或 `TAG_ID`）
-- Bits 2-5：大小
-  - 对于名称编码：`size = (name_bytes_length - 1)`
-  - 对于 tag ID：`size = tag_id`
-  - 如果 `size == 0b1111`，读取 `varuint32(size - 15)` 并加到该值上
-- Bit 1：nullable flag
-- Bit 0：引用跟踪 flag
+- 位 6-7：字段名编码（`UTF8`、`ALL_TO_LOWER_SPECIAL`、`LOWER_UPPER_DIGIT_SPECIAL` 或 `TAG_ID`）
+- 位 2-5：大小
+  - 名称编码中，令 `logical_size = name_bytes_length - 1`，存储 `size = min(logical_size, 15)`。若 `logical_size >= 15`，在头部后写入 `varuint32(logical_size - 15)`；解码时将扩展值加上 `15`，再加 `1` 得到 `name_bytes_length`。
+  - tag ID：`size = min(tag_id, 15)`
+  - tag ID 的 `size == 0b1111` 时，在头部后写入 `varuint32(tag_id - 15)`；解码时将扩展值加上 `15`
+- 位 1：可空标志
+- 位 0：引用跟踪标志
 
 字段类型信息：
 
@@ -641,9 +643,10 @@ struct TypeDef 的元信息 header 字节：
 
 字段名称：
 
-- 如果使用 `TAG_ID` 编码，则不写入名称字节。
-- 否则，将编码后的字段名称字节作为元字符串写入。
-- 对于 xlang，字段名称在编码前转换为 `snake_case`，以实现跨语言兼容。
+- 使用 `TAG_ID` 编码时，不写入名称字节。
+- tag ID 是范围为 `0 <= tag_id < 2^29`（`0` 至 `536870911`）的有符号 32 位协议值。该上限确保完整协议域可由每种实现的有符号 32 位字段 ID 类型表示；扩展形式仍使用现有 `varuint32` 编码写入 `tag_id - 15`。
+- 否则，将编码后的字段名字节作为元字符串写入。
+- 在 xlang 中，字段名转换为 `snake_case`，以支持跨语言兼容。
 
 字段顺序：
 
@@ -1449,7 +1452,7 @@ Struct 指 `class/pojo/struct/bean/record` 类型的对象。Struct 值按 Fory 
 - 如果配置了非负 tag ID（例如 `@ForyField(id=...)`），则使用该 tag ID。
 - 否则，使用转换为 `snake_case` 的字段名称。
 
-配置的 tag ID 必须为非负值。配置负 tag ID 无效；语言只能将负值用作表示“未配置 tag ID”的默认值或内部 sentinel，此时回退到 `snake_case` 字段名称，该负值不是 tag ID。tag ID 在一个类型内必须唯一；重复的 tag ID 无效。
+配置的 tag ID 必须满足 `0 <= tag_id < 2^29`。负的配置 tag ID 无效；语言实现仅可用负值作为“未配置 tag ID”的默认值或内部哨兵值，此时回退到 `snake_case` 字段名，该值本身不是 tag ID。大于等于 `2^29` 的值无效。tag ID 必须在类型内唯一，不允许重复。
 
 字段标识符按以下规则比较：
 

@@ -24,7 +24,7 @@ Fory JSON 通过可选的 `fory-json-scala` 制品支持 Scala 2.13 和 Scala 3�
 ## 设置 {#setup}
 
 ```sbt
-libraryDependencies += "org.apache.fory" %% "fory-json-scala" % "1.7.0"
+libraryDependencies += "org.apache.fory" %% "fory-json-scala" % "1.7.1"
 ```
 
 `ForyJsonScala.builder()` 安装 Scala 模块并返回标准 Fory JSON builder：
@@ -40,6 +40,10 @@ val person = json.fromJson(text, classOf[Person])
 ```
 
 请复用得到的 `ForyJson` 实例。它在构建后不可变且线程安全。
+使用 `ForyJsonScala.builder().writeLongAsString(true)` 可将 Scala `Long` 值以带引号的十进制字符串
+输出，包括声明的 collection 和 Map 值、`Option[Long]`、以 `Long` 为底层值的值类以及 Java Long
+类包装器。Reader 同时接受带引号和不带引号的整数 token。参数化声明包含 `Long` 时应使用
+`ScalaTypeRef`，因为普通 JVM 签名可能会将 Scala 值类型参数擦除为 `Object`。
 
 ## Case class 与注解 {#case-classes-and-annotations}
 

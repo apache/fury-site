@@ -19,7 +19,7 @@ license: |
   limitations under the License.
 ---
 
-Fory JSON 在 `org.apache.fory.json.annotation` 中提供以下映射和验证注解：`JsonAnyGetter`、`JsonAnyProperty`、`JsonAnySetter`、`JsonBase64`、`JsonCodec`、`JsonCreator`、`JsonFormat`、`JsonIgnore`、`JsonProperty`、`JsonPropertyOrder`、`JsonRawValue`、`JsonSubTypes`、`JsonUnwrapped`、`JsonValidator` 和 `JsonValue`。`JsonType` 是独立的构建期模型标记。这些属于 Fory JSON API，不是 Jackson、Gson 或 Fory 二进制协议兼容注解。
+Fory JSON 在 `org.apache.fory.json.annotation` 中提供以下映射和验证注解：`JsonAnyGetter`、`JsonAnyProperty`、`JsonAnySetter`、`JsonByteArray`、`JsonCodec`、`JsonCreator`、`JsonFormat`、`JsonIgnore`、`JsonProperty`、`JsonPropertyOrder`、`JsonRawValue`、`JsonSubTypes`、`JsonUnwrapped`、`JsonValidator` 和 `JsonValue`。`JsonType` 是独立的构建期模型标记。这些属于 Fory JSON API，不是 Jackson、Gson 或 Fory 二进制协议兼容注解。
 
 `JsonType` 不会被继承，因此每个需要参与平台构建流程且符合要求的具体模型都必须单独标注。Java 源码需要使用 `fory-annotation-processor`。未标注的普通 Java 类仍可使用反射；在 Android 上，它们需要由应用编写精确 R8 规则。经过 Android 脱糖处理的 Record 必须直接声明 `JsonType`，或使用已编译的精确 `JsonMixin` 配对。在 Native Image 之外，直接标注的 Java 模型如果使用默认对象编解码器却未运行注解处理器，会在创建编解码器时失败。
 
@@ -304,26 +304,34 @@ Map 值。它不能放在 setter、创建器参数或 Any 声明上，也不能�
 `JsonValue` 和 `JsonRawValue` 可以组合在同一个 String 成员上，将所属对象写为可信的原始根值。
 这种组合仅支持序列化：普通的单 String 参数 `JsonCreator` 无法将输入对象或数组转换为 String。
 
-## `JsonBase64`
+## `JsonByteArray`
 
-`JsonBase64` 为一个精确的 `byte[]` 字段或 getter 选择带引号的标准 Base64 JSON 字符串表示：
+未标注的 `byte[]` 值使用带引号的标准 Base64 JSON 字符串。`JsonByteArray` 为一个精确的 `byte[]`
+字段或 getter 选择 `BASE64` 或 `ARRAY` 表示，并同时作用于读写：
 
 ```java
-import org.apache.fory.json.annotation.JsonBase64;
+import org.apache.fory.json.annotation.JsonByteArray;
 
 public final class Attachment {
-  @JsonBase64
+  @JsonByteArray(JsonByteArray.Format.ARRAY)
+  public byte[] numbers;
+
+  @JsonByteArray(JsonByteArray.Format.BASE64)
   public byte[] content;
 }
 ```
 
-字节 `{1, 2, 3}` 会写为 `{"content":"AQID"}`，并可解码回原始数组。Fory 会将 Base64 字符直接写入
-JSON 输出，也会直接从 JSON 输入解码，不创建中间 String。标准 Base64 填充会被保留。Java null 遵循
-属性的常规包含规则，从 JSON null 读取时也得到 null。
+对于字节 `{1, -2, 3}`，`numbers` 写为 `[1,-2,3]`，`content` 写为 `"Af4D"`。`ARRAY` 按有符号
+字节范围 `[-128, 127]` 读取 JSON 数组；`BASE64` 读取标准 Base64 字符串，并在写入时保留填充符。
+两种表示都接受 JSON null，null 输出遵循属性的常规包含规则。默认 Base64 编解码器不接受数字数组
+输入；使用该格式的属性应选择 `ARRAY`。
 
-该注解不是类型使用注解，不会改变普通的未标注 `byte[]` 属性、容器元素或 Map 值。它不能与
-`JsonRawValue`、声明位置上的 `JsonCodec`、`JsonFormat` 或 Any 声明共用于同一逻辑属性。等效的显式
-编解码器为 `@JsonCodec(Base64ByteArrayCodec.class)`。
+使用该注解时必须指定格式。它只作用于被标注的字节数组属性，不作用于容器元素或 Map 值。Mixin
+声明可以选择或移除该注解。它不能与 `JsonRawValue`、声明位置上的 `JsonCodec`、`JsonFormat` 或 Any
+声明共用于同一逻辑属性。同一属性的字段和 getter 选择冲突格式时会被拒绝。
+
+Base64 值是二进制叶值，不计入对象图内存配额；数字数组则会将其数组存储计入该配额。详见
+[安全](security.md#depth-and-graph-memory-limits)。
 
 ## `JsonFormat`
 
@@ -377,7 +385,7 @@ public final class Schedule {
 原始类型或通配符直接子元素、JSON Any 值以及展开值会被有意拒绝。不支持格式化语义模糊的类型，包括
 旧版和 SQL 日期类型、`Duration`、`Period`、`TimeZone`、`ZoneId` 和 `ZoneOffset`。具有完整注册表示、
 注解选择表示、多态表示或 `JsonValue` 表示的包装类型也会被拒绝，因为这些表示方式拥有整个包装对象。
-`JsonFormat` 不能与 `JsonCodec`、`JsonBase64`、`JsonRawValue`、`JsonAnyProperty`、`JsonUnwrapped` 或
+`JsonFormat` 不能与 `JsonCodec`、`JsonByteArray`、`JsonRawValue`、`JsonAnyProperty`、`JsonUnwrapped` 或
 `JsonValue` 共用于同一字段。
 
 ## `JsonUnwrapped`
