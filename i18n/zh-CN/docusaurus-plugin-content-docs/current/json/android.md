@@ -115,12 +115,12 @@ public final class Invoice {
 
 ```java
 import org.apache.fory.json.ForyJson;
-import org.apache.fory.json.annotation.JsonBase64;
+import org.apache.fory.json.annotation.JsonByteArray;
 import org.apache.fory.json.annotation.JsonMixin;
 
 @JsonMixin(target = ThirdPartyInvoice.class)
 public abstract class ThirdPartyInvoiceMixin {
-  @JsonBase64 byte[] signature;
+  @JsonByteArray(JsonByteArray.Format.BASE64) byte[] signature;
 }
 
 ForyJson json =
@@ -158,7 +158,7 @@ Mixin 可在与目标公共方法精确匹配的公共抽象无参 `void` 方法
 
 本节的反射规则适用于 Java 模型。Kotlin 模型使用 Kotlin JSON 模块；启用代码压缩的 Android 构建应使用 KSP，而不是编写宽泛的包级 keep 规则。
 
-Java `@JsonType` 模型支持有效的 `JsonValidator`、`JsonValue`、`JsonRawValue`、`JsonBase64` 和 `JsonFormat` 注解。未标注 `@JsonType` 时，这些注解仍可通过反射工作，但经过发布压缩的应用必须自行保留精确的注解成员、注解属性和编解码器构造函数。`JsonValue` 方法可以使用不符合 JavaBean 约定的名称，因此手写规则必须明确指定该方法。
+Java `@JsonType` 模型支持有效的 `JsonValidator`、`JsonValue`、`JsonRawValue`、`JsonByteArray` 和 `JsonFormat` 注解。未标注 `@JsonType` 时，这些注解仍可通过反射工作，但经过发布压缩的应用必须自行保留精确的注解成员、注解属性和编解码器构造函数。`JsonValue` 方法可以使用不符合 JavaBean 约定的名称，因此手写规则必须明确指定该方法。
 
 Kotlin 模型使用相同的有效注解。启用代码压缩时，请使用 KSP。`JsonFormat` 与 JVM 上一样支持直接字段和一层包装，包括为 `Instant`、`ZonedDateTime` 和 `OffsetDateTime` 指定 `timezone`。
 

@@ -24,7 +24,7 @@ Fory JSON 通过可选的 `fory-json-scala` 制品支持 Scala 2.13 和 Scala 3�
 ## 设置 {#setup}
 
 ```sbt
-libraryDependencies += "org.apache.fory" %% "fory-json-scala" % "1.7.0"
+libraryDependencies += "org.apache.fory" %% "fory-json-scala" % "1.7.1"
 ```
 
 `ForyJsonScala.builder()` 安装 Scala 模块并返回标准 Fory JSON builder：
@@ -40,10 +40,16 @@ val person = json.fromJson(text, classOf[Person])
 ```
 
 请复用得到的 `ForyJson` 实例。它在构建后不可变且线程安全。
+使用 `ForyJsonScala.builder().writeLongAsString(true)` 可将 Scala `Long` 值以带引号的十进制字符串
+输出，包括声明的 collection 和 Map 值、`Option[Long]`、以 `Long` 为底层值的值类以及 Java Long
+类包装器。Reader 同时接受带引号和不带引号的整数 token。参数化声明包含 `Long` 时应使用
+`ScalaTypeRef`，因为普通 JVM 签名可能会将 Scala 值类型参数擦除为 `Object`。
 
 ## Case class 与注解 {#case-classes-and-annotations}
 
 case class 通过调用完整主构造函数解码。对于缺失且有默认值的参数，Fory 调用 Scala 生成的构造函数默认值方法，不解析默认值表达式，也不修改构造函数 `val` 字段。后续参数列表中的默认值会按 Scala 语义接收前面已确定的构造函数参数。缺少无默认值的参数会报错。类体中的可变属性在构造后赋值。
+
+case class 可以声明在顶层，也可以嵌套在任意层数的 `object` 内，但每一层外部作用域都必须是 `object`。如果外层是 `class`、trait 或方法，读写都会被拒绝，因为 Fory 无法访问重建值所需的外部实例或伴生对象。
 
 Fory JSON 注解可以直接放在 Scala 构造函数属性上：
 

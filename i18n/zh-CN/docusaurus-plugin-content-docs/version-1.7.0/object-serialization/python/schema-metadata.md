@@ -70,15 +70,15 @@ class User:
 
 ### 参数
 
-| 参数              | 类型     | 默认值    | 说明                 |
-| ----------------- | -------- | --------- | -------------------- |
-| `id`              | `int`    | 省略      | 非负字段 tag ID      |
-| `nullable`        | `bool`   | `False`   | 字段是否可以为 null  |
-| `ref`             | `bool`   | `False`   | 启用引用跟踪         |
-| `ignore`          | `bool`   | `False`   | 从序列化中排除字段   |
-| `dynamic`         | `bool`   | `None`    | 控制是否写入类型信息 |
-| `default`         | Any      | `MISSING` | 字段默认值           |
-| `default_factory` | Callable | `MISSING` | 默认值工厂函数       |
+| 参数 | 类型 | 默认值 | 说明 |
+| ----------------- | ------ | --------- | ------------------------------- |
+| `id` | `int` | 省略 | `0 <= id < 2^29` 范围内的字段 tag ID |
+| `nullable` | `bool` | `False` | 字段是否可以为 null |
+| `ref` | `bool` | `False` | 启用引用跟踪 |
+| `ignore` | `bool` | `False` | 从序列化中排除字段 |
+| `dynamic` | `bool` | `None` | 控制是否写入类型信息 |
+| `default` | Any | `MISSING` | 字段默认值 |
+| `default_factory` | Callable | `MISSING` | 默认值工厂函数 |
 
 ## 字段 ID（`id`）
 
@@ -102,9 +102,10 @@ class User:
 
 **注意事项**：
 
-- ID 在类中必须唯一
-- ID 必须 >= 0
+- ID 必须在结构体 Schema 内唯一
+- ID 必须满足 `0 <= id < 2^29`（`0` 至 `536870911`）
 - 如果未指定，元数据使用字段名（开销更大）
+- 分配 ID 后应保持稳定，不要复用于其他字段
 
 **不使用字段 ID**（元数据使用字段名）：
 

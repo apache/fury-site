@@ -187,6 +187,7 @@ JSON 对象成员名都是字符串。声明的 Map 键支持 `String`、`byte`�
 | Builder 方法 | 默认值 | 用户可见的效果 |
 | -------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
 | `writeNullFields(boolean)` | `false` | 是否默认包含值为 null 的对象属性 |
+| `writeLongAsString(boolean)` | `false` | 将内置 64 位整数值写为十进制字符串 |
 | `withCodegen(boolean)` | `true` | 启用生成的对象编解码器 |
 | `withAsyncCompilation(boolean)` | `true` | 异步编译生成的编解码器 |
 | `withFieldMode(boolean)` | `false` | 为 true 时，仅发现字段而不使用 getter/setter |
@@ -196,6 +197,12 @@ JSON 对象成员名都是字符串。声明的 Map 键支持 `String`、`byte`�
 | `withBufferSizeLimitBytes(int)` | 2 MiB | 每个池化 writer 可保留的最大复用容量 |
 | `registerCodec(type, codec)` | None | 替换允许注册的精确类的完整 JSON 编解码器 |
 | `registerMixin(mixinType)` | None | 将一个注解 Mixin 应用于其精确声明的目标 |
+
+当 64 位整数必须经过 JavaScript 且不能损失 `Number` 精度时，请启用 `writeLongAsString(true)`。
+该设置会将内置 `long`/`Long`、`AtomicLong`、`AtomicLongArray` 和 `OptionalLong` 值写为带引号的
+十进制字符串，也会沿着数组、collection、Map 值、`Optional<Long>`、`AtomicReference<Long>` 和
+等效语言模块容器中的声明 Long 子项生效。无论是否启用该设置，Reader 都同时接受数字和带引号的
+整数 token。自定义编解码器以及声明位置上的编解码器或格式注解仍保持自己的输出形式。
 
 并发级别和缓冲区保留限制必须为正数。字段名缓存上限分别应用于每个 reader；零会禁用该缓存。该上限
 只限制缓存的字段名数量，不限制输入中可接受的名称。缓冲区保留设置不会限制 JSON 输入或输出大小，

@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-  implementation("org.apache.fory:fory-kotlin:1.7.0")
+  implementation("org.apache.fory:fory-kotlin:1.7.1")
 }
 ```
 
@@ -81,7 +81,7 @@ Fory JSON 是独立于二进制对象序列化的文本格式。与普通 JSON A
 
 ```kotlin title="build.gradle.kts"
 dependencies {
-  implementation("org.apache.fory:fory-json-kotlin:1.7.0")
+  implementation("org.apache.fory:fory-json-kotlin:1.7.1")
 }
 ```
 

@@ -41,7 +41,7 @@ Maven:
 <dependency>
   <groupId>org.apache.fory</groupId>
   <artifactId>fory-json</artifactId>
-  <version>1.7.0</version>
+  <version>1.7.1</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ repositories {
   mavenCentral()
 }
 
-implementation("org.apache.fory:fory-json:1.7.0")
+implementation("org.apache.fory:fory-json:1.7.1")
 ```
 
 ### Kotlin
@@ -64,7 +64,7 @@ Kotlin/JVM 应用添加可选的 Kotlin JSON 运行时，并使用其统一 buil
 
 ```kotlin title="build.gradle.kts"
 dependencies {
-  implementation("org.apache.fory:fory-json-kotlin:1.7.0")
+  implementation("org.apache.fory:fory-json-kotlin:1.7.1")
 }
 ```
 

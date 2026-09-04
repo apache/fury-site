@@ -44,7 +44,7 @@ Apache Fory™ Dart 可以将 Dart 对象序列化为字节并反序列化，也
 
 ```yaml
 dependencies:
-  fory: ^1.7.0
+  fory: ^1.7.1
 
 dev_dependencies:
   build_runner: ^2.4.0

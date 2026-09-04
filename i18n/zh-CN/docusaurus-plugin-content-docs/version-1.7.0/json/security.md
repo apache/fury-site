@@ -53,7 +53,7 @@ ClassLoader。此后更改线程上下文 ClassLoader 不会影响该 `ForyJson`
 和 `InetSocketAddress`。应用可以通过自己拥有的精确自定义 codec 支持 `URL`。任意
 `Number` 和 `CharSequence` 子类同样需要精确的内置或自定义 codec。
 
-## 深度与对象图内存限制
+## 深度与对象图内存限制 {#depth-and-graph-memory-limits}
 
 `maxDepth` 限制数组和对象的嵌套深度，默认值为 `20`，配置值必须为正数。它并不是输入字节数或
 内存配额。`ForyJsonBuilder.withMaxGraphMemoryBytes` 独立限制每次根读取所创建并保留的对象图

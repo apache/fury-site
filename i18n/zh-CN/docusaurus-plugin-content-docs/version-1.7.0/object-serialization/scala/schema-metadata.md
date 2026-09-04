@@ -37,6 +37,8 @@ final case class Person(
 ) derives ForySerializer
 ```
 
+配置的字段 ID 必须在结构体 Schema 内唯一，并满足 `0 <= id < 2^29`（`0` 至 `536870911`）。已分配的 ID 应保持稳定，不要复用于其他字段。省略 `id` 时使用字段名。
+
 Schema `optional T` 字段表示为 `Option[T]`。
 
 ## 引用跟踪

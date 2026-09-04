@@ -37,7 +37,7 @@ license: |
 | OutputStream 写入失败 | 底层 `IOException` 被包装为 `ForyJsonException` 的 cause |
 | Kotlin null 或成员缺失导致失败 | 检查精确的 `jsonTypeRef`、构造函数默认值和可空使用位置；null 不会请求编译器默认值 |
 | Kotlin 原始泛型、星投影或类型投影失败 | 提供完整的 `jsonTypeRef<T>()`；`in` 和星投影无法重建一个精确 Schema |
-| 不支持的 Kotlin 元数据 | 使用受支持的 Kotlin 2.3 编译器编译模型，并确保经过验证的 JVM 成员与元数据匹配 |
+| 不支持的 Kotlin 元数据 | 确保解析到的 `kotlin-metadata-jvm` 支持模型编译器的元数据，并且经过验证的 JVM 成员与元数据匹配 |
 | Kotlin 模型在 Android 代码压缩后失败 | 启用 KSP；精确 Mixin 的来源或目标任一为 Kotlin 时均需使用，并验证生成的规则已打包 |
 | Native Image 中缺少 Kotlin 模型 | 从可达的 `ForyJsonProvider` 安装 `ForyJsonKotlin`，启用代码生成，并使精确绑定从该配置可达 |
 

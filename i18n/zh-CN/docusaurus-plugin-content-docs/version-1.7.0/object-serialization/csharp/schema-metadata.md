@@ -23,7 +23,7 @@ license: |
 
 ## `[ForyStruct]` 和 `[ForyField]`
 
-使用 `[ForyStruct]` 启用源码生成序列化器。使用 `[ForyField]` 分配可选、稳定的非负字段 ID，或覆盖字段所用的 Fory Schema 类型。
+使用 `[ForyStruct]` 启用源码生成的序列化器。使用 `[ForyField]` 可分配可选的稳定字段 ID，或覆盖字段使用的 Fory Schema 类型。配置的 ID 必须在完整结构体 Schema 内唯一，并满足 `0 <= id < 2^29`（`0` 至 `536870911`）。
 
 外部类型序列化在本地抽象序列化器声明上设置 `Target`。该声明的属性定义字段名称、ID、Schema 描述符和可空性。独立声明还定义其 `Evolving` 设置。外部 `BaseOnly` 声明不能设置 `Evolving`；该设置由每个具体派生类型负责。目标提供目标类型的值和直接访问的成员。
 
@@ -64,7 +64,7 @@ public sealed class Metrics
 }
 ```
 
-`Id` 是可选的。省略时，兼容模式仍按名称匹配字段。
+`Id` 是可选的。省略时，兼容模式仍按字段名匹配。分配 ID 后应保持稳定，不要将其复用于其他字段。
 
 ```csharp
 using Apache.Fory;
