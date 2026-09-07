@@ -170,11 +170,39 @@ data class Profile(
 
 In this example, the constructor parameter `id` maps to the JSON member `user_id`. Naming, formatting, Mixins, and custom codecs use Fory's shared annotation system. The [annotation guide](/docs/json/annotations#kotlin-use-site-targets) explains the supported Kotlin targets and how they combine.
 
+## How Fory JSON Achieves High Performance in Kotlin
+
+Fory's Kotlin support connects language-aware object mapping to an optimized JSON engine. The Kotlin module determines how a declared type should be represented and constructed; the shared runtime specializes the repeated work of reading and writing that representation. This design reduces model discovery, dispatch, text processing, and temporary allocation while preserving Kotlin's construction rules.
+
+### Preparing Kotlin Types Once
+
+When preparing a codec, the Kotlin module reads class metadata and resolves the constructor, property accessors, exact generic bindings, nullability, and parameters with compiler defaults. It translates this information into the runtime's object model. Retaining the runtime and `jsonTypeRef<T>()` allows subsequent operations to reuse the resolved codecs without repeating that metadata analysis.
+
+For the `Request` example, the prepared model already identifies `id` as required and records how to invoke the defaults for `label` and `retries`. Each read still checks which members are present and whether their values are valid. Default expressions execute when construction requires them; their results are not cached. The saved work is rediscovering the rules, while the rules themselves remain part of deserialization.
+
+### Generating Code for the Declared Model
+
+On a standard JDK, Fory generates and compiles codecs specialized for the target model. Generated writers use known property accessors and concrete primitive operations. Property names, quotes, colons, and separators can be prepared as encoded prefixes, allowing a field such as `"id":` to be emitted through packed writes instead of repeated escaping and individual character writes.
+
+Generated readers likewise specialize property matching and value decoding for the declared schema. They read constructor arguments, track absent parameters, and invoke the selected constructor or its compiler-generated default form. Common property matches use prepared names and direct input probes, reducing repeated name decoding and generic lookup. Other field orders and escaped names remain supported through fallback paths.
+
+This specialization gives the JVM concrete operations to optimize while preserving normal Kotlin initialization and validation. Runtime generation is enabled by default on standard JDKs; an interpreted path supports environments where runtime compilation is unavailable.
+
+### Processing Numbers and Text Directly
+
+Integer and long writers encode decimal digits directly into the output buffer, including the unsigned representations used by Kotlin. Floating-point writers use direct formatting paths where the JDK supports them. Common scalar writes therefore avoid creating a temporary String for each value. Integer readers also parse digits from the input directly, with syntax and overflow checks, instead of allocating a numeric substring first.
+
+Text processing uses bulk operations on common ASCII and Latin-1 paths. For example, the UTF-8 writer scans ASCII text in 8-byte or 16-byte groups to detect characters that require escaping, then copies eligible spans in bulk. Escapes and non-ASCII characters follow the appropriate encoding paths. Together with prepared property prefixes, this reduces per-character branching and copying overhead across the repeated names and text values in structured JSON.
+
+### Reusing Buffers and Keeping UTF-8 Direct
+
+A reusable `ForyJson` runtime retains execution states containing readers, writers, resolver caches, and output buffers. Each active operation has exclusive use of its borrowed state. Subsequent calls can reuse that working storage, reducing temporary allocation and garbage-collection pressure. Returning a String or byte array still allocates the requested result; buffer growth and constructing the deserialized object graph also require memory.
+
+The byte APIs preserve these paths through the complete operation. `toJsonBytes` writes JSON directly into a UTF-8 buffer, and `fromJson` reads UTF-8 bytes directly into the declared Kotlin model. Typed object mapping does not require an intermediate JSON tree or a String representation of the complete document. This matters when a service already receives or sends bytes, especially for the larger Users and Clients documents below.
+
 ## Performance on Kotlin Models
 
-Kotlin-aware construction does not require discovering the model anew for each operation. Fory prepares codecs for the declared schema and reuses that preparation across calls. On standard JDKs, generated codecs specialize property access, object framing, and primitive operations. Deserialization still invokes the model's constructor and enforces its type rules.
-
-The JSON engine also reuses internal buffers and writes UTF-8 directly. Returning a String or byte array still allocates the requested result; buffer reuse reduces temporary work around that allocation. Together, these mechanisms support repeated operations on Kotlin models. The [Java JSON introduction](/blog/fory_json_fastest_java_json_framework) describes the shared engine's lower-level optimizations.
+The following benchmarks measure these mechanisms together on Kotlin models. MediaContent covers smaller structured messages, while Users and Clients exercise repeated records, collections, and JDK value types in documents of approximately 1 MB. The results measure complete library operations and do not isolate the contribution of each optimization.
 
 ### Benchmark Setup
 
