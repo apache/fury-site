@@ -10,11 +10,11 @@ tags: [fory, kotlin, java, json, serialization, performance]
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## Kotlin 应用中的 JSON 序列化 {#kotlin-models-as-json-contracts}
+## 面向 Kotlin 的 JSON 映射 {#kotlin-json-mapping}
 
-Kotlin 应用经常需要接收 HTTP 请求、消费队列消息，或读取 JSON 文档。这些数据进入应用后，要转换成 Kotlin 对象；返回响应或写入存储时，又要转回 JSON。转换时需要遵循模型的类型和构造规则：正确传入参数、执行初始化逻辑，并在输出中保留还原对象所需的值。
+在 Kotlin 中，JSON 映射并不只是读写对象字段。默认参数和可空类型会影响对象的构造方式，值类和密封类型也有自己的类型语义。要正确处理这些模型，JSON 库需要理解 Kotlin 的类型信息和构造规则。
 
-对于需要处理大量消息或大文档的服务，序列化的 CPU 开销和临时内存分配也会影响性能。Apache Fory JSON 为 Kotlin 提供了专门的对象映射支持，负责处理 Kotlin 的类型信息和对象构造，底层沿用 Fory 的高性能 JSON 引擎完成解析和输出。它既支持字符串，也支持直接读写 UTF-8 字节。
+Apache Fory JSON 为 Kotlin/JVM 提供了专门的对象映射层。它通过 Kotlin 元数据解析类型、属性和构造参数，再由 Fory 的高性能 JSON 引擎完成 JSON 的解析与编码。
 
 ## 快速开始 {#getting-started}
 

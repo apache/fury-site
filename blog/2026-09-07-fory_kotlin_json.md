@@ -10,11 +10,11 @@ tags: [fory, kotlin, java, json, serialization, performance]
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## JSON Serialization in Kotlin Applications {#kotlin-models-as-json-contracts}
+## JSON Mapping for Kotlin {#kotlin-json-mapping}
 
-Kotlin applications exchange JSON through HTTP APIs, message queues, and stored documents. Application code works with typed models, so each exchange involves converting between JSON and Kotlin objects. Reading a document includes constructing an object with the right arguments and running its initialization logic; writing it must preserve the values needed to reconstruct that object.
+In Kotlin, JSON mapping involves more than reading and writing object fields. Default parameters and nullable types affect how objects are constructed, while value classes and sealed hierarchies have their own type semantics. A JSON library needs to understand Kotlin's type information and construction rules to handle these models correctly.
 
-These conversions also consume CPU time and allocate temporary objects, especially when a service processes many messages or large documents. Apache Fory JSON combines Kotlin object mapping with a high-performance JSON engine: the Kotlin layer follows the model's type and construction rules, while the engine handles JSON parsing and output. The same mapping is available through String and direct UTF-8 APIs.
+Apache Fory JSON provides a dedicated object mapping layer for Kotlin/JVM. It resolves types, properties, and constructor parameters from Kotlin metadata, while Fory's high-performance JSON engine handles JSON parsing and encoding.
 
 ## Getting Started
 
