@@ -1,12 +1,12 @@
 ---
 slug: fory_kotlin_json
 title: "Apache Fory™ JSON: High-Performance JSON Serialization for Kotlin"
-description: "Fory JSON maps Kotlin models to standard JSON while preserving constructor defaults, nullability, value classes, and sealed hierarchies. Learn how to use it and explore Kotlin MediaContent and 1000 KB benchmark results."
+description: "Fory JSON provides high-performance JSON serialization for Kotlin, preserving constructor defaults, nullability, value classes, and sealed hierarchies. Benchmarks cover MediaContent and 1000 KB Users and Clients documents."
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON for Kotlin combines standard JSON interoperability with Kotlin constructor defaults, nullability, value classes, and sealed hierarchies. The JVM module supports String and direct UTF-8 APIs without requiring `kotlin-reflect`. In the benchmarks presented here, Fory JSON Kotlin 1.7.1 delivers **3.63×–12.12× the throughput** of kotlinx.serialization, Moshi, and Jackson Kotlin on MediaContent, and **2.78×–9.75×** on 1000 KB Users and Clients documents.
+**TL;DR**: Apache Fory JSON for Kotlin combines standard JSON interoperability with Kotlin constructor defaults, nullability, value classes, and sealed hierarchies. It supports String and direct UTF-8 APIs without requiring `kotlin-reflect`. In the benchmarks presented here, Fory JSON Kotlin 1.7.1 delivers **3.63×–12.12× the throughput** of kotlinx.serialization, Moshi, and Jackson Kotlin on MediaContent, and **2.78×–9.75×** on 1000 KB Users and Clients documents.
 
 - GitHub: [apache/fory](https://github.com/apache/fory)
 - Documentation: [Fory JSON for Kotlin](/docs/json/kotlin)

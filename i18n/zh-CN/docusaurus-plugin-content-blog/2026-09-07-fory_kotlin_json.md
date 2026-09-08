@@ -1,12 +1,12 @@
 ---
 slug: fory_kotlin_json
 title: "Apache Fory™ JSON Kotlin：极速 Kotlin JSON 序列化框架"
-description: "Fory JSON 将 Kotlin 模型映射为标准 JSON，同时保留构造函数默认值、可空性、值类和 sealed 层次结构。本文介绍其使用方式、性能原理，以及 Kotlin MediaContent 和 1000 KB 文档的基准测试结果。"
+description: "Fory JSON 为 Kotlin 提供高性能 JSON 序列化，保留构造函数默认值、可空性、值类和 sealed 层次结构的语义。基准测试涵盖 MediaContent 和 1000 KB Users、Clients 文档。"
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**摘要**：Apache Fory JSON for Kotlin 在提供标准 JSON 互操作能力的同时，保留 Kotlin 构造函数默认值、可空性、值类和 sealed 层次结构的语义。该 JVM 模块支持 String API 和直接处理 UTF-8 的 API，无需依赖 `kotlin-reflect`。在本文展示的基准测试中，Fory JSON Kotlin 1.7.1 处理 MediaContent 时，吞吐量为 kotlinx.serialization、Moshi 和 Jackson Kotlin 的 **3.63–12.12 倍**；处理 1000 KB 的 Users 和 Clients 文档时，吞吐量为这些库的 **2.78–9.75 倍**。
+**摘要**：Apache Fory JSON for Kotlin 在提供标准 JSON 互操作能力的同时，保留 Kotlin 构造函数默认值、可空性、值类和 sealed 层次结构的语义。支持 String API 和直接处理 UTF-8 的 API，无需依赖 `kotlin-reflect`。在本文展示的基准测试中，Fory JSON Kotlin 1.7.1 处理 MediaContent 时，吞吐量为 kotlinx.serialization、Moshi 和 Jackson Kotlin 的 **3.63–12.12 倍**；处理 1000 KB 的 Users 和 Clients 文档时，吞吐量为这些库的 **2.78–9.75 倍**。
 
 - GitHub：[apache/fory](https://github.com/apache/fory)
 - 文档：[Fory JSON for Kotlin](/docs/json/kotlin)
