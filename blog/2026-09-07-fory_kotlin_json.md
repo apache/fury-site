@@ -1,6 +1,6 @@
 ---
 slug: fory_kotlin_json
-title: "Introducing Apache Fory™ JSON Kotlin: Blazing-Fast JSON Serialization"
+title: "Apache Fory™ JSON: High-Performance JSON Serialization for Kotlin"
 description: "Fory JSON maps Kotlin models to standard JSON while preserving constructor defaults, nullability, value classes, and sealed hierarchies. Learn how to use it and explore Kotlin MediaContent and 1000 KB benchmark results."
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
