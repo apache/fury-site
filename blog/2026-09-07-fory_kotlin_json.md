@@ -6,17 +6,15 @@ authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. Use data classes, constructor defaults, nullable properties, value classes, and sealed hierarchies directly, with String and UTF-8 APIs and no `kotlin-reflect` dependency. In benchmarks covering small messages and large documents, Fory delivers higher throughput than kotlinx.serialization, Moshi, and Jackson Kotlin.
+**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. In benchmarks covering small messages and large documents, Fory delivers **2.78×–12.12× the throughput** of kotlinx.serialization, Moshi, and Jackson Kotlin.
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## JSON That Fits Your Kotlin Models {#kotlin-models-as-json-contracts}
+## JSON Serialization in Kotlin Applications {#kotlin-models-as-json-contracts}
 
-Kotlin applications often describe API requests and responses with data classes. Default arguments determine what happens when an input is omitted, while nullable types express where null is allowed. Value classes distinguish domain values such as account IDs, and sealed hierarchies model alternatives such as different payment methods.
+Kotlin applications exchange JSON through HTTP APIs, message queues, and stored documents. Application code works with typed models, so each exchange involves converting between JSON and Kotlin objects. Reading a document includes constructing an object with the right arguments and running its initialization logic; writing it must preserve the values needed to reconstruct that object.
 
-A JSON library should follow those declarations when reading and writing your models. It should apply defaults to missing properties, enforce nullability inside collections, and run constructor initialization and validation when reconstructing objects. Its output should preserve the values needed to read the object back correctly.
-
-Apache Fory JSON supports these Kotlin models directly. Its Kotlin/JVM mapping layer preserves their type and construction rules while using Fory's high-performance JSON engine. Applications can exchange standard JSON text or UTF-8 bytes using familiar Kotlin declarations, without writing a custom adapter for each data class.
+These conversions also consume CPU time and allocate temporary objects, especially when a service processes many messages or large documents. Apache Fory JSON combines Kotlin object mapping with a high-performance JSON engine: the Kotlin layer follows the model's type and construction rules, while the engine handles JSON parsing and output. The same mapping is available through String and direct UTF-8 APIs.
 
 ## Getting Started
 
@@ -227,10 +225,10 @@ The measurements describe the selected models and configuration on one machine. 
 
 ## JVM, Android, and GraalVM {#jvm-and-deployment-support}
 
-This module targets Kotlin/JVM and does not require `kotlin-reflect`. The runtime is built with Kotlin 2.3.20; model compatibility follows the supported versions of Kotlin's metadata reader. The [installation guide](/docs/json/kotlin#installation) covers compatibility, and the [runtime guide](/docs/json/getting-started) includes the recommended `java.lang.invoke` opening on JDK 25 and later.
+This module targets Kotlin/JVM and does not require `kotlin-reflect`. The [installation guide](/docs/json/kotlin#installation) covers compatibility, and the [runtime guide](/docs/json/getting-started) includes the recommended `java.lang.invoke` opening on JDK 25 and later.
 
 Android API 26 and later uses interpreted JSON mapping. With R8 or ProGuard enabled, add `fory-json-kotlin-ksp` and annotate required source models with `JsonType` to preserve mapping information. GraalVM Native Image uses the `ForyJsonProvider` workflow to install the Kotlin module and select reachable models for code generation. The [platform guide](/docs/json/kotlin#graalvm-and-android) covers both setups. Kotlin/Native, Kotlin/JS, and Kotlin/Wasm are outside this module's scope.
 
-## Get Started {#learn-more}
+## Further Reading {#learn-more}
 
-Add `fory-json-kotlin` to your application and try a round trip with one of your Kotlin models. The [Kotlin JSON guide](/docs/json/kotlin) covers type mapping and configuration; see [Custom Codecs](/docs/json/custom-codecs) for application-specific representations and [Security](/docs/json/security) for input limits. Source code and contribution instructions are available at [apache/fory](https://github.com/apache/fory).
+The [Kotlin JSON guide](/docs/json/kotlin) covers type mapping and configuration; see [Custom Codecs](/docs/json/custom-codecs) for application-specific representations and [Security](/docs/json/security) for input limits. Source code and contribution instructions are available at [apache/fory](https://github.com/apache/fory).
