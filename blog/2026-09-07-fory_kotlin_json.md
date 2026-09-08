@@ -1,20 +1,20 @@
 ---
 slug: fory_kotlin_json
 title: "Apache Fory™ JSON: High-Performance JSON Serialization for Kotlin"
-description: "Apache Fory JSON provides high-performance serialization for Kotlin/JVM data classes, value classes, and sealed hierarchies, preserving constructor defaults and nullability."
+description: "Apache Fory JSON provides high-performance JSON serialization for Kotlin/JVM, supporting ordinary classes, data classes, value classes, and sealed hierarchies while preserving constructor defaults and nullability."
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. In benchmarks covering small messages and large documents, Fory delivers **2.78×–12.12× the throughput** of kotlinx.serialization, Moshi, and Jackson Kotlin.
+**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps ordinary classes, data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. In benchmarks covering small messages and large documents, Fory delivers **2.78×–12.12× the throughput** of kotlinx.serialization, Moshi, and Jackson Kotlin.
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## JSON Serialization in Kotlin Applications {#kotlin-models-as-json-contracts}
+## JSON Mapping for Kotlin {#kotlin-json-mapping}
 
-Kotlin applications exchange JSON through HTTP APIs, message queues, and stored documents. Application code works with typed models, so each exchange involves converting between JSON and Kotlin objects. Reading a document includes constructing an object with the right arguments and running its initialization logic; writing it must preserve the values needed to reconstruct that object.
+In Kotlin, JSON mapping involves more than reading and writing object fields. Default parameters and nullable types affect how objects are constructed, while value classes and sealed hierarchies have their own type semantics. A JSON library needs to understand Kotlin's type information and construction rules to handle these models correctly.
 
-These conversions also consume CPU time and allocate temporary objects, especially when a service processes many messages or large documents. Apache Fory JSON combines Kotlin object mapping with a high-performance JSON engine: the Kotlin layer follows the model's type and construction rules, while the engine handles JSON parsing and output. The same mapping is available through String and direct UTF-8 APIs.
+Apache Fory JSON provides a dedicated object mapping layer for Kotlin/JVM. It resolves types, properties, and constructor parameters from Kotlin metadata, while Fory's high-performance JSON engine handles JSON parsing and encoding.
 
 ## Getting Started
 
@@ -51,7 +51,7 @@ fun main() {
 }
 ```
 
-On a standard JVM, this example needs no model annotations or serialization compiler plugin. `ForyJsonKotlin.builder()` installs the Kotlin module, and `jsonTypeRef<T>()` describes the type to serialize or deserialize, including its generic arguments and nullability. For example, use `jsonTypeRef<List<Account?>>()` when a list can contain null elements, or `jsonTypeRef<List<Account>>()` when every element must be an account.
+On a standard JVM, this example needs no model annotations or serialization compiler plugin. `ForyJsonKotlin.builder()` installs the Kotlin module. `jsonTypeRef<T>()` retains the declared root type’s generic arguments, nullability, and the identity of unsigned types and value classes. For example, use `jsonTypeRef<List<Account?>>()` when a list can contain null elements, or `jsonTypeRef<List<Account>>()` when every element must be an account.
 
 The byte APIs read and write UTF-8 directly, avoiding a complete intermediate String when an HTTP client, message transport, or storage API already exchanges bytes.
 
@@ -76,7 +76,7 @@ Fory selects the primary constructor automatically. An absent member uses its co
 | `{"label":"ready"}` | Rejected: required `id` is missing |
 | `{"id":1,"retries":null}` | Rejected: `retries` is non-null |
 
-Nullability and defaults are independent: a nullable parameter without a default still requires a JSON member. Defaults remain executable Kotlin expressions, evaluated when needed during construction. Initialization blocks and constructor validation also run normally.
+Nullability and defaults are independent: a nullable parameter without a default still requires a JSON member. When a member is absent and its parameter has a default, Fory invokes the compiler-generated constructor for default arguments, letting Kotlin evaluate the required default values. Initialization blocks and constructor validation also run normally.
 
 This distinction affects serialization too. If `label` is null, omitting it would cause a reader to restore `"new"`. Fory therefore writes nullable constructor properties explicitly when they contain null, preserving the value on a round trip under the same configuration.
 
@@ -99,15 +99,15 @@ val text = json.toJson(AccountId(42uL), idType) // 42
 val restored = json.fromJson(text, idType)
 ```
 
-Fory reconstructs `AccountId` through its validated constructor operation, so the `require` check still runs. The type token preserves the value-class identity even when the JVM represents it through a primitive carrier.
+Fory reconstructs `AccountId` through its validated constructor operation, so the `require` check still runs. Whether `AccountId` is boxed or represented by its underlying value on the JVM, the type token retains its declared Kotlin type.
 
 Unsigned integers retain their decimal representation, including the full `ULong` range. If an API requires 64-bit integers as JSON strings, build the runtime with `ForyJsonKotlin.builder().writeLongAsString(true)`. This applies to `Long` and `ULong`, including supported containers and value classes; readers accept quoted or unquoted integer tokens.
 
-Transparent mapping needs an unambiguous null representation. A nullable value class with a nullable underlying value has two distinct states that would both become JSON null, so that case requires a tagged custom codec. See the [type support table](/docs/json/kotlin#supported-kotlin-types) for other Kotlin types and their representations.
+Fory rejects automatic mapping for nullable value-class representations that make JSON null ambiguous; those cases require a tagged custom codec. See the [type support table](/docs/json/kotlin#supported-kotlin-types) for the detailed rules.
 
 ## Sealed Hierarchies and Annotations {#sealed-types-and-json-annotations}
 
-Annotating a sealed base with `JsonSubTypes` lets Fory infer the concrete alternatives from Kotlin metadata:
+Annotating a sealed base with `JsonSubTypes` lets Fory infer the permitted concrete subtypes from Kotlin's sealed-hierarchy metadata:
 
 ```kotlin
 import org.apache.fory.json.annotation.JsonSubTypes
@@ -147,7 +147,7 @@ The mapping path connects Kotlin's declarations to the shared engine:
 ```text
 Kotlin metadata + declared root type
   → resolved constructor and property model
-  → generated codec
+  → generated or interpreted codec
   → shared Fory JSON runtime
 ```
 
@@ -159,9 +159,9 @@ The declared root type supplies information that belongs to a particular use of 
 
 ### Generating Code Around Constructors {#generating-code-for-the-declared-model}
 
-On a standard JDK, generated readers specialize field matching and decoding for that resolved model. For `Request`, the reader tracks which arguments are present, rejects a missing `id`, and selects the constructor invocation. If `label` or `retries` is absent, a default-argument mask tells Kotlin's compiler-generated constructor which expressions to evaluate. An explicit null for `label` leaves its default unselected.
+When runtime code generation is available and enabled, generated readers specialize field matching and decoding for that resolved model. For `Request`, the reader tracks which arguments are present, rejects a missing `id`, and selects the constructor invocation. If `label` or `retries` is absent, a default-argument mask tells Kotlin's compiler-generated constructor which expressions to evaluate. An explicit null for `label` leaves its default unselected.
 
-Generated writers likewise use resolved accessors and field types, including the rule that nullable constructor properties must preserve null. Reusing these codecs removes repeated model discovery while keeping normal Kotlin construction and validation in the read path. An interpreted mapping path is available where runtime compilation is unavailable.
+Generated writers likewise use resolved accessors and field types, including the rule that nullable constructor properties must preserve null. Reusing these codecs removes repeated model discovery while keeping normal Kotlin construction and validation in the read path. Interpreted codecs remain available when runtime code generation is unavailable or disabled.
 
 ### Using the Shared JSON Engine
 
@@ -169,13 +169,15 @@ These codecs use Fory's existing number encoders, text processing, reusable buff
 
 ## Performance {#performance-on-kotlin-models}
 
-The benchmarks cover a small structured message and two documents of approximately 1 MB. They compare complete serialization and deserialization operations on Kotlin models.
+The benchmarks cover a small structured message and two documents of approximately 1 MB. They compare serialization and deserialization throughput on Kotlin models.
 
 ### Methodology {#benchmark-setup}
 
 Both benchmark suites ran on an Apple M5 with OpenJDK 25.0.3, comparing Fory JSON for Kotlin 1.7.1, kotlinx.serialization 1.11.0, Moshi 1.15.2 with generated adapters, and Jackson Kotlin 2.22.1.
 
-All libraries process the same Kotlin models and input within each workload. Correctness checks verify fixture reads, round trips, and equivalent JSON output. String operations exclude UTF-8 conversion. For byte operations, Fory and Jackson use direct byte-array APIs, kotlinx.serialization uses its stream APIs, and Moshi uses Okio buffers; none converts through an intermediate String.
+All libraries process the same Kotlin models and input within each workload. Correctness checks verify fixture reads, round trips, and equivalent JSON output. Models and inputs are prepared before timing, as are the serializers, adapters, and typed readers/writers; Fory's codec compilation also finishes before measurement.
+
+String operations exclude UTF-8 conversion. For byte operations, Fory and Jackson use direct byte-array APIs, kotlinx.serialization uses its stream APIs, and Moshi uses Okio buffers; none converts through an intermediate String. Byte operations include buffer or stream allocation and extraction of the output byte array where required.
 
 Charts show throughput in operations per second, where higher is better, with the errors reported by JMH. The [benchmark report](https://github.com/chaokunyang/kotlin-json-benchmarks/blob/71399f45a9e6a55c07e127d240019ca9198446db/README.md) contains the full configuration, input hashes, raw measurements, and reproduction commands.
 
@@ -225,9 +227,11 @@ The measurements describe the selected models and configuration on one machine. 
 
 ## JVM, Android, and GraalVM {#jvm-and-deployment-support}
 
-This module targets Kotlin/JVM and does not require `kotlin-reflect`. The [installation guide](/docs/json/kotlin#installation) covers compatibility, and the [runtime guide](/docs/json/getting-started) includes the recommended `java.lang.invoke` opening on JDK 25 and later.
+This module supports Kotlin/JVM applications, including Android and GraalVM Native Image, and does not require `kotlin-reflect`. The [installation guide](/docs/json/kotlin#installation) covers compatibility, and the [runtime guide](/docs/json/getting-started) includes the recommended `java.lang.invoke` opening on JDK 25 and later.
 
-Android API 26 and later uses interpreted JSON mapping. With R8 or ProGuard enabled, add `fory-json-kotlin-ksp` and annotate required source models with `JsonType` to preserve mapping information. GraalVM Native Image uses the `ForyJsonProvider` workflow to install the Kotlin module and select reachable models for code generation. The [platform guide](/docs/json/kotlin#graalvm-and-android) covers both setups. Kotlin/Native, Kotlin/JS, and Kotlin/Wasm are outside this module's scope.
+Android API 26 and later uses interpreted JSON mapping. With R8 or ProGuard enabled, add `fory-json-kotlin-ksp` and annotate Kotlin source models whose mapping information must survive shrinking with `JsonType`. For third-party targets, use an exact Mixin declared in application source.
+
+GraalVM Native Image uses the `ForyJsonProvider` workflow to install the Kotlin module and select reachable models for code generation. The [platform guide](/docs/json/kotlin#graalvm-and-android) covers both setups. Kotlin/Native, Kotlin/JS, and Kotlin/Wasm are outside this module's scope.
 
 ## Further Reading {#learn-more}
 

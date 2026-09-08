@@ -1,20 +1,20 @@
 ---
 slug: fory_kotlin_json
 title: "Apache Fory™ JSON：面向 Kotlin 的高性能 JSON 序列化"
-description: "Apache Fory JSON 为 Kotlin/JVM 提供高性能序列化，支持数据类、值类和密封类型，并遵循 Kotlin 的构造函数默认值和可空性规则。"
+description: "Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持普通类、数据类、值类和密封类型，并遵循 Kotlin 的构造函数默认值和可空性规则。"
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持数据类、值类和密封类型，并遵循模型中声明的默认值和可空性规则。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量为 kotlinx.serialization、Moshi 和 Jackson Kotlin 的 **2.78–12.12 倍**。
+**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持普通类、数据类、值类和密封类型，并遵循模型中声明的默认值和可空性规则。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量为 kotlinx.serialization、Moshi 和 Jackson Kotlin 的 **2.78–12.12 倍**。
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## Kotlin 应用中的 JSON 序列化 {#kotlin-models-as-json-contracts}
+## 面向 Kotlin 的 JSON 映射 {#kotlin-json-mapping}
 
-Kotlin 应用经常需要接收 HTTP 请求、消费队列消息，或读取 JSON 文档。这些数据进入应用后，要转换成 Kotlin 对象；返回响应或写入存储时，又要转回 JSON。转换时需要遵循模型的类型和构造规则：正确传入参数、执行初始化逻辑，并在输出中保留还原对象所需的值。
+在 Kotlin 中，JSON 映射并不只是读写对象字段。默认参数和可空类型会影响对象的构造方式，值类和密封类型也有自己的类型语义。要正确处理这些模型，JSON 库需要理解 Kotlin 的类型信息和构造规则。
 
-对于需要处理大量消息或大文档的服务，序列化的 CPU 开销和临时内存分配也会影响性能。Apache Fory JSON 为 Kotlin 提供了专门的对象映射支持，负责处理 Kotlin 的类型信息和对象构造，底层沿用 Fory 的高性能 JSON 引擎完成解析和输出。它既支持字符串，也支持直接读写 UTF-8 字节。
+Apache Fory JSON 为 Kotlin/JVM 提供了专门的对象映射层。它通过 Kotlin 元数据解析类型、属性和构造参数，再由 Fory 的高性能 JSON 引擎完成 JSON 的解析与编码。
 
 ## 快速开始 {#getting-started}
 
@@ -51,7 +51,7 @@ fun main() {
 }
 ```
 
-在标准 JVM 上，上面的示例无需给模型添加注解，也不需要序列化编译器插件。`ForyJsonKotlin.builder()` 会自动注册 Kotlin 模块。`jsonTypeRef<T>()` 提供完整的类型信息，包括泛型参数和可空性：`jsonTypeRef<List<Account?>>()` 允许列表包含 null 元素，`jsonTypeRef<List<Account>>()` 则要求所有元素非空。
+在标准 JVM 上，上面的示例无需给模型添加注解，也不需要序列化编译器插件。`ForyJsonKotlin.builder()` 会自动安装 Kotlin 模块。`jsonTypeRef<T>()` 保留声明的根类型中的泛型参数、可空性，以及无符号类型和值类等 Kotlin 类型信息。例如，`jsonTypeRef<List<Account?>>()` 允许列表包含 null 元素，`jsonTypeRef<List<Account>>()` 则要求所有元素非空。
 
 如果 HTTP 客户端、消息队列或存储接口本来就使用字节传递数据，可以直接调用字节 API 读写 UTF-8，省去将整份文档转换为字符串的开销。
 
@@ -76,7 +76,7 @@ Fory 会自动使用主构造函数创建 `Request`。JSON 中缺少某个字段
 | `{"label":"ready"}` | 拒绝：缺少必需参数 `id` |
 | `{"id":1,"retries":null}` | 拒绝：`retries` 不可空 |
 
-参数可空，并不意味着这个字段可以省略。如果参数没有默认值，JSON 中仍必须提供该字段。需要使用默认值时，Fory 会在构造对象的过程中执行相应的 Kotlin 表达式。`init` 块和构造函数中的校验也会照常执行。
+参数可空，并不意味着这个字段可以省略。如果参数没有默认值，JSON 中仍必须提供该字段。字段缺失且参数声明了默认值时，Fory 会通过 Kotlin 的默认参数机制调用构造函数，由 Kotlin 计算默认值。`init` 块和构造函数中的校验也会照常执行。
 
 序列化时也要区分 null 和字段缺失。例如，`label` 的值是 null，如果输出时省略了这个字段，再读取时就会得到默认值 `"new"`。因此，对于声明在构造函数中的可空属性，Fory 会把 null 值写入 JSON，确保在相同配置下序列化后再反序列化，得到的仍是原来的值。
 
@@ -99,15 +99,15 @@ val text = json.toJson(AccountId(42uL), idType) // 42
 val restored = json.fromJson(text, idType)
 ```
 
-反序列化 `AccountId` 时，Fory 会执行其构造和校验逻辑，包括 `require` 检查。即使 JVM 在底层用整数表示 `AccountId`，`jsonTypeRef<AccountId>()` 仍然保留了完整的值类类型信息。
+反序列化 `AccountId` 时，Fory 会执行其构造和校验逻辑，包括 `require` 检查。无论 `AccountId` 在 JVM 上被装箱，还是用底层值表示，`jsonTypeRef<AccountId>()` 都会保留其声明的 Kotlin 类型。
 
 无符号整数会按十进制数字写入 JSON，完整支持 `ULong` 的取值范围。如果 API 要求将 64 位整数写成 JSON 字符串，可以在创建实例时使用 `ForyJsonKotlin.builder().writeLongAsString(true)`。该设置适用于 `Long` 和 `ULong`，也适用于受支持的容器和值类中的这两种类型。反序列化时，整数带不带引号都可以读取。
 
-直接用底层值表示值类时，需要注意 null 的歧义。如果值类本身和它包装的值都允许为 null，就有两种不同情况：值类对象是 null，或者对象存在、内部的值是 null。两者都会变成 JSON null，因此需要用自定义编解码器添加标签，区分这两种状态。其他 Kotlin 类型如何映射到 JSON，见[类型支持表](/docs/json/kotlin#supported-kotlin-types)。
+如果可空值类的表示会让 JSON null 产生歧义，Fory 会拒绝自动映射，需要使用带标签的自定义编解码器；具体规则见[类型支持表](/docs/json/kotlin#supported-kotlin-types)。
 
 ## 密封类型与注解 {#sealed-types-and-json-annotations}
 
-在密封类或密封接口（`sealed`）上添加 `JsonSubTypes` 注解后，Fory 可以从 Kotlin 元数据中找出具体子类型：
+在密封类或密封接口（`sealed`）上添加 `JsonSubTypes` 注解后，Fory 可以根据 Kotlin 的密封类型信息推导出允许的具体子类型：
 
 ```kotlin
 import org.apache.fory.json.annotation.JsonSubTypes
@@ -142,12 +142,12 @@ data class Profile(
 
 ## Fory 如何高效映射 Kotlin 模型 {#how-fory-json-achieves-high-performance-in-kotlin}
 
-Fory 先从 Kotlin 类型中解析出构造函数和属性信息，再据此生成编解码器，调用底层 JSON 引擎完成读写：
+Fory 先从 Kotlin 类型中解析出构造函数和属性信息，再通过相应的编解码器调用底层 JSON 引擎完成读写：
 
 ```text
 Kotlin 元数据 + 声明的根类型
-  → 构造函数和属性信息
-  → 按模型生成的编解码器
+  → 构造函数和属性模型
+  → 生成或解释执行的编解码器
   → Fory JSON 引擎
 ```
 
@@ -159,9 +159,9 @@ Kotlin 元数据 + 声明的根类型
 
 ### 按模型生成读写代码 {#generating-code-for-the-declared-model}
 
-在标准 JDK 上，Fory 会根据解析得到的模型生成 JSON 读取代码，直接完成字段匹配和解码。以 `Request` 为例，读取代码会记录 JSON 中提供了哪些参数，拒绝缺少 `id` 的输入，再选择相应的构造函数调用。缺少 `label` 或 `retries` 时，代码会通过默认参数掩码，告诉 Kotlin 编译器生成的构造函数需要计算哪些默认值。如果 `label` 明确传入了 null，就直接使用 null，不会触发默认值逻辑。
+如果运行环境支持且启用了运行时代码生成，Fory 会根据解析得到的模型生成 JSON 读取代码，直接完成字段匹配和解码。以 `Request` 为例，读取代码会记录 JSON 中提供了哪些参数，拒绝缺少 `id` 的输入，再选择相应的构造函数调用。缺少 `label` 或 `retries` 时，代码会通过默认参数掩码，告诉 Kotlin 编译器生成的构造函数需要计算哪些默认值。如果 `label` 明确传入了 null，就直接使用 null，不会触发默认值逻辑。
 
-生成的写入代码使用已确定的属性访问方式和字段类型。对于构造函数中声明的可空属性，也会按前文的规则写出 null。模型解析完成后，编解码器可以反复使用；反序列化时，Kotlin 正常的构造和校验逻辑仍然会执行。不支持运行时编译的环境则通过解释执行完成映射。
+生成的写入代码使用已确定的属性访问方式和字段类型。对于构造函数中声明的可空属性，也会按前文的规则写出 null。模型解析完成后，编解码器可以反复使用；反序列化时，Kotlin 正常的构造和校验逻辑仍然会执行。运行时无法生成代码或未启用代码生成时，也可以使用解释执行的编解码器。
 
 ### 复用 Fory 的 JSON 引擎 {#using-the-shared-json-engine}
 
@@ -169,13 +169,15 @@ Kotlin 元数据 + 声明的根类型
 
 ## 性能 {#performance-on-kotlin-models}
 
-基准测试分别使用一条较小的结构化消息和两份约 1 MB 的文档，对比各库将 Kotlin 对象转换为 JSON，以及从 JSON 还原对象的完整过程。
+基准测试分别使用一条较小的结构化消息和两份约 1 MB 的文档，对比各库处理 Kotlin 模型时的序列化与反序列化吞吐量。
 
 ### 测试方法 {#benchmark-setup}
 
 两组基准测试都在 Apple M5 和 OpenJDK 25.0.3 上运行，参与对比的是 Fory JSON for Kotlin 1.7.1、kotlinx.serialization 1.11.0、Moshi 1.15.2（使用代码生成的适配器）和 Jackson Kotlin 2.22.1。
 
-每个测试场景下，各库使用相同的 Kotlin 模型和输入数据。正确性测试会检查能否正确读取样本、序列化后能否还原原对象，以及各库输出的 JSON 是否等价。字符串测试不包含 UTF-8 编解码的开销。字节测试中，Fory 和 Jackson 使用字节数组 API，kotlinx.serialization 使用流 API，Moshi 使用 Okio 缓冲区；这些接口都直接处理字节，不会先把整份文档转成字符串。
+每个测试场景下，各库使用相同的 Kotlin 模型和输入数据。正确性测试会检查能否正确读取样本、序列化后能否还原原对象，以及各库输出的 JSON 是否等价。模型、输入数据及各库的序列化器、适配器和读写器都在计时前准备好，Fory 的编解码器编译也在计时前完成。
+
+字符串测试不包含 UTF-8 编解码的开销。字节测试中，Fory 和 Jackson 使用字节数组 API，kotlinx.serialization 使用流 API，Moshi 使用 Okio 缓冲区；这些接口都直接处理字节，不会先把整份文档转成字符串。字节测试还包括各接口所需的缓冲区或流创建，以及输出字节数组的提取开销。
 
 图中的吞吐量以每秒操作数表示，越高越好；误差范围来自 JMH 报告。完整配置、输入数据的哈希值、原始测量结果和复现命令见[基准测试报告](https://github.com/chaokunyang/kotlin-json-benchmarks/blob/71399f45a9e6a55c07e127d240019ca9198446db/README.md)。
 
@@ -227,7 +229,7 @@ MediaContent 反映了小对象的构造、类型映射和 JSON 处理的整体�
 
 该模块可用于 Kotlin/JVM 项目，支持 Android 和 GraalVM Native Image，且不依赖 `kotlin-reflect`。兼容性说明见[安装指南](/docs/json/kotlin#installation)。使用 JDK 25 及更高版本时，建议按[运行时配置指南](/docs/json/getting-started)开放 `java.lang.invoke` 包的访问权限。
 
-在 Android API 26 及更高版本上，Fory 通过解释执行处理 JSON 映射。启用 R8 或 ProGuard 时，需要添加 `fory-json-kotlin-ksp`，并在需要序列化的源码模型上添加 `JsonType` 注解，以保留映射所需的信息。
+在 Android API 26 及更高版本上，Fory 通过解释执行处理 JSON 映射。启用 R8 或 ProGuard 时，需要添加 `fory-json-kotlin-ksp`，并为压缩后仍需保留映射信息的 Kotlin 源码模型添加 `JsonType` 注解。第三方类型则可通过应用源码中精确指定目标类型的 Mixin 保留这些信息。
 
 在 GraalVM Native Image 中，通过 `ForyJsonProvider` 注册 Kotlin 模块，并为应用可访问到的模型配置代码生成。这两种环境的配置方法见[平台指南](/docs/json/kotlin#graalvm-and-android)。该模块不支持 Kotlin/Native、Kotlin/JS 和 Kotlin/Wasm。
 
