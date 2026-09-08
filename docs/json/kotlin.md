@@ -152,6 +152,15 @@ when the builder's general Java default is to omit null fields. An explicit
 `JsonProperty.Include.NON_NULL` on such a property is rejected if omission could fail or invoke a
 different compiler default.
 
+The same rule applies to `NON_EMPTY`. A global
+`defaultPropertyInclusion(JsonProperty.Include.NON_EMPTY)` preserves empty Kotlin constructor and
+deferred properties, including those declared with `emptyList()` defaults. Fory does not compare
+values with compiler defaults or evaluate initializers to decide whether to omit them. An explicit
+`NON_EMPTY` annotation is rejected on a reconstructible property whose logical type can be empty,
+or whose nullable value would otherwise be omitted. Non-null value classes remain present even
+when their underlying string or collection is empty. Use a custom codec for a containing model
+that needs a different omission and reconstruction contract.
+
 ## Nullability
 
 Kotlin occurrence nullability is enforced at roots, properties, container elements, map values,
