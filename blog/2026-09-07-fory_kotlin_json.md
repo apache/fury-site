@@ -6,7 +6,7 @@ authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. String and direct UTF-8 APIs are available without a `kotlin-reflect` dependency. In benchmarks covering small messages and large documents, Fory delivers higher throughput than kotlinx.serialization, Moshi, and Jackson Kotlin.
+**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. In benchmarks covering small messages and large documents, Fory delivers higher throughput than kotlinx.serialization, Moshi, and Jackson Kotlin.
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
@@ -229,6 +229,6 @@ This module targets Kotlin/JVM and does not require `kotlin-reflect`. The [insta
 
 Android API 26 and later uses interpreted JSON mapping. With R8 or ProGuard enabled, add `fory-json-kotlin-ksp` and annotate required source models with `JsonType` to preserve mapping information. GraalVM Native Image uses the `ForyJsonProvider` workflow to install the Kotlin module and select reachable models for code generation. The [platform guide](/docs/json/kotlin#graalvm-and-android) covers both setups. Kotlin/Native, Kotlin/JS, and Kotlin/Wasm are outside this module's scope.
 
-## Get Started {#learn-more}
+## Further Reading {#learn-more}
 
-Add `fory-json-kotlin` to your application and try a round trip with one of your Kotlin models. The [Kotlin JSON guide](/docs/json/kotlin) covers type mapping and configuration; see [Custom Codecs](/docs/json/custom-codecs) for application-specific representations and [Security](/docs/json/security) for input limits. Source code and contribution instructions are available at [apache/fory](https://github.com/apache/fory).
+The [Kotlin JSON guide](/docs/json/kotlin) covers type mapping and configuration; see [Custom Codecs](/docs/json/custom-codecs) for application-specific representations and [Security](/docs/json/security) for input limits. Source code and contribution instructions are available at [apache/fory](https://github.com/apache/fory).

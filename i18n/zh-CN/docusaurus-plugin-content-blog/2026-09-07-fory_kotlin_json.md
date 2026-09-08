@@ -6,7 +6,7 @@ authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持数据类、值类和 sealed 层次结构，并保留构造函数默认值与可空性。它提供 String 和直接 UTF-8 API，无需依赖 `kotlin-reflect`。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量高于 kotlinx.serialization、Moshi 和 Jackson Kotlin。
+**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持数据类、值类和 sealed 层次结构，并保留构造函数默认值与可空性。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量高于 kotlinx.serialization、Moshi 和 Jackson Kotlin。
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
@@ -229,6 +229,6 @@ MediaContent 展示了映射一个通过构造函数创建的小模型并处理�
 
 Android API 26 及更高版本使用解释执行的 JSON 映射。启用 R8 或 ProGuard 时，应添加 `fory-json-kotlin-ksp`，并为所需的源码模型标注 `JsonType`，以保留映射信息。GraalVM Native Image 通过 `ForyJsonProvider` 安装 Kotlin 模块，并选择可达模型进行代码生成。[平台指南](/docs/json/kotlin#graalvm-and-android)提供了这两种环境的配置方式。Kotlin/Native、Kotlin/JS 和 Kotlin/Wasm 不在此模块的支持范围内。
 
-## 开始使用 {#learn-more}
+## 延伸阅读 {#learn-more}
 
-在应用中添加 `fory-json-kotlin`，选取一个 Kotlin 模型尝试往返转换。[Kotlin JSON 指南](/docs/json/kotlin)介绍了类型映射和配置；应用需要特定表示方式时，请参阅[自定义编解码器](/docs/json/custom-codecs)；输入限制见[安全指南](/docs/json/security)。源码和贡献说明位于 [apache/fory](https://github.com/apache/fory)。
+[Kotlin JSON 指南](/docs/json/kotlin)介绍了类型映射和配置；应用需要特定表示方式时，请参阅[自定义编解码器](/docs/json/custom-codecs)；输入限制见[安全指南](/docs/json/security)。源码和贡献说明位于 [apache/fory](https://github.com/apache/fory)。
