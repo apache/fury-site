@@ -1,6 +1,6 @@
 ---
 slug: fory_kotlin_json
-title: "Apache Fory™ JSON for Kotlin：兼顾 Kotlin 语义的高性能序列化"
+title: "Apache Fory™ JSON Kotlin：极速 Kotlin JSON 序列化框架"
 description: "Fory JSON 将 Kotlin 模型映射为标准 JSON，同时保留构造函数默认值、可空性、值类和 sealed 层次结构。本文介绍其使用方式、性能原理，以及 Kotlin MediaContent 和 1000 KB 文档的基准测试结果。"
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
