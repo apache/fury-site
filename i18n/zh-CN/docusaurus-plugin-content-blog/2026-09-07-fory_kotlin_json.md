@@ -1,22 +1,22 @@
 ---
 slug: fory_kotlin_json
 title: "Apache Fory™ JSON：面向 Kotlin 的高性能 JSON 序列化"
-description: "Apache Fory JSON 将 Kotlin/JVM 模型映射到高性能 JSON 引擎，通过 String 和直接 UTF-8 API 保留构造函数默认值、可空性、值类和 sealed 层次结构。"
+description: "Apache Fory JSON 为 Kotlin/JVM 数据类、值类和 sealed 层次结构提供高性能序列化，保留构造函数默认值与可空性。"
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**摘要**：Apache Fory JSON 提供 Kotlin/JVM 对象映射层，将 Kotlin 源码中的类型模型接入 Fory 的高性能 JSON 引擎。它通过 String 和直接 UTF-8 API 保留构造函数默认值、可空性、值类和 sealed 层次结构，无需依赖 `kotlin-reflect`。在本文测试的 Kotlin 负载中，Fory 均取得最高吞吐量。
+**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化。通过 String 和 UTF-8 API，可以直接使用数据类、构造函数默认值、可空属性、值类和 sealed 层次结构，无需依赖 `kotlin-reflect`。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量高于 kotlinx.serialization、Moshi 和 Jackson Kotlin。
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## 为什么 Kotlin 需要专门的支持 {#kotlin-models-as-json-contracts}
+## 让 JSON 遵循 Kotlin 模型的定义 {#kotlin-models-as-json-contracts}
 
-Kotlin 模型包含一些仅靠 Java 反射无法完整描述的信息。`List<String>` 和 `List<String?>` 对 null 元素有不同要求；缺失的构造函数参数可以使用默认表达式，而显式 null 必须符合参数的声明类型。无符号整数和值类也可能与其他类型共用 JVM 表示，但在 Kotlin 中仍具有不同含义。
+Kotlin 应用经常用数据类描述 API 请求和响应。默认参数决定输入缺失时如何处理，可空类型明确哪些位置允许 null；值类区分账户 ID 等领域值，sealed 层次结构则表示不同支付方式这样的多种可能。
 
-这些区别同时影响 JSON 的读取和写入。读取时，需要确定如何构造对象并校验输入；写入时，则要保证输出能够还原原值。例如，省略一个值为 null 的属性，可能使读取方意外恢复出非 null 的构造函数默认值。
+JSON 库在读写模型时也应遵循这些定义：为缺失属性使用默认值，检查集合内部的可空性，并在重建对象时执行构造函数中的初始化和校验。输出也应保留正确还原对象所需的值。
 
-Fory JSON 的 Kotlin 模块读取 Kotlin 元数据，结合声明的根类型解析这些规则，再将构造函数和属性模型交给 Fory 已有的 JSON 引擎。Kotlin 应用因此可以直接使用源码中的模型，并与 Java 共用经过优化的 JSON 解析和输出路径。
+Apache Fory JSON 直接支持这些 Kotlin 模型。它的 Kotlin/JVM 映射层保留模型的类型和构造规则，并使用 Fory 的高性能 JSON 引擎处理数据。应用可以用熟悉的 Kotlin 声明交换标准 JSON 文本或 UTF-8 字节，无需为每个数据类编写自定义适配器。
 
 ## 快速开始 {#getting-started}
 
@@ -53,7 +53,7 @@ fun main() {
 }
 ```
 
-在标准 JVM 上，这个示例不需要模型注解或序列化编译器插件。`ForyJsonKotlin.builder()` 安装 Kotlin 模块。模块从类元数据中读取成员类型，`jsonTypeRef<T>()` 则提供声明的根类型，包括 Java `Class` 无法表达的泛型参数和可空性。例如，`jsonTypeRef<List<Account?>>()` 保留了列表元素可空与不可空的区别。
+在标准 JVM 上，这个示例不需要模型注解或序列化编译器插件。`ForyJsonKotlin.builder()` 安装 Kotlin 模块，`jsonTypeRef<T>()` 描述要序列化或反序列化的类型，包括泛型参数和可空性。例如，列表允许包含 null 元素时使用 `jsonTypeRef<List<Account?>>()`，每个元素都必须是账户时则使用 `jsonTypeRef<List<Account>>()`。
 
 字节 API 直接读写 UTF-8。当 HTTP 客户端、消息传输或存储 API 已经使用字节交换数据时，可以避免将完整文档转换为中间 String。
 

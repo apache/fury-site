@@ -1,22 +1,22 @@
 ---
 slug: fory_kotlin_json
 title: "Apache Fory™ JSON: High-Performance JSON Serialization for Kotlin"
-description: "Apache Fory JSON maps Kotlin/JVM models to its high-performance JSON engine, preserving constructor defaults, nullability, value classes, and sealed hierarchies with String and direct UTF-8 APIs."
+description: "Apache Fory JSON provides high-performance serialization for Kotlin/JVM data classes, value classes, and sealed hierarchies, preserving constructor defaults and nullability."
 authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON provides a Kotlin/JVM object-mapping layer that connects Kotlin's source-level type model to Fory's high-performance JSON engine. It preserves constructor defaults, nullability, value classes, and sealed hierarchies through String and direct UTF-8 APIs, without requiring `kotlin-reflect`. Fory achieved the highest throughput in the Kotlin workloads tested here.
+**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. Use data classes, constructor defaults, nullable properties, value classes, and sealed hierarchies directly, with String and UTF-8 APIs and no `kotlin-reflect` dependency. In benchmarks covering small messages and large documents, Fory delivers higher throughput than kotlinx.serialization, Moshi, and Jackson Kotlin.
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## Why Kotlin Needs Dedicated Support {#kotlin-models-as-json-contracts}
+## JSON That Fits Your Kotlin Models {#kotlin-models-as-json-contracts}
 
-A Kotlin model carries information that Java reflection alone cannot fully describe. `List<String>` and `List<String?>` have different rules for null elements. A missing constructor argument may invoke a default expression, while an explicit null must satisfy the parameter's declared type. Unsigned integers and value classes can also share JVM representations with other types while retaining distinct meanings in Kotlin.
+Kotlin applications often describe API requests and responses with data classes. Default arguments determine what happens when an input is omitted, while nullable types express where null is allowed. Value classes distinguish domain values such as account IDs, and sealed hierarchies model alternatives such as different payment methods.
 
-Those distinctions affect both directions of JSON mapping. A reader must choose how to construct an object and validate its inputs. A writer must produce a representation that can reconstruct the original value: omitting a null property, for example, can accidentally restore a non-null constructor default.
+A JSON library should follow those declarations when reading and writing your models. It should apply defaults to missing properties, enforce nullability inside collections, and run constructor initialization and validation when reconstructing objects. Its output should preserve the values needed to read the object back correctly.
 
-The Fory JSON Kotlin module reads Kotlin metadata and combines it with the declared root type to resolve these rules. It supplies a constructor and property model to Fory's existing JSON engine, so Kotlin applications can use their source models directly while sharing the optimized parsing and output paths used by Java.
+Apache Fory JSON supports these Kotlin models directly. Its Kotlin/JVM mapping layer preserves their type and construction rules while using Fory's high-performance JSON engine. Applications can exchange standard JSON text or UTF-8 bytes using familiar Kotlin declarations, without writing a custom adapter for each data class.
 
 ## Getting Started
 
@@ -53,7 +53,7 @@ fun main() {
 }
 ```
 
-On a standard JVM, this example needs no model annotations or serialization compiler plugin. `ForyJsonKotlin.builder()` installs the Kotlin module. The module reads member types from class metadata; `jsonTypeRef<T>()` supplies the declared root type, including generic arguments and nullability that a Java `Class` cannot express. For example, `jsonTypeRef<List<Account?>>()` retains the distinction between nullable and non-null list elements.
+On a standard JVM, this example needs no model annotations or serialization compiler plugin. `ForyJsonKotlin.builder()` installs the Kotlin module, and `jsonTypeRef<T>()` describes the type to serialize or deserialize, including its generic arguments and nullability. For example, use `jsonTypeRef<List<Account?>>()` when a list can contain null elements, or `jsonTypeRef<List<Account>>()` when every element must be an account.
 
 The byte APIs read and write UTF-8 directly, avoiding a complete intermediate String when an HTTP client, message transport, or storage API already exchanges bytes.
 
