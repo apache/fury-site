@@ -6,17 +6,15 @@ authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化。通过 String 和 UTF-8 API，可以直接使用数据类、构造函数默认值、可空属性、值类和 sealed 层次结构，无需依赖 `kotlin-reflect`。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量高于 kotlinx.serialization、Moshi 和 Jackson Kotlin。
+**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持数据类、值类和 sealed 层次结构，并保留构造函数默认值与可空性。它提供 String 和直接 UTF-8 API，无需依赖 `kotlin-reflect`。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量高于 kotlinx.serialization、Moshi 和 Jackson Kotlin。
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
-## 让 JSON 遵循 Kotlin 模型的定义 {#kotlin-models-as-json-contracts}
+## Kotlin 应用中的 JSON 序列化 {#kotlin-models-as-json-contracts}
 
-Kotlin 应用经常用数据类描述 API 请求和响应。默认参数决定输入缺失时如何处理，可空类型明确哪些位置允许 null；值类区分账户 ID 等领域值，sealed 层次结构则表示不同支付方式这样的多种可能。
+Kotlin 应用通过 HTTP API、消息队列和存储的文档交换 JSON，而应用代码使用具有明确类型的模型，因此每次交换都涉及 JSON 与 Kotlin 对象之间的转换。读取文档时，需要用正确的参数构造对象，并执行初始化逻辑；写入时，则需要保留还原对象所需的值。
 
-JSON 库在读写模型时也应遵循这些定义：为缺失属性使用默认值，检查集合内部的可空性，并在重建对象时执行构造函数中的初始化和校验。输出也应保留正确还原对象所需的值。
-
-Apache Fory JSON 直接支持这些 Kotlin 模型。它的 Kotlin/JVM 映射层保留模型的类型和构造规则，并使用 Fory 的高性能 JSON 引擎处理数据。应用可以用熟悉的 Kotlin 声明交换标准 JSON 文本或 UTF-8 字节，无需为每个数据类编写自定义适配器。
+这些转换也会消耗 CPU 并产生临时内存分配，在处理大量消息或大文档的服务中尤其值得关注。Apache Fory JSON 将 Kotlin 对象映射与高性能 JSON 引擎结合起来：Kotlin 层遵循模型的类型和构造规则，引擎负责 JSON 解析与输出。String 和直接 UTF-8 API 均使用这套映射。
 
 ## 快速开始 {#getting-started}
 
