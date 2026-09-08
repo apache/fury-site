@@ -227,7 +227,7 @@ The measurements describe the selected models and configuration on one machine. 
 
 ## JVM, Android, and GraalVM {#jvm-and-deployment-support}
 
-This module targets Kotlin/JVM and does not require `kotlin-reflect`. The runtime is built with Kotlin 2.3.20; model compatibility follows the supported versions of Kotlin's metadata reader. The [installation guide](/docs/json/kotlin#installation) covers compatibility, and the [runtime guide](/docs/json/getting-started) includes the recommended `java.lang.invoke` opening on JDK 25 and later.
+This module targets Kotlin/JVM and does not require `kotlin-reflect`. The [installation guide](/docs/json/kotlin#installation) covers compatibility, and the [runtime guide](/docs/json/getting-started) includes the recommended `java.lang.invoke` opening on JDK 25 and later.
 
 Android API 26 and later uses interpreted JSON mapping. With R8 or ProGuard enabled, add `fory-json-kotlin-ksp` and annotate required source models with `JsonType` to preserve mapping information. GraalVM Native Image uses the `ForyJsonProvider` workflow to install the Kotlin module and select reachable models for code generation. The [platform guide](/docs/json/kotlin#graalvm-and-android) covers both setups. Kotlin/Native, Kotlin/JS, and Kotlin/Wasm are outside this module's scope.
 

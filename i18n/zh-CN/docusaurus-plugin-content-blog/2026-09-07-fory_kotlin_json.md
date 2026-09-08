@@ -227,7 +227,7 @@ MediaContent 展示了映射一个通过构造函数创建的小模型并处理�
 
 ## JVM、Android 与 GraalVM {#jvm-and-deployment-support}
 
-该模块面向 Kotlin/JVM，无需依赖 `kotlin-reflect`。运行时使用 Kotlin 2.3.20 构建，模型兼容性由 Kotlin 元数据读取器支持的版本决定。[安装指南](/docs/json/kotlin#installation)介绍了兼容性，[运行时指南](/docs/json/getting-started)则涵盖 JDK 25 及更高版本上建议开放的 `java.lang.invoke` 包。
+该模块面向 Kotlin/JVM，无需依赖 `kotlin-reflect`。[安装指南](/docs/json/kotlin#installation)介绍了兼容性，[运行时指南](/docs/json/getting-started)则涵盖 JDK 25 及更高版本上建议开放的 `java.lang.invoke` 包。
 
 Android API 26 及更高版本使用解释执行的 JSON 映射。启用 R8 或 ProGuard 时，应添加 `fory-json-kotlin-ksp`，并为所需的源码模型标注 `JsonType`，以保留映射信息。GraalVM Native Image 通过 `ForyJsonProvider` 安装 Kotlin 模块，并选择可达模型进行代码生成。[平台指南](/docs/json/kotlin#graalvm-and-android)提供了这两种环境的配置方式。Kotlin/Native、Kotlin/JS 和 Kotlin/Wasm 不在此模块的支持范围内。
 
