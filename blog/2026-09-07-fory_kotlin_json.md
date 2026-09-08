@@ -14,7 +14,7 @@ tags: [fory, kotlin, java, json, serialization, performance]
 
 Kotlin applications exchange JSON through HTTP APIs, message queues, and stored documents. Application code works with typed models, so each exchange involves converting between JSON and Kotlin objects. Reading a document includes constructing an object with the right arguments and running its initialization logic; writing it must preserve the values needed to reconstruct that object.
 
-These conversions also contribute to CPU usage and temporary allocations, especially when a service processes many messages or large documents. Apache Fory JSON combines Kotlin object mapping with a high-performance JSON engine: the Kotlin layer follows the model's type and construction rules, while the engine handles JSON parsing and output. The same mapping is available through String and direct UTF-8 APIs.
+These conversions also consume CPU time and allocate temporary objects, especially when a service processes many messages or large documents. Apache Fory JSON combines Kotlin object mapping with a high-performance JSON engine: the Kotlin layer follows the model's type and construction rules, while the engine handles JSON parsing and output. The same mapping is available through String and direct UTF-8 APIs.
 
 ## Getting Started
 
