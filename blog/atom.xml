@@ -8,12 +8,12 @@
     <subtitle>Apache Fory™ Blog</subtitle>
     <icon>https://fory.apache.org/img/favicon.ico</icon>
     <entry>
-        <title type="html"><![CDATA[Introducing Apache Fory™ JSON Kotlin: Blazing-Fast JSON Serialization]]></title>
+        <title type="html"><![CDATA[Apache Fory™ JSON: High-Performance JSON Serialization for Kotlin]]></title>
         <id>https://fory.apache.org/blog/fory_kotlin_json</id>
         <link href="https://fory.apache.org/blog/fory_kotlin_json"/>
         <updated>2026-09-07T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Fory JSON maps Kotlin models to standard JSON while preserving constructor defaults, nullability, value classes, and sealed hierarchies. Learn how to use it and explore Kotlin MediaContent and 1000 KB benchmark results.]]></summary>
-        <content type="html"><![CDATA[<p><strong>TL;DR</strong>: Apache Fory JSON for Kotlin combines standard JSON interoperability with Kotlin constructor defaults, nullability, value classes, and sealed hierarchies. The JVM module supports String and direct UTF-8 APIs without requiring <code>kotlin-reflect</code>. In the benchmarks presented here, Fory JSON Kotlin 1.7.1 delivers <strong>3.63×–12.12× the throughput</strong> of kotlinx.serialization, Moshi, and Jackson Kotlin on MediaContent, and <strong>2.78×–9.75×</strong> on 1000 KB Users and Clients documents.</p>
+        <summary type="html"><![CDATA[Fory JSON provides high-performance JSON serialization for Kotlin, preserving constructor defaults, nullability, value classes, and sealed hierarchies. Benchmarks cover MediaContent and 1000 KB Users and Clients documents.]]></summary>
+        <content type="html"><![CDATA[<p><strong>TL;DR</strong>: Apache Fory JSON for Kotlin combines standard JSON interoperability with Kotlin constructor defaults, nullability, value classes, and sealed hierarchies. It supports String and direct UTF-8 APIs without requiring <code>kotlin-reflect</code>. In the benchmarks presented here, Fory JSON Kotlin 1.7.1 delivers <strong>3.63×–12.12× the throughput</strong> of kotlinx.serialization, Moshi, and Jackson Kotlin on MediaContent, and <strong>2.78×–9.75×</strong> on 1000 KB Users and Clients documents.</p>
 <ul>
 <li class="">GitHub: <a href="https://github.com/apache/fory" target="_blank" rel="noopener noreferrer" class="">apache/fory</a></li>
 <li class="">Documentation: <a class="" href="https://fory.apache.org/docs/json/kotlin">Fory JSON for Kotlin</a></li>
