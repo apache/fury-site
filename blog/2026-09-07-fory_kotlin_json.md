@@ -6,7 +6,7 @@ authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. In benchmarks covering small messages and large documents, Fory delivers higher throughput than kotlinx.serialization, Moshi, and Jackson Kotlin.
+**TL;DR**: Apache Fory JSON brings high-performance JSON serialization to Kotlin/JVM. It maps data classes, value classes, and sealed hierarchies to JSON while preserving constructor defaults and nullability. In benchmarks covering small messages and large documents, Fory delivers **2.78×–12.12× the throughput** of kotlinx.serialization, Moshi, and Jackson Kotlin.
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 

@@ -6,7 +6,7 @@ authors: [chaokunyang]
 tags: [fory, kotlin, java, json, serialization, performance]
 ---
 
-**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持数据类、值类和 sealed 层次结构，并保留构造函数默认值与可空性。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量高于 kotlinx.serialization、Moshi 和 Jackson Kotlin。
+**摘要**：Apache Fory JSON 为 Kotlin/JVM 提供高性能 JSON 序列化，支持数据类、值类和 sealed 层次结构，并保留构造函数默认值与可空性。在涵盖小消息和大文档的基准测试中，Fory 的吞吐量为 kotlinx.serialization、Moshi 和 Jackson Kotlin 的 **2.78–12.12 倍**。
 
 <img src="/img/fory-logo-light.png" width="50%"/>
 
